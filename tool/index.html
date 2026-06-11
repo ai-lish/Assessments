@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>初中短答題生成工具 — Assessments</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif; background: #f5f7fa; margin: 0; padding: 20px; color: #2c3e50; }
+  .container { max-width: 880px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 24px; }
+  h1 { margin: 0 0 6px 0; color: #2c3e50; }
+  .sub { color: #7f8c8d; font-size: 0.9em; margin-bottom: 18px; }
+  h2 { font-size: 1.15em; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 6px; margin-top: 28px; }
+  label { display: block; font-size: 0.9em; color: #555; margin-bottom: 4px; font-weight: 600; }
+  input[type="text"], input[type="number"], input[type="password"] { width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 0.95em; font-family: inherit; }
+  .url-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  button { background: #3498db; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 0.95em; font-weight: 600; }
+  button:hover { background: #2980b9; }
+  button.secondary { background: #95a5a6; }
+  button.secondary:hover { background: #7f8c8d; }
+  button.success { background: #27ae60; }
+  button.success:hover { background: #229954; }
+  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.92em; }
+  th, td { padding: 8px 10px; border-bottom: 1px solid #ecf0f1; text-align: left; vertical-align: top; }
+  th { background: #f8f9fa; font-weight: 600; color: #555; }
+  .badge { display: inline-block; background: #ecf0f1; color: #2c3e50; border-radius: 12px; padding: 2px 8px; font-size: 0.8em; margin-right: 4px; }
+  .preview-q { background: #fafbfc; border: 1px solid #f0f2f5; border-radius: 6px; padding: 8px; margin-top: 6px; font-size: 0.88em; max-width: 420px; }
+  .status { padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-size: 0.9em; display: none; }
+  .status.ok { background: #d4edda; color: #155724; display: block; }
+  .status.err { background: #f8d7da; color: #721c24; display: block; }
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+  code { background: #ecf0f1; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
+  .small { font-size: 0.85em; color: #7f8c8d; }
+  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #ecf0f1; color: #7f8c8d; font-size: 0.85em; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>🛠️ 初中短答題生成工具</h1>
+  <p class="sub">載入題目庫 + 學生版模板，揀題目後生成 standalone 學生版 HTML（內嵌全部題目，離線可用）</p>
+
+  <h2>① 設定網址</h2>
+  <div class="url-row">
+    <div>
+      <label>題目庫（question-bank.json）raw URL</label>
+      <input type="text" id="bankUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/question-bank.json">
+    </div>
+    <div>
+      <label>學生版模板 raw URL</label>
+      <input type="text" id="tmplUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/templates/student.html">
+    </div>
+  </div>
+  <div class="btn-row">
+    <button onclick="loadAll()">📥 載入題目庫 + 模板</button>
+    <button class="secondary" onclick="saveUrls()">💾 儲存網址</button>
+    <button class="secondary" onclick="clearUrls()">🗑️ 清除</button>
+  </div>
+  <div id="loadStatus" class="status"></div>
+
+  <h2>② 設定練習</h2>
+  <div class="meta-grid">
+    <div>
+      <label>練習標題</label>
+      <input type="text" id="title" value="初中數學短答練習">
+    </div>
+    <div>
+      <label>教師密碼（4 位以上）</label>
+      <input type="password" id="password" value="1234">
+    </div>
+  </div>
+
+  <h2>③ 揀題目</h2>
+  <p class="small">每個題型設定要生成嘅題目數量。生成時會用 random 參數反覆呼叫 <code>generate()</code>。</p>
+  <table id="typesTable">
+    <thead><tr><th>題型</th><th>分類</th><th>難度</th><th>生成數量</th><th>範例題目</th></tr></thead>
+    <tbody id="typesBody"></tbody>
+  </table>
+  <div class="btn-row">
+    <button class="secondary" onclick="setAllCount(0)">全部設 0</button>
+    <button class="secondary" onclick="setAllCount(5)">全部設 5</button>
+    <button class="secondary" onclick="setAllCount(10)">全部設 10</button>
+  </div>
+
+  <h2>④ 生成學生版</h2>
+  <div class="btn-row">
+    <button class="success" onclick="generateStudent()">🚀 生成學生版 HTML 並下載</button>
+  </div>
+  <div id="genStatus" class="status"></div>
+  <div id="previewArea"></div>
+
+  <div class="footer">
+    <strong>使用流程：</strong><br>
+    1. 喺上面填 raw URL（首次使用後按「儲存網址」，之後自動記住）<br>
+    2. 按「載入題目庫 + 模板」撈取題型清單<br>
+    3. 設定標題、教師密碼、每個題型要生成嘅題目數量<br>
+    4. 按「生成學生版 HTML」→ 自動下載 <code>student-practice-YYYYMMDD.html</code><br>
+    5. 將下載嘅檔案經 eClass / Google Classroom 派發畀學生
+  </div>
+</div>
+
+<script>
+const STORAGE_KEY = "assess_tool_urls_v1";
+let bank = null;
+let tmpl = null;
+
+window.addEventListener("DOMContentLoaded", () => {
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  if (saved.bankUrl) document.getElementById("bankUrl").value = saved.bankUrl;
+  if (saved.tmplUrl) document.getElementById("tmplUrl").value = saved.tmplUrl;
+});
+
+function saveUrls() {
+  const data = {
+    bankUrl: document.getElementById("bankUrl").value.trim(),
+    tmplUrl: document.getElementById("tmplUrl").value.trim()
+  };
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+  showStatus("loadStatus", "ok", "✓ 網址已儲存喺 localStorage。下次開啟自動載入。");
+}
+function clearUrls() {
+  localStorage.removeItem(STORAGE_KEY);
+  document.getElementById("bankUrl").value = "";
+  document.getElementById("tmplUrl").value = "";
+}
+
+function showStatus(id, type, msg) {
+  const el = document.getElementById(id);
+  el.className = "status " + type;
+  el.textContent = msg;
+  setTimeout(() => { el.className = "status"; }, 8000);
+}
+
+async function loadAll() {
+  const bankUrl = document.getElementById("bankUrl").value.trim();
+  const tmplUrl = document.getElementById("tmplUrl").value.trim();
+  if (!bankUrl || !tmplUrl) { showStatus("loadStatus", "err", "請先填兩個 URL"); return; }
+  showStatus("loadStatus", "ok", "載入中...");
+  try {
+    const [bankRes, tmplRes] = await Promise.all([fetch(bankUrl), fetch(tmplUrl)]);
+    if (!bankRes.ok) throw new Error("題目庫 HTTP " + bankRes.status);
+    if (!tmplRes.ok) throw new Error("模板 HTTP " + tmplRes.status);
+    bank = await bankRes.json();
+    tmpl = await tmplRes.text();
+    saveUrls();
+    renderTypes();
+    showStatus("loadStatus", "ok", "✓ 載入成功：題目庫 " + bank.data.length + " 個題型，模板 " + tmpl.length + " 字元");
+  } catch (e) {
+    showStatus("loadStatus", "err", "✗ 載入失敗：" + e.message);
+  }
+}
+
+function renderTypes() {
+  const tbody = document.getElementById("typesBody");
+  tbody.innerHTML = "";
+  bank.data.forEach((t, i) => {
+    const tr = document.createElement("tr");
+    let exQ = "";
+    try {
+      const fn = new Function("p", t.generate.replace(/^function\s*\(p\)\s*\{/, "return function(p) {").replace(/\}\s*$/, "};") + "return gen(p);");
+      const sample = fn({ radius: 5 });
+      exQ = sample.questionHTML.replace(/<br>/g, " ");
+    } catch (e) {
+      try {
+        const direct = new Function("p", "return (" + t.generate + ")(p);");
+        const sample = direct({ radius: 5 });
+        exQ = sample.questionHTML.replace(/<br>/g, " ");
+      } catch (e2) {
+        exQ = "<span class='small'>⚠️ generate() 解析失敗：" + e2.message + "</span>";
+      }
+    }
+    tr.innerHTML =
+      '<td><strong>' + t.name + '</strong><br><span class="small"><code>' + t.key + '</code></span></td>' +
+      '<td><span class="badge">' + t.category + '</span></td>' +
+      '<td>' + '★'.repeat(t.difficulty) + '</td>' +
+      '<td><input type="number" min="0" max="50" value="0" data-idx="' + i + '" class="count-input" style="width:70px;"></td>' +
+      '<td><div class="preview-q">' + exQ + '</div></td>';
+    tbody.appendChild(tr);
+  });
+}
+
+function setAllCount(n) {
+  document.querySelectorAll(".count-input").forEach(inp => { inp.value = n; });
+}
+
+function genQuestion(type, params) {
+  try {
+    const fn = new Function("p", "return (" + type.generate + ")(p);");
+    return fn(params);
+  } catch (e) {
+    return null;
+  }
+}
+
+function genParamsForType(type) {
+  const r = (lo, hi) => Math.floor(Math.random() * (hi - lo + 1)) + lo;
+  switch (type.key) {
+    case "area_circle": return { radius: r(1, 20) };
+    case "angle_type": return { degrees: r(0, 359) };
+    default: return {};
+  }
+}
+
+function buildQuestions() {
+  const counts = [...document.querySelectorAll(".count-input")].map(inp => parseInt(inp.value) || 0);
+  const out = [];
+  let qidCounter = 1;
+  bank.data.forEach((type, ti) => {
+    const n = counts[ti] || 0;
+    for (let i = 0; i < n; i++) {
+      const params = genParamsForType(type);
+      const res = genQuestion(type, params);
+      if (!res) continue;
+      const q = {
+        qid: "q" + String(qidCounter++).padStart(3, "0"),
+        typeKey: type.key,
+        questionHTML: res.questionHTML,
+        correctAnswer: res.correctAnswer,
+        paramsUsed: res.paramsUsed,
+        solutionHTML: res.solutionHTML || ""
+      };
+      if (type.key === "angle_type") {
+        q.isChoice = true;
+        q.options = [
+          { key: "acute", label: "A. 銳角" },
+          { key: "right", label: "B. 直角" },
+          { key: "obtuse", label: "C. 鈍角" },
+          { key: "straight", label: "D. 平角" },
+          { key: "reflex", label: "E. 優角（反角）" },
+          { key: "zero", label: "F. 不是角" }
+        ];
+      }
+      out.push(q);
+    }
+  });
+  return out;
+}
+
+function generateStudent() {
+  if (!bank || !tmpl) { showStatus("genStatus", "err", "請先載入題目庫 + 模板"); return; }
+  const title = document.getElementById("title").value.trim() || "數學短答練習";
+  const password = document.getElementById("password").value.trim() || "1234";
+  if (password.length < 4) { showStatus("genStatus", "err", "密碼至少 4 位"); return; }
+  const questions = buildQuestions();
+  if (questions.length === 0) { showStatus("genStatus", "err", "請至少為一個題型設定題目數量"); return; }
+
+  const bankHash = "b" + bank.data.length + "_" + bank.data[0].key + "_" + questions.length;
+  const generatedAt = new Date().toISOString();
+  const typeKeys = JSON.stringify(bank.data.map(t => t.key));
+  const typeNames = JSON.stringify(bank.data.map(t => t.name));
+
+  let html = tmpl;
+  html = html.replace("{{TITLE}}", JSON.stringify(title));
+  html = html.replace("{{QUESTIONS_DATA}}", JSON.stringify(questions));
+  html = html.replace("{{TEACHER_PASSWORD}}", JSON.stringify(password));
+  html = html.replace("{{GENERATED_AT}}", JSON.stringify(generatedAt));
+  html = html.replace("{{BANK_HASH}}", JSON.stringify(bankHash));
+  html = html.replace("{{QUESTION_TYPE_KEYS}}", typeKeys);
+  html = html.replace("{{QUESTION_TYPE_NAMES}}", typeNames);
+
+  const blob = new Blob([html], { type: "text/html;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  a.href = url;
+  a.download = "student-practice-" + ymd + ".html";
+  a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  showStatus("genStatus", "ok", "✓ 已生成 " + questions.length + " 條題目，檔案下載中。");
+  document.getElementById("previewArea").innerHTML =
+    '<h2>預覽（' + questions.length + ' 條題目）</h2>' +
+    questions.map((q, i) =>
+      '<div style="border:1px solid #eee; border-radius:6px; padding:8px 10px; margin-bottom:6px;">' +
+      '<strong>Q' + (i+1) + '：</strong>' + q.questionHTML +
+      '<div class="small" style="margin-top:4px;">答案：<code>' + q.correctAnswer + '</code>　類型：<code>' + q.typeKey + '</code></div>' +
+      '</div>'
+    ).join("");
+}
+</script>
+</body>
+</html>

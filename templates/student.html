@@ -1,0 +1,402 @@
+<!-- ⚠️ 這是學生版模板（含佔位符），不可直接開啟使用。
+     工具 (tool/index.html) 會把以下佔位符替換後生成 standalone 學生版 HTML：
+       {{TITLE}}              練習標題
+       {{QUESTIONS_DATA}}     JSON 字串：[{ qid, questionHTML, correctAnswer, paramsUsed, solutionHTML, typeKey, options?, isChoice? }, ...]
+       {{TEACHER_PASSWORD}}   教師密碼（明碼 — 純前端只作視覺遮掩）
+       {{GENERATED_AT}}       生成時間 ISO
+       {{BANK_HASH}}          題目庫版本摘要（用 file 大小 + 第一題 key）
+       {{QUESTION_TYPE_KEYS}} JSON 陣列字串：所有題型 key
+       {{QUESTION_TYPE_NAMES}} JSON 陣列字串：所有題型 name
+-->
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>{{TITLE}}</title>
+<script>
+  window.MathJax = {
+    tex: { inlineMath: [['\\(','\\)'], ['$','$']], displayMath: [['$$','$$'], ['\\[','\\]']] },
+    options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] },
+    startup: { typeset: false }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif; background: #f0f2f5; margin: 0; padding: 8px; display: flex; justify-content: center; height: 98vh; box-sizing: border-box; overflow: hidden; }
+  .container { width: 100%; max-width: 500px; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); display: flex; flex-direction: column; height: 100%; position: relative; }
+  .top-info { display: flex; justify-content: space-between; padding: 10px 15px; font-size: 0.9em; color: #7f8c8d; background: #f8f9fa; border-bottom: 1px solid #eee; flex-shrink: 0; }
+  #quiz-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
+  .quiz-content { padding: 10px 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+  .question-text { font-size: 1.15em; color: #2c3e50; margin: 10px 0 15px 0; text-align: left; width: 100%; line-height: 1.6; }
+  .question-text b { color: #2980b9; }
+  .input-container { display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 15px; flex-wrap: wrap; gap: 8px; }
+  .virtual-input { flex-grow: 1; min-height: 50px; background: #fff; border: 2px solid #3498db; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.4em; font-family: monospace; color: #333; padding: 0 10px; word-break: break-all; }
+  .opt-btn-large { background: #fff; border: 2px solid #3498db; color: #3498db; padding: 10px 16px; border-radius: 10px; font-weight: bold; font-size: 1.0em; cursor: pointer; transition: all 0.2s; outline: none; min-width: 90px; }
+  .opt-btn-large:active, .opt-btn-large.selected { background: #3498db; color: #fff; }
+  .feedback-area { width: 95%; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 10px; }
+  .feedback { width: 100%; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center; display: none; font-size: 1.05em; }
+  .correct { background-color: #d4edda; color: #155724; }
+  .incorrect { background-color: #f8d7da; color: #721c24; }
+  .btn-teach { display: none; background-color: #f39c12; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.95em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-top: 5px; }
+  .solution-box { width: 100%; background: #fffcf5; border: 1px solid #fce8b2; border-radius: 8px; padding: 12px; margin-top: 10px; display: none; text-align: left; color: #444; font-size: 0.95em; line-height: 1.6; }
+  .solution-box h4 { margin: 0 0 8px 0; color: #d35400; border-bottom: 1px dashed #fce8b2; padding-bottom: 5px; font-size: 0.95em; }
+  .keypad-area { background: #f1f3f5; padding: 10px; border-top: 1px solid #ddd; flex-shrink: 0; }
+  .key-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+  .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 42px; display: flex; align-items: center; justify-content: center; font-size: 1.1em; cursor: pointer; user-select: none; }
+  .key:active { background: #eee; transform: translateY(2px); }
+  .main-btn { width: 100%; padding: 11px; border: none; border-radius: 8px; font-size: 1.05em; color: white; cursor: pointer; margin-bottom: 6px; }
+  .btn-check { background-color: #2980b9; }
+  .btn-next { background-color: #27ae60; display: none; }
+  #result-view { display: none; flex-direction: column; padding: 20px; overflow-y: auto; text-align: center; flex-grow: 1; height: 100%; }
+  .history-box { margin-top: 10px; border: 1px solid #eee; border-radius: 8px; max-height: 300px; overflow-y: auto; background: #fff; }
+  .history-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
+  .history-table th, .history-table td { padding: 8px 4px; border-bottom: 1px solid #f1f1f1; text-align: center; vertical-align: middle; }
+  .history-table th { background: #f8f9fa; position: sticky; top: 0; font-weight: bold; z-index: 5; }
+  .btn-view-wrong { background-color: #e74c3c; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.85em; }
+  .btn-view-correct { background-color: #27ae60; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 0.85em; }
+  .btn-disabled { background-color: #ecf0f1; color: #bdc3c7; border: 1px solid #ddd; padding: 5px 8px; border-radius: 4px; cursor: default; }
+  .modal-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+  .modal-content { background: white; width: 90%; max-width: 450px; max-height: 85vh; border-radius: 12px; padding: 20px; display: flex; flex-direction: column; box-shadow: 0 5px 15px rgba(0,0,0,0.3); }
+  .modal-header { font-size: 1.2em; font-weight: bold; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 10px; display: flex; justify-content: space-between; align-items: center; }
+  .modal-body { overflow-y: auto; flex-grow: 1; }
+  .close-modal-btn { background: none; border: none; font-size: 1.5em; cursor: pointer; color: #888; }
+  .review-item { border-bottom: 1px solid #eee; padding: 12px 0; margin-bottom: 10px; }
+  .review-q { font-weight: bold; color: #2c3e50; margin-bottom: 8px; }
+  .wrong-record .review-my-ans { color: #c0392b; text-decoration: line-through; }
+  .review-cor-ans { color: #27ae60; font-weight: bold; margin-top: 5px; }
+  .toolbar { display: flex; gap: 6px; padding: 8px 12px; background: #ecf0f1; border-bottom: 1px solid #ddd; flex-shrink: 0; }
+  .toolbar button { background: #fff; border: 1px solid #bdc3c7; border-radius: 6px; padding: 6px 10px; font-size: 0.85em; cursor: pointer; }
+  .toolbar button:hover { background: #d5dbdb; }
+  @media print {
+    body { background: #fff; padding: 0; height: auto; overflow: visible; display: block; }
+    .container { box-shadow: none; max-width: 100%; height: auto; }
+    .top-info, .toolbar, .keypad-area, .feedback-area, .btn-teach, .solution-box { display: none !important; }
+    .quiz-content { overflow: visible; padding: 0; }
+    #quiz-view, #result-view { display: block !important; height: auto; overflow: visible; }
+    .question-text { page-break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="top-info">
+    <span id="p-text">載入中...</span>
+    <span id="score-mini">得分: 0</span>
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <button onclick="teacherView()">🔒 教師答案</button>
+    <button onclick="exportStudentAnswers()">📤 匯出學生答案</button>
+    <button onclick="printPDF()">🖨️ 列印 / PDF</button>
+  </div>
+
+  <div id="quiz-view">
+    <div class="quiz-content">
+      <div id="q-text" class="question-text">題目載入中...</div>
+      <div id="q-options"></div>
+      <div class="input-container" id="input-row">
+        <div class="virtual-input" id="input-wrap"><span id="input-val"></span></div>
+      </div>
+      <div class="feedback-area">
+        <div id="q-feedback" class="feedback"></div>
+        <button id="btn-teach" class="btn-teach" onclick="toggleTeach()">💡 查看教學步驟</button>
+      </div>
+      <div id="solution-box" class="solution-box"></div>
+    </div>
+    <div class="keypad-area">
+      <button class="main-btn btn-check" id="btn-check" onclick="checkAns()">核對答案</button>
+      <button class="main-btn btn-next" id="btn-next" onclick="nextQ()">下一題</button>
+      <div class="key-grid" id="keypad">
+        <div class="key" onclick="kp('7')">7</div>
+        <div class="key" onclick="kp('8')">8</div>
+        <div class="key" onclick="kp('9')">9</div>
+        <div class="key" style="background:#eef" onclick="kp('+')">+</div>
+        <div class="key" style="background:#eef" onclick="kp('-')">-</div>
+        <div class="key" style="background:#eef" onclick="kp('×')">×</div>
+        <div class="key" style="background:#eef" onclick="kp('÷')">÷</div>
+        <div class="key" style="background:#fee; color:red" onclick="del()">⌫</div>
+        <div class="key" onclick="kp('4')">4</div>
+        <div class="key" onclick="kp('5')">5</div>
+        <div class="key" onclick="kp('6')">6</div>
+        <div class="key" style="background:#eef" onclick="kp('(')">(</div>
+        <div class="key" style="background:#eef" onclick="kp(')')">)</div>
+        <div class="key" style="background:#eef" onclick="kp('^')">^</div>
+        <div class="key" style="color:#d35400" onclick="kp('x')">x</div>
+        <div class="key" style="color:#d35400" onclick="kp('y')">y</div>
+        <div class="key" onclick="kp('1')">1</div>
+        <div class="key" onclick="kp('2')">2</div>
+        <div class="key" onclick="kp('3')">3</div>
+        <div class="key" onclick="kp('0')">0</div>
+        <div class="key" onclick="kp('.')">.</div>
+        <div class="key" style="background:#eef" onclick="kp('π')">π</div>
+        <div class="key" style="background:#eef" onclick="kp('°')">°</div>
+        <div class="key" style="background:#fee; color:red" onclick="clearInput()">C</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="result-view">
+    <h2>練習完成</h2>
+    <h1 id="final-score" style="font-size:3em; margin:10px 0;"></h1>
+    <div style="width:100%; margin-bottom:10px;">
+      <button class="main-btn" style="background:#95a5a6" onclick="initGame('all')">全部重做</button>
+      <button class="main-btn" style="background:#e74c3c" id="btn-retry-wrong" onclick="initGame('wrong')">重做錯題</button>
+    </div>
+    <div class="history-box">
+      <table class="history-table">
+        <thead><tr><th>次數</th><th>時間</th><th>分數</th><th>錯題</th><th>正題</th></tr></thead>
+        <tbody id="history-body"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<div id="detail-modal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <span id="modal-title">詳情</span>
+      <button class="close-modal-btn" onclick="closeModal()">×</button>
+    </div>
+    <div id="modal-body-content" class="modal-body"></div>
+    <button class="main-btn" style="margin-top:10px; background:#7f8c8d;" onclick="closeModal()">關閉</button>
+  </div>
+</div>
+
+<script>
+/* === 內嵌資料（由 tool 替換佔位符注入）=== */
+const TITLE = {{TITLE}};
+const QUESTIONS = {{QUESTIONS_DATA}};
+const TEACHER_PASSWORD = {{TEACHER_PASSWORD}};
+const GENERATED_AT = {{GENERATED_AT}};
+const BANK_HASH = {{BANK_HASH}};
+const QUESTION_TYPE_KEYS = {{QUESTION_TYPE_KEYS}};
+const QUESTION_TYPE_NAMES = {{QUESTION_TYPE_NAMES}};
+
+let qList = QUESTIONS.slice();
+let currIdx = 0;
+let currInput = "";
+let currSelectedChoice = null;
+let wrongIds = [];
+let sessionLog = [];
+let history = [];
+let answered = false;
+
+function loadHistory() {
+  try {
+    const k = "assess_" + BANK_HASH;
+    history = JSON.parse(localStorage.getItem(k) || "[]");
+  } catch (e) { history = []; }
+}
+function saveHistory() {
+  try {
+    const k = "assess_" + BANK_HASH;
+    localStorage.setItem(k, JSON.stringify(history));
+  } catch (e) {}
+}
+
+function initGame(mode) {
+  if (mode === "wrong" && wrongIds.length > 0) {
+    qList = QUESTIONS.filter(q => wrongIds.includes(q.qid));
+  } else {
+    qList = QUESTIONS.slice();
+  }
+  currIdx = 0;
+  currInput = "";
+  currSelectedChoice = null;
+  wrongIds = [];
+  sessionLog = [];
+  answered = false;
+  document.getElementById("quiz-view").style.display = "flex";
+  document.getElementById("result-view").style.display = "none";
+  showQ();
+}
+
+function showQ() {
+  if (currIdx >= qList.length) { finishGame(); return; }
+  const q = qList[currIdx];
+  currInput = "";
+  currSelectedChoice = null;
+  answered = false;
+  document.getElementById("p-text").textContent = "Q " + (currIdx + 1) + "/" + qList.length;
+  document.getElementById("q-text").innerHTML = q.questionHTML;
+  document.getElementById("q-feedback").style.display = "none";
+  document.getElementById("q-feedback").textContent = "";
+  document.getElementById("btn-check").style.display = "block";
+  document.getElementById("btn-next").style.display = "none";
+  document.getElementById("btn-teach").style.display = "none";
+  document.getElementById("solution-box").style.display = "none";
+  document.getElementById("solution-box").innerHTML = "";
+  document.getElementById("input-val").textContent = "";
+
+  const optBox = document.getElementById("q-options");
+  optBox.innerHTML = "";
+  const inputRow = document.getElementById("input-row");
+  if (q.isChoice && q.options) {
+    inputRow.style.display = "none";
+    optBox.style.display = "flex";
+    optBox.style.flexWrap = "wrap";
+    optBox.style.gap = "8px";
+    optBox.style.justifyContent = "center";
+    q.options.forEach(opt => {
+      const btn = document.createElement("button");
+      btn.className = "opt-btn-large";
+      btn.textContent = opt.label;
+      btn.onclick = () => {
+        if (answered) return;
+        [...optBox.children].forEach(c => c.classList.remove("selected"));
+        btn.classList.add("selected");
+        currSelectedChoice = opt.key;
+      };
+      optBox.appendChild(btn);
+    });
+  } else {
+    inputRow.style.display = "flex";
+    optBox.style.display = "none";
+  }
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise([document.getElementById("quiz-view")]).catch(() => {});
+  }
+}
+
+function kp(c) {
+  if (answered) return;
+  currInput += c;
+  document.getElementById("input-val").textContent = currInput;
+}
+function del() { if (answered) return; currInput = currInput.slice(0, -1); document.getElementById("input-val").textContent = currInput; }
+function clearInput() { if (answered) return; currInput = ""; document.getElementById("input-val").textContent = ""; }
+
+function normalize(s) {
+  return String(s).trim().replace(/\s+/g, "").replace(/×/g, "*").replace(/÷/g, "/").replace(/π/g, "pi").replace(/−/g, "-").toLowerCase();
+}
+function equalAns(a, b) {
+  if (a === b) return true;
+  const na = normalize(a), nb = normalize(b);
+  if (na === nb) return true;
+  const fa = parseFloat(na), fb = parseFloat(nb);
+  if (!isNaN(fa) && !isNaN(fb) && Math.abs(fa - fb) < 0.01) return true;
+  return false;
+}
+
+function checkAns() {
+  if (answered) return;
+  const q = qList[currIdx];
+  let userAns;
+  if (q.isChoice) {
+    if (currSelectedChoice == null) {
+      alert("請揀一個選項");
+      return;
+    }
+    userAns = currSelectedChoice;
+  } else {
+    if (currInput.trim() === "") {
+      alert("請輸入答案");
+      return;
+    }
+    userAns = currInput;
+  }
+  answered = true;
+  const isCorrect = equalAns(userAns, q.correctAnswer);
+  const fb = document.getElementById("q-feedback");
+  fb.style.display = "block";
+  if (isCorrect) {
+    fb.className = "feedback correct";
+    fb.textContent = "✓ 正確！";
+  } else {
+    fb.className = "feedback incorrect";
+    fb.textContent = "✗ 答錯。正確答案： " + q.correctAnswer;
+    wrongIds.push(q.qid);
+  }
+  document.getElementById("btn-check").style.display = "none";
+  document.getElementById("btn-next").style.display = "block";
+  document.getElementById("btn-teach").style.display = "inline-block";
+  const solBox = document.getElementById("solution-box");
+  solBox.innerHTML = "<h4>教學步驟</h4>" + (q.solutionHTML || "");
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise([solBox]).catch(() => {});
+  }
+  sessionLog.push({ qid: q.qid, user: userAns, correct: q.correctAnswer, ok: isCorrect });
+  const correctCount = sessionLog.filter(s => s.ok).length;
+  document.getElementById("score-mini").textContent = "得分: " + correctCount;
+}
+
+function toggleTeach() {
+  const solBox = document.getElementById("solution-box");
+  solBox.style.display = solBox.style.display === "block" ? "none" : "block";
+}
+
+function nextQ() {
+  currIdx++;
+  showQ();
+}
+
+function finishGame() {
+  document.getElementById("quiz-view").style.display = "none";
+  document.getElementById("result-view").style.display = "flex";
+  const correctCount = sessionLog.filter(s => s.ok).length;
+  document.getElementById("final-score").textContent = correctCount + " / " + qList.length;
+  history.push({ ts: new Date().toISOString(), score: correctCount, total: qList.length });
+  saveHistory();
+  renderHistory();
+}
+
+function renderHistory() {
+  const tbody = document.getElementById("history-body");
+  tbody.innerHTML = "";
+  history.slice().reverse().forEach((h, i) => {
+    const wrong = h.total - h.score;
+    const tr = document.createElement("tr");
+    tr.innerHTML = '<td>' + (history.length - i) + '</td><td>' + new Date(h.ts).toLocaleString('zh-HK') + '</td><td>' + h.score + '/' + h.total + '</td><td>' + wrong + '</td><td>' + h.score + '</td>';
+    tbody.appendChild(tr);
+  });
+  document.getElementById("btn-retry-wrong").style.display = wrongIds.length > 0 ? "block" : "none";
+}
+
+function openModal(title, bodyHTML) {
+  document.getElementById("modal-title").textContent = title;
+  document.getElementById("modal-body-content").innerHTML = bodyHTML;
+  document.getElementById("detail-modal").style.display = "flex";
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise([document.getElementById("modal-body-content")]).catch(() => {});
+  }
+}
+function closeModal() { document.getElementById("detail-modal").style.display = "none"; }
+
+function teacherView() {
+  const pw = prompt("請輸入教師密碼：");
+  if (pw !== TEACHER_PASSWORD) { alert("密碼錯誤"); return; }
+  let body = "<h3>題目 + 答案（教師專用）</h3>";
+  QUESTIONS.forEach((q, i) => {
+    body += '<div class="review-item"><div class="review-q">Q' + (i+1) + '：' + q.questionHTML + '</div>';
+    body += '<div class="review-cor-ans">答案：' + q.correctAnswer + '</div>';
+    if (q.solutionHTML) body += '<div style="color:#555; font-size:0.9em; margin-top:5px;">' + q.solutionHTML + '</div>';
+    body += '</div>';
+  });
+  openModal("教師答案", body);
+}
+
+function exportStudentAnswers() {
+  let text = "題目\t題目內容\t學生答案\t正確答案\t對錯\n";
+  sessionLog.forEach((s, i) => {
+    const q = QUESTIONS.find(qq => qq.qid === s.qid);
+    text += (i+1) + "\t" + (q ? q.questionHTML.replace(/<[^>]+>/g, "") : "") + "\t" + s.user + "\t" + s.correct + "\t" + (s.ok ? "✓" : "✗") + "\n";
+  });
+  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "student_answers_" + Date.now() + ".tsv";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function printPDF() { window.print(); }
+
+loadHistory();
+showQ();
+</script>
+</body>
+</html>
