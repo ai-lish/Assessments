@@ -1,0 +1,75 @@
+{
+  "_schema_guide": {
+    "version": 1.1,
+    "description": "初中短答題目庫。每個 entry 是一個『題型』，可由 generate() 動態產生題目；preset 是一組預先選定嘅題型組合。",
+    "entry_fields": {
+      "key": "題型唯一 key。不可與其他題型重複。",
+      "name": "題型中文名（顯示用）。",
+      "category": "分類名（例：數與代數 / 幾何 / 數據處理）。",
+      "difficulty": "1=初階（F.1）/ 2=進階（F.2-F.3）/ 3=挑戰。",
+      "type": "題型輸入類別：text / choice / coordinate / congruence。",
+      "checkType": "判分方式：textExact / numeric / fracPct / primeFactor / algebraQ8 / hcfLcm / choiceKey / congruenceReason / coordinatePoint。",
+      "params_schema": "題型參數定義，給 AI 生成新題型時參考。",
+      "generate": "JS function：輸入 params，回傳 { questionHTML, correctAnswer, paramsUsed, solutionHTML, pdfText, imageSvg?, options?, interaction?, checkType? }。",
+      "answers": "後備答案陣列（textExact / choiceKey 用）。",
+      "displayAnswer": "教師答案／步驟顯示用。",
+      "steps": "預設教學步驟 HTML（generate() 會覆寫）。",
+      "pdfText": "列印／PDF 用的題目文字。",
+      "options": "choice 題型專用：[{ key, label }]。",
+      "interaction": "coordinate 題型專用：{ targetX, targetY, askAxis }。",
+      "imageSvg": "congruence 題型專用：純圖像 SVG。",
+      "prefix": "輸入框前綴文字（例：'x = '）。",
+      "suffix": "輸入框後綴文字。"
+    },
+    "laTeX_escape_rule": "JSON 中 LaTeX 寫 \\( 與 \\)，JSON 解析後變 \\( \\)，MathJax 收到 1 個反斜線。",
+    "param_syntax": "generate() 內用 ${paramName} 插值；插值會做 HTML escape 防止 XSS。",
+    "preset_fields": {
+      "key": "preset 唯一 key。",
+      "name": "preset 中文名。",
+      "description": "preset 簡介。",
+      "questions": "題型與題數陣列。preset 引用嘅 key 必須喺 data 內存在。"
+    },
+    "builtin_keys_reserved": [
+      "frac_arith", "neg_power", "prime_factor", "hcf_or_lcm",
+      "exp_law", "alg_simplify", "solve_eq", "word_to_alg",
+      "sig_fig", "frac_to_pct", "poly_desc", "formula_sub",
+      "congruence", "coordinate", "seq_nth", "data_type"
+    ]
+  },
+  "data": [
+    {
+      "key": "area_circle",
+      "name": "圓面積",
+      "category": "度量",
+      "difficulty": 1,
+      "type": "text",
+      "checkType": "textExact",
+      "params_schema": {"radius": "整數 1-20 (cm)"},
+      "generate": "function(p) { var r = p.radius; var area = +(Math.PI * r * r).toFixed(2); return { questionHTML: '一個圓形嘅半徑係 <b>' + r + ' cm</b>。求圓形嘅面積。（答案取至小數點後兩個位，\\u03c0 取 3.14）', correctAnswer: area.toFixed(2), paramsUsed: {radius: r}, solutionHTML: '圓面積 = \\u03c0r\\u00b2<br>\\u03c0 \\u00d7 ' + r + '\\u00b2 = 3.14 \\u00d7 ' + (r*r) + ' = ' + area.toFixed(2) + ' cm\\u00b2', pdfText: '一個圓形嘅半徑係 ' + r + ' cm。求圓形嘅面積。', answers: [area.toFixed(2)], displayAnswer: area.toFixed(2) + ' cm²', steps: '圓面積 = \\u03c0r\\u00b2', checkType: 'textExact' }; }",
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": ""
+    },
+    {
+      "key": "angle_type",
+      "name": "角的類型",
+      "category": "幾何",
+      "difficulty": 1,
+      "type": "choice",
+      "checkType": "choiceKey",
+      "params_schema": {"degrees": "整數 0-359"},
+      "options": [
+        {"key": "acute", "label": "A. 銳角"},
+        {"key": "right", "label": "B. 直角"},
+        {"key": "obtuse", "label": "C. 鈍角"},
+        {"key": "straight", "label": "D. 平角"},
+        {"key": "reflex", "label": "E. 優角（反角）"},
+        {"key": "zero", "label": "F. 不是角"}
+      ],
+      "generate": "function(p) { var deg = p.degrees; var typeName, typeKey; if (deg === 0) { typeName = '不是角'; typeKey = 'zero'; } else if (deg > 0 && deg < 90) { typeName = '銳角'; typeKey = 'acute'; } else if (deg === 90) { typeName = '直角'; typeKey = 'right'; } else if (deg > 90 && deg < 180) { typeName = '鈍角'; typeKey = 'obtuse'; } else if (deg === 180) { typeName = '平角'; typeKey = 'straight'; } else if (deg > 180 && deg < 360) { typeName = '優角（反角）'; typeKey = 'reflex'; } else { typeName = '不是角'; typeKey = 'zero'; } return { questionHTML: '一個角嘅度數係 <b>' + deg + '\\u00b0</b>。下列哪個係佢嘅名稱？<br><br>選項：A. 銳角　B. 直角　C. 鈍角　D. 平角　E. 優角（反角）　F. 不是角', correctAnswer: typeKey, paramsUsed: {degrees: deg}, solutionHTML: deg + '\\u00b0 係「' + typeName + '」。<br>銳角 = 0\\u00b0 < \\u03b8 < 90\\u00b0；直角 = 90\\u00b0；鈍角 = 90\\u00b0 < \\u03b8 < 180\\u00b0；平角 = 180\\u00b0；優角 = 180\\u00b0 < \\u03b8 < 360\\u00b0。', pdfText: '一個角嘅度數係 ' + deg + '°。', answers: [typeKey], displayAnswer: typeName, steps: deg + '° 係「' + typeName + '」。', checkType: 'choiceKey' }; }",
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": ""
+    },

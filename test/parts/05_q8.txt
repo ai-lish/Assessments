@@ -1,0 +1,18 @@
+    {
+      "key": "word_to_alg",
+      "name": "文字轉代數式（5 個子類型）",
+      "category": "數與代數",
+      "difficulty": 1,
+      "type": "text",
+      "checkType": "algebraQ8",
+      "params_schema": {
+        "t": "子類型 1..5（見原工具）",
+        "a": "整數 2..9",
+        "b": "整數 2..9"
+      },
+      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var t = p.t; if (t === undefined) t = r(1, 5); var a = p.a; if (a === undefined) a = r(2, 9); var b = p.b; if (b === undefined) b = r(2, 9); var text, answers, displayAnswer, steps; if (t === 1) { text = '8. 以代數式表示：「\\\\( x \\\\) 與 \\\\( ' + a + ' \\\\) 之積減去 \\\\( ' + b + ' \\\\)」。'; answers = [a + 'x-' + b]; displayAnswer = a + 'x-' + b; steps = '<div style=\"line-height:1.6;\">1. 「\\\\( x \\\\) 與 \\\\( ' + a + ' \\\\) 之積」寫作 \\\\(' + a + 'x\\\\)<br>2. 「再減去 \\\\( ' + b + ' \\\\)」寫作 \\\\(' + a + 'x - ' + b + '\\\\)</div>'; } else if (t === 2) { text = '8. 以代數式表示：「由 \\\\( x \\\\) 減去 \\\\( ' + a + ' \\\\) 之差除以 \\\\( ' + b + ' \\\\)」。'; answers = ['(x-' + a + ')/' + b, '(x-' + a + ')\\\\div' + b]; displayAnswer = '\\\\frac{x-' + a + '}{' + b + '}'; steps = '<div style=\"line-height:1.6;\">1. 「由 \\\\( x \\\\) 減去 \\\\( ' + a + ' \\\\)」的<b>差</b>即結果 \\\\( x - ' + a + ' \\\\) ，寫作 \\\\((x-' + a + ')\\\\)<br>2. 「再除以 \\\\( ' + b + ' \\\\)」寫作 \\\\(\\\\frac{x-' + a + '}{' + b + '}\\\\)</div>'; } else if (t === 3) { text = '8. 以代數式表示：「\\\\( x \\\\) 與 \\\\( ' + a + ' \\\\) 之和乘以 \\\\( ' + b + ' \\\\)」。'; answers = [b + '(x+' + a + ')']; displayAnswer = b + '(x+' + a + ')'; steps = '<div style=\"line-height:1.6;\">1. 「\\\\( x \\\\) 與 \\\\( ' + a + ' \\\\) 之和」寫作 \\\\((x+' + a + ')\\\\)<br>2. 「再乘以 \\\\( ' + b + ' \\\\)」寫作 \\\\(' + b + '(x+' + a + ')\\\\)</div>'; } else if (t === 4) { text = '8. 以代數式表示：「\\\\( x \\\\) 除以 \\\\( ' + a + ' \\\\) 之後加上 \\\\( ' + b + ' \\\\)」。'; answers = ['x/' + a + '+' + b, 'x\\\\div' + a + '+' + b]; displayAnswer = '\\\\frac{x}{' + a + '}+' + b; steps = '<div style=\"line-height:1.6;\">1. 「\\\\( x \\\\) 除以 \\\\( ' + a + ' \\\\)」寫作 \\\\(\\\\frac{x}{' + a + '}\\\\)<br>2. 「再加上 \\\\( ' + b + ' \\\\)」寫作 \\\\(\\\\frac{x}{' + a + '}+' + b + '\\\\)</div>'; } else { text = '8. 以代數式表示：「\\\\( ' + a + ' \\\\) 與 \\\\( x \\\\) 之差乘以 \\\\( ' + b + ' \\\\)」。'; answers = [b + '(' + a + '-x)', '(' + a + '-x)\\\\times' + b, '(' + a + '-x)*' + b]; displayAnswer = b + '(' + a + '-x)'; steps = '<div style=\"line-height:1.6;\">1. 「\\\\( ' + a + ' \\\\) 與 \\\\( x \\\\) 之差」即 \\\\( ' + a + ' \\\\) 減去 \\\\( x \\\\) 的結果，寫作 \\\\(( ' + a + '-x )\\\\)<br>2. 「再乘以 \\\\( ' + b + ' \\\\)」寫作 \\\\(' + b + '(' + a + '-x)\\\\)</div>'; } return { questionHTML: text, correctAnswer: answers[0], paramsUsed: {t:t, a:a, b:b}, solutionHTML: steps, pdfText: text, answers: answers, displayAnswer: displayAnswer, steps: steps, checkType: 'algebraQ8', q8subtype: t }; }",
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": ""
+    },

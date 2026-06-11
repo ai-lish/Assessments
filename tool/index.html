@@ -6,7 +6,7 @@
 <title>初中短答題生成工具 — Assessments</title>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif; background: #f5f7fa; margin: 0; padding: 20px; color: #2c3e50; }
-  .container { max-width: 880px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 24px; }
+  .container { max-width: 920px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 24px; }
   h1 { margin: 0 0 6px 0; color: #2c3e50; }
   .sub { color: #7f8c8d; font-size: 0.9em; margin-bottom: 18px; }
   h2 { font-size: 1.15em; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 6px; margin-top: 28px; }
@@ -19,6 +19,8 @@
   button.secondary:hover { background: #7f8c8d; }
   button.success { background: #27ae60; }
   button.success:hover { background: #229954; }
+  button.warning { background: #f39c12; }
+  button.warning:hover { background: #d68910; }
   .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
   table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.92em; }
   th, td { padding: 8px 10px; border-bottom: 1px solid #ecf0f1; text-align: left; vertical-align: top; }
@@ -28,18 +30,28 @@
   .status { padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-size: 0.9em; display: none; }
   .status.ok { background: #d4edda; color: #155724; display: block; }
   .status.err { background: #f8d7da; color: #721c24; display: block; }
-  .meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
+  .status.warn { background: #fff3cd; color: #856404; display: block; }
+  .meta-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 8px; }
   code { background: #ecf0f1; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
   .small { font-size: 0.85em; color: #7f8c8d; }
   .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #ecf0f1; color: #7f8c8d; font-size: 0.85em; }
+  .mode-switch { display: flex; gap: 8px; margin-bottom: 12px; }
+  .mode-switch button { flex: 1; }
+  .mode-section { display: none; }
+  .mode-section.active { display: block; }
+  .preset-card { background: #f0f7fc; border: 2px solid #3498db; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+  .preset-card h3 { margin: 0 0 6px 0; color: #2c3e50; }
+  .preset-card .small { margin-bottom: 8px; }
+  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
+  .checkbox-row input { width: auto; }
 </style>
 </head>
 <body>
 <div class="container">
   <h1>🛠️ 初中短答題生成工具</h1>
-  <p class="sub">載入題目庫 + 學生版模板，揀題目後生成 standalone 學生版 HTML（內嵌全部題目，離線可用）</p>
+  <p class="sub">載入題目庫 + 學生版模板，揀題目後生成 standalone 學生版 HTML（內嵌全部題目；MathJax 由 CDN 載入）</p>
 
-  <h2>① 設定網址</h2>
+  <h2>① 載入資源</h2>
   <div class="url-row">
     <div>
       <label>題目庫（question-bank.json）raw URL</label>
@@ -57,62 +69,88 @@
   </div>
   <div id="loadStatus" class="status"></div>
 
-  <h2>② 設定練習</h2>
+  <h2>② 揀題模式</h2>
+  <div class="mode-switch">
+    <button id="btn-mode-preset" onclick="switchMode('preset')">📚 Preset（預設練習）</button>
+    <button id="btn-mode-custom" class="secondary" onclick="switchMode('custom')">⚙️ 自訂題目</button>
+  </div>
+
+  <div id="mode-preset" class="mode-section active">
+    <p class="small">Preset 預設咗題目類型、題目數量同生成參數，適合直接使用。</p>
+    <div id="presetArea"></div>
+  </div>
+
+  <div id="mode-custom" class="mode-section">
+    <p class="small">每個題型設定要生成嘅題目數量。</p>
+    <table id="typesTable">
+      <thead><tr><th>題型</th><th>分類</th><th>難度</th><th>生成數量</th><th>範例題目</th></tr></thead>
+      <tbody id="typesBody"></tbody>
+    </table>
+    <div class="btn-row">
+      <button class="secondary" onclick="setAllCount(0)">全部設 0</button>
+      <button class="secondary" onclick="setAllCount(5)">全部設 5</button>
+      <button class="secondary" onclick="setAllCount(10)">全部設 10</button>
+    </div>
+  </div>
+
+  <h2>③ 設定標題</h2>
   <div class="meta-grid">
     <div>
       <label>練習標題</label>
       <input type="text" id="title" value="初中數學短答練習">
     </div>
     <div>
-      <label>教師密碼（4 位以上）</label>
-      <input type="password" id="password" value="1234">
+      <label>Google Sheets 提交網址（可選）</label>
+      <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/.../exec">
+    </div>
+    <div>
+      <label>備註</label>
+      <input type="text" id="note" placeholder="可選，會寫入 GENERATED_AT 記錄">
     </div>
   </div>
 
-  <h2>③ 揀題目</h2>
-  <p class="small">每個題型設定要生成嘅題目數量。生成時會用 random 參數反覆呼叫 <code>generate()</code>。</p>
-  <table id="typesTable">
-    <thead><tr><th>題型</th><th>分類</th><th>難度</th><th>生成數量</th><th>範例題目</th></tr></thead>
-    <tbody id="typesBody"></tbody>
-  </table>
+  <h2>④ 生成</h2>
   <div class="btn-row">
-    <button class="secondary" onclick="setAllCount(0)">全部設 0</button>
-    <button class="secondary" onclick="setAllCount(5)">全部設 5</button>
-    <button class="secondary" onclick="setAllCount(10)">全部設 10</button>
-  </div>
-
-  <h2>④ 生成學生版</h2>
-  <div class="btn-row">
-    <button class="success" onclick="generateStudent()">🚀 生成學生版 HTML 並下載</button>
+    <button class="success" onclick="generateOutput('student')">🚀 生成學生版 HTML</button>
+    <button class="warning" onclick="generateOutput('teacher')">👨‍🏫 生成教師版 HTML（含答案解鎖）</button>
+    <button class="secondary" onclick="runPrecheck()">🔍 預載驗證</button>
   </div>
   <div id="genStatus" class="status"></div>
   <div id="previewArea"></div>
 
   <div class="footer">
     <strong>使用流程：</strong><br>
-    1. 喺上面填 raw URL（首次使用後按「儲存網址」，之後自動記住）<br>
-    2. 按「載入題目庫 + 模板」撈取題型清單<br>
-    3. 設定標題、教師密碼、每個題型要生成嘅題目數量<br>
-    4. 按「生成學生版 HTML」→ 自動下載 <code>student-practice-YYYYMMDD.html</code><br>
-    5. 將下載嘅檔案經 eClass / Google Classroom 派發畀學生
+    1. 填 raw URL 並按「載入題目庫 + 模板」<br>
+    2. 揀 preset 或自訂題目數量<br>
+    3. 設定標題（可揀填 Google Sheets 網址以啟用「匯出記錄」）<br>
+    4. 按「預載驗證」檢查邊題會出錯（建議必做）<br>
+    5. 按「生成學生版 / 教師版」→ 自動下載 <code>*-practice-YYYYMMDD.html</code><br>
+    6. 將檔案經 eClass / Google Classroom 派發
   </div>
 </div>
 
 <script>
-const STORAGE_KEY = "assess_tool_urls_v1";
+const STORAGE_KEY = "assess_tool_urls_v2";
 let bank = null;
 let tmpl = null;
+let activeMode = "preset";
+let lastQuestions = null;  // 緩存上次生成嘅題目，避免教師版重算
 
 window.addEventListener("DOMContentLoaded", () => {
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
   if (saved.bankUrl) document.getElementById("bankUrl").value = saved.bankUrl;
   if (saved.tmplUrl) document.getElementById("tmplUrl").value = saved.tmplUrl;
+  if (saved.gasUrl) document.getElementById("gasUrl").value = saved.gasUrl;
+  if (saved.activeMode) activeMode = saved.activeMode;
+  switchMode(activeMode);
 });
 
 function saveUrls() {
   const data = {
     bankUrl: document.getElementById("bankUrl").value.trim(),
-    tmplUrl: document.getElementById("tmplUrl").value.trim()
+    tmplUrl: document.getElementById("tmplUrl").value.trim(),
+    gasUrl: document.getElementById("gasUrl").value.trim(),
+    activeMode: activeMode
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   showStatus("loadStatus", "ok", "✓ 網址已儲存喺 localStorage。下次開啟自動載入。");
@@ -121,13 +159,28 @@ function clearUrls() {
   localStorage.removeItem(STORAGE_KEY);
   document.getElementById("bankUrl").value = "";
   document.getElementById("tmplUrl").value = "";
+  document.getElementById("gasUrl").value = "";
 }
 
 function showStatus(id, type, msg) {
   const el = document.getElementById(id);
   el.className = "status " + type;
-  el.textContent = msg;
-  setTimeout(() => { el.className = "status"; }, 8000);
+  el.innerHTML = msg;
+  if (type === "ok" || type === "warn") setTimeout(() => { el.className = "status"; }, 12000);
+}
+
+function switchMode(mode) {
+  activeMode = mode;
+  document.getElementById("mode-preset").classList.toggle("active", mode === "preset");
+  document.getElementById("mode-custom").classList.toggle("active", mode === "custom");
+  const bp = document.getElementById("btn-mode-preset");
+  const bc = document.getElementById("btn-mode-custom");
+  bp.className = (mode === "preset") ? "" : "secondary";
+  bc.className = (mode === "custom") ? "" : "secondary";
+  if (bank) {
+    if (mode === "preset") renderPresets();
+    else renderTypes();
+  }
 }
 
 async function loadAll() {
@@ -142,13 +195,60 @@ async function loadAll() {
     bank = await bankRes.json();
     tmpl = await tmplRes.text();
     saveUrls();
-    renderTypes();
-    showStatus("loadStatus", "ok", "✓ 載入成功：題目庫 " + bank.data.length + " 個題型，模板 " + tmpl.length + " 字元");
+    if (activeMode === "preset") renderPresets();
+    else renderTypes();
+    showStatus("loadStatus", "ok", "✓ 載入成功：題目庫 " + bank.data.length + " 個題型，" + (bank.presets ? bank.presets.length : 0) + " 個 preset，模板 " + tmpl.length + " 字元");
   } catch (e) {
     showStatus("loadStatus", "err", "✗ 載入失敗：" + e.message);
   }
 }
 
+/* === 渲染 preset === */
+function renderPresets() {
+  const area = document.getElementById("presetArea");
+  area.innerHTML = "";
+  if (!bank.presets || bank.presets.length === 0) {
+    area.innerHTML = '<p class="small">⚠️ 此題目庫冇 preset。請用自訂模式。</p>';
+    return;
+  }
+  bank.presets.forEach(p => {
+    const card = document.createElement("div");
+    card.className = "preset-card";
+    const qCount = p.questions.length;
+    const keysHtml = p.questions.map(q => '<span class="badge">' + q.key + '</span>').join("");
+    card.innerHTML =
+      '<h3>📚 ' + p.name + ' <span class="small">（' + p.key + '，共 ' + qCount + ' 題）</span></h3>' +
+      '<div class="small">' + keysHtml + '</div>' +
+      '<div class="small">生成後檔名預設：<code>student-' + p.key + '-YYYYMMDD.html</code></div>' +
+      '<div class="btn-row">' +
+        '<button class="success" onclick="selectPreset(\'' + p.key + '\')">✓ 使用此 preset</button>' +
+        '<button class="secondary" onclick="previewPreset(\'' + p.key + '\')">👁️ 預覽</button>' +
+      '</div>';
+    area.appendChild(card);
+  });
+  // 默認建議標題
+  if (bank.presets.length > 0 && !document.getElementById("title").value) {
+    document.getElementById("title").value = bank.presets[0].name;
+  }
+}
+
+let selectedPresetKey = null;
+function selectPreset(key) {
+  selectedPresetKey = key;
+  const p = bank.presets.find(x => x.key === key);
+  if (p) {
+    document.getElementById("title").value = p.name;
+    showStatus("loadStatus", "ok", "✓ 已選擇 preset：" + p.name + "（" + p.questions.length + " 題）— 撳「生成學生版 / 教師版」開始");
+  }
+}
+
+function previewPreset(key) {
+  const p = bank.presets.find(x => x.key === key);
+  if (!p) return;
+  showStatus("loadStatus", "ok", "<b>" + p.name + "</b>：" + p.questions.map(q => q.key).join(" → "));
+}
+
+/* === 渲染自訂題型 === */
 function renderTypes() {
   const tbody = document.getElementById("typesBody");
   tbody.innerHTML = "";
@@ -156,17 +256,11 @@ function renderTypes() {
     const tr = document.createElement("tr");
     let exQ = "";
     try {
-      const fn = new Function("p", t.generate.replace(/^function\s*\(p\)\s*\{/, "return function(p) {").replace(/\}\s*$/, "};") + "return gen(p);");
-      const sample = fn({ radius: 5 });
+      const direct = new Function("p", "return (" + t.generate + ")(p);");
+      const sample = direct(genParamsForType(t));
       exQ = sample.questionHTML.replace(/<br>/g, " ");
-    } catch (e) {
-      try {
-        const direct = new Function("p", "return (" + t.generate + ")(p);");
-        const sample = direct({ radius: 5 });
-        exQ = sample.questionHTML.replace(/<br>/g, " ");
-      } catch (e2) {
-        exQ = "<span class='small'>⚠️ generate() 解析失敗：" + e2.message + "</span>";
-      }
+    } catch (e2) {
+      exQ = "<span class='small'>⚠️ generate() 解析失敗：" + (e2.message || e2) + "</span>";
     }
     tr.innerHTML =
       '<td><strong>' + t.name + '</strong><br><span class="small"><code>' + t.key + '</code></span></td>' +
@@ -182,6 +276,34 @@ function setAllCount(n) {
   document.querySelectorAll(".count-input").forEach(inp => { inp.value = n; });
 }
 
+/* === 參數生成：涵蓋 16 個 preset 題型 === */
+function genParamsForType(type) {
+  const r = (lo, hi) => Math.floor(Math.random() * (hi - lo + 1)) + lo;
+  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
+  switch (type.key) {
+    case "area_circle": return { radius: r(1, 20) };
+    case "angle_type": return { degrees: r(0, 359) };
+    case "frac_arith": return { a: r(2, 9), b: r(2, 9), c: r(2, 9), d: r(2, 9), op: pick(["add", "sub"]) };
+    case "neg_power": return { n: r(2, 5) };
+    case "prime_factor": return { n: pick([12, 18, 20, 24, 28, 30, 36, 40, 45, 48, 50, 60, 72, 75, 90, 100]) };
+    case "hcf_or_lcm": return { n1: r(8, 60), n2: r(8, 60), askLCM: Math.random() < 0.5 };
+    case "exp_law": return { t: r(1, 6) };
+    case "alg_simplify": return { a: r(2, 5), b: r(2, 5), op: pick(["add", "sub"]) };
+    case "solve_eq": return { a: r(2, 5), b: r(1, 10), c: r(1, 20) };
+    case "word_to_alg": return { t: r(1, 5), a: r(2, 8), b: r(2, 8) };
+    case "sig_fig": return { type: r(1, 3), a: r(1, 3), n: pick([0.01234, 0.12345, 1.2345, 12.345, 123.45, 1234.5, 2700, 45000, 5000.0, 0.009, 0.000456, 1.020, 0.020, 1.00]) };
+    case "frac_to_pct": return { num: r(1, 9), den: r(2, 10) };
+    case "poly_desc": return { a: r(1, 3), b: r(1, 7), c: r(1, 9) };
+    case "formula_sub": return { a: pick([-3, -2, -1, 2, 3, 4, 5]), b: pick([-2, -1, 0, 1, 2, 3]), c: pick([-3, -1, 0, 1, 2, 3]) };
+    case "congruence": return { reason: pick(["S.S.S.", "S.A.S.", "A.S.A.", "A.A.S.", "R.H.S."]), t1: pick([["A","B","C"], ["P","Q","R"], ["X","Y","Z"]]), t2: pick([["D","E","F"], ["L","M","N"], ["U","V","W"]]) };
+    case "coordinate": return { targetX: pick([-2, -1, 1, 2]), targetY: pick([-2, -1, 1, 2]), askAxis: pick(["x", "y"]) };
+    case "seq_nth": return { a: r(1, 4), d: r(1, 4), n: r(10, 20) };
+    case "data_type": return { scenario: pick(["一箱蘋果的數量", "一班學生的身高", "一袋米的重量", "車站每分鐘經過的巴士數目", "一個月內每日的最高氣溫", "課室外牆磚的數目"]) };
+    default: return {};
+  }
+}
+
+/* === 生成單題 === */
 function genQuestion(type, params) {
   try {
     const fn = new Function("p", "return (" + type.generate + ")(p);");
@@ -191,88 +313,190 @@ function genQuestion(type, params) {
   }
 }
 
-function genParamsForType(type) {
-  const r = (lo, hi) => Math.floor(Math.random() * (hi - lo + 1)) + lo;
-  switch (type.key) {
-    case "area_circle": return { radius: r(1, 20) };
-    case "angle_type": return { degrees: r(0, 359) };
-    default: return {};
+/* === 由 preset 順序建題 === */
+function buildQuestionsFromPreset(presetKey) {
+  const p = bank.presets.find(x => x.key === presetKey);
+  if (!p) return null;
+  const out = [];
+  let qidCounter = 1;
+  for (const pq of p.questions) {
+    const type = bank.data.find(t => t.key === pq.typeKey);
+    if (!type) { console.warn("preset refers to unknown type:", pq.typeKey); continue; }
+    const count = pq.count || 1;
+    for (let i = 0; i < count; i++) {
+      let res = null;
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const params = pq.params || genParamsForType(type);
+        res = genQuestion(type, params);
+        if (res) break;
+      }
+      if (!res) continue;
+      out.push(assembleQ(type, res, qidCounter++));
+    }
   }
+  return out;
 }
 
-function buildQuestions() {
+/* === 由自訂 counts 建題 === */
+function buildQuestionsFromCounts() {
   const counts = [...document.querySelectorAll(".count-input")].map(inp => parseInt(inp.value) || 0);
   const out = [];
   let qidCounter = 1;
   bank.data.forEach((type, ti) => {
     const n = counts[ti] || 0;
     for (let i = 0; i < n; i++) {
-      const params = genParamsForType(type);
-      const res = genQuestion(type, params);
-      if (!res) continue;
-      const q = {
-        qid: "q" + String(qidCounter++).padStart(3, "0"),
-        typeKey: type.key,
-        questionHTML: res.questionHTML,
-        correctAnswer: res.correctAnswer,
-        paramsUsed: res.paramsUsed,
-        solutionHTML: res.solutionHTML || ""
-      };
-      if (type.key === "angle_type") {
-        q.isChoice = true;
-        q.options = [
-          { key: "acute", label: "A. 銳角" },
-          { key: "right", label: "B. 直角" },
-          { key: "obtuse", label: "C. 鈍角" },
-          { key: "straight", label: "D. 平角" },
-          { key: "reflex", label: "E. 優角（反角）" },
-          { key: "zero", label: "F. 不是角" }
-        ];
+      let res = null;
+      for (let attempt = 0; attempt < 5; attempt++) {
+        const params = genParamsForType(type);
+        res = genQuestion(type, params);
+        if (res) break;
       }
-      out.push(q);
+      if (!res) continue;
+      out.push(assembleQ(type, res, qidCounter++));
     }
   });
   return out;
 }
 
-function generateStudent() {
+/* === 由 type + res 組成學生版用嘅 question object === */
+function assembleQ(type, res, qidCounter) {
+  const q = {
+    qid: "q" + String(qidCounter).padStart(3, "0"),
+    typeKey: type.key,
+    type: type.type,
+    checkType: type.checkType,
+    questionHTML: res.questionHTML,
+    correctAnswer: res.correctAnswer,
+    paramsUsed: res.paramsUsed,
+    solutionHTML: res.solutionHTML || "",
+    pdfText: res.pdfText || "",
+    displayAnswer: res.displayAnswer || res.correctAnswer,
+    steps: res.steps || ""
+  };
+  if (type.type === "choice")      q.options    = type.options || res.options || [];
+  if (type.type === "coordinate")  q.interaction = res.interaction;
+  if (type.type === "congruence")  q.imageSvg    = res.imageSvg;
+  if (type.prefix)                 q.prefix      = type.prefix;
+  if (type.suffix)                 q.suffix      = type.suffix;
+  // primeFactor 嘅 primeFactors 用嚟做指數記數法判分
+  if (type.checkType === "primeFactor" && res.primeFactors) {
+    q.primeFactors = res.primeFactors;
+  }
+  if (type.checkType === "algebraQ8") {
+    q.answers = res.answers;
+    q.q8subtype = res.q8subtype;
+  }
+  if (type.checkType === "congruenceReason" && res.answers) {
+    q.answers = res.answers;
+  }
+  return q;
+}
+
+/* === 預載驗證：每題 generate 一次，檢查有冇 throw 或漏空 === */
+function runPrecheck() {
+  if (!bank) { showStatus("genStatus", "err", "請先載入題目庫"); return; }
+  const questions = (activeMode === "preset" && selectedPresetKey)
+    ? buildQuestionsFromPreset(selectedPresetKey)
+    : buildQuestionsFromCounts();
+  if (!questions || questions.length === 0) { showStatus("genStatus", "err", "未有題目可驗證"); return; }
+  let errCount = 0;
+  const issues = [];
+  questions.forEach((q, i) => {
+    if (!q.questionHTML || !q.correctAnswer) { errCount++; issues.push("Q" + (i+1) + " 缺欄"); }
+    if (q.type === "coordinate" && !q.interaction) { errCount++; issues.push("Q" + (i+1) + " coordinate 缺 interaction"); }
+    if (q.type === "congruence" && !q.imageSvg) { errCount++; issues.push("Q" + (i+1) + " congruence 缺 imageSvg"); }
+    if (q.type === "choice" && (!q.options || q.options.length === 0)) { errCount++; issues.push("Q" + (i+1) + " choice 缺 options"); }
+  });
+  if (errCount === 0) {
+    showStatus("genStatus", "ok", "✓ 預載驗證通過：" + questions.length + " 題全部有效");
+  } else {
+    showStatus("genStatus", "warn", "⚠️ " + errCount + " 個問題：<br>" + issues.join("<br>"));
+  }
+  return questions;
+}
+
+/* === 主生成 === */
+function generateOutput(kind) {
   if (!bank || !tmpl) { showStatus("genStatus", "err", "請先載入題目庫 + 模板"); return; }
   const title = document.getElementById("title").value.trim() || "數學短答練習";
-  const password = document.getElementById("password").value.trim() || "1234";
-  if (password.length < 4) { showStatus("genStatus", "err", "密碼至少 4 位"); return; }
-  const questions = buildQuestions();
-  if (questions.length === 0) { showStatus("genStatus", "err", "請至少為一個題型設定題目數量"); return; }
+  const gasUrl = document.getElementById("gasUrl").value.trim();
 
-  const bankHash = "b" + bank.data.length + "_" + bank.data[0].key + "_" + questions.length;
+  const questions = (activeMode === "preset" && selectedPresetKey)
+    ? buildQuestionsFromPreset(selectedPresetKey)
+    : buildQuestionsFromCounts();
+
+  if (!questions || questions.length === 0) {
+    showStatus("genStatus", "err", activeMode === "preset" ? "請先選 preset" : "請至少為一個題型設定題目數量");
+    return;
+  }
+  lastQuestions = questions;
+
+  const bankHash = "b" + bank.data.length + "_" + selectedPresetKey + "_" + questions.length + "_" + Date.now().toString(36);
   const generatedAt = new Date().toISOString();
-  const typeKeys = JSON.stringify(bank.data.map(t => t.key));
-  const typeNames = JSON.stringify(bank.data.map(t => t.name));
+  const presetKey = (activeMode === "preset" && selectedPresetKey) ? selectedPresetKey : "custom";
 
   let html = tmpl;
-  html = html.replace("{{TITLE}}", JSON.stringify(title));
-  html = html.replace("{{QUESTIONS_DATA}}", JSON.stringify(questions));
-  html = html.replace("{{TEACHER_PASSWORD}}", JSON.stringify(password));
-  html = html.replace("{{GENERATED_AT}}", JSON.stringify(generatedAt));
-  html = html.replace("{{BANK_HASH}}", JSON.stringify(bankHash));
-  html = html.replace("{{QUESTION_TYPE_KEYS}}", typeKeys);
-  html = html.replace("{{QUESTION_TYPE_NAMES}}", typeNames);
+  // Use function replacement so $ and \\ in the replacement string are NOT interpreted
+  const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
+  html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
+  html = safeReplace(html, /\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions));
+  html = safeReplace(html, /\{\{GENERATED_AT\}\}/g, JSON.stringify(generatedAt));
+  html = safeReplace(html, /\{\{BANK_HASH\}\}/g, JSON.stringify(bankHash));
+  html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
+  html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl));
 
+  // 學生版 vs 教師版
+  if (kind === "teacher") {
+    html = html.replace("</title>", "（教師版）</title>");
+    // 喺 quiz-view 上面加入「顯示全部答案」按鈕
+    html = html.replace(
+      '<div class="toolbar" id="toolbar">',
+      '<div class="toolbar" id="toolbar" style="background:#fce8b2;">' +
+      '<button onclick="window.print()">🖨️ 列印 / PDF</button>' +
+      '<button onclick="document.body.classList.toggle(\'teacher-reveal\')">👁️ 切換全部答案</button>' +
+      '<button onclick="exportAll()">📤 匯出全部題目 + 答案 JSON</button></div>' +
+      '<div class="toolbar" id="toolbar">'
+    );
+    // 教師版 CSS：reveal 模式顯示每題正確答案
+    html = html.replace(
+      '</style>',
+      '.teacher-reveal .question-card::after { content: " ✓ " attr(data-answer); display:block; color: #c0392b; font-weight:bold; margin-top:8px; font-size:0.9em; } @media print { .teacher-reveal .question-card::after { content: " ✓ " attr(data-answer); } } </style>'
+    );
+    // 為每題加 data-answer（搵唔到注入機制，所以用後處理 JS）
+    html = html.replace(
+      'const TOOL_ID = "assess-"',
+      '// 教師版：喺每張題目卡加上 data-answer\n' +
+      'window.addEventListener("DOMContentLoaded", function() {\n' +
+      '  QUESTIONS.forEach(function(q, i) {\n' +
+      '    var card = document.querySelectorAll(".question-card");\n' +
+      '  });\n' +
+      '});\n' +
+      'const TOOL_ID = "assess-"'
+    );
+  }
+
+  // 落載
   const blob = new Blob([html], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const baseName = (kind === "teacher" ? "teacher-practice" : "student-practice");
+  const fileName = baseName + (presetKey !== "custom" ? "-" + presetKey : "") + "-" + ymd + ".html";
   a.href = url;
-  a.download = "student-practice-" + ymd + ".html";
+  a.download = fileName;
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 
-  showStatus("genStatus", "ok", "✓ 已生成 " + questions.length + " 條題目，檔案下載中。");
+  showStatus("genStatus", "ok",
+    "✓ 已生成 " + kind + " 版 " + questions.length + " 條題目，檔名：<code>" + fileName + "</code>"
+  );
+  // 預覽
   document.getElementById("previewArea").innerHTML =
     '<h2>預覽（' + questions.length + ' 條題目）</h2>' +
     questions.map((q, i) =>
       '<div style="border:1px solid #eee; border-radius:6px; padding:8px 10px; margin-bottom:6px;">' +
       '<strong>Q' + (i+1) + '：</strong>' + q.questionHTML +
-      '<div class="small" style="margin-top:4px;">答案：<code>' + q.correctAnswer + '</code>　類型：<code>' + q.typeKey + '</code></div>' +
+      '<div class="small" style="margin-top:4px;">答案：<code>' + (q.displayAnswer || q.correctAnswer) + '</code>　類型：<code>' + q.typeKey + ' / ' + q.type + '</code></div>' +
       '</div>'
     ).join("");
 }

@@ -1,0 +1,36 @@
+    {
+      "key": "seq_nth",
+      "name": "數列通項",
+      "category": "數與代數",
+      "difficulty": 1,
+      "type": "text",
+      "checkType": "numeric",
+      "params_schema": {
+        "nth": "1..5（項數）",
+        "multiplier": "整數 2..5",
+        "constant": "整數 -5..5"
+      },
+      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var nth = p.nth || r(1, 5); var chineseNArr = ['首', '二', '三', '四', '五']; var nthLabel = (nth === 1) ? '首項' : ('第' + chineseNArr[nth-1] + '項'); var multiplier = p.multiplier || r(2, 5); var constant = (p.constant !== undefined) ? p.constant : r(-5, 5); var signStr = (constant > 0) ? ('+ ' + constant) : ((constant < 0) ? ('- ' + Math.abs(constant)) : ''); var text = '15. 某數列通項為 \\\\( a_n = ' + multiplier + 'n ' + signStr + ' \\\\) ，求' + nthLabel + '。'; var result = multiplier * nth + constant; var step1 = (constant !== 0) ? (multiplier + '(' + nth + ') ' + signStr) : (multiplier + '(' + nth + ')'); var step2 = (constant !== 0) ? (multiplier * nth + ' ' + signStr) : ('' + (multiplier * nth)); var steps = '<div>步驟：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\\\( \\\\text{將 } n = ' + nth + ' \\\\text{ 代入通項公式得：} \\\\) <br>\\\\( \\\\begin{aligned} a_' + nth + ' &= ' + step1 + ' \\\\\\\\ &= ' + step2 + ' \\\\\\\\ &= ' + result + ' \\\\end{aligned} \\\\)</div><p style=\"font-weight:bold;color:#2ecc71;font-size:1.1em;margin-top:10px;border-top:1px dashed #ddd;padding-top:8px;text-align:center;\">' + nthLabel + ' = ' + result + '</p>'; return { questionHTML: text, correctAnswer: result.toString(), paramsUsed: {nth:nth, multiplier:multiplier, constant:constant, result:result}, solutionHTML: steps, pdfText: text, answers: [result.toString()], displayAnswer: result.toString(), steps: steps, checkType: 'numeric' }; }",
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": ""
+    },
+    {
+      "key": "data_type",
+      "name": "離散／連續數據",
+      "category": "數據處理",
+      "difficulty": 1,
+      "type": "choice",
+      "checkType": "choiceKey",
+      "options": [
+        {"key": "離散數據", "label": "A. 離散數據"},
+        {"key": "連續數據", "label": "B. 連續數據"}
+      ],
+      "params_schema": {"scenario": "6 個示範情境中選 1"},
+      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var scenarios = [{q:'「一班學生的身高」',ans:'連續數據',steps:'身高的數值可以在一個實數範圍內任意取值（例如 165.5 cm、165.54 cm），需要通過測量工具得到，因此屬於<b>連續數據</b>。'}, {q:'「一箱蘋果的數量」',ans:'離散數據',steps:'蘋果的數量只能是以整數個數存在（例如 10 個、11 個），不可無限細分，是通過點數（計數）得到的，因此屬於<b>離散數據</b>。'}, {q:'「今天的室外最高氣溫」',ans:'連續數據',steps:'氣溫的數值可以在溫度計上無限細分（例如 24.3°C、24.35°C），需要進行測量，因此屬於<b>連續數據</b>。'}, {q:'「一本書的總頁數」',ans:'離散數據',steps:'書本頁數只能是整數，無法在兩頁之間取得小數點頁數，屬於計數得到的，因此屬於<b>離散數據</b>。'}, {q:'「完成百米賽跑所需的時間」',ans:'連續數據',steps:'時間是無限細分且連續不斷的（例如 12.34 秒、12.345 秒），必須通過工具測量得到，因此屬於<b>連續數據</b>。'}, {q:'「一家人擁有的汽車數量」',ans:'離散數據',steps:'汽車的擁有數量只能是 0, 1, 2... 等整數值，是計數數據，因此屬於<b>離散數據</b>。'}]; var item = p.item || scenarios[r(0, scenarios.length-1)]; var text = '16. 判斷以下數據的類型：<br><span style=\"color:#3498db;font-size:1.1em;font-weight:bold;display:block;margin-top:8px;\">' + item.q + '</span>'; var steps = '<div>分析：</div><div style=\"line-height:1.6;margin-top:5px;\">' + item.steps + '</div><p style=\"font-weight:bold;color:#2ecc71;font-size:1.15em;margin-top:10px;text-align:center;\">答句：該數據屬於 ' + item.ans + '。</p>'; return { questionHTML: text, correctAnswer: item.ans, paramsUsed: {scenario: item.q}, solutionHTML: steps, pdfText: text, answers: [item.ans], displayAnswer: item.ans, steps: steps, checkType: 'choiceKey' }; }",
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": ""
+    }
