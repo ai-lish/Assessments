@@ -3,6 +3,10 @@
       "name": "數列通項",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "numeric",
       "params_schema": {
@@ -21,6 +25,10 @@
       "name": "離散／連續數據",
       "category": "數據處理",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "data_handling",
+      "topicName": "數據處理",
       "type": "choice",
       "checkType": "choiceKey",
       "options": [

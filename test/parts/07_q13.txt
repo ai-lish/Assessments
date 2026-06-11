@@ -3,6 +3,10 @@
       "name": "全等三角形（S.S.S./S.A.S./A.S.A./A.A.S./R.H.S.）",
       "category": "幾何",
       "difficulty": 2,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "geometry",
+      "topicName": "幾何",
       "type": "congruence",
       "checkType": "congruenceReason",
       "params_schema": {

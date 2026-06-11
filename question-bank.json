@@ -19,9 +19,14 @@
       "interaction": "coordinate 題型專用：{ targetX, targetY, askAxis }。",
       "imageSvg": "congruence 題型專用：純圖像 SVG。",
       "prefix": "輸入框前綴文字（例：'x = '）。",
-      "suffix": "輸入框後綴文字。"
+      "suffix": "輸入框後綴文字。",
+      "grade": "年級 key（例：s1 / s2 / s3）。空字串代表未分類。",
+      "term": "學期 key（1 / 2 / 3 / all）。空字串代表未分類。",
+      "topicKey": "課題 key（例：number_and_algebra）。",
+      "topicName": "課題顯示名稱（例：數與代數）。"
     },
     "laTeX_escape_rule": "JSON 中 LaTeX 寫 \\( 與 \\)，JSON 解析後變 \\( \\)，MathJax 收到 1 個反斜線。",
+    "filter_rule": "老師工具按 grade -> term -> topicKey -> key 篩選；grade 為空嘅題型列喺『未分類』群組。",
     "param_syntax": "generate() 內用 ${paramName} 插值；插值會做 HTML escape 防止 XSS。",
     "preset_fields": {
       "key": "preset 唯一 key。",
@@ -46,6 +51,31 @@
       "coordinate",
       "seq_nth",
       "data_type"
+    ],
+    "supported_grades": [
+      "s1",
+      "s2",
+      "s3"
+    ],
+    "supported_terms": [
+      "1",
+      "2",
+      "3",
+      "all"
+    ],
+    "supported_topic_keys": [
+      "number_and_algebra",
+      "measurement",
+      "geometry",
+      "data_handling",
+      "uncategorized"
+    ],
+    "supported_topic_names": [
+      "數與代數",
+      "度量",
+      "幾何",
+      "數據處理",
+      "未分類"
     ]
   },
   "data": [
@@ -54,6 +84,10 @@
       "name": "圓面積",
       "category": "度量",
       "difficulty": 1,
+      "grade": "",
+      "term": "",
+      "topicKey": "uncategorized",
+      "topicName": "未分類",
       "type": "text",
       "checkType": "textExact",
       "params_schema": {
@@ -70,6 +104,10 @@
       "name": "角的類型",
       "category": "幾何",
       "difficulty": 1,
+      "grade": "",
+      "term": "",
+      "topicKey": "uncategorized",
+      "topicName": "未分類",
       "type": "choice",
       "checkType": "choiceKey",
       "params_schema": {
@@ -112,6 +150,10 @@
       "name": "分數運算（含負數）",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "textExact",
       "params_schema": {
@@ -131,6 +173,10 @@
       "name": "負數的乘方",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "numeric",
       "params_schema": {
@@ -148,6 +194,10 @@
       "name": "質因數分解（指數記數法）",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "primeFactor",
       "params_schema": {
@@ -164,6 +214,10 @@
       "name": "HCF／LCM 隨機",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "hcfLcm",
       "params_schema": {
@@ -182,6 +236,10 @@
       "name": "指數律（同底相乘）",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "textExact",
       "params_schema": {
@@ -199,6 +257,10 @@
       "name": "代數化簡（合併同類項）",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "textExact",
       "params_schema": {
@@ -218,6 +280,10 @@
       "name": "解一元一次方程",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "numeric",
       "params_schema": {
@@ -236,6 +302,10 @@
       "name": "文字轉代數式（5 個子類型）",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "algebraQ8",
       "params_schema": {
@@ -254,6 +324,10 @@
       "name": "有效數字",
       "category": "度量",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "measurement",
+      "topicName": "度量",
       "type": "text",
       "checkType": "textExact",
       "params_schema": {
@@ -271,6 +345,10 @@
       "name": "分數化百分數",
       "category": "度量",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "measurement",
+      "topicName": "度量",
       "type": "text",
       "checkType": "fracPct",
       "params_schema": {
@@ -287,6 +365,10 @@
       "name": "多項式降冪排列",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "textExact",
       "params_schema": {
@@ -304,6 +386,10 @@
       "name": "公式代入",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "numeric",
       "params_schema": {
@@ -324,6 +410,10 @@
       "name": "全等三角形（S.S.S./S.A.S./A.S.A./A.A.S./R.H.S.）",
       "category": "幾何",
       "difficulty": 2,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "geometry",
+      "topicName": "幾何",
       "type": "congruence",
       "checkType": "congruenceReason",
       "params_schema": {
@@ -342,6 +432,10 @@
       "name": "坐標輸入及點選",
       "category": "幾何",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "geometry",
+      "topicName": "幾何",
       "type": "coordinate",
       "checkType": "coordinatePoint",
       "params_schema": {
@@ -360,6 +454,10 @@
       "name": "數列通項",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "numeric",
       "params_schema": {
@@ -378,6 +476,10 @@
       "name": "離散／連續數據",
       "category": "數據處理",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "data_handling",
+      "topicName": "數據處理",
       "type": "choice",
       "checkType": "choiceKey",
       "options": [

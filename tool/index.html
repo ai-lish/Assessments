@@ -3,144 +3,263 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>初中短答題生成工具 — Assessments</title>
+<title>初中短答題老師選題工具</title>
 <style>
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif; background: #f5f7fa; margin: 0; padding: 20px; color: #2c3e50; }
-  .container { max-width: 920px; margin: 0 auto; background: #fff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.08); padding: 24px; }
-  h1 { margin: 0 0 6px 0; color: #2c3e50; }
-  .sub { color: #7f8c8d; font-size: 0.9em; margin-bottom: 18px; }
-  h2 { font-size: 1.15em; color: #2c3e50; border-bottom: 2px solid #3498db; padding-bottom: 6px; margin-top: 28px; }
-  label { display: block; font-size: 0.9em; color: #555; margin-bottom: 4px; font-weight: 600; }
-  input[type="text"], input[type="number"], input[type="password"] { width: 100%; box-sizing: border-box; padding: 8px 10px; border: 1px solid #bdc3c7; border-radius: 6px; font-size: 0.95em; font-family: inherit; }
-  .url-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-  button { background: #3498db; color: white; border: none; padding: 10px 18px; border-radius: 6px; cursor: pointer; font-size: 0.95em; font-weight: 600; }
-  button:hover { background: #2980b9; }
+  /* ============================================================
+     Layout: 1-column on mobile, 2-column on desktop
+     ============================================================ */
+  :root {
+    --primary: #2c3e50;
+    --accent: #3498db;
+    --accent-hover: #2980b9;
+    --success: #27ae60;
+    --success-bg: #d4edda;
+    --success-border: #c3e6cb;
+    --danger: #e74c3c;
+    --danger-bg: #f8d7da;
+    --warning: #f1c40f;
+    --warning-bg: #fff3cd;
+    --muted: #7f8c8d;
+    --bg: #f5f7fa;
+    --card-bg: #ffffff;
+    --border: #e0e6ed;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif;
+    background: var(--bg); color: var(--primary);
+    margin: 0; padding: 12px; line-height: 1.55;
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+  h1 { font-size: 1.4em; margin: 0 0 4px 0; }
+  h2 { font-size: 1.1em; color: var(--primary); border-bottom: 2px solid var(--accent); padding-bottom: 6px; margin-top: 24px; }
+  h3 { font-size: 1.0em; margin: 0 0 6px 0; }
+  .sub { color: var(--muted); font-size: 0.88em; margin-bottom: 16px; }
+  .card { background: var(--card-bg); border: 1px solid var(--border); border-radius: 10px; padding: 16px; margin-bottom: 14px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  label { display: block; font-size: 0.88em; color: #555; margin-bottom: 4px; font-weight: 600; }
+  input[type="text"], select {
+    width: 100%; padding: 8px 10px; border: 1px solid #bdc3c7; border-radius: 6px;
+    font-size: 0.95em; font-family: inherit; background: #fff;
+  }
+  select:disabled, input:disabled { background: #ecf0f1; color: var(--muted); cursor: not-allowed; }
+  .row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .row-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  button {
+    background: var(--accent); color: #fff; border: none; padding: 9px 16px;
+    border-radius: 6px; cursor: pointer; font-size: 0.92em; font-weight: 600;
+  }
+  button:hover { background: var(--accent-hover); }
   button.secondary { background: #95a5a6; }
   button.secondary:hover { background: #7f8c8d; }
-  button.success { background: #27ae60; }
-  button.success:hover { background: #229954; }
-  button.warning { background: #f39c12; }
-  button.warning:hover { background: #d68910; }
-  .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 12px; font-size: 0.92em; }
-  th, td { padding: 8px 10px; border-bottom: 1px solid #ecf0f1; text-align: left; vertical-align: top; }
-  th { background: #f8f9fa; font-weight: 600; color: #555; }
-  .badge { display: inline-block; background: #ecf0f1; color: #2c3e50; border-radius: 12px; padding: 2px 8px; font-size: 0.8em; margin-right: 4px; }
-  .preview-q { background: #fafbfc; border: 1px solid #f0f2f5; border-radius: 6px; padding: 8px; margin-top: 6px; font-size: 0.88em; max-width: 420px; }
+  button.danger { background: var(--danger); }
+  button.success { background: var(--success); }
+  button:disabled { background: #bdc3c7 !important; cursor: not-allowed; opacity: 0.65; }
+  .btn-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .status { padding: 8px 12px; border-radius: 6px; margin-top: 8px; font-size: 0.9em; display: none; }
-  .status.ok { background: #d4edda; color: #155724; display: block; }
-  .status.err { background: #f8d7da; color: #721c24; display: block; }
-  .status.warn { background: #fff3cd; color: #856404; display: block; }
-  .meta-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-top: 8px; }
-  code { background: #ecf0f1; padding: 1px 5px; border-radius: 3px; font-size: 0.9em; }
-  .small { font-size: 0.85em; color: #7f8c8d; }
-  .footer { margin-top: 32px; padding-top: 16px; border-top: 1px solid #ecf0f1; color: #7f8c8d; font-size: 0.85em; }
-  .mode-switch { display: flex; gap: 8px; margin-bottom: 12px; }
+  .status.ok { background: var(--success-bg); color: #155724; display: block; }
+  .status.err { background: var(--danger-bg); color: #721c24; display: block; }
+  .status.warn { background: var(--warning-bg); color: #856404; display: block; }
+  /* Question list (browser) */
+  .qlist { list-style: none; padding: 0; margin: 8px 0 0 0; max-height: 320px; overflow-y: auto; }
+  .qlist li { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid #f1f3f5; font-size: 0.9em; }
+  .qlist li:hover { background: #fafbfc; }
+  .qlist .name { flex-grow: 1; }
+  .qlist .meta { font-size: 0.78em; color: var(--muted); }
+  .qlist .type-key { font-family: monospace; background: #ecf0f1; padding: 1px 6px; border-radius: 3px; font-size: 0.85em; }
+  .difficulty { color: #f39c12; }
+  /* Selection list (basket) */
+  .basket-list { list-style: none; padding: 0; margin: 0; }
+  .basket-item { display: flex; align-items: center; gap: 6px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; margin-bottom: 6px; background: #fafbfc; }
+  .basket-item .idx { font-weight: bold; min-width: 24px; color: var(--accent); }
+  .basket-item .name { flex-grow: 1; font-size: 0.9em; }
+  .basket-item .meta { font-size: 0.75em; color: var(--muted); }
+  .basket-item button { padding: 3px 8px; font-size: 0.8em; }
+  /* Preview cards */
+  .preview-card { background: #fff; border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+  .preview-card.confirmed { border-left: 4px solid var(--success); }
+  .preview-card.unconfirmed { border-left: 4px solid #bdc3c7; }
+  .preview-card.has-error { border-left: 4px solid var(--danger); }
+  .preview-header { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 10px; }
+  .preview-header .qid { font-weight: bold; font-size: 1.05em; min-width: 32px; }
+  .preview-header .name { font-weight: 600; font-size: 1.0em; }
+  .preview-header .badge { background: #ecf0f1; color: var(--primary); border-radius: 12px; padding: 2px 9px; font-size: 0.78em; }
+  .preview-header .badge.grade { background: #d6eaf8; color: #1a5276; }
+  .preview-header .badge.term { background: #d5f5e3; color: #196f3d; }
+  .preview-header .badge.topic { background: #fcf3cf; color: #7d6608; }
+  .preview-header .badge.type { background: #e8daef; color: #6c3483; }
+  .preview-section { border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 10px; }
+  .preview-section h4 { margin: 0 0 6px 0; font-size: 0.9em; color: var(--primary); }
+  .preview-section .label { font-size: 0.78em; color: var(--muted); font-weight: 600; }
+  .preview-html { background: #fafbfc; border: 1px solid #f0f2f5; border-radius: 6px; padding: 10px; margin: 4px 0; }
+  .preview-html .question-text { font-size: 1.05em; line-height: 1.7; }
+  .preview-html img, .preview-html svg { max-width: 100%; height: auto; }
+  .preview-data { font-size: 0.85em; }
+  .preview-data code { background: #ecf0f1; padding: 1px 5px; border-radius: 3px; }
+  .preview-data .row-kv { display: grid; grid-template-columns: 110px 1fr; gap: 4px 10px; align-items: baseline; }
+  .preview-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+  .preview-actions .confirm-label { display: flex; align-items: center; gap: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; }
+  .preview-actions .confirm-label input { width: 18px; height: 18px; cursor: pointer; }
+  .preview-actions .confirm-label.checked { color: var(--success); }
+  .error-text { color: var(--danger); font-size: 0.88em; margin-top: 4px; font-weight: 600; }
+  .ok-text { color: var(--success); font-size: 0.88em; margin-top: 4px; font-weight: 600; }
+  /* Progress bar */
+  .progress-strip { display: flex; align-items: center; gap: 12px; padding: 10px 14px; background: #ecf0f1; border-radius: 8px; margin-bottom: 12px; font-size: 0.95em; }
+  .progress-bar { flex-grow: 1; height: 10px; background: #fff; border-radius: 5px; overflow: hidden; border: 1px solid #d0d7de; }
+  .progress-bar-inner { height: 100%; background: var(--success); transition: width 0.2s; }
+  /* Mode switch */
+  .mode-switch { display: flex; gap: 6px; margin-bottom: 10px; }
   .mode-switch button { flex: 1; }
-  .mode-section { display: none; }
-  .mode-section.active { display: block; }
-  .preset-card { background: #f0f7fc; border: 2px solid #3498db; border-radius: 10px; padding: 14px; margin-bottom: 12px; }
-  .preset-card h3 { margin: 0 0 6px 0; color: #2c3e50; }
-  .preset-card .small { margin-bottom: 8px; }
-  .checkbox-row { display: flex; align-items: center; gap: 8px; margin-top: 8px; }
-  .checkbox-row input { width: auto; }
+  /* Two-column on desktop */
+  @media (min-width: 900px) {
+    .layout { display: grid; grid-template-columns: 360px 1fr; gap: 16px; align-items: start; }
+    .layout .sticky { position: sticky; top: 12px; }
+  }
+  @media (max-width: 700px) {
+    .row, .row-4 { grid-template-columns: 1fr 1fr; }
+    .row-2 { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 480px) {
+    .row, .row-4 { grid-template-columns: 1fr; }
+  }
+  small.hint { display: block; color: var(--muted); font-size: 0.8em; margin-top: 4px; }
+  .empty { color: var(--muted); font-style: italic; padding: 8px 0; font-size: 0.9em; }
+  .gate-list { list-style: none; padding-left: 0; margin: 6px 0 0 0; font-size: 0.9em; }
+  .gate-list li { padding: 2px 0; }
+  .gate-list .pass { color: var(--success); }
+  .gate-list .fail { color: var(--danger); }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>🛠️ 初中短答題生成工具</h1>
-  <p class="sub">載入題目庫 + 學生版模板，揀題目後生成 standalone 學生版 HTML（內嵌全部題目；MathJax 由 CDN 載入）</p>
+  <h1>🛠️ 初中短答題老師選題工具</h1>
+  <p class="sub">載入題目庫後，按 <b>年級 → 學期 → 課題 → 題目</b> 逐層篩選並加入清單；逐題預覽、確認後匯出學生 HTML。</p>
 
-  <h2>① 載入資源</h2>
-  <div class="url-row">
-    <div>
-      <label>題目庫（question-bank.json）raw URL</label>
-      <input type="text" id="bankUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/question-bank.json">
+  <!-- 載入 -->
+  <div class="card">
+    <h2>① 載入資源</h2>
+    <div class="row">
+      <div>
+        <label>題目庫 raw URL</label>
+        <input type="text" id="bankUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/question-bank.json">
+      </div>
+      <div style="grid-column: span 2;">
+        <label>學生版模板 raw URL</label>
+        <input type="text" id="tmplUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/templates/student.html">
+      </div>
     </div>
-    <div>
-      <label>學生版模板 raw URL</label>
-      <input type="text" id="tmplUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/templates/student.html">
-    </div>
-  </div>
-  <div class="btn-row">
-    <button onclick="loadAll()">📥 載入題目庫 + 模板</button>
-    <button class="secondary" onclick="saveUrls()">💾 儲存網址</button>
-    <button class="secondary" onclick="clearUrls()">🗑️ 清除</button>
-  </div>
-  <div id="loadStatus" class="status"></div>
-
-  <h2>② 揀題模式</h2>
-  <div class="mode-switch">
-    <button id="btn-mode-preset" onclick="switchMode('preset')">📚 Preset（預設練習）</button>
-    <button id="btn-mode-custom" class="secondary" onclick="switchMode('custom')">⚙️ 自訂題目</button>
-  </div>
-
-  <div id="mode-preset" class="mode-section active">
-    <p class="small">Preset 預設咗題目類型、題目數量同生成參數，適合直接使用。</p>
-    <div id="presetArea"></div>
-  </div>
-
-  <div id="mode-custom" class="mode-section">
-    <p class="small">每個題型設定要生成嘅題目數量。</p>
-    <table id="typesTable">
-      <thead><tr><th>題型</th><th>分類</th><th>難度</th><th>生成數量</th><th>範例題目</th></tr></thead>
-      <tbody id="typesBody"></tbody>
-    </table>
     <div class="btn-row">
-      <button class="secondary" onclick="setAllCount(0)">全部設 0</button>
-      <button class="secondary" onclick="setAllCount(5)">全部設 5</button>
-      <button class="secondary" onclick="setAllCount(10)">全部設 10</button>
+      <button onclick="loadAll()">📥 載入題目庫 + 模板</button>
+      <button class="secondary" onclick="saveUrls()">💾 儲存網址</button>
+      <button class="secondary" onclick="clearUrls()">🗑️ 清除</button>
     </div>
+    <div id="loadStatus" class="status"></div>
   </div>
 
-  <h2>③ 設定標題</h2>
-  <div class="meta-grid">
+  <div class="layout">
+    <!-- 左欄：分層選擇 + 出題清單 + 匯出 -->
     <div>
-      <label>練習標題</label>
-      <input type="text" id="title" value="初中數學短答練習">
-    </div>
-    <div>
-      <label>Google Sheets 提交網址（可選）</label>
-      <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/.../exec">
-    </div>
-    <div>
-      <label>備註</label>
-      <input type="text" id="note" placeholder="可選，會寫入 GENERATED_AT 記錄">
-    </div>
-  </div>
+      <div class="card sticky" id="selectionCard">
+        <h2>② 揀題模式</h2>
+        <div class="mode-switch">
+          <button id="btn-mode-custom" onclick="switchMode('custom')">🧭 分層自訂</button>
+          <button id="btn-mode-preset" class="secondary" onclick="switchMode('preset')">📚 Preset</button>
+        </div>
 
-  <h2>④ 生成</h2>
-  <div class="btn-row">
-    <button class="success" onclick="generateOutput('student')">🚀 生成學生版 HTML</button>
-    <button class="warning" onclick="generateOutput('teacher')">👨‍🏫 生成教師版 HTML（含答案解鎖）</button>
-    <button class="secondary" onclick="runPrecheck()">🔍 預載驗證</button>
-  </div>
-  <div id="genStatus" class="status"></div>
-  <div id="previewArea"></div>
+        <!-- 自訂模式：分層選擇 -->
+        <div id="mode-custom" class="mode-section">
+          <div class="row" style="grid-template-columns: 1fr 1fr 1fr;">
+            <div>
+              <label>年級</label>
+              <select id="sel-grade" onchange="onGradeChange()"><option value="">—</option></select>
+            </div>
+            <div>
+              <label>學期</label>
+              <select id="sel-term" onchange="onTermChange()" disabled><option value="">—</option></select>
+            </div>
+            <div>
+              <label>課題</label>
+              <select id="sel-topic" onchange="onTopicChange()" disabled><option value="">—</option></select>
+            </div>
+          </div>
+          <div style="margin-top: 10px;">
+            <label>題目（點一下加入清單）</label>
+            <ul class="qlist" id="qlist-browser">
+              <li class="empty">請先載入題目庫，並選擇 年級 / 學期 / 課題</li>
+            </ul>
+          </div>
+        </div>
 
-  <div class="footer">
-    <strong>使用流程：</strong><br>
-    1. 填 raw URL 並按「載入題目庫 + 模板」<br>
-    2. 揀 preset 或自訂題目數量<br>
-    3. 設定標題（可揀填 Google Sheets 網址以啟用「匯出記錄」）<br>
-    4. 按「預載驗證」檢查邊題會出錯（建議必做）<br>
-    5. 按「生成學生版 / 教師版」→ 自動下載 <code>*-practice-YYYYMMDD.html</code><br>
-    6. 將檔案經 eClass / Google Classroom 派發
+        <!-- Preset 模式 -->
+        <div id="mode-preset" class="mode-section" style="display:none;">
+          <p class="sub">選擇預載練習，全部題型同順序會自動加入清單。</p>
+          <div id="presetArea"><div class="empty">請先載入題目庫。</div></div>
+        </div>
+
+        <h2 style="margin-top: 18px;">③ 出題清單</h2>
+        <p class="sub" id="basketCount" style="margin: 0 0 6px 0;">清單空白</p>
+        <ul class="basket-list" id="basket-list"></ul>
+
+        <h2 style="margin-top: 18px;">④ 預覽與確認</h2>
+        <button class="success" style="width:100%;" onclick="generatePreview()" id="btn-preview" disabled>👁️ 生成預覽</button>
+        <button class="secondary" style="width:100%; margin-top:6px;" onclick="backToSelection()" id="btn-back" style="display:none;">↩️ 返回選題</button>
+        <div id="previewSummary" class="status" style="display:none;"></div>
+      </div>
+
+      <div class="card" id="exportCard" style="display:none;">
+        <h2>⑤ 匯出</h2>
+        <div class="row-2">
+          <div>
+            <label>練習標題</label>
+            <input type="text" id="title" value="初中數學短答練習">
+          </div>
+          <div>
+            <label>檔名（不含 .html）</label>
+            <input type="text" id="filename" value="student-practice">
+          </div>
+        </div>
+        <p class="sub" style="margin-top:8px;">匯出只包含已確認嘅題目，使用預覽時生成嘅實際內容（唔會再重新隨機）。</p>
+        <ul class="gate-list" id="exportGates"></ul>
+        <button class="success" style="width:100%; margin-top:8px;" onclick="exportStudent()" id="btn-export" disabled>📤 匯出學生版 HTML</button>
+        <div id="exportStatus" class="status"></div>
+      </div>
+    </div>
+
+    <!-- 右欄：預覽區 -->
+    <div>
+      <div class="card" id="previewCard" style="display:none;">
+        <h2>預覽</h2>
+        <div class="progress-strip">
+          <span><b id="confirmedCount">0</b> / <span id="totalCount">0</span> 已確認</span>
+          <div class="progress-bar"><div class="progress-bar-inner" id="progressBarInner" style="width:0%;"></div></div>
+          <button class="secondary" onclick="confirmAll()" id="btn-confirm-all" style="display:none;">✓ 全部確認</button>
+        </div>
+        <div id="previewArea"></div>
+      </div>
+    </div>
   </div>
 </div>
 
 <script>
-const STORAGE_KEY = "assess_tool_urls_v2";
+/* ============================================================
+   狀態管理
+   ============================================================ */
+const STORAGE_KEY = "assess_tool_v2";
 let bank = null;
 let tmpl = null;
-let activeMode = "preset";
-let lastQuestions = null;  // 緩存上次生成嘅題目，避免教師版重算
+let activeMode = "custom";
+let selectedGrade = "";
+let selectedTerm = "";
+let selectedTopic = "";
+let basket = [];          // [{ typeKey, typeDef, params, generated, confirmed, hasError, errorMsg, qid }]
+let previewResults = [];  // 緩存預覽生成嘅結果，匯出時用同一批
+let previewDirty = true;  // 任何改動令預覽失效
+let lastExportConfirmVersion = 0;  // 確認狀態嘅 hash，匯出門閘檢查用
 
 window.addEventListener("DOMContentLoaded", () => {
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
   if (saved.bankUrl) document.getElementById("bankUrl").value = saved.bankUrl;
   if (saved.tmplUrl) document.getElementById("tmplUrl").value = saved.tmplUrl;
-  if (saved.gasUrl) document.getElementById("gasUrl").value = saved.gasUrl;
   if (saved.activeMode) activeMode = saved.activeMode;
   switchMode(activeMode);
 });
@@ -149,222 +268,344 @@ function saveUrls() {
   const data = {
     bankUrl: document.getElementById("bankUrl").value.trim(),
     tmplUrl: document.getElementById("tmplUrl").value.trim(),
-    gasUrl: document.getElementById("gasUrl").value.trim(),
     activeMode: activeMode
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  showStatus("loadStatus", "ok", "✓ 網址已儲存喺 localStorage。下次開啟自動載入。");
+  showStatus("loadStatus", "ok", "✓ 網址已儲存喺 localStorage。");
 }
 function clearUrls() {
   localStorage.removeItem(STORAGE_KEY);
   document.getElementById("bankUrl").value = "";
   document.getElementById("tmplUrl").value = "";
-  document.getElementById("gasUrl").value = "";
 }
-
 function showStatus(id, type, msg) {
   const el = document.getElementById(id);
   el.className = "status " + type;
   el.innerHTML = msg;
-  if (type === "ok" || type === "warn") setTimeout(() => { el.className = "status"; }, 12000);
+  if (type === "ok") setTimeout(() => { el.className = "status"; }, 12000);
 }
 
 function switchMode(mode) {
   activeMode = mode;
-  document.getElementById("mode-preset").classList.toggle("active", mode === "preset");
-  document.getElementById("mode-custom").classList.toggle("active", mode === "custom");
-  const bp = document.getElementById("btn-mode-preset");
+  document.getElementById("mode-custom").style.display = (mode === "custom") ? "block" : "none";
+  document.getElementById("mode-preset").style.display = (mode === "preset") ? "block" : "none";
   const bc = document.getElementById("btn-mode-custom");
-  bp.className = (mode === "preset") ? "" : "secondary";
+  const bp = document.getElementById("btn-mode-preset");
   bc.className = (mode === "custom") ? "" : "secondary";
+  bp.className = (mode === "preset") ? "" : "secondary";
   if (bank) {
-    if (mode === "preset") renderPresets();
-    else renderTypes();
+    if (mode === "custom") buildGradeOptions();
+    else renderPresetArea();
   }
+  saveUrls();
 }
 
+/* ============================================================
+   載入
+   ============================================================ */
 async function loadAll() {
   const bankUrl = document.getElementById("bankUrl").value.trim();
   const tmplUrl = document.getElementById("tmplUrl").value.trim();
   if (!bankUrl || !tmplUrl) { showStatus("loadStatus", "err", "請先填兩個 URL"); return; }
-  showStatus("loadStatus", "ok", "載入中...");
+  showStatus("loadStatus", "warn", "載入中...");
   try {
     const [bankRes, tmplRes] = await Promise.all([fetch(bankUrl), fetch(tmplUrl)]);
     if (!bankRes.ok) throw new Error("題目庫 HTTP " + bankRes.status);
     if (!tmplRes.ok) throw new Error("模板 HTTP " + tmplRes.status);
     bank = await bankRes.json();
     tmpl = await tmplRes.text();
+    // Basic template sanity check
+    if (!tmpl.includes("{{TITLE}}") || !tmpl.includes("{{QUESTIONS_DATA}}") ||
+        !tmpl.includes("{{BANK_HASH}}") || !tmpl.includes("{{PRESET_KEY}}")) {
+      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{QUESTIONS_DATA}} / {{BANK_HASH}} / {{PRESET_KEY}}）");
+    }
+    // Bank validation
+    const validation = validateBank(bank);
+    if (!validation.ok) throw new Error("題目庫驗證失敗：" + validation.errors.join("；"));
     saveUrls();
-    if (activeMode === "preset") renderPresets();
-    else renderTypes();
-    showStatus("loadStatus", "ok", "✓ 載入成功：題目庫 " + bank.data.length + " 個題型，" + (bank.presets ? bank.presets.length : 0) + " 個 preset，模板 " + tmpl.length + " 字元");
+    if (activeMode === "custom") buildGradeOptions();
+    else renderPresetArea();
+    showStatus("loadStatus", "ok",
+      "✓ 載入成功：題目庫 " + bank.data.length + " 個題型，模板 " + tmpl.length + " 字元。"
+      + (validation.warnings.length > 0 ? "<br>⚠️ " + validation.warnings.join("；") : "")
+    );
   } catch (e) {
     showStatus("loadStatus", "err", "✗ 載入失敗：" + e.message);
   }
 }
 
-/* === 渲染 preset === */
-function renderPresets() {
-  const area = document.getElementById("presetArea");
-  area.innerHTML = "";
-  if (!bank.presets || bank.presets.length === 0) {
-    area.innerHTML = '<p class="small">⚠️ 此題目庫冇 preset。請用自訂模式。</p>';
+function validateBank(b) {
+  const errors = [], warnings = [];
+  if (!b || !Array.isArray(b.data)) { errors.push("data 不是陣列"); return { ok: false, errors, warnings }; }
+  const keys = new Set();
+  for (const t of b.data) {
+    if (!t.key) errors.push("題型缺少 key");
+    if (keys.has(t.key)) errors.push("重複 key: " + t.key);
+    keys.add(t.key);
+    if (!t.name) errors.push(t.key + " 缺 name");
+    if (!t.type) errors.push(t.key + " 缺 type");
+    if (!t.checkType) errors.push(t.key + " 缺 checkType");
+    if (!t.generate) errors.push(t.key + " 缺 generate");
+    if (t.grade === undefined || t.term === undefined) {
+      warnings.push(t.key + " 缺 grade/term（會列入『未分類』）");
+    }
+  }
+  // preset references
+  for (const p of b.presets || []) {
+    for (const pq of p.questions || []) {
+      if (!keys.has(pq.typeKey)) errors.push("preset " + p.key + " 引用咗唔存在嘅題型: " + pq.typeKey);
+    }
+  }
+  return { ok: errors.length === 0, errors, warnings };
+}
+
+/* ============================================================
+   分層選擇：年級 → 學期 → 課題 → 題目
+   ============================================================ */
+function uniqueValues(arr) { return Array.from(new Set(arr.filter(x => x !== undefined && x !== null && x !== ""))); }
+
+function buildGradeOptions() {
+  const sel = document.getElementById("sel-grade");
+  const grades = uniqueValues(bank.data.map(t => t.grade || "")).sort();
+  sel.innerHTML = '<option value="">—</option>' + grades.map(g => `<option value="${g}">${g || "未分類"}</option>`).join("");
+  // Reset downstream
+  selectedGrade = "";
+  document.getElementById("sel-term").innerHTML = '<option value="">—</option>';
+  document.getElementById("sel-term").disabled = true;
+  document.getElementById("sel-topic").innerHTML = '<option value="">—</option>';
+  document.getElementById("sel-topic").disabled = true;
+  renderQuestionBrowser();
+}
+
+function onGradeChange() {
+  selectedGrade = document.getElementById("sel-grade").value;
+  selectedTerm = "";
+  selectedTopic = "";
+  // Populate term dropdown
+  const filtered = bank.data.filter(t => (t.grade || "") === selectedGrade);
+  const terms = uniqueValues(filtered.map(t => t.term || "")).sort();
+  const tSel = document.getElementById("sel-term");
+  tSel.innerHTML = '<option value="">—</option>' + terms.map(t => `<option value="${t}">${t || "未分類"}</option>`).join("");
+  tSel.disabled = terms.length === 0;
+  document.getElementById("sel-topic").innerHTML = '<option value="">—</option>';
+  document.getElementById("sel-topic").disabled = true;
+  renderQuestionBrowser();
+  markPreviewDirty();
+}
+
+function onTermChange() {
+  selectedTerm = document.getElementById("sel-term").value;
+  selectedTopic = "";
+  // Populate topic dropdown
+  const filtered = bank.data.filter(t => (t.grade || "") === selectedGrade && (t.term || "") === selectedTerm);
+  const topicMap = new Map();
+  for (const t of filtered) {
+    const tk = t.topicKey || "uncategorized";
+    if (!topicMap.has(tk)) topicMap.set(tk, t.topicName || tk);
+  }
+  const entries = Array.from(topicMap.entries()).sort((a, b) => a[1].localeCompare(b[1], "zh-HK"));
+  const tSel = document.getElementById("sel-topic");
+  tSel.innerHTML = '<option value="">—</option>' + entries.map(([k, n]) => `<option value="${k}">${n} (${k})</option>`).join("");
+  tSel.disabled = entries.length === 0;
+  renderQuestionBrowser();
+  markPreviewDirty();
+}
+
+function onTopicChange() {
+  selectedTopic = document.getElementById("sel-topic").value;
+  renderQuestionBrowser();
+  markPreviewDirty();
+}
+
+function renderQuestionBrowser() {
+  const ul = document.getElementById("qlist-browser");
+  const filtered = bank.data.filter(t => {
+    if ((t.grade || "") !== selectedGrade) return false;
+    if ((t.term || "") !== selectedTerm) return false;
+    if (selectedTopic && (t.topicKey || "uncategorized") !== selectedTopic) return false;
+    return true;
+  });
+  if (filtered.length === 0) {
+    ul.innerHTML = '<li class="empty">呢個組合暫無題目。</li>';
     return;
   }
-  bank.presets.forEach(p => {
-    const card = document.createElement("div");
-    card.className = "preset-card";
-    const qCount = p.questions.length;
-    const keysHtml = p.questions.map(q => '<span class="badge">' + q.key + '</span>').join("");
-    card.innerHTML =
-      '<h3>📚 ' + p.name + ' <span class="small">（' + p.key + '，共 ' + qCount + ' 題）</span></h3>' +
-      '<div class="small">' + keysHtml + '</div>' +
-      '<div class="small">生成後檔名預設：<code>student-' + p.key + '-YYYYMMDD.html</code></div>' +
-      '<div class="btn-row">' +
-        '<button class="success" onclick="selectPreset(\'' + p.key + '\')">✓ 使用此 preset</button>' +
-        '<button class="secondary" onclick="previewPreset(\'' + p.key + '\')">👁️ 預覽</button>' +
-      '</div>';
-    area.appendChild(card);
-  });
-  // 默認建議標題
-  if (bank.presets.length > 0 && !document.getElementById("title").value) {
-    document.getElementById("title").value = bank.presets[0].name;
+  ul.innerHTML = filtered.map(t => `
+    <li>
+      <span class="name">
+        <span class="type-key">${t.key}</span>
+        <b>${t.name}</b>
+        <span class="meta">(${t.topicName || t.topicKey || ""} · 難度 <span class="difficulty">${"★".repeat(t.difficulty)}</span> · ${t.type}/${t.checkType})</span>
+      </span>
+      <button onclick="addToBasket('${t.key}')" data-key="${t.key}">加入</button>
+    </li>
+  `).join("");
+}
+
+/* ============================================================
+   出題清單（basket）
+   ============================================================ */
+function addToBasket(typeKey) {
+  const t = bank.data.find(x => x.key === typeKey);
+  if (!t) return;
+  const item = {
+    id: "b" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+    typeKey: typeKey,
+    typeDef: t,
+    params: null,        // 由 preview 階段生成
+    generated: null,     // { questionHTML, correctAnswer, ... }
+    confirmed: false,
+    hasError: false,
+    errorMsg: ""
+  };
+  basket.push(item);
+  markPreviewDirty();
+  renderBasket();
+}
+
+function removeFromBasket(id) {
+  basket = basket.filter(b => b.id !== id);
+  markPreviewDirty();
+  renderBasket();
+}
+
+function moveBasket(id, delta) {
+  const idx = basket.findIndex(b => b.id === id);
+  if (idx === -1) return;
+  const newIdx = idx + delta;
+  if (newIdx < 0 || newIdx >= basket.length) return;
+  const item = basket.splice(idx, 1)[0];
+  basket.splice(newIdx, 0, item);
+  markPreviewDirty();
+  renderBasket();
+}
+
+function renderBasket() {
+  const ul = document.getElementById("basket-list");
+  const counter = document.getElementById("basketCount");
+  if (basket.length === 0) {
+    ul.innerHTML = '<li class="empty">清單空白。請從上方選擇題目加入。</li>';
+    counter.textContent = "清單空白";
+  } else {
+    counter.textContent = `共 ${basket.length} 題`;
+    ul.innerHTML = basket.map((b, i) => {
+      const t = b.typeDef;
+      return `<li class="basket-item">
+        <span class="idx">${i + 1}.</span>
+        <span class="name">
+          <span class="type-key">${b.typeKey}</span>
+          <b>${t.name}</b>
+          <span class="meta">· 難度 ${"★".repeat(t.difficulty)}</span>
+          ${b.hasError ? '<span class="meta" style="color:var(--danger);"> · 預覽失敗</span>' : ""}
+          ${b.confirmed ? '<span class="meta" style="color:var(--success);"> · ✓ 已確認</span>' : ""}
+        </span>
+        <button class="secondary" onclick="moveBasket('${b.id}', -1)" ${i === 0 ? "disabled" : ""}>↑</button>
+        <button class="secondary" onclick="moveBasket('${b.id}', 1)" ${i === basket.length - 1 ? "disabled" : ""}>↓</button>
+        <button class="danger" onclick="removeFromBasket('${b.id}')">移除</button>
+      </li>`;
+    }).join("");
+  }
+  document.getElementById("btn-preview").disabled = (basket.length === 0);
+  if (basket.length === 0) {
+    document.getElementById("exportCard").style.display = "none";
+    document.getElementById("previewCard").style.display = "none";
   }
 }
 
-let selectedPresetKey = null;
-function selectPreset(key) {
-  selectedPresetKey = key;
-  const p = bank.presets.find(x => x.key === key);
-  if (p) {
-    document.getElementById("title").value = p.name;
-    showStatus("loadStatus", "ok", "✓ 已選擇 preset：" + p.name + "（" + p.questions.length + " 題）— 撳「生成學生版 / 教師版」開始");
+/* ============================================================
+   Preset 模式
+   ============================================================ */
+function renderPresetArea() {
+  const area = document.getElementById("presetArea");
+  if (!bank.presets || bank.presets.length === 0) {
+    area.innerHTML = '<div class="empty">此題目庫冇 preset。</div>';
+    return;
   }
+  area.innerHTML = bank.presets.map(p => `
+    <div class="card" style="background:#f0f7fc; border-color:var(--accent); margin: 0 0 8px 0; padding: 10px;">
+      <h3 style="margin: 0 0 4px 0;">📚 ${p.name}</h3>
+      <div class="sub" style="margin: 0 0 6px 0;">${p.questions.length} 題 · ${p.questions.map(q => q.typeKey).join(" → ")}</div>
+      <button onclick="loadPreset('${p.key}')">✓ 載入此 preset</button>
+    </div>
+  `).join("");
 }
 
-function previewPreset(key) {
-  const p = bank.presets.find(x => x.key === key);
+function loadPreset(presetKey) {
+  const p = bank.presets.find(x => x.key === presetKey);
   if (!p) return;
-  showStatus("loadStatus", "ok", "<b>" + p.name + "</b>：" + p.questions.map(q => q.key).join(" → "));
-}
-
-/* === 渲染自訂題型 === */
-function renderTypes() {
-  const tbody = document.getElementById("typesBody");
-  tbody.innerHTML = "";
-  bank.data.forEach((t, i) => {
-    const tr = document.createElement("tr");
-    let exQ = "";
-    try {
-      const direct = new Function("p", "return (" + t.generate + ")(p);");
-      const sample = direct(genParamsForType(t));
-      exQ = sample.questionHTML.replace(/<br>/g, " ");
-    } catch (e2) {
-      exQ = "<span class='small'>⚠️ generate() 解析失敗：" + (e2.message || e2) + "</span>";
+  basket = [];
+  for (const pq of p.questions) {
+    const t = bank.data.find(x => x.key === pq.typeKey);
+    if (!t) continue;
+    for (let i = 0; i < (pq.count || 1); i++) {
+      basket.push({
+        id: "b" + Date.now() + "_" + Math.random().toString(36).slice(2, 6),
+        typeKey: pq.typeKey,
+        typeDef: t,
+        params: null, generated: null, confirmed: false, hasError: false, errorMsg: ""
+      });
     }
-    tr.innerHTML =
-      '<td><strong>' + t.name + '</strong><br><span class="small"><code>' + t.key + '</code></span></td>' +
-      '<td><span class="badge">' + t.category + '</span></td>' +
-      '<td>' + '★'.repeat(t.difficulty) + '</td>' +
-      '<td><input type="number" min="0" max="50" value="0" data-idx="' + i + '" class="count-input" style="width:70px;"></td>' +
-      '<td><div class="preview-q">' + exQ + '</div></td>';
-    tbody.appendChild(tr);
-  });
+  }
+  document.getElementById("title").value = p.name;
+  document.getElementById("filename").value = "student-practice-" + p.key;
+  markPreviewDirty();
+  renderBasket();
+  showStatus("loadStatus", "ok", `✓ 已載入 preset：${p.name}（${basket.length} 題）— 撳「生成預覽」開始`);
 }
 
-function setAllCount(n) {
-  document.querySelectorAll(".count-input").forEach(inp => { inp.value = n; });
+/* ============================================================
+   預覽生成
+   ============================================================ */
+function markPreviewDirty() {
+  previewDirty = true;
+  document.getElementById("previewCard").style.display = "none";
+  document.getElementById("exportCard").style.display = "none";
+  document.getElementById("btn-back").style.display = "none";
 }
 
-/* === 參數生成：涵蓋 16 個 preset 題型 === */
 function genParamsForType(type) {
   const r = (lo, hi) => Math.floor(Math.random() * (hi - lo + 1)) + lo;
   const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
   switch (type.key) {
-    case "area_circle": return { radius: r(1, 20) };
-    case "angle_type": return { degrees: r(0, 359) };
-    case "frac_arith": return { a: r(2, 9), b: r(2, 9), c: r(2, 9), d: r(2, 9), op: pick(["add", "sub"]) };
-    case "neg_power": return { n: r(2, 5) };
+    case "frac_arith":   return { a: r(2, 9), b: r(2, 9), c: r(2, 9), d: r(2, 9), op: pick(["add", "sub"]) };
+    case "neg_power":    return { n: r(2, 5) };
     case "prime_factor": return { n: pick([12, 18, 20, 24, 28, 30, 36, 40, 45, 48, 50, 60, 72, 75, 90, 100]) };
-    case "hcf_or_lcm": return { n1: r(8, 60), n2: r(8, 60), askLCM: Math.random() < 0.5 };
-    case "exp_law": return { t: r(1, 6) };
+    case "hcf_or_lcm":   return { n1: r(8, 60), n2: r(8, 60), askLCM: Math.random() < 0.5 };
+    case "exp_law":      return { t: r(1, 6) };
     case "alg_simplify": return { a: r(2, 5), b: r(2, 5), op: pick(["add", "sub"]) };
-    case "solve_eq": return { a: r(2, 5), b: r(1, 10), c: r(1, 20) };
-    case "word_to_alg": return { t: r(1, 5), a: r(2, 8), b: r(2, 8) };
-    case "sig_fig": return { type: r(1, 3), a: r(1, 3), n: pick([0.01234, 0.12345, 1.2345, 12.345, 123.45, 1234.5, 2700, 45000, 5000.0, 0.009, 0.000456, 1.020, 0.020, 1.00]) };
-    case "frac_to_pct": return { num: r(1, 9), den: r(2, 10) };
-    case "poly_desc": return { a: r(1, 3), b: r(1, 7), c: r(1, 9) };
-    case "formula_sub": return { a: pick([-3, -2, -1, 2, 3, 4, 5]), b: pick([-2, -1, 0, 1, 2, 3]), c: pick([-3, -1, 0, 1, 2, 3]) };
-    case "congruence": return { reason: pick(["S.S.S.", "S.A.S.", "A.S.A.", "A.A.S.", "R.H.S."]), t1: pick([["A","B","C"], ["P","Q","R"], ["X","Y","Z"]]), t2: pick([["D","E","F"], ["L","M","N"], ["U","V","W"]]) };
-    case "coordinate": return { targetX: pick([-2, -1, 1, 2]), targetY: pick([-2, -1, 1, 2]), askAxis: pick(["x", "y"]) };
-    case "seq_nth": return { a: r(1, 4), d: r(1, 4), n: r(10, 20) };
-    case "data_type": return { scenario: pick(["一箱蘋果的數量", "一班學生的身高", "一袋米的重量", "車站每分鐘經過的巴士數目", "一個月內每日的最高氣溫", "課室外牆磚的數目"]) };
-    default: return {};
+    case "solve_eq":     return { a: r(2, 5), b: r(1, 10), c: r(1, 20) };
+    case "word_to_alg":  return { t: r(1, 5), a: r(2, 8), b: r(2, 8) };
+    case "sig_fig":      return { type: r(1, 3), a: r(1, 3), n: pick([0.01234, 0.12345, 1.2345, 12.345, 123.45, 1234.5, 2700, 45000, 5000.0, 0.009, 0.000456, 1.020, 0.020, 1.00]) };
+    case "frac_to_pct":  return { num: r(1, 9), den: r(2, 10) };
+    case "poly_desc":    return { a: r(1, 3), b: r(1, 7), c: r(1, 9) };
+    case "formula_sub":  return { a: pick([-3, -2, -1, 2, 3, 4, 5]), b: pick([-2, -1, 0, 1, 2, 3]), c: pick([-3, -1, 0, 1, 2, 3]) };
+    case "congruence":   return { reason: pick(["S.S.S.", "S.A.S.", "A.S.A.", "A.A.S.", "R.H.S."]), t1: pick([["A","B","C"], ["P","Q","R"], ["X","Y","Z"]]), t2: pick([["D","E","F"], ["L","M","N"], ["U","V","W"]]) };
+    case "coordinate":   return { targetX: pick([-2, -1, 1, 2]), targetY: pick([-2, -1, 1, 2]), askAxis: pick(["x", "y"]) };
+    case "seq_nth":      return { a: r(1, 4), d: r(1, 4), n: r(10, 20) };
+    case "data_type":    return { scenario: pick(["一箱蘋果的數量", "一班學生的身高", "一袋米的重量", "車站每分鐘經過的巴士數目", "一個月內每日的最高氣溫", "課室外牆磚的數目"]) };
+    case "area_circle":  return { radius: r(1, 20) };
+    case "angle_type":   return { degrees: r(0, 359) };
+    default:             return {};
   }
 }
 
-/* === 生成單題 === */
-function genQuestion(type, params) {
+function callGenerate(type, params) {
   try {
     const fn = new Function("p", "return (" + type.generate + ")(p);");
-    return fn(params);
+    const res = fn(params);
+    if (!res || typeof res !== "object") return { ok: false, err: "generate() 未回傳 object" };
+    if (!res.questionHTML) return { ok: false, err: "缺 questionHTML" };
+    if (res.correctAnswer === undefined || res.correctAnswer === null) return { ok: false, err: "缺 correctAnswer" };
+    return { ok: true, res };
   } catch (e) {
-    return null;
+    return { ok: false, err: "generate() 拋出例外：" + (e.message || e) };
   }
 }
 
-/* === 由 preset 順序建題 === */
-function buildQuestionsFromPreset(presetKey) {
-  const p = bank.presets.find(x => x.key === presetKey);
-  if (!p) return null;
-  const out = [];
-  let qidCounter = 1;
-  for (const pq of p.questions) {
-    const type = bank.data.find(t => t.key === pq.typeKey);
-    if (!type) { console.warn("preset refers to unknown type:", pq.typeKey); continue; }
-    const count = pq.count || 1;
-    for (let i = 0; i < count; i++) {
-      let res = null;
-      for (let attempt = 0; attempt < 5; attempt++) {
-        const params = pq.params || genParamsForType(type);
-        res = genQuestion(type, params);
-        if (res) break;
-      }
-      if (!res) continue;
-      out.push(assembleQ(type, res, qidCounter++));
-    }
-  }
-  return out;
-}
-
-/* === 由自訂 counts 建題 === */
-function buildQuestionsFromCounts() {
-  const counts = [...document.querySelectorAll(".count-input")].map(inp => parseInt(inp.value) || 0);
-  const out = [];
-  let qidCounter = 1;
-  bank.data.forEach((type, ti) => {
-    const n = counts[ti] || 0;
-    for (let i = 0; i < n; i++) {
-      let res = null;
-      for (let attempt = 0; attempt < 5; attempt++) {
-        const params = genParamsForType(type);
-        res = genQuestion(type, params);
-        if (res) break;
-      }
-      if (!res) continue;
-      out.push(assembleQ(type, res, qidCounter++));
-    }
-  });
-  return out;
-}
-
-/* === 由 type + res 組成學生版用嘅 question object === */
-function assembleQ(type, res, qidCounter) {
+function assembleQ(typeDef, res) {
   const q = {
-    qid: "q" + String(qidCounter).padStart(3, "0"),
-    typeKey: type.key,
-    type: type.type,
-    checkType: type.checkType,
+    typeKey: typeDef.key,
+    type: typeDef.type,
+    checkType: typeDef.checkType,
     questionHTML: res.questionHTML,
     correctAnswer: res.correctAnswer,
     paramsUsed: res.paramsUsed,
@@ -373,71 +614,331 @@ function assembleQ(type, res, qidCounter) {
     displayAnswer: res.displayAnswer || res.correctAnswer,
     steps: res.steps || ""
   };
-  if (type.type === "choice")      q.options    = type.options || res.options || [];
-  if (type.type === "coordinate")  q.interaction = res.interaction;
-  if (type.type === "congruence")  q.imageSvg    = res.imageSvg;
-  if (type.prefix)                 q.prefix      = type.prefix;
-  if (type.suffix)                 q.suffix      = type.suffix;
-  // primeFactor 嘅 primeFactors 用嚟做指數記數法判分
-  if (type.checkType === "primeFactor" && res.primeFactors) {
-    q.primeFactors = res.primeFactors;
-  }
-  if (type.checkType === "algebraQ8") {
-    q.answers = res.answers;
-    q.q8subtype = res.q8subtype;
-  }
-  if (type.checkType === "congruenceReason" && res.answers) {
-    q.answers = res.answers;
-  }
+  if (typeDef.type === "choice")      q.options    = typeDef.options || res.options || [];
+  if (typeDef.type === "coordinate")  q.interaction = res.interaction;
+  if (typeDef.type === "congruence")  q.imageSvg    = res.imageSvg;
+  if (typeDef.prefix)                 q.prefix      = typeDef.prefix;
+  if (typeDef.suffix)                 q.suffix      = typeDef.suffix;
+  if (typeDef.checkType === "primeFactor" && res.primeFactors) q.primeFactors = res.primeFactors;
+  if (typeDef.checkType === "algebraQ8") { q.answers = res.answers; q.q8subtype = res.q8subtype; }
+  if (typeDef.checkType === "congruenceReason" && res.answers) q.answers = res.answers;
   return q;
 }
 
-/* === 預載驗證：每題 generate 一次，檢查有冇 throw 或漏空 === */
-function runPrecheck() {
-  if (!bank) { showStatus("genStatus", "err", "請先載入題目庫"); return; }
-  const questions = (activeMode === "preset" && selectedPresetKey)
-    ? buildQuestionsFromPreset(selectedPresetKey)
-    : buildQuestionsFromCounts();
-  if (!questions || questions.length === 0) { showStatus("genStatus", "err", "未有題目可驗證"); return; }
-  let errCount = 0;
-  const issues = [];
-  questions.forEach((q, i) => {
-    if (!q.questionHTML || !q.correctAnswer) { errCount++; issues.push("Q" + (i+1) + " 缺欄"); }
-    if (q.type === "coordinate" && !q.interaction) { errCount++; issues.push("Q" + (i+1) + " coordinate 缺 interaction"); }
-    if (q.type === "congruence" && !q.imageSvg) { errCount++; issues.push("Q" + (i+1) + " congruence 缺 imageSvg"); }
-    if (q.type === "choice" && (!q.options || q.options.length === 0)) { errCount++; issues.push("Q" + (i+1) + " choice 缺 options"); }
-  });
-  if (errCount === 0) {
-    showStatus("genStatus", "ok", "✓ 預載驗證通過：" + questions.length + " 題全部有效");
-  } else {
-    showStatus("genStatus", "warn", "⚠️ " + errCount + " 個問題：<br>" + issues.join("<br>"));
+/* Validate a single question after assembly (per-type mandatory fields) */
+function validateAssembledQ(q, typeDef) {
+  if (typeDef.type === "choice") {
+    if (!q.options || q.options.length === 0) return "choice 題缺 options";
   }
-  return questions;
+  if (typeDef.type === "coordinate") {
+    if (!q.interaction) return "coordinate 題缺 interaction";
+    if (typeof q.interaction.targetX !== "number") return "coordinate 缺 targetX";
+    if (typeof q.interaction.targetY !== "number") return "coordinate 缺 targetY";
+    if (!["x", "y"].includes(q.interaction.askAxis)) return "coordinate 缺 askAxis (x/y)";
+  }
+  if (typeDef.type === "congruence") {
+    if (!q.imageSvg) return "congruence 題缺 imageSvg";
+  }
+  return null;  // OK
 }
 
-/* === 主生成 === */
-function generateOutput(kind) {
-  if (!bank || !tmpl) { showStatus("genStatus", "err", "請先載入題目庫 + 模板"); return; }
-  const title = document.getElementById("title").value.trim() || "數學短答練習";
-  const gasUrl = document.getElementById("gasUrl").value.trim();
-
-  const questions = (activeMode === "preset" && selectedPresetKey)
-    ? buildQuestionsFromPreset(selectedPresetKey)
-    : buildQuestionsFromCounts();
-
-  if (!questions || questions.length === 0) {
-    showStatus("genStatus", "err", activeMode === "preset" ? "請先選 preset" : "請至少為一個題型設定題目數量");
-    return;
+function generatePreview() {
+  if (basket.length === 0) return;
+  // Generate one actual question for each basket item
+  let anyError = false;
+  const errors = [];
+  for (const b of basket) {
+    const params = genParamsForType(b.typeDef);
+    const r = callGenerate(b.typeDef, params);
+    if (!r.ok) {
+      b.hasError = true;
+      b.errorMsg = r.err;
+      b.generated = null;
+      anyError = true;
+      errors.push(`${b.typeKey}: ${r.err}`);
+      continue;
+    }
+    const q = assembleQ(b.typeDef, r.res);
+    const vErr = validateAssembledQ(q, b.typeDef);
+    if (vErr) {
+      b.hasError = true;
+      b.errorMsg = vErr;
+      b.generated = q;
+      anyError = true;
+      errors.push(`${b.typeKey}: ${vErr}`);
+      continue;
+    }
+    b.hasError = false;
+    b.errorMsg = "";
+    b.params = params;
+    b.generated = q;
+    // Re-generate ⇒ clear confirmation
+    b.confirmed = false;
   }
-  lastQuestions = questions;
+  previewResults = basket.map(b => b.generated);
+  previewDirty = false;
+  document.getElementById("previewCard").style.display = "block";
+  document.getElementById("exportCard").style.display = "block";
+  document.getElementById("btn-back").style.display = "inline-block";
+  renderBasket();
+  renderPreview();
+  updateExportGates();
+  if (anyError) {
+    document.getElementById("previewSummary").className = "status err";
+    document.getElementById("previewSummary").style.display = "block";
+    document.getElementById("previewSummary").innerHTML = "✗ 預覽時遇到錯誤：<br>" + errors.join("<br>");
+  } else {
+    document.getElementById("previewSummary").className = "status ok";
+    document.getElementById("previewSummary").style.display = "block";
+    document.getElementById("previewSummary").innerHTML = "✓ 預覽已生成。請逐題檢查後勾選「已檢查，內容正確」即可匯出。";
+  }
+}
 
-  const bankHash = "b" + bank.data.length + "_" + selectedPresetKey + "_" + questions.length + "_" + Date.now().toString(36);
+function renderPreview() {
+  const area = document.getElementById("previewArea");
+  if (basket.length === 0) { area.innerHTML = '<div class="empty">未有題目。</div>'; return; }
+  let html = "";
+  basket.forEach((b, i) => {
+    const t = b.typeDef;
+    const cls = b.hasError ? "preview-card has-error" : (b.confirmed ? "preview-card confirmed" : "preview-card unconfirmed");
+    html += `<div class="${cls}" id="card-${b.id}">
+      <div class="preview-header">
+        <span class="qid">Q${i + 1}.</span>
+        <span class="name">${t.name}</span>
+        <span class="badge grade">年級: ${t.grade || "未分類"}</span>
+        <span class="badge term">學期: ${t.term || "未分類"}</span>
+        <span class="badge topic">課題: ${t.topicName || t.topicKey || "—"}</span>
+        <span class="badge">難度 ${"★".repeat(t.difficulty)}</span>
+        <span class="badge type">type=${t.type} · checkType=${t.checkType}</span>
+        <span class="type-key">${t.key}</span>
+      </div>`;
+    if (b.hasError) {
+      html += `<div class="error-text">✗ 預覽失敗：${b.errorMsg}</div>`;
+    } else {
+      const q = b.generated;
+      // Section 1: student sees
+      html += `<div class="preview-section">
+        <h4>1. 學生看到的題目</h4>
+        <div class="preview-html"><div class="question-text">${q.questionHTML}</div>
+        ${q.imageSvg ? `<div class="geo-image">${q.imageSvg}</div>` : ""}
+        </div>
+        ${q.type === "choice" ? `<div class="preview-data">
+          <span class="label">選項：</span>
+          ${(q.options || []).map(o => `<code>${o.key} = ${o.label}</code>`).join("  ")}
+        </div>` : ""}
+        ${q.type === "coordinate" ? `<div class="preview-data">
+          <span class="label">坐標互動：</span> 點擊目標 (${q.interaction.targetX}, ${q.interaction.targetY}) 嘅 <code>${q.interaction.askAxis}</code> 坐標
+        </div>` : ""}
+        ${q.type === "congruence" ? `<div class="preview-data">
+          <span class="label">全等提示：</span> 學生需要揀 5 個理由之一 (S.S.S. / S.A.S. / A.S.A. / A.A.S. / R.H.S.)
+        </div>` : ""}
+      </div>`;
+      // Section 2: 作答格式
+      html += `<div class="preview-section">
+        <h4>2. 作答格式</h4>
+        <div class="preview-data row-kv">
+          <span class="label">type:</span> <code>${q.type}</code>
+          <span class="label">checkType:</span> <code>${q.checkType}</code>
+          ${q.prefix ? `<span class="label">prefix:</span> <code>${escapeHtml(q.prefix)}</code>` : ""}
+          ${q.suffix ? `<span class="label">suffix:</span> <code>${escapeHtml(q.suffix)}</code>` : ""}
+          <span class="label">作答方式:</span> <span>${describeInteraction(q)}</span>
+          ${q.checkType === "primeFactor" && q.primeFactors ? `<span class="label">primeFactors:</span> <code>${JSON.stringify(q.primeFactors)}</code>` : ""}
+          ${q.checkType === "algebraQ8" ? `<span class="label">q8subtype:</span> <code>${q.q8subtype}</code>` : ""}
+        </div>
+      </div>`;
+      // Section 3: 答案
+      html += `<div class="preview-section">
+        <h4>3. 答案</h4>
+        <div class="preview-data row-kv">
+          <span class="label">correctAnswer:</span> <code>${escapeHtml(String(q.correctAnswer))}</code>
+          <span class="label">displayAnswer:</span> <code>${escapeHtml(String(q.displayAnswer))}</code>
+          ${q.answers ? `<span class="label">可接受答案:</span> <code>${q.answers.map(a => escapeHtml(String(a))).join(" / ")}</code>` : ""}
+          ${q.checkType === "coordinatePoint" ? `<span class="label">坐標目標:</span> <code>(${q.interaction.targetX}, ${q.interaction.targetY})</code>, 問 <code>${q.interaction.askAxis}</code>` : ""}
+        </div>
+      </div>`;
+      // Section 4: 回饋及教學
+      html += `<div class="preview-section">
+        <h4>4. 回饋及教學</h4>
+        <div class="preview-data">
+          <div><span class="label">答對回饋：</span> 「✓ 正確！」</div>
+          <div><span class="label">答錯回饋：</span> 「✗ 答錯。正確答案： ${escapeHtml(String(q.displayAnswer))}」</div>
+        </div>
+        <div class="preview-data" style="margin-top:6px;">
+          <div class="label">教學步驟 (solutionHTML)：</div>
+          <div class="preview-html">${q.solutionHTML || "<i>（無）</i>"}</div>
+        </div>
+        <div class="preview-data" style="margin-top:6px;">
+          <div class="label">PDF 文字 (pdfText)：</div>
+          <div class="preview-html">${escapeHtml(q.pdfText || "")}</div>
+        </div>
+      </div>`;
+    }
+    // Actions
+    html += `<div class="preview-actions">
+      <button class="secondary" onclick="regenerateOne('${b.id}')" ${b.hasError ? "" : ""}>🔄 重新生成此題</button>
+      <button class="danger" onclick="removeFromBasket('${b.id}')">🗑️ 從清單移除</button>
+      <label class="confirm-label ${b.confirmed ? "checked" : ""}">
+        <input type="checkbox" data-id="${b.id}" onchange="toggleConfirm('${b.id}', this.checked)" ${b.confirmed ? "checked" : ""} ${b.hasError ? "disabled" : ""}>
+        已檢查，內容正確
+      </label>
+    </div>`;
+    html += `</div>`;
+  });
+  area.innerHTML = html;
+  // After render, typeset math
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise([area]).catch(() => {});
+  }
+  updateProgressBar();
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+function describeInteraction(q) {
+  if (q.type === "text") return "學生喺輸入框打答案";
+  if (q.type === "choice") return "學生點擊選項按鈕";
+  if (q.type === "coordinate") return "學生先喺坐標平面點擊 A 點，再輸入 " + q.interaction.askAxis + " 坐標";
+  if (q.type === "congruence") return "學生揀 5 個全等理由之一";
+  return "—";
+}
+
+function regenerateOne(id) {
+  const b = basket.find(x => x.id === id);
+  if (!b) return;
+  let r;
+  for (let attempt = 0; attempt < 5; attempt++) {
+    const params = genParamsForType(b.typeDef);
+    r = callGenerate(b.typeDef, params);
+    if (r.ok) {
+      b.params = params;
+      b.generated = assembleQ(b.typeDef, r.res);
+      const vErr = validateAssembledQ(b.generated, b.typeDef);
+      if (!vErr) { b.hasError = false; b.errorMsg = ""; break; }
+      b.hasError = true; b.errorMsg = vErr;
+    }
+  }
+  b.confirmed = false;  // Re-generate clears confirmation
+  previewResults = basket.map(x => x.generated);
+  previewDirty = false;
+  renderBasket();
+  renderPreview();
+  updateExportGates();
+}
+
+function toggleConfirm(id, checked) {
+  const b = basket.find(x => x.id === id);
+  if (!b || b.hasError) return;
+  b.confirmed = checked;
+  renderBasket();
+  renderPreview();
+  updateExportGates();
+}
+
+function updateProgressBar() {
+  const total = basket.length;
+  const done = basket.filter(b => b.confirmed).length;
+  document.getElementById("confirmedCount").textContent = done;
+  document.getElementById("totalCount").textContent = total;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById("progressBarInner").style.width = pct + "%";
+  document.getElementById("btn-confirm-all").style.display = (total > 0 && done < total) ? "inline-block" : "none";
+}
+
+function confirmAll() {
+  if (!confirm("將全部題目標示為「已檢查，內容正確」？")) return;
+  for (const b of basket) {
+    if (!b.hasError) b.confirmed = true;
+  }
+  renderBasket();
+  renderPreview();
+  updateExportGates();
+}
+
+function backToSelection() {
+  if (basket.some(b => b.hasError) || !previewDirty && basket.some(b => !b.confirmed)) {
+    if (!confirm("返回選題區會令已生成但未確認嘅題目失效，繼續？")) return;
+    markPreviewDirty();
+  } else {
+    markPreviewDirty();
+  }
+  renderBasket();
+}
+
+/* ============================================================
+   匯出閘門
+   ============================================================ */
+function updateExportGates() {
+  const gates = [];
+  let canExport = true;
+  if (basket.length === 0) { gates.push({ ok: false, text: "❌ 出題清單空白" }); canExport = false; }
+  else { gates.push({ ok: true, text: "✓ 出題清單有 " + basket.length + " 題" }); }
+  const errored = basket.filter(b => b.hasError);
+  if (errored.length > 0) { gates.push({ ok: false, text: "❌ " + errored.length + " 題預覽失敗" }); canExport = false; }
+  else { gates.push({ ok: true, text: "✓ 所有題目生成成功" }); }
+  const unconfirmed = basket.filter(b => !b.confirmed);
+  if (unconfirmed.length > 0) { gates.push({ ok: false, text: "❌ " + unconfirmed.length + " 題未確認" }); canExport = false; }
+  else { gates.push({ ok: true, text: "✓ 所有題目已確認" }); }
+  if (previewDirty) { gates.push({ ok: false, text: "❌ 清單或題目已改變，需要重新生成預覽" }); canExport = false; }
+  else { gates.push({ ok: true, text: "✓ 預覽結果同清單一致" }); }
+  if (!tmpl) { gates.push({ ok: false, text: "❌ 未載入模板" }); canExport = false; }
+  const ul = document.getElementById("exportGates");
+  ul.innerHTML = gates.map(g => `<li class="${g.ok ? "pass" : "fail"}">${g.text}</li>`).join("");
+  document.getElementById("btn-export").disabled = !canExport;
+}
+
+/* ============================================================
+   匯出學生 HTML
+   ============================================================ */
+function exportStudent() {
+  if (!bank || !tmpl) { showStatus("exportStatus", "err", "請先載入題目庫 + 模板"); return; }
+  // Re-run gate
+  if (basket.length === 0 || basket.some(b => b.hasError) || basket.some(b => !b.confirmed)) {
+    showStatus("exportStatus", "err", "匯出閘門未通過"); return;
+  }
+  const title = document.getElementById("title").value.trim() || "數學短答練習";
+  const baseName = (document.getElementById("filename").value.trim() || "student-practice")
+                     .replace(/[^a-zA-Z0-9_\\-]/g, "_");
+  const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+  const questions = basket.map((b, i) => {
+    const q = b.generated;
+    return {
+      qid: "q" + String(i + 1).padStart(3, "0"),
+      typeKey: b.typeKey,
+      type: q.type,
+      checkType: q.checkType,
+      questionHTML: q.questionHTML,
+      correctAnswer: q.correctAnswer,
+      paramsUsed: q.paramsUsed,
+      solutionHTML: q.solutionHTML,
+      pdfText: q.pdfText,
+      displayAnswer: q.displayAnswer,
+      steps: q.steps,
+      options: q.options,
+      interaction: q.interaction,
+      imageSvg: q.imageSvg,
+      prefix: q.prefix,
+      suffix: q.suffix,
+      primeFactors: q.primeFactors,
+      answers: q.answers,
+      q8subtype: q.q8subtype
+    };
+  });
+  // Validate placeholders before replace
+  const requiredPlaceholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}"];
+  for (const ph of requiredPlaceholders) {
+    if (!tmpl.includes(ph)) {
+      showStatus("exportStatus", "err", "模板缺少必要佔位符：" + ph);
+      return;
+    }
+  }
+  const bankHash = "b" + bank.data.length + "_" + questions.length + "_" + Date.now().toString(36);
   const generatedAt = new Date().toISOString();
-  const presetKey = (activeMode === "preset" && selectedPresetKey) ? selectedPresetKey : "custom";
+  const presetKey = "custom";
+  const gasUrl = "";
 
-  let html = tmpl;
-  // Use function replacement so $ and \\ in the replacement string are NOT interpreted
   const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
+  let html = tmpl;
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
   html = safeReplace(html, /\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions));
   html = safeReplace(html, /\{\{GENERATED_AT\}\}/g, JSON.stringify(generatedAt));
@@ -445,60 +946,21 @@ function generateOutput(kind) {
   html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
   html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl));
 
-  // 學生版 vs 教師版
-  if (kind === "teacher") {
-    html = html.replace("</title>", "（教師版）</title>");
-    // 喺 quiz-view 上面加入「顯示全部答案」按鈕
-    html = html.replace(
-      '<div class="toolbar" id="toolbar">',
-      '<div class="toolbar" id="toolbar" style="background:#fce8b2;">' +
-      '<button onclick="window.print()">🖨️ 列印 / PDF</button>' +
-      '<button onclick="document.body.classList.toggle(\'teacher-reveal\')">👁️ 切換全部答案</button>' +
-      '<button onclick="exportAll()">📤 匯出全部題目 + 答案 JSON</button></div>' +
-      '<div class="toolbar" id="toolbar">'
-    );
-    // 教師版 CSS：reveal 模式顯示每題正確答案
-    html = html.replace(
-      '</style>',
-      '.teacher-reveal .question-card::after { content: " ✓ " attr(data-answer); display:block; color: #c0392b; font-weight:bold; margin-top:8px; font-size:0.9em; } @media print { .teacher-reveal .question-card::after { content: " ✓ " attr(data-answer); } } </style>'
-    );
-    // 為每題加 data-answer（搵唔到注入機制，所以用後處理 JS）
-    html = html.replace(
-      'const TOOL_ID = "assess-"',
-      '// 教師版：喺每張題目卡加上 data-answer\n' +
-      'window.addEventListener("DOMContentLoaded", function() {\n' +
-      '  QUESTIONS.forEach(function(q, i) {\n' +
-      '    var card = document.querySelectorAll(".question-card");\n' +
-      '  });\n' +
-      '});\n' +
-      'const TOOL_ID = "assess-"'
-    );
+  // Verify no placeholder residue
+  const leftover = html.match(/\{\{[A-Z_]+\}\}/g);
+  if (leftover && leftover.length > 0) {
+    showStatus("exportStatus", "err", "匯出失敗：模板有殘留佔位符 " + leftover.join(", "));
+    return;
   }
 
-  // 落載
   const blob = new Blob([html], { type: "text/html;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
-  const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-  const baseName = (kind === "teacher" ? "teacher-practice" : "student-practice");
-  const fileName = baseName + (presetKey !== "custom" ? "-" + presetKey : "") + "-" + ymd + ".html";
   a.href = url;
-  a.download = fileName;
+  a.download = baseName + "-" + ymd + ".html";
   a.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
-
-  showStatus("genStatus", "ok",
-    "✓ 已生成 " + kind + " 版 " + questions.length + " 條題目，檔名：<code>" + fileName + "</code>"
-  );
-  // 預覽
-  document.getElementById("previewArea").innerHTML =
-    '<h2>預覽（' + questions.length + ' 條題目）</h2>' +
-    questions.map((q, i) =>
-      '<div style="border:1px solid #eee; border-radius:6px; padding:8px 10px; margin-bottom:6px;">' +
-      '<strong>Q' + (i+1) + '：</strong>' + q.questionHTML +
-      '<div class="small" style="margin-top:4px;">答案：<code>' + (q.displayAnswer || q.correctAnswer) + '</code>　類型：<code>' + q.typeKey + ' / ' + q.type + '</code></div>' +
-      '</div>'
-    ).join("");
+  showStatus("exportStatus", "ok", `✓ 已匯出 ${questions.length} 題：<code>${a.download}</code>`);
 }
 </script>
 </body>

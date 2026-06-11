@@ -3,6 +3,10 @@
       "name": "文字轉代數式（5 個子類型）",
       "category": "數與代數",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
       "type": "text",
       "checkType": "algebraQ8",
       "params_schema": {

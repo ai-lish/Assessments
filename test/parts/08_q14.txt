@@ -3,6 +3,10 @@
       "name": "坐標輸入及點選",
       "category": "幾何",
       "difficulty": 1,
+      "grade": "s1",
+      "term": "3",
+      "topicKey": "geometry",
+      "topicName": "幾何",
       "type": "coordinate",
       "checkType": "coordinatePoint",
       "params_schema": {
