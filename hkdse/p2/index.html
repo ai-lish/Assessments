@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HKDSE 數學卷二練習</title>
+  <link rel="stylesheet" href="../assets/hkdse.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1>HKDSE 數學卷二：選擇題核對</h1>
+      <p>只有具備有效 A／B／C／D 答案的題目才會計分。</p>
+      <nav class="top-links" aria-label="主要連結">
+        <a href="../">HKDSE 工具首頁</a>
+        <a href="../guide.html">使用指南</a>
+        <a href="https://ai-lish.github.io/ai-learning/">返回少康老師教學網站</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p id="load-error" class="error-message" role="alert" hidden></p>
+    <p id="storage-status" class="notice" hidden>瀏覽器未能使用 localStorage；你仍可完成本次練習，但重新載入後不會保留作答。</p>
+    <section class="panel" aria-labelledby="filter-title">
+      <h2 id="filter-title">篩選題目</h2>
+      <div class="filters">
+        <div class="field"><label for="year-filter">年份</label><select id="year-filter"></select></div>
+        <div class="field"><label for="topic-filter">課題</label><select id="topic-filter"></select></div>
+        <div class="field"><label for="limit-filter">每頁題數</label><select id="limit-filter"><option>5</option><option selected>10</option><option>20</option></select></div>
+        <div class="field"><label for="mode-filter">次序</label><select id="mode-filter"><option value="ordered">順序</option><option value="random">隨機</option></select></div>
+        <div class="field" id="seed-field" hidden><label for="seed-filter">隨機 seed</label><input id="seed-filter" value="hkdse" maxlength="80"></div>
+      </div>
+      <div class="actions">
+        <button id="check-page" type="button">核對本頁</button>
+        <button id="clear-progress" type="button" class="danger">清除此卷本機紀錄</button>
+      </div>
+      <div class="summary-grid" aria-label="核對結果">
+        <div class="stat">已作答<strong id="summary-answered">0</strong></div>
+        <div class="stat">可核對<strong id="summary-gradeable">0</strong></div>
+        <div class="stat">正確<strong id="summary-correct">0</strong></div>
+        <div class="stat">錯誤<strong id="summary-wrong">0</strong></div>
+        <div class="stat">未有答案資料<strong id="summary-unavailable">58</strong></div>
+      </div>
+    </section>
+    <p id="range-status" class="status-message" role="status">載入中…</p>
+    <section id="question-list" class="question-list" aria-label="卷二題目"></section>
+    <nav id="pagination" class="pagination" aria-label="分頁"></nav>
+    <p class="footer-note">沒有答案資料的題目不會判錯，也不會進入正確率分母。</p>
+  </main>
+  <script type="module" src="../assets/p2.js"></script>
+</body>
+</html>
