@@ -6,6 +6,11 @@ export function normalizeTopic(value) {
   return String(value ?? "").trim();
 }
 
+export function normalizeSeed(value, fallback = "hkdse") {
+  const seed = String(value ?? "").trim();
+  return seed && seed.length <= 80 ? seed : fallback || "hkdse";
+}
+
 export function uniqueSorted(values, numeric = false) {
   return [...new Set(values)].sort(
     numeric ? (left, right) => Number(left) - Number(right) : undefined,
@@ -29,7 +34,7 @@ export function parseUrlState(search, availableYears, availableTopics) {
     limit: VALID_LIMITS.includes(rawLimit) ? rawLimit : 10,
     mode: VALID_MODES.includes(rawMode) ? rawMode : "ordered",
     page: Number.isInteger(rawPage) && rawPage > 0 ? rawPage : 1,
-    seed: rawSeed && rawSeed.length <= 80 ? rawSeed : "hkdse",
+    seed: normalizeSeed(rawSeed),
   };
 }
 
@@ -226,13 +231,14 @@ export function setControlsFromState(controls, state) {
 }
 
 export function readStateFromControls(controls, previousState) {
+  const fallbackSeed = previousState.seed || "hkdse";
   return {
     year: controls.year.value,
     topic: controls.topic.value,
     limit: Number(controls.limit.value),
     mode: controls.mode.value,
     page: 1,
-    seed: controls.seed.value.trim() || previousState.seed || "hkdse",
+    seed: normalizeSeed(controls.seed.value, fallbackSeed),
   };
 }
 

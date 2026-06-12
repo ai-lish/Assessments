@@ -18,6 +18,7 @@ import {
   filterAndPage,
   loadSavedState,
   parseUrlState,
+  readStateFromControls,
   resolveDataAsset,
   saveState,
   stableShuffle,
@@ -184,6 +185,33 @@ assertEqual(safeState.seed, "hkdse", "invalid URL seed fallback");
 assert(
   stateToSearch(validState).includes("mode=random"),
   "state URL must preserve selected mode",
+);
+
+const oversizedSeed = "s".repeat(81);
+const controlsState = readStateFromControls(
+  {
+    year: { value: "" },
+    topic: { value: "" },
+    limit: { value: "10" },
+    mode: { value: "random" },
+    seed: { value: oversizedSeed },
+  },
+  validState,
+);
+const reloadedControlsState = parseUrlState(
+  stateToSearch(controlsState),
+  years,
+  topics,
+);
+assertEqual(
+  controlsState.seed,
+  validState.seed,
+  "oversized control seed falls back to previous seed",
+);
+assertEqual(
+  reloadedControlsState.seed,
+  controlsState.seed,
+  "oversized seed remains stable after reload",
 );
 
 const shuffledA = stableShuffle(p2Questions.slice(0, 30), "same-seed").map(
