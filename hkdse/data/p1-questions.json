@@ -1,0 +1,2437 @@
+{
+  "metadata": {
+    "importedAt": "2026-06-12T00:00:00.000Z",
+    "questionCount": 198,
+    "schemaVersion": 1,
+    "sourceCommit": "ef5a578a04f424754ca3733f44f16eaff590f266",
+    "sourcePath": "hkdse/pages/p1_all_scan_results.json",
+    "sourceRepository": "ai-lish/ai-learning"
+  },
+  "questions": [
+    {
+      "hasSvg": false,
+      "id": "2012Q01",
+      "imagePath": "../images/p1/2012Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "1. 化簡 $\\frac{m^{-12} n^8}{n^3}$ ，並以正指數表示答案。　　　(3 分)",
+      "svgSlots": [],
+      "topic": "指數運算",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q02",
+      "imagePath": "../images/p1/2012Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片中的數學題目文字內容如下：\n\n2. 令 $a$ 成為公式 $\\frac{3a+b}{8} = b - 1$ 的主項。 (3分)",
+      "svgSlots": [],
+      "topic": "Change of Subject",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q03",
+      "imagePath": "../images/p1/2012Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "3. 因式分解\n\n(a) $x^2 - 6xy + 9y^2$ ,\n\n(b) $x^2 - 6xy + 9y^2 + 7x - 21y$ 。\n\n(3 分)",
+      "svgSlots": [],
+      "topic": "因式分解",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q04",
+      "imagePath": "../images/p1/2012Q04.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "4. 佩玲的日薪較志偉高 20%，而志偉的日薪較潔儀低 20%。已知志偉的日薪為 $480。\n\n(a) 求佩玲的日薪。\n\n(b) 誰的日薪最高？試解釋你的答案。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "Inequalities",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q05",
+      "imagePath": "../images/p1/2012Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "5. 在設有 6 個展區的展覽中心內有 132 名保安員。各個展區均有相同人數的保安員。\n在每個展區內，女保安員均較男保安員多 4 名。求在該展覽中心內男保安員的人數。\n(4 分)",
+      "svgSlots": [],
+      "topic": "方程應用",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q06",
+      "imagePath": "../images/p1/2012Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "6. (a) 求同時滿足 $\\frac{4x + 6}{7} > 2(x - 3)$ 及 $2x - 10 \\leq 0$ 的 $x$ 值的範圍。\n\n    (b) 有多少個正整數同時滿足 (a) 的不等式？\n\n(4分)",
+      "svgSlots": [],
+      "topic": "一元一次不等式",
+      "year": 2012
+    },
+    {
+      "hasSvg": true,
+      "id": "2012Q07",
+      "imagePath": "../images/p1/2012Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這張圖片是一道關於統計框線圖（盒鬚圖）的數學題目。以下是圖片中所有文字內容的完整識別與轉錄：\n\n7. 下面的框線圖顯示某田徑學會的一大群學生完成 $100\\text{ m}$ 賽跑的所需時間的分佈：\n\n[框線圖標註數據點：$a$、$12.1$、$13.2$、$b$、$18.1$；橫軸標籤：時間 (s)]\n\n該分佈的四分位數間距及分佈域分別為 $3.2\\text{ s}$ 及 $6.8\\text{ s}$。\n\n(a) 求 $a$ 及 $b$。\n\n(b) 該些學生參與某訓練課程。現知在訓練後，該些學生完成 $100\\text{ m}$ 賽跑的最長所需時間較訓練前少 $2.9\\text{ s}$。教練宣稱在訓練後，至少 $25\\%$ 的學生完成 $100\\text{ m}$ 賽跑的所需時間有改善。你是否同意？試解釋你的答案。\n\n($4$ 分)",
+      "svgSlots": [
+        "框線圖"
+      ],
+      "topic": "箱形圖（五數摘要）",
+      "year": 2012
+    },
+    {
+      "hasSvg": true,
+      "id": "2012Q08",
+      "imagePath": "../images/p1/2012Q08.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片顯示的是一道幾何數學題，以下是題目中的所有文字內容：\n\n8. 圖 1 中，$AB$、$BC$、$CD$ 及 $AD$ 均為圓的弦。$AC$ 與 $BD$ 相交於 $E$。已知 $BE = 8\\text{ cm}$、$CE = 20\\text{ cm}$ 及 $DE = 15\\text{ cm}$。\n\n圖 1\n（圖中有標註點 $A$、$B$、$C$、$D$、$E$）\n\n(a) 寫出在圖 1 中的一對相似三角形，並求 $AE$。\n(b) 假定 $AB = 10\\text{ cm}$。$AC$ 與 $BD$ 是否互相垂直？試解釋你的答案。",
+      "svgSlots": [],
+      "topic": "Similarity and Pythagoras' Theorem",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q09",
+      "imagePath": "../images/p1/2012Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這張圖片中是一道數學幾何題，文字內容及其對應的數學格式完整識別如下：\n\n 圖 2 中，實心直立角柱體 $ABCDEFGH$ 的體積為 $1020 \\text{ cm}^3$。該角柱體的底 $ABCD$ 為一梯形，其中 $AD$ 平行於 $BC$。已知 $\\angle BAD = 90^\\circ$、 $AB = 12 \\text{ cm}$、 $BC = 6 \\text{ cm}$ 及 $DE = 10 \\text{ cm}$。\n\n（圖中標記點包括：$A, B, C, D, E, F, G, H$；圖下方標註：）\n\n(a) $AD$ 的長度，\n\n(b) 角柱體 $ABCDEFGH$ 的總表面面積。",
+      "svgSlots": [],
+      "topic": "立體幾何（角柱體）",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q10",
+      "imagePath": "../images/p1/2012Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "10. 志誠進行一項中學生在某星期內用於做家課的時數的調查。在發出的問卷中，有二十份回覆。下面的幹葉圖顯示該二十份問卷記錄得的時數：\n\n| 幹 (十位) | 葉 (個位) |\n| :--- | :--- |\n| 1 | 0 0 1 1 2 3 4 5 5 6 6 7 7 |\n| 2 | 0 0 0 5 8 |\n| 3 | 4 6 |\n\n(a) 求該二十份問卷記錄得的時數的平均值及中位數。 (2 分)\n\n(b) 志誠再收到四份問卷。他得知這四份問卷記錄得的時數的平均值為 18。現知道這四份問卷其中兩份記錄得的時數為 19 及 20。\n\n  (i) 寫出該二十四份問卷記錄得的時數的平均值。\n\n  (ii) 該二十四份問卷記錄得的時數的中位數與 (a) 所求得的中位數有沒有可能相同？試解釋你的答案。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "幹葉圖與集中趨勢",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q11",
+      "imagePath": "../images/p1/2012Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "11. 設 $\\$C$ 為一表面面積是 $A\\text{ m}^2$ 的罐的髹漆成本。已知 $C$ 為兩部分之和，一部分為常數，而另一部分隨 $A$ 正變。當 $A=2$ 時，$C=62$ ；當 $A=6$ 時，$C=74$ 。\n\n(a) 求一表面面積是 $13\\text{ m}^2$ 的罐的髹漆成本。 (4 分)\n\n(b) 有一較大的罐與 (a) 所描述的罐相似。若該較大的罐的體積為 (a) 所描述的罐的 8 倍，求該較大的罐的髹漆成本。 (2 分)",
+      "svgSlots": [],
+      "topic": "正變與相似形",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q12",
+      "imagePath": "../images/p1/2012Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這張圖片是數學考試題目的一部分，以下是完整的文字內容識別：\n\n 12.\n\n圖 3(a) 顯示底半徑為 $48\\text{ cm}$ 及高為 $96\\text{ cm}$ 的實心金屬直立圓錐體。\n\n*    顯示一個圓錐體，標註高度為 $96\\text{ cm}$，底半徑為 $48\\text{ cm}$。\n*    顯示圓錐體被置於一個半球形容器中。\n\n 求該圓錐體的體積，答案以 $\\pi$ 表示。 （2分）\n\n 把半徑為 $60\\text{ cm}$ 的半球形容器鉛垂置於一水平面上。該容器載滿牛奶。\n   *    求該容器內牛奶的體積，答案以 $\\pi$ 表示。\n   *    現把該圓錐體鉛垂置於該容器內，如圖 3(b) 所示。某工匠宣稱剩下在該容器內的牛奶的體積大於 $0.3\\text{ m}^3$。你是否同意？試解釋你的答案。 （5分）",
+      "svgSlots": [],
+      "topic": "立體幾何（圓錐與半球）",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q13",
+      "imagePath": "../images/p1/2012Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這張圖片是數學試卷的一部分，包含題目 13 的 (a) 和 (b) 兩部分。以下是圖片中的所有文字及數學內容：\n\n 求 $k$ 的值使得 $x - 2$ 為 $kx^3 - 21x^2 + 24x - 4$ 的因式。  \n\n 圖 4 顯示 $y = 15x^2 - 63x + 72$ 的圖像。$Q$ 為第一象限內圖像上的可變點。$P$ 及 $R$ 分別為由 $Q$ 至 $x$ 軸及 $y$ 軸的垂足。\n\n*   \n    *   坐標軸：橫軸為 $x$，縱軸為 $y$，原點為 $O$。\n    *   拋物線方程：$y = 15x^2 - 63x + 72$。\n    *   幾何圖形：長方形 $OPQR$，其中 $P$ 在 $x$ 軸上，$R$ 在 $y$ 軸上，$Q$ 在拋物線上。\n    *   圖下方標註：\n\n 設 $(m, 0)$ 為 $P$ 的坐標。以 $m$ 表長方形 $OPQR$ 的面積。\n\n $Q$ 是否有三個不同的位置使得長方形 $OPQR$ 的面積為 $12$？試解釋你的答案。",
+      "svgSlots": [],
+      "topic": "二次函數與坐標幾何",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q14",
+      "imagePath": "../images/p1/2012Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "14. 兩平行線 $L$ 及 $\\ell$ 的 $y$ 截距分別為 $-1$ 及 $-3$，且 $L$ 的 $x$ 截距為 $3$。$P$ 為直角坐標平面上的一動點使得由 $P$ 至 $L$ 的垂直距離等於由 $P$ 至 $\\ell$ 的垂直距離。將 $P$ 的軌跡記為 $\\Gamma$。\n\n    (a) (i) 描述 $\\Gamma$ 與 $L$ 之間的幾何關係。\n        (ii) 求 $\\Gamma$ 的方程。\n                                                                                                        (5 分)\n\n    (b) 圓 $C$ 的方程為 $(x - 6)^2 + y^2 = 4$。將 $C$ 的圓心記為 $Q$。\n        (i) $\\Gamma$ 是否通過 $Q$？試解釋你的答案。\n        (ii) 若 $L$ 與 $C$ 相交於 $A$ 及 $B$ 而 $\\Gamma$ 與 $C$ 相交於 $H$ 及 $K$，求 $\\triangle AQH$ 的面積與 $\\triangle BQK$ 的面積之比。\n                                                                                                        (4 分)",
+      "svgSlots": [],
+      "topic": "座標幾何（軌跡與圓）",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q15",
+      "imagePath": "../images/p1/2012Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "15. 一班學生在某數學測驗得分的標準差為 10 分。全部學生在該測驗均不及格，故此將每名學生的測驗得分調整，使每個得分均增加 20% 然後額外加 5 分。\n\n    (a) 求得分調整後，測驗得分的標準差。\n    (1 分)\n\n    (b) 每名學生的標準分有否因得分調整而改變？試解釋你的答案。\n    (2 分)",
+      "svgSlots": [],
+      "topic": "統計（標準差變換）",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q16",
+      "imagePath": "../images/p1/2012Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "16. 某公司有 8 個部門。每個部門各提名 2 位代表以成立一個有 16 位成員的工作小組。從該工作小組中隨機選出 4 位成員。\n\n(a) 求所選出的 4 位成員由 4 個不同部門提名的概率。 (2 分)\n\n(b) 求所選出的 4 位成員至多由 3 個不同部門提名的概率。 (2 分)",
+      "svgSlots": [],
+      "topic": "概率/組合",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q17",
+      "imagePath": "../images/p1/2012Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "17. 圓 $C$ 的圓心的坐標為 $(6, 10)$。已知 $x$ 軸為 $C$ 的切線。\n\n    (a) 求 $C$ 的方程。 (2 分)\n\n    (b) 直線 $L$ 的斜率及 $y$ 截距分別為 $-1$ 及 $k$。若 $L$ 與 $C$ 相交於 $A$ 及 $B$，以 $k$ 表 $AB$ 的中點的坐標。 (5 分)",
+      "svgSlots": [],
+      "topic": "解析幾何：圓與直線",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q18",
+      "imagePath": "../images/p1/2012Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "5(a) 顯示以正方形為底的直立角錐體 $VABCD$，其中 $\\angle VAB = 72^{\\circ}$。該底的邊長為 $20\\text{ cm}$。設 $P$ 及 $Q$ 分別為 $VA$ 及 $VD$ 上的點使得 $PQ$ 平行於 $BC$ 且 $\\angle PBA = 60^{\\circ}$。從 $VABCD$ 切去角錐體 $VPBCQ$ 造成一幾何模型，如圖 5(b) 所示。\n\n（圖 5(a) 標註有頂點 $V$ 及底面頂點 $A, B, C, D$）\n（圖 5(b) 標註有頂點 $V, A, B, C, D$ 以及點 $P, Q$）\n\n 求 $AP$ 的長度。 (2 分)\n\n 設 $\\alpha$ 為平面 $PBCQ$ 與底 $ABCD$ 間之交角。\n    求 $\\alpha$。\n    設 $\\beta$ 為 $PB$ 與底 $ABCD$ 間之交角。$\\alpha$ 與 $\\beta$ 哪一個較大？試解釋你的答案。 (6 分)",
+      "svgSlots": [],
+      "topic": "立體幾何（角錐）",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2012Q19",
+      "imagePath": "../images/p1/2012Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "19. 在某城市，一機場的空運貨站 $X$ 自它開始運作起計的第 $n$ 年所處理的貨物的重量為 $A(n)$ 公噸，其中 $n$ 為一正整數。已知 $A(n) = ab^{2n}$，其中 $a$ 及 $b$ 均為正常數。現知 $X$ 自它開始運作起計的第 1 年及第 2 年所處理的貨物的重量分別為 254 100 公噸及 307 461 公噸。\n\n(a) (i) 求 $a$ 及 $b$。\n由此求 $X$ 自它開始運作起計的第 4 年所處理的貨物的重量。\n\n(ii) 以 $n$ 表 $X$ 自它開始運作起計的首 $n$ 年所處理的貨物的總重量。\n(6分)\n\n(b) 自 $X$ 運作了 4 年，空運貨站 $Y$ 開始運作。設 $B(m)$ 公噸為 $Y$ 自它開始運作起計的第 $m$ 年所處理的貨物的重量，其中 $m$ 為一正整數。已知 $B(m) = 2ab^m$。\n\n(i) 該機場的經理宣稱於 $Y$ 運作後，每一年 $Y$ 所處理的貨物的重量均較 $X$ 所處理的少。你是否同意？試解釋你的答案。\n\n(ii) 該機場的監督認為當 $X$ 和 $Y$ 所處理的貨物自 $X$ 開始運作起計的總重量超出 20 000 000 公噸時，應安裝新設施以維持空運貨站的工作效能。根據該監督的想法，自 $X$ 開始運作起計的哪一年應安裝新設施？\n(7分)",
+      "svgSlots": [],
+      "topic": "指數函數與序列",
+      "year": 2012
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q01",
+      "imagePath": "../images/p1/2013Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "1. 化簡 $\\frac{x^{20}y^{13}}{(x^5y)^6}$ ，並以正指數表示答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "指數法則",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q02",
+      "imagePath": "../images/p1/2013Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "2. 令 $k$ 成為公式 $\\frac{3}{h} - \\frac{1}{k} = 2$ 的主項。　　　(3 分)",
+      "svgSlots": [],
+      "topic": "代數公式變換",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q03",
+      "imagePath": "../images/p1/2013Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "3. 因式分解\n(a) $4m^2 - 25n^2$ ,\n(b) $4m^2 - 25n^2 + 6m - 15n$ 。\n(3 分)",
+      "svgSlots": [],
+      "topic": "因式分解",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q04",
+      "imagePath": "../images/p1/2013Q04.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這張圖片中的文字內容如下：\n\n4.  7 個梨和 3 個橙的價錢為 $47 ，而 5 個梨和 6 個橙的價錢為 $49 。求一個梨的價錢。\n(4 分)",
+      "svgSlots": [],
+      "topic": "聯立方程",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q05",
+      "imagePath": "../images/p1/2013Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "5. (a) 解不等式 $\\frac{19 - 7x}{3} > 23 - 5x$ 。\n\n   (b) 求所有能同時滿足不等式 $\\frac{19 - 7x}{3} > 23 - 5x$ 及不等式 $18 - 2x \\ge 0$ 的整數。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "不等式",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q06",
+      "imagePath": "../images/p1/2013Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "6. 在某極座標系中，$O$ 為極點。點 $A$ 及點 $B$ 的極座標分別為 $(26, 10^\\circ)$ 及 $(26, 130^\\circ)$ 。\n設 $L$ 為 $\\triangle OAB$ 的反射對稱軸。\n\n(a) 描述 $L$ 與 $\\angle AOB$ 之間的幾何關係。\n\n(b) 求 $L$ 與 $AB$ 的交點的極座標。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "極坐標",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q07",
+      "imagePath": "../images/p1/2013Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "1 中，$ABCD$ 為四邊形。對角線 $AC$ 與對角線 $BD$ 相交於 $E$。已知 $BE = CE$ 及 $\\angle BAC = \\angle BDC$。\n\n[圖 1 展示了一個四邊形 $ABCD$，對角線 $AC$ 與 $BD$ 相交於點 $E$。]\n\n(a) 證明 $\\triangle ABC \\cong \\triangle DCB$。\n\n(b) 考慮在圖 1 中的三角形。\n(i) 有多少對全等三角形？\n(ii) 有多少對相似三角形？\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "四邊形與全等/相似三角形",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q08",
+      "imagePath": "../images/p1/2013Q08.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "8. 若一包海鹽的重量量得 $100\\text{ g}$ 準確至最接近的 $\\text{g}$，則稱它為普通裝。\n\n(a) 求一包普通裝海鹽的最小可取重量。\n\n(b) 32 包普通裝海鹽之總重量有沒有可能量得 $3.1\\text{ kg}$ 準確至最接近的 $0.1\\text{ kg}$ ？試解釋你的答案。\n\n(5 分)",
+      "svgSlots": [],
+      "topic": "近似值與誤差",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q09",
+      "imagePath": "../images/p1/2013Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片顯示的是一道數學題目，內容關於統計圖表的分析。以下是圖片中所有文字及數字內容的完整識別：\n\n9. 下面的棒形圖顯示 $D$ 公司僱員的家庭成員人數的分佈。\n\n$D$ 公司僱員的家庭成員人數的分佈\n\n*    僱員人數\n    *   數值刻度：0, 4, 8, 12, 16, 20, 24\n*    家庭成員人數\n    *   數值刻度：1, 2, 3, 4, 5, 6, 7\n\n*   家庭成員人數為 1：4 人\n*   家庭成員人數為 2：16 人\n*   家庭成員人數為 3：20 人\n*   家庭成員人數為 4：16 人\n*   家庭成員人數為 5：8 人\n*   家庭成員人數為 6：4 人\n*   家庭成員人數為 7：4 人\n\n(a) 求上述分佈的平均值、四分位數間距及標準差。\n\n(b) $D$ 公司某僱員離職。這僱員的家庭成員人數為 7。求這僱員離職而引致 $D$ 公司僱員的家庭成員人數的標準差的改變。",
+      "svgSlots": [],
+      "topic": "Mensuration",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q10",
+      "imagePath": "../images/p1/2013Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "10. $A$ 委員會的委員年歲如下：\n    $$\\begin{array}{llllllllll}\n    17 & 18 & 21 & 21 & 22 & 22 & 23 & 23 & 23 & 31 \\\\\n    31 & 34 & 35 & 36 & 47 & 47 & 58 & 68 & 69 & 69\n    \\end{array}$$\n\n    (a) 寫出 $A$ 委員會的委員年歲的中位數及眾數。 (2 分)\n\n    (b) 下面的幹葉圖顯示 $B$ 委員會的委員年歲的分佈。已知這分佈的分佈域為 47。\n        $$\\begin{array}{c|l}\n        \\text{幹 (十位)} & \\text{葉 (個位)} \\\\\n        \\hline\n        2 & a \\quad 5 \\quad 6 \\quad 7 \\\\\n        3 & 3 \\quad 3 \\quad 8 \\\\\n        4 & 3 \\\\\n        5 & 1 \\quad 2 \\quad 9 \\\\\n        6 & 7 \\quad b\n        \\end{array}$$\n\n        (i) 求 $a$ 及 $b$。\n\n        (ii) 現從每個委員會中，各隨機選出一名委員作該委員會的代表。當該兩名代表的年歲之差超過 40 時，他們便可參加某比賽。求這兩名代表可參加該比賽的概率。 (4 分)",
+      "svgSlots": [],
+      "topic": "統計與概率",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q11",
+      "imagePath": "../images/p1/2013Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "11. 一周界為 $l$ 米的托盤的重量為 $W$ 克。已知 $W$ 為兩部分之和，一部分隨 $l$ 正變，另一部分隨 $l^2$ 正變。當 $l = 1$ 時，$W = 181$；且當 $l = 2$ 時，$W = 402$。\n\n(a) 求一周界為 $1.2$ 米的托盤的重量。 (4 分)\n\n(b) 若一托盤的重量為 594 克，求該托盤的周界。 (2 分)",
+      "svgSlots": [],
+      "topic": "Measures of Central Tendency",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q12",
+      "imagePath": "../images/p1/2013Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "12. 設 $f(x) = 3x^3 - 7x^2 + kx - 8$，其中 $k$ 為一常數。已知 $f(x) \\equiv (x - 2)(ax^2 + bx + c)$，其中 $a$、$b$ 及 $c$ 均為常數。\n\n(a) 求 $a$、$b$ 及 $c$。 (4 分)\n\n(b) 某人宣稱方程 $f(x) = 0$ 所有的根均為實數。你是否同意？ 試解釋你的答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "多項式與方程",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q13",
+      "imagePath": "../images/p1/2013Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "13. 在某工場內，把 2 個底半徑均為 $R \\text{ cm}$ 的完全相同的實心金屬直立圓柱體熔化，並重鑄成 27 個底半徑均為 $r \\text{ cm}$ 及高均為 $10 \\text{ cm}$ 的完全相同的較小的實心直立圓柱體。已知較大的圓柱體的底面積為較小的 9 倍。\n\n    (a) 求\n        (i) $r : R$ ，\n        (ii) 較大的圓柱體的高。\n                                                                                                        (5 分)\n\n    (b) 某工匠宣稱較小的圓柱體與較大的圓柱體相似。你是否同意？試解釋你的答案。\n                                                                                                        (2 分)",
+      "svgSlots": [],
+      "topic": "立體幾何/相似形",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q14",
+      "imagePath": "../images/p1/2013Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "14. 圓 $C$ 的方程為 $x^2 + y^2 - 12x - 34y + 225 = 0$。將 $C$ 的圓心記為 $R$。\n\n(a) 寫出 $R$ 的坐標。 (1 分)\n\n(b) 直線 $L$ 的方程為 $4x + 3y + 50 = 0$。現知 $C$ 與 $L$ 沒有相交。設 $P$ 為 $L$ 上的一點使得 $P$ 最接近 $R$。\n\n(i) 求 $P$ 與 $R$ 間的距離。\n\n(ii) 設 $Q$ 為 $C$ 上的一動點。當 $Q$ 最接近 $P$ 時，\n\n(1) 描述 $P$、$Q$ 與 $R$ 之間的幾何關係；\n\n(2) 求 $\\triangle OPQ$ 的面積與 $\\triangle OQR$ 的面積之比，其中 $O$ 為原點。 (8 分)",
+      "svgSlots": [],
+      "topic": "坐標幾何-圓",
+      "year": 2013
+    },
+    {
+      "hasSvg": true,
+      "id": "2013Q15",
+      "imagePath": "../images/p1/2013Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這張圖片顯示的是一道數學題目，內容如下：\n\n15. 下面的框線圖顯示某班學生在一測驗中得分（以分為單位）的分佈。在該測驗中，素珊獲最高得分，而志誠獲得 65 分。素珊及志誠在該測驗中的標準分分別為 3 及 0.5。\n\n*   橫軸標籤：得分（分）\n*   橫軸數值：20、30、40、50、60、70、80、90、100\n*   （根據圖形估算的數據點：最小值 = 25, $Q_1$ = 45, 中位數 = 55, $Q_3$ = 70, 最大值 = 90）\n\n(a) 求該分佈的平均值。 (2 分)\n\n(b) 素珊宣稱在該測驗中至少一半學生的標準分均為負值。 你是否同意？ 試解釋你的答案。 (2 分)",
+      "svgSlots": [
+        "框線圖"
+      ],
+      "topic": "統計",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q16",
+      "imagePath": "../images/p1/2013Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "16. 某盒子內有 5 個白色杯及 11 個藍色杯。若從該盒子中隨機同時抽出 6 個杯，\n\n(a) 求抽出至少 4 個白色杯的概率； (2分)\n\n(b) 求抽出至少 3 個藍色杯的概率。 (2分)",
+      "svgSlots": [],
+      "topic": "概率/組合",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q17",
+      "imagePath": "../images/p1/2013Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這張圖片包含了一道數學題目，內容如下：\n\n17. (a) 設 $f(x) = 36x - x^2$。利用配方法，求 $y = f(x)$ 的圖像的頂點的坐標。 （2分）\n\n(b) 一條繩子的長度為 $108\\text{ m}$。某保安員將該繩子分割為兩條。一條用作圍成一面積為 $A\\text{ m}^2$ 的長方形禁區；另一條長度為 $x\\text{ m}$，且用作將這禁區分成兩長方形區域，如圖 2 所示。\n\n[圖片中為一個長方形，中間有一條垂直分割線，標註長度為 $x\\text{ m}$。]\n\n圖 2\n\n(i) 以 $x$ 表 $A$。\n\n(ii) 該保安員宣稱這禁區的面積可大於 $500\\text{ m}^2$。你是否同意？試解釋你的答案。\n（4分）",
+      "svgSlots": [],
+      "topic": "二次函數",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q18",
+      "imagePath": "../images/p1/2013Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這份數學試卷題目的完整文字內容如下：\n\n[圖 3(a) 是一個三角形 $ABC$，點 $M$ 在邊 $AC$ 上，有一條虛線連接 $B$ 和 $M$。]\n\n[圖 3(b) 顯示摺起後的立體圖形，點 $A$、$B$、$C$ 位於表示水平地面的平行四邊形框內，點 $M$ 在地面上方。]",
+      "svgSlots": [],
+      "topic": "三角學/立體幾何",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2013Q19",
+      "imagePath": "../images/p1/2013Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這張圖片是一份數學試卷的題目。以下是該題目的完整文字內容及數學符號識別：\n\n 現對某城市公共房屋的發展進行研究。已知第 1 年年終時所有公屋單位的總樓面面積為 $9 \\times 10^6 \\text{ m}^2$，並且在隨後各年裏，每年所落成的公屋單位的總樓面面積均為前一年年終時全部公屋單位的總樓面面積之 $r\\%$，其中 $r$ 為一常數，而每年所拆卸的公屋單位的總樓面面積均為 $3 \\times 10^5 \\text{ m}^2$。現已知第 3 年年終時所有公屋單位的總樓面面積為 $1.026 \\times 10^7 \\text{ m}^2$。\n\n(a) (i) 以 $r$ 表第 2 年年終時所有公屋單位的總樓面面積。\n    (ii) 求 $r$。\n(4 分)\n\n(b) (i) 以 $n$ 表第 $n$ 年年終時所有公屋單位的總樓面面積。\n    (ii) 哪一年年終時所有公屋單位的總樓面面積會首次超過 $4 \\times 10^7 \\text{ m}^2$？\n(5 分)\n\n(c) 現假設第 $n$ 年年終時所需公屋單位的總樓面面積為 $(a(1.21)^n + b) \\text{ m}^2$ 其中 $a$ 及 $b$ 均為常數。某些研究結果顯示下列資料：\n\n| $n$ | 第 $n$ 年年終時所需公屋單位的總樓面面積 ($\\text{m}^2$) |\n| :---: | :--- |\n| 1 | $1 \\times 10^7$ |\n| 2 | $1.063 \\times 10^7$ |\n\n一研究助理宣稱基於上述假設，某年年終時所有公屋單位的總樓面面積會大於所需公屋單位的總樓面面積。該宣稱是否正確？試解釋你的答案。\n(4 分)",
+      "svgSlots": [],
+      "topic": "指數函數與序列",
+      "year": 2013
+    },
+    {
+      "hasSvg": false,
+      "id": "2014Q01",
+      "imagePath": "../images/p1/2014Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "這張圖片中的數學題目文字內容如下：\n\n1. 化簡 $\\frac{(xy^{-2})^3}{y^4}$，並以正指數表示答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "指數運算",
+      "year": 2014
+    },
+    {
+      "hasSvg": false,
+      "id": "2014Q02",
+      "imagePath": "../images/p1/2014Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "(a) (a-3)(a+1); (b) (b²+1)(a-3)(a+1)",
+        "B": "(a) (a-3)(a+1); (b) (b²+1)(a+3)(a-1)",
+        "C": "(a) (a+3)(a-1); (b) (b²+1)(a+3)(a-1)",
+        "D": "(a) (a-3)(a+1); (b) (a+1)(b²+a-3)"
+      },
+      "question": "2. 因式分解\n(a) $a^2 - 2a - 3$\n(b) $ab^2 + b^2 + a^2 - 2a - 3$\n\n(3 分)",
+      "svgSlots": [],
+      "topic": "因式分解",
+      "year": 2014
+    },
+    {
+      "hasSvg": false,
+      "id": "2014Q03",
+      "imagePath": "../images/p1/2014Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "(a) 200, (b) 123, (c) 123.4",
+        "B": "(a) 100, (b) 123, (c) 123.4",
+        "C": "(a) 200, (b) 124, (c) 123.4",
+        "D": "(a) 100, (b) 124, (c) 123.5"
+      },
+      "question": "這張圖片包含了一道數學題目，內容如下：\n\n3. (a) 將 123.45 上捨入至一位有效數字。\n\n(b) 將 123.45 捨入至最接近的整數。\n\n(c) 將 123.45 下捨入至一位小數。\n\n(3 分)",
+      "svgSlots": [],
+      "topic": "近似值與捨入",
+      "year": 2014
+    },
+    {
+      "hasSvg": false,
+      "id": "2014Q04",
+      "imagePath": "../images/p1/2014Q04.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "0 | 1 | 2 | 3 |\n| :--- | :---: | :---: | :---: | :---: |\n| 學生人數 | 7 | 14 | 15 | 4 |",
+      "svgSlots": [],
+      "topic": "統計",
+      "year": 2014
+    },
+    {
+      "hasSvg": false,
+      "id": "2014Q05",
+      "imagePath": "../images/p1/2014Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "(a) n=(7-5m)/2; (b) n 減少 5",
+        "B": "(a) n=(7-5m)/2; (b) n 增加 5",
+        "C": "(a) n=(7+5m)/2; (b) n 減少 5",
+        "D": "(a) n=(7-5m)/2; (b) n 減少 10"
+      },
+      "question": "這張圖片中的數學題目文字內容如下：\n\n5. 考慮公式 $2(3m + n) = m + 7$。\n\n(a) 令 $n$ 成為上述公式的主項。\n\n(b) 若 $m$ 的值增加 2，寫出 $n$ 的值的改變。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "代數公式變換",
+      "year": 2014
+    },
+    {
+      "hasSvg": false,
+      "id": "2014Q06",
+      "imagePath": "../images/p1/2014Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "6.  某玩具的標價為 $255。該玩具現以其標價六折售出。\n\n    (a) 求該玩具的售價。\n\n    (b) 若盈利百分率為 2%，求該玩具的成本。\n\n    (4 分)",
+      "svgSlots": [],
+      "topic": "Inequalities",
+      "year": 2014
+    },
+    {
+      "hasSvg": false,
+      "id": "2014Q07",
+      "imagePath": "../images/p1/2014Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {
+        "A": "",
+        "B": "",
+        "C": "",
+        "D": ""
+      },
+      "question": "7\\.  設 $f(x) = 4x^3 - 5x^2 - 18x + c$，其中 $c$ 為一常數。當 $f(x)$ 除以 $x - 2$ 時，餘數為 $-33$。\n\n(a)  $x + 1$ 是否 $f(x)$ 的因式？試解釋你的答案。\n\n(b)  某人宣稱方程 $f(x) = 0$ 所有的根均為有理數。你是否同意？試解釋你的答案。\n　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　(5 分)",
+      "svgSlots": [],
+      "topic": "多項式與因式定理",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q08",
+      "imagePath": "../images/p1/2014Q08.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "8. 點 $P$ 及點 $Q$ 的坐標分別為 $(-3, 5)$ 及 $(2, -7)$。$P$ 繞原點 $O$ 逆時針方向旋轉 $270^\\circ$ 至 $P'$。$Q$ 向左平移 $21$ 單位至 $Q'$。\n\n(a) 寫出 $P'$ 及 $Q'$ 的坐標。\n(b) 證明 $PQ$ 垂直於 $P'Q'$。\n　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　(5 分)",
+      "svgSlots": [],
+      "topic": "Rectilinear Figures",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q09",
+      "imagePath": "../images/p1/2014Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片包含了一道幾何數學題目。以下是圖片中的完整文字內容：\n\n（圖 1 是一個三角形 $ABC$，其中點 $D$ 位於邊 $AC$ 上，連接了頂點 $B$ 與點 $D$。圖中標註有頂點 $A$、$B$、$C$ 及點 $D$。）",
+      "svgSlots": [
+        "圖 1 顯示一個三角形 ABC，其中 D 是底邊 AC 上的一點。"
+      ],
+      "topic": "相似三角形及畢氏定理",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q10",
+      "imagePath": "../images/p1/2014Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "10. $X$ 城與 $Y$ 城相距 $80 \\text{ km}$。圖 2 顯示在某上午 7:30 至 9:30 期間，在 $X$ 城與 $Y$ 城之間的同一直路上汽車 $A$ 及汽車 $B$ 行駛的圖像。汽車 $A$ 在該期間以恆速率行駛。汽車 $B$ 於該上午 8:15 停下。\n\n---\n\n*    與 $X$ 城間之距離 ($\\text{km}$)\n    *   刻度標記：$0$ (對應 $X$)、$44$、$80$ (對應 $Y$)\n*    時間\n    *   時間點標記：$7:30$、$8:15$、$9:30$\n*   \n    *    一條從 $(7:30, 0)$ 連接到 $(9:30, 80)$ 的直線。\n    *    由三段線段組成，起點在 $(7:30, 0)$，在 $8:15$ 時達到距離 $44 \\text{ km}$，之後有一段水平線（表示停下），最後與汽車 $A$ 一同到達 $(9:30, 80)$。\n\n---\n\n(a) 求於該上午 8:15 汽車 $A$ 與 $X$ 城間之距離。 (2 分)\n\n(b) 在該上午 7:30 之後，汽車 $A$ 與汽車 $B$ 於甚麼時間首次相遇？ (2 分)\n\n(c) 汽車 $B$ 的司機宣稱在該上午 8:15 至 9:30 期間，汽車 $B$ 的平均速率較汽車 $A$ 高。你是否同意？試解釋你的答案。 (2 分)",
+      "svgSlots": [
+        "距離-時間圖：縱軸為與 X 城距離 (km)，橫軸為時間 (7:30-9:30)。汽車 A 為直線從 (7:30,0) 到 (9:30,80)；汽車 B 為折線從 (7:30,0) 到 (8:15,44) 後水平停滯。"
+      ],
+      "topic": "直線圖的應用",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q11",
+      "imagePath": "../images/p1/2014Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一道關於統計學的數學題目，以下是圖片中的所有文字內容：\n\n[框線圖（箱形圖）顯示的關鍵數值如下：]\n   下四分位數 ($Q_1$)：42\n   上四分位數 ($Q_3$)：63\n   橫軸標籤：",
+      "svgSlots": [
+        "框線圖：最小值18, Q1=42, 中位數=55, Q3=63, 最大值=91，橫軸為「價錢（千元）」。"
+      ],
+      "topic": "統計學",
+      "year": 2014
+    },
+    {
+      "hasSvg": false,
+      "id": "2014Q12",
+      "imagePath": "../images/p1/2014Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "12.  圓 $C$ 通過點 $A(6, 11)$ 且 $C$ 的圓心為點 $G(0, 3)$。\n\n    (a) 求 $C$ 的方程。 (2 分)\n\n    (b) $P$ 為直角坐標平面上的一動點使得 $AP = GP$。將 $P$ 的軌跡記為 $\\Gamma$。\n\n        (i)   求 $\\Gamma$ 的方程。\n        (ii)  描述 $\\Gamma$ 與線段 $AG$ 之間的幾何關係。\n        (iii) 若 $\\Gamma$ 與 $C$ 相交於 $Q$ 及 $R$，求四邊形 $AQGR$ 的周界。\n        (5 分)",
+      "svgSlots": [],
+      "topic": "座標幾何",
+      "year": 2014
+    },
+    {
+      "hasSvg": false,
+      "id": "2014Q13",
+      "imagePath": "../images/p1/2014Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "13. 已知 $f(x)$ 為兩部分之和，一部分隨 $x^2$ 正變，而另一部分為常數。假定 $f(2) = 59$ 及 $f(7) = -121$。\n\n(a) 求 $f(6)$ 。 (4 分)\n\n(b) $A(6, a)$ 及 $B(-6, b)$ 均為 $y = f(x)$ 的圖像上的點。求 $\\triangle ABC$ 的面積，其中 $C$ 為 $x$ 軸上的一點。 (4 分)",
+      "svgSlots": [],
+      "topic": "變分",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q14",
+      "imagePath": "../images/p1/2014Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "14. 圖 3 顯示一容器，其形狀為一平截頭體。該平截頭體是從一底半徑為 $72\\text{ cm}$ 及高為 $96\\text{ cm}$ 的倒置直立圓錐體切去其下部分造成。該容器的高度為 $60\\text{ cm}$。將該容器放在一水平桌上。現將一些水注入該容器內。偉明得知該容器內的水深為 $28\\text{ cm}$。\n\n---\n\n*   頂部半徑：$72\\text{ cm}$\n*   容器高度：$60\\text{ cm}$\n*   水深：$28\\text{ cm}$\n*   原始圓錐體總高度：$96\\text{ cm}$\n*   底部標籤：圖 3\n\n---\n\n(a) 求該容器被浸濕的曲面面積，答案以 $\\pi$ 表示。 (4分)\n\n(b) 偉明宣稱該容器內的水的體積大於 $0.1\\text{ m}^3$。你是否同意？試解釋你的答案。 (4分)",
+      "svgSlots": [
+        "倒置圓錐平截頭體容器：底半徑72cm、高96cm，容器高60cm，內盛水深28cm。"
+      ],
+      "topic": "立體圖形的幾何",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q15",
+      "imagePath": "../images/p1/2014Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "15. 圖 4 中的圖像顯示 $\\log_4 x$ 與 $\\log_8 y$ 之間的線性關係。該圖像的斜率及在水平軸上的截距分別為 $-\\frac{1}{3}$ 及 $3$。將 $x$ 與 $y$ 之間的關係表為 $y = Ax^k$ 的形式，其中 $A$ 及 $k$ 均為常數。\n(3 分)\n\n*   縱軸（y 軸）標籤：$\\log_8 y$\n*   橫軸（x 軸）標籤：$\\log_4 x$\n*   原點標記：$O$\n*   水平軸上的截距數值：$3$\n*   圖下方的圖題：圖 4",
+      "svgSlots": [
+        "直線圖：橫軸為 log₄ x，縱軸為 log₈ y，斜率 -1/3，x 截距為 (3, 0)。"
+      ],
+      "topic": "對數函數與線性關係",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q16",
+      "imagePath": "../images/p1/2014Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "1 個圖案有 3 粒點，第 2 個有 5 粒點，第 3 個有 7 粒點，以此類推...）",
+      "svgSlots": [
+        "點圖序列：圖1有3粒點（1上2下），圖2有5粒點（2上3下），圖3有7粒點（3上4下），如此類推。"
+      ],
+      "topic": "等差數列",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q17",
+      "imagePath": "../images/p1/2014Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是數學試卷的一部分，包含題目背景、圖表標籤以及具體的題目要求。以下是識別出的完整文字內容：\n\n---\n\n*   圖 6(a) 中的頂點：$V, A, B, C, D$\n*   圖 6(b) 中的頂點及點：$V, A, B, C, D, P, Q, M, N$\n*   下方的標註：圖 6(a)、圖 6(b)\n\n---",
+      "svgSlots": [
+        "角錐體 VABCD：底面 ABCD 為長方形，頂點 V。圖 6(b) 顯示切去 PBCQNM 後的幾何模型，P、Q、M、N 均為中點。"
+      ],
+      "topic": "三維空間的幾何",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q18",
+      "imagePath": "../images/p1/2014Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一份數學試卷的題目，包含文字描述、數學方程以及一個坐標幾何圖表。以下是完整的文字內容識別：\n\n---\n\n 圖 7 中，直線 $L_1$ 的方程為 $6x + 7y = 900$ 及直線 $L_2$ 的 $x$ 截距為 $180$。$L_1$ 與 $L_2$ 相交於點 $(45, 90)$。陰影區域（包括邊界在內）表示某不等式組的解。求該不等式組。\n(4分)\n\n[圖表標記：$y$ 軸、$x$ 軸、原點 $O$、直線 $L_1$、直線 $L_2$、陰影三角形區域]\n\n 某工廠生產 $X$ 及 $Y$ 兩款衣櫃。每個 $X$ 衣櫃需 $6$ 工時裝嵌及 $2$ 工時包裝，而每個 $Y$ 衣櫃需 $7$ 工時裝嵌及 $3$ 工時包裝。在某月，該工廠有 $900$ 工時可作裝嵌及 $360$ 工時可作包裝。生產一個 $X$ 衣櫃及一個 $Y$ 衣櫃的利潤分別為 $\\$440$ 及 $\\$665$。某工人宣稱該月的總利潤可超過 $\\$80\\,000$。你是否同意？試解釋你的答案。\n(4分)",
+      "svgSlots": [
+        "坐標平面上的陰影三角形區域：y軸為左邊界，L₁ 與 L₂ 相交於 (45, 90)，L₂ 的 x 截距為 180。"
+      ],
+      "topic": "線性規劃",
+      "year": 2014
+    },
+    {
+      "hasSvg": true,
+      "id": "2014Q19",
+      "imagePath": "../images/p1/2014Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一份數學試卷的題目，以下是圖片中所有文字內容的完整識別與轉錄：\n\n19. 佩玲及志偉參與一含兩回合的遊戲。在第一回合，佩玲及志偉輪流投擲一枚勻稱骰子。首位擲得點數「3」的參與者勝出第一回合。佩玲及志偉參與第一回合，直至其中一人勝出為止。佩玲首先投擲骰子。\n\n(a) 求佩玲勝出該遊戲第一回合的概率。 (3 分)\n\n(b) 在該遊戲的第二回合，球被逐一投入某部由八個管子並列所組成的裝置內（見圖 8）。當球被投入該裝置時，它會隨機跌進其中一管子內。每個管子最多可容納三個球。\n\n[圖 8 的示意圖，顯示 8 個並列的垂直管子]\n圖 8\n\n這回合的參與者採納下列兩個選項中的一個。\n\n選項 1： 將兩個球逐一投入該裝置內。若該兩個球跌進同一管子內，則該參與者獲 10 個代幣；若該兩個球跌進兩個相鄰的管子內，則該參與者獲 5 個代幣；否則，該參與者不獲代幣。\n\n選項 2： 將三個球逐一投入該裝置內。若該三個球跌進同一管子內，則該參與者獲 50 個代幣；若該三個球跌進三個相鄰的管子內，則該參與者獲 10 個代幣；若該三個球跌進兩個相鄰的管子內，則該參與者獲 5 個代幣；否則，該參與者不獲代幣。\n\n(i) 若第二回合的參與者採納選項 1，求所獲代幣的數目的期望值。\n\n(ii) 第二回合的參與者應採納哪一選項才使所獲代幣的數目的期望值達至最大？試解釋你的答案。\n\n(iii) 只有第一回合的勝方參與第二回合。已知第二回合的參與者採納能使所獲代幣的數目的期望值達至最大的選項。志偉宣稱佩玲在該遊戲中不獲代幣的概率超過 0.9。該宣稱是否正確？試解釋你的答案。\n\n(10 分)",
+      "svgSlots": [
+        "八個並排管子的裝置示意圖。"
+      ],
+      "topic": "概率與期望值",
+      "year": 2014
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q01",
+      "imagePath": "../images/p1/2015Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "1. 化簡 $\\frac{m^9}{(m^3n^{-7})^5}$ ，並以正指數表示答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "指數定律",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q02",
+      "imagePath": "../images/p1/2015Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一道數學題目，內容如下：\n\n2. 令 $b$ 成為公式 $\\frac{4a + 5b - 7}{b} = 8$ 的主項。 (3 分)",
+      "svgSlots": [],
+      "topic": "公式的主項變換",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q03",
+      "imagePath": "../images/p1/2015Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "3.  $A$ 袋內有四張卡，該四張卡分別記有數字 1、3、5 及 7；而 $B$ 袋內有五張卡，該五張卡分別記有數字 2、4、6、8 及 10。若從每袋中各隨機抽出一張卡，求所抽出的兩數字之和小於 9 的概率。\n(3 分)",
+      "svgSlots": [],
+      "topic": "概率",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q04",
+      "imagePath": "../images/p1/2015Q04.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "4.  因式分解\n    (a) $x^3 + x^2y - 7x^2$ ,\n    (b) $x^3 + x^2y - 7x^2 - x - y + 7$\n    (4 分)",
+      "svgSlots": [],
+      "topic": "因式分解",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q05",
+      "imagePath": "../images/p1/2015Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "5. (a) 求同時滿足 $\\frac{7 - 3x}{5} \\leq 2(x + 2)$ 及 $4x - 13 > 0$ 的 $x$ 值的範圍。\n   (b) 寫出同時滿足 (a) 的不等式的最小整數。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "一元一次不等式",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q06",
+      "imagePath": "../images/p1/2015Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "6.  某書的成本為 $\\$250$。現售出該書且盈利百分率為 $20\\%$。\n    (a) 求該書的售價。\n    (b) 若該書以其標價七五折售出，求該書的標價。\n    　　　　　　　　　　　　　　　　　　　　　　　　　(4 分)",
+      "svgSlots": [],
+      "topic": "百分率",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q07",
+      "imagePath": "../images/p1/2015Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "7. 佩玲擁有蘋果的數目為志偉擁有的 4 倍。若佩玲將她其中的 12 個蘋果送給志偉，他們將擁有相同數目的蘋果。求佩玲和志偉擁有蘋果的總數。 (4 分)",
+      "svgSlots": [],
+      "topic": "代數應用題",
+      "year": 2015
+    },
+    {
+      "hasSvg": true,
+      "id": "2015Q08",
+      "imagePath": "../images/p1/2015Q08.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片包含了以下數學題目的文字內容：\n\n8. 圖 1 中，$ABCD$ 為一圓。$E$ 為 $AC$ 上的一點使得 $BC = CE$。已知 $AB = AD$，$∠ADB = 58^\\circ$ 及 $∠CBD = 25^\\circ$。\n\n* 頂點標籤：$A$, $B$, $C$, $D$, $E$\n* 角標註：$58^\\circ$ (於角 $ADB$)，$25^\\circ$ (於角 $CBD$)\n* 圖下方文字：圖 1\n\n求 $∠BDC$ 及 $∠ABE$。\n\n(5 分)",
+      "svgSlots": [
+        "圓內四邊形 ABCD，E 在對角線 AC 上，已知 AB=AD, BC=CE, ∠ADB=58°, ∠CBD=25°。"
+      ],
+      "topic": "圓的基本性質",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q09",
+      "imagePath": "../images/p1/2015Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "9. 某扇形的半徑及面積分別為 $12\\text{ cm}$ 及 $30\\pi\\text{ cm}^2$。\n(a) 求該扇形的角。\n(b) 以 $\\pi$ 表該扇形的周界。\n$(5 \\text{ 分})$",
+      "svgSlots": [],
+      "topic": "扇形",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q10",
+      "imagePath": "../images/p1/2015Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "$n$ 個手袋時，她該月的收入是 $\\$S$。已知 $S$ 為兩部分之和，一部分為常數，而另一部分隨 $n$ 正變。當 $n = 10$ 時，$S = 10\\,600$；當 $n = 6$ 時，$S = 9\\,000$。\n\n(a) 當素姍在某月售出 20 個手袋時，求她該月的收入。 (4 分)\n\n(b) 當素姍在某月售出若干個手袋時，她該月的收入有沒有可能是 $\\$18\\,000$？試解釋你的答案。 (2 分)",
+      "svgSlots": [],
+      "topic": "變分",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q11",
+      "imagePath": "../images/p1/2015Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "11. 設 $f(x) = (x - 2)^2(x + h) + k$，其中 $h$ 及 $k$ 均為常數。當 $f(x)$ 除以 $x - 2$ 時，餘數為 $-5$。已知 $f(x)$ 可被 $x - 3$ 整除。\n\n(a) 求 $h$ 及 $k$。 (3 分)\n\n(b) 某人宣稱方程 $f(x) = 0$ 所有的根均為整數。你是否同意？試解釋你的答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "多項式",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q12",
+      "imagePath": "../images/p1/2015Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "12. 下面的幹葉圖顯示足球學會的學生的體重（以 kg 為單位）的分佈。\n\n$$\n\\begin{array}{c|l}\n\\text{幹（十位）} & \\text{葉（個位）} \\\\\n\\hline\n4 & 0 \\quad 2 \\quad 3 \\quad 3 \\quad 3 \\quad 3 \\quad 9 \\\\\n5 & 1 \\quad 1 \\quad 2 \\quad 2 \\quad 3 \\quad 7 \\quad 9 \\\\\n6 & 3 \\quad 5 \\quad 8 \\quad 9 \\\\\n7 & 8 \\quad 9\n\\end{array}\n$$\n\n(a) 求上述分佈的平均值、中位數及分佈域。 (3 分)\n\n(b) 現再有兩名學生加入該學會。得知體重的分佈的平均值及分佈域均增加 1 kg。求這兩名學生各人的體重。 (4 分)",
+      "svgSlots": [],
+      "topic": "統計學 — 幹葉圖",
+      "year": 2015
+    },
+    {
+      "hasSvg": true,
+      "id": "2015Q13",
+      "imagePath": "../images/p1/2015Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片中的所有文字內容識別如下：\n\n13. 圖 2 中，$ABCD$ 為一正方形。$E$ 及 $F$ 分別為 $BC$ 及 $CD$ 上的點使得 $AE = BF$。\n$AE$ 與 $BF$ 相交於 $G$。\n\n（圖片中的標記：$A, B, C, D$ 為正方形頂點；$E$ 在 $BC$ 上；$F$ 在 $CD$ 上；$G$ 為 $AE$ 與 $BF$ 的交點。）\n\n(a) 證明 $\\triangle ABE \\cong \\triangle BCF$　　(2 分)\n\n(b) $\\triangle BGE$ 是否一直角三角形？ 試解釋你的答案。　　(3 分)\n\n(c) 若 $CF = 15\\text{ cm}$ 及 $EG = 9\\text{ cm}$，求 $BG$。　　(2 分)",
+      "svgSlots": [
+        "正方形 ABCD，點 E 在 BC 上，F 在 CD 上，AE 與 BF 相交於 G。"
+      ],
+      "topic": "平面幾何",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q14",
+      "imagePath": "../images/p1/2015Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "14. 點 $P$ 及點 $Q$ 的座標分別為 $(4, -1)$ 及 $(-14, 23)$ 。\n\n(a) 設 $L$ 為 $PQ$ 的垂直平分線。\n\n    (i) 求 $L$ 的方程。\n\n    (ii) 假定 $G$ 為 $L$ 上的一點。將 $G$ 的 $x$ 座標記為 $h$ 。設 $C$ 為一圓，其圓心為 $G$ 且通過 $P$ 及 $Q$ 。\n        證明 $C$ 的方程為 $2x^2 + 2y^2 - 4hx - (3h + 59)y + 13h - 93 = 0$ 。\n        (6 分)\n\n(b) 點 $R$ 的座標為 $(26, 43)$ 。利用 (a)(ii) ，或其他方法，求通過 $P$ 、 $Q$ 及 $R$ 的圓的直徑。\n    (3 分)",
+      "svgSlots": [],
+      "topic": "直線及圓的方程",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q15",
+      "imagePath": "../images/p1/2015Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "15. 下表顯示一大群學生在數學考試及科學考試的得分的平均值及標準差：\n\n| 考試 | 平均值 | 標準差 |\n| :--- | :--- | :--- |\n| 數學 | 66 分 | 12 分 |\n| 科學 | 52 分 | 10 分 |\n\n家華在數學考試的標準分為 $-0.5$。\n\n(a) 求家華在數學考試的得分。 (2 分)\n\n(b) 假設上述每一考試的得分均為正態分佈。家華在科學考試得 49 分。他宣稱相對於其他學生，他在科學考試的表現較數學考試為佳。該宣稱是否正確？試解釋你的答案。 (2 分)",
+      "svgSlots": [],
+      "topic": "標準分及正態分佈",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q16",
+      "imagePath": "../images/p1/2015Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "16. 某盒子內有 5 個紅色碗、6 個黃色碗及 3 個白色碗。若從該盒子中隨機同時抽出 4 個碗，\n\n(a) 求抽出恰好 2 個紅色碗的概率； (2 分)\n\n(b) 求抽出至少 2 個紅色碗的概率。 (2 分)",
+      "svgSlots": [],
+      "topic": "概率",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q17",
+      "imagePath": "../images/p1/2015Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一道數學題目，內容如下：\n\n17. 對任意正整數 $n$，設 $A(n) = 4n - 5$ 及 $B(n) = 10^{4n - 5}$ 。\n\n(a) 以 $n$ 表 $A(1) + A(2) + A(3) + \\cdots + A(n)$ 。 (2 分)\n\n(b) 求 $n$ 的最大值使得 $\\log(B(1)B(2)B(3) \\cdots B(n)) \\le 8\\,000$ 。 (3 分)",
+      "svgSlots": [],
+      "topic": "等差數列及對數",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2015Q18",
+      "imagePath": "../images/p1/2015Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "18. 設 $f(x) = 2x^2 - 4kx + 3k^2 + 5$，其中 $k$ 為一實常數。\n\n(a) $y = f(x)$ 的圖像是否與 $x$ 軸相交？試解釋你的答案。 (2 分)\n\n(b) 利用配方法，以 $k$ 表 $y = f(x)$ 的圖像的頂點的坐標。 (3 分)\n\n(c) 在同一直角坐標系中，設 $S$ 及 $T$ 分別為 $y = f(x)$ 的圖像及 $y = 2 - f(x)$ 的圖像上的動點。將原點記為 $O$。某人宣稱當 $S$ 與 $T$ 最接近時，$\\triangle OST$ 的外心在 $x$ 軸上。該宣稱是否正確？試解釋你的答案。 (4 分)",
+      "svgSlots": [],
+      "topic": "二次函數",
+      "year": 2015
+    },
+    {
+      "hasSvg": true,
+      "id": "2015Q19",
+      "imagePath": "../images/p1/2015Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是數學考試題目的一部份，以下是該圖片中所有文字內容的完整識別與轉錄：\n\n（圖片包含兩張示意圖，分別標註為  和 ）",
+      "svgSlots": [
+        "五邊形紙卡 ABCDB'：AB=AB'=40cm, BC=B'D=24cm, ∠ABC=∠AB'D=80°。",
+        "摺疊後形成的角錐體 ABCD：A 為頂點，底面為三角形 BCD。"
+      ],
+      "topic": "三維空間圖形及三角學",
+      "year": 2015
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q01",
+      "imagePath": "../images/p1/2016Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "1. 化簡 $\\frac{(x^8y^7)^2}{x^5y^{-6}}$，並以正指數表示答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "指數定律",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q02",
+      "imagePath": "../images/p1/2016Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "2. 令 $x$ 成為公式 $Ax = (4x + B)C$ 的主項。 (3 分)",
+      "svgSlots": [],
+      "topic": "公式主項變換",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q03",
+      "imagePath": "../images/p1/2016Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "3. 化簡 $\\frac{2}{4x - 5} + \\frac{3}{1 - 6x}$ 。 (3 分)",
+      "svgSlots": [],
+      "topic": "代數分式",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q04",
+      "imagePath": "../images/p1/2016Q04.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張數學試卷題目圖片中的文字內容如下：\n\n(a) $5m - 10n$ ，\n\n(b) $m^2 + mn - 6n^2$ ，\n\n(c) $m^2 + mn - 6n^2 - 5m + 10n$ 。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "因式分解",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q05",
+      "imagePath": "../images/p1/2016Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片中的數學題目文字內容如下：\n\n5. 某遊樂會有 180 名會員且男會員人數較女會員人數多 40%。求男會員人數與女會員人數之差。\n(4 分)",
+      "svgSlots": [],
+      "topic": "Percentages",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q06",
+      "imagePath": "../images/p1/2016Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "6.  考慮複合不等式\n    $$x+6 < 6(x+11) \\text{ 或 } x \\le -5 \\text{ ................... (*)。}$$\n\n    (a) 解 (*)。\n\n    (b) 寫出滿足 (*) 的最大負整數。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "複合不等式",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q07",
+      "imagePath": "../images/p1/2016Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "7. 在某極坐標系中，$O$ 為極點。點 $A$ 及點 $B$ 的極坐標分別為 $(12, 75^{\\circ})$ 及 $(12, 135^{\\circ})$ 。\n\n(a) 求 $\\angle AOB$ 。\n\n(b) 求 $\\triangle AOB$ 的周界。\n\n(c) 寫出 $\\triangle AOB$ 的旋轉對稱的摺式數目。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "極坐標",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q08",
+      "imagePath": "../images/p1/2016Q08.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "8.  已知 $f(x)$ 為兩部分之和，一部分隨 $x$ 正變，而另一部分隨 $x^2$ 正變。 假定 $f(3) = 48$ 及 $f(9) = 198$ 。\n\n    (a) 求 $f(x)$ 。\n\n    (b) 解方程 $f(x) = 90$ 。\n\n(5 分)",
+      "svgSlots": [],
+      "topic": "變分",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q09",
+      "imagePath": "../images/p1/2016Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是關於統計學中頻數分佈表與累積頻數分佈表的數學題目。以下是圖片中的完整文字內容識別：\n\n 9.\n\n下面的頻數分佈表及累積頻數分佈表均顯示某花園內植物的高度的分佈。\n\n---\n\n| 高度 (m) | 頻數 |\n| :--- | :--- |\n| 0.1 – 0.3 | $a$ |\n| 0.4 – 0.6 | 4 |\n| 0.7 – 0.9 | $b$ |\n| 1.0 – 1.2 | $c$ |\n| 1.3 – 1.5 | 15 |\n| 1.6 – 1.8 | 3 |\n\n---\n\n| 高度少於 (m) | 累積頻數 |\n| :--- | :--- |\n| 0.35 | 2 |\n| 0.65 | $x$ |\n| 0.95 | 13 |\n| 1.25 | $y$ |\n| 1.55 | 37 |\n| 1.85 | $z$ |\n\n---\n\n(a) 求 $x$、$y$ 及 $z$。\n\n(b) 若從該花園中隨機選取一植物，求所選取的植物的高度少於 1.25 m 但不少於 0.65 m 的概率。\n\n(5 分)",
+      "svgSlots": [],
+      "topic": "統計學 — 頻數與累積頻數分佈",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q10",
+      "imagePath": "../images/p1/2016Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片中數學題目的完整文字內容如下：\n\n10. 點 $A$ 及點 $B$ 的坐標分別為 $(5, 7)$ 及 $(13, 1)$。設 $P$ 為直角坐標平面上的一動點使得 $P$ 與 $A$ 及 $B$ 等距。將 $P$ 的軌跡記為 $\\Gamma$。\n\n    (a) 求 $\\Gamma$ 的方程。 (2 分)\n\n    (b) $\\Gamma$ 與 $x$ 軸及 $y$ 軸分別相交於 $H$ 及 $K$。將原點記為 $O$。設 $C$ 為通過 $O$、$H$ 及 $K$ 的圓。某人宣稱 $C$ 的圓周超過 30。該宣稱是否正確？試解釋你的答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "軌跡與圓",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q11",
+      "imagePath": "../images/p1/2016Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "11. 某倒置直立圓錐形的容器載有一些牛奶。將該容器鉛垂放置。該容器內牛奶的深度為 $12\\text{ cm}$。文俊隨後將 $444\\pi\\text{ cm}^3$ 的牛奶倒入該容器內，而牛奶沒有溢出。他現知該容器內牛奶的深度為 $16\\text{ cm}$。\n\n(a) 以 $\\pi$ 表該容器內牛奶的最終體積。 (3 分)\n\n(b) 文俊宣稱該容器被浸濕的曲面的最終面積至少為 $800\\text{ cm}^2$。你是否同意？試解釋你的答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "立體圖形的體積與表面積",
+      "year": 2016
+    },
+    {
+      "hasSvg": true,
+      "id": "2016Q12",
+      "imagePath": "../images/p1/2016Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片中的數學題目文字內容識別如下：\n\n### \n\n*    小童人數\n*    年歲\n*   \n    *   年歲 6：11 人\n    *   年歲 7：$a$ 人\n    *   年歲 8：11 人\n    *   年歲 9：$b$ 人\n    *   年歲 10：4 人\n\n---\n\n (3分)\n\n    \n    \n(4分)",
+      "svgSlots": [],
+      "topic": "統計學 — 棒型圖",
+      "year": 2016
+    },
+    {
+      "hasSvg": true,
+      "id": "2016Q13",
+      "imagePath": "../images/p1/2016Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片中顯示的是一道幾何數學題，以下是完整的文字內容識別：\n\n13. 圖 1 中，$ABC$ 為三角形。$D$、$E$ 及 $M$ 均為 $BC$ 上的點使得 $BD = CE$、$\\angle ADC = \\angle AEB$ 及 $DM = EM$。\n\n    [圖 1 顯示一個大三角形 $ABC$，底邊上有點 $D$、$M$、$E$。$A$ 點與底邊上的點相連形成多個三角形。]\n    \n    \n\n(a) 證明 $\\Delta ACD \\cong \\Delta ABE$。  (2 分)\n\n(b) 假定 $AD = 15 \\text{ cm}$、$BD = 7 \\text{ cm}$ 及 $DE = 18 \\text{ cm}$。\n\n    (i) 求 $AM$。\n    \n    (ii) $\\Delta ABE$ 是否一直角三角形？試解釋你的答案。  (5 分)",
+      "svgSlots": [
+        "三角形 ABC，D、E、M 均在 BC 上，使得 BD=CE、∠ADC=∠AEB、DM=EM。"
+      ],
+      "topic": "平面幾何",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q14",
+      "imagePath": "../images/p1/2016Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "14. 設 $p(x) = 6x^4 + 7x^3 + ax^2 + bx + c$，其中 $a$、$b$ 及 $c$ 均為常數。當 $p(x)$ 除以 $x + 2$ 時及當 $p(x)$ 除以 $x - 2$ 時，所得的兩餘數相等。已知 $p(x) \\equiv (lx^2 + 5x + 8)(2x^2 + mx + n)$，其中 $l$、$m$ 及 $n$ 均為常數。\n\n    (a) 求 $l$、$m$ 及 $n$。 (5 分)\n\n    (b) 方程 $p(x) = 0$ 有多少個實根？試解釋你的答案。 (5 分)",
+      "svgSlots": [],
+      "topic": "多項式",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q15",
+      "imagePath": "../images/p1/2016Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "15. 若 4 名男生與 5 名女生隨機排成一隊，求沒有男生在該隊中相鄰而排的概率。 (3 分)",
+      "svgSlots": [],
+      "topic": "排列與組合、概率",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q16",
+      "imagePath": "../images/p1/2016Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "16. 某測驗中，一班學生得分的分佈的平均值為 61 分。<u>偉健</u>及<u>小麗</u>的標準分分別為 -2.6 及 1.4。<u>偉健</u>得 22 分。某學生宣稱該分佈的分佈域至多為 59 分。該宣稱是否正確？試解釋你的答案。\n(3 分)",
+      "svgSlots": [],
+      "topic": "統計學",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q17",
+      "imagePath": "../images/p1/2016Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "17. 某等差數列的第 1 項及第 38 項分別為 666 及 555 。 求\n\n(a) 該數列的公差， (2 分)\n\n(b) $n$ 的最大值使得該數列的首 $n$ 項之和為正值。 (3 分)",
+      "svgSlots": [],
+      "topic": "等差數列",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q18",
+      "imagePath": "../images/p1/2016Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "18. 設 $f(x) = \\frac{-1}{3}x^2 + 12x - 121$ 。\n\n(a) 利用配方法，求 $y = f(x)$ 的圖像的頂點的坐標。 (2 分)\n\n(b) 藉將 $y = f(x)$ 的圖像垂直平移得出 $y = g(x)$ 的圖像。若 $y = g(x)$ 的圖像與 $x$ 軸相切，求 $g(x)$ 。 (2 分)\n\n(c) 在一變換下，$f(x)$ 變為 $\\frac{-1}{3}x^2 - 12x - 121$ 。描述該變換的幾何意義。 (2 分)",
+      "svgSlots": [],
+      "topic": "二次函數",
+      "year": 2016
+    },
+    {
+      "hasSvg": true,
+      "id": "2016Q19",
+      "imagePath": "../images/p1/2016Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片包含了一道幾何數學題目，以下是完整的文字內容識別：\n\n19. 圖 2 顯示一幾何模型 $ABCD$，其形狀為四面體。已知 $\\angle BAD = 86^\\circ$、$\\angle CBD = 43^\\circ$、$AB = 10\\text{ cm}$、$AC = 6\\text{ cm}$、$BC = 8\\text{ cm}$ 及 $BD = 15\\text{ cm}$。\n\n*   圖形頂點：$A, B, C, D$\n*   圖形說明文字：圖 2\n\n(a) 求 $\\angle ABD$ 及 $CD$。 (4 分)\n(b) 某工匠宣稱 $AB$ 與面 $BCD$ 間的交角為 $\\angle ABC$。你是否同意？試解釋你的答案。 (2 分)",
+      "svgSlots": [],
+      "topic": "Applications of Trigonometry in 3D Space",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2016Q20",
+      "imagePath": "../images/p1/2016Q20.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "20. $\\Delta OPQ$ 為一鈍角三角形。將 $\\Delta OPQ$ 的內心及外心分別記為 $I$ 及 $J$。已知 $P$、$I$ 與 $J$ 共線。\n\n(a) 證明 $OP = PQ$。 (3分)\n\n(b) 引入一直角坐標系使得 $O$ 及 $Q$ 的坐標分別為 $(0, 0)$ 及 $(40, 30)$，而 $P$ 的 $y$ 坐標為 19。設 $C$ 為通過 $O$、$P$ 及 $Q$ 的圓。\n\n(i) 求 $C$ 的方程。\n\n(ii) 設 $L_1$ 及 $L_2$ 為 $C$ 的兩切線使得每一切線的斜率均為 $\\frac{3}{4}$ 且 $L_1$ 的 $y$ 截距較 $L_2$ 大。$L_1$ 分別與 $x$ 軸及 $y$ 軸相交於 $S$ 及 $T$，而 $L_2$ 分別與 $x$ 軸及 $y$ 軸相交於 $U$ 及 $V$。某人宣稱梯形 $STUV$ 的面積超過 17 000。該宣稱是否正確？試解釋你的答案。\n(9分)",
+      "svgSlots": [],
+      "topic": "圓與直線",
+      "year": 2016
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q01",
+      "imagePath": "../images/p1/2017Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "1. 令 $y$ 成為公式 $k = \\frac{3x - y}{y}$ 的主項。 (3 分)",
+      "svgSlots": [],
+      "topic": "Laws of Indices",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q02",
+      "imagePath": "../images/p1/2017Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "2.  化簡 $\\frac{(m^4 n^{-1})^3}{(m^{-2})^5}$ ，並以正指數表示答案。　　　　　　(3 分)",
+      "svgSlots": [],
+      "topic": "指數運算",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q03",
+      "imagePath": "../images/p1/2017Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張數學試卷圖片中的文字內容如下：\n\n3. 因式分解\n   (a) $x^2 - 4xy + 3y^2$ ,\n   (b) $x^2 - 4xy + 3y^2 + 11x - 33y$ 。\n\n(3 分)",
+      "svgSlots": [],
+      "topic": "因式分解",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q04",
+      "imagePath": "../images/p1/2017Q04.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "4. 某劇院只有兩類門票：正價票及特惠票。正價票及特惠票的票價分別為 $\\$126$ 及 $\\$78$。\n在某日，售出正價票的數目為售出特惠票的數目之 $5$ 倍，且售出門票所得的總金額為 $\\$50\\,976$。求在該日售出門票的總數。 \n　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　　($4$ 分)",
+      "svgSlots": [],
+      "topic": "Ratio and Proportion",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q05",
+      "imagePath": "../images/p1/2017Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "5.  (a) 求同時滿足 $7(x-2) \\le \\frac{11x+8}{3}$ 及 $6-x < 5$ 的 $x$ 值的範圍。\n    (b) 有多少個整數同時滿足 (a) 的不等式？\n                                                                                (4 分)",
+      "svgSlots": [],
+      "topic": "不等式",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q06",
+      "imagePath": "../images/p1/2017Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "6.  點 $A$ 及點 $B$ 的坐標分別為 $(-3, 4)$ 及 $(9, -9)$ 。 $A$ 繞原點逆時針方向旋轉 $90^{\\circ}$ 至 $A'$ 。\n    $B'$ 為 $B$ 對 $x$ 軸的反射影像。\n\n    (a) 寫出 $A'$ 及 $B'$ 的坐標。\n\n    (b) 證明 $AB$ 垂直於 $A'B'$ 。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "直線方程",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q07",
+      "imagePath": "../images/p1/2017Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一道關於圓形圖（扇形統計圖）的數學題目。以下是圖片中所有文字和符號的完整識別內容：\n\n 7.\n\n下面的圓形圖顯示某校學生出生季節的分佈。\n\n*   ：扇形標註有一個直角符號（表示角度為 $90^\\circ$）。\n*   ：扇形標註角度為 $158^\\circ$。\n*   ：扇形標註角度為 $x$。\n*   ：未直接標註角度。\n*   ：該校學生出生季節的分佈\n\n若從該校中隨機選出一名學生，則所選出的學生在春季出生的概率為 $\\frac{1}{9}$。\n\n(a) 求 $x$。\n(b) 該校有 $180$ 名學生在冬季出生。求該校學生的人數。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "Polar Coordinates",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q08",
+      "imagePath": "../images/p1/2017Q08.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一道數學題目，內容識別如下：",
+      "svgSlots": [],
+      "topic": "變分法",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q09",
+      "imagePath": "../images/p1/2017Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "9.  若一個瓶子的容量量得 $200\\text{ mL}$ 準確至最接近的 $10\\text{ mL}$ ，則稱它為標準。\n\n    (a) 求一個標準瓶子的最小可取容量。\n\n    (b) 某人宣稱 $120$ 個標準瓶子的總容量可量得 $23.3\\text{ L}$ 準確至最接近的 $0.1\\text{ L}$ 。你是否同意？試解釋你的答案。\n\n    ($5$ 分)",
+      "svgSlots": [],
+      "topic": "近似與誤差",
+      "year": 2017
+    },
+    {
+      "hasSvg": true,
+      "id": "2017Q10",
+      "imagePath": "../images/p1/2017Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片顯示的是一道數學幾何題，以下是題目中的所有文字內容：\n\n10. 圖 1 中，$OPQR$ 為四邊形使得 $OP = OQ = OR$。$OQ$ 與 $PR$ 相交於點 $S$。$S$ 為 $PR$ 的中點。\n\n（圖中標記有頂點 $O$、$P$、$Q$、$R$ 以及交點 $S$，下方標註為「圖 1」）\n\n(a) 證明 $\\Delta OPS \\cong \\Delta ORS$。 (2 分)\n\n(b) 已知 $O$ 為通過 $P$、$Q$ 及 $R$ 的圓的圓心。若 $OQ = 6\\text{ cm}$ 及 $\\angle PRQ = 10^\\circ$，求扇形 $OPQR$ 的面積，答案以 $\\pi$ 表示。 (4 分)",
+      "svgSlots": [
+        "圖1"
+      ],
+      "topic": "圓",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q11",
+      "imagePath": "../images/p1/2017Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "6 | 1  1  1  3  4  6  8  9  9 |\n| 7 | $a$  7  7  8 |\n| 8 | 1  $b$ |",
+      "svgSlots": [],
+      "topic": "Polynomials",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q12",
+      "imagePath": "../images/p1/2017Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "12. 把一底面積為 $84\\text{ cm}^2$ 及高為 $20\\text{ cm}$ 的實心金屬直立角柱體熔化，並重鑄成兩個相似的實心直立角錐體。該兩個角錐體的底均為正方形。較小的角錐體的底面積與較大的角錐體的底面積之比為 $4 : 9$。\n\n(a) 求較大的角錐體的體積。 (3 分)\n\n(b) 若較大的角錐體的高為 $12\\text{ cm}$，求較小的角錐體的總表面面積。 (4 分)",
+      "svgSlots": [],
+      "topic": "立體幾何",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q13",
+      "imagePath": "../images/p1/2017Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "13. 點 $E$、點 $F$ 及點 $G$ 的坐標分別為 $(-6,5)$、$(-3,11)$ 及 $(2,-1)$。圓 $C$ 通過 $E$ 且 $C$ 的圓心為 $G$。\n\n(a) 求 $C$ 的方程。  (2 分)\n\n(b) 證明 $F$ 在 $C$ 以外。 (2 分)\n\n(c) 設 $H$ 為 $C$ 上的一動點。當 $H$ 最遠離 $F$ 時，\n\n    (i) 描述 $F$、$G$ 與 $H$ 之間的幾何關係；\n    \n    (ii) 求通過 $F$ 及 $H$ 的直線的方程。\n    \n    (3 分)",
+      "svgSlots": [],
+      "topic": "坐標幾何",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q14",
+      "imagePath": "../images/p1/2017Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "14. 設 $f(x) = 6x^3 - 13x^2 - 46x + 34$。當 $f(x)$ 除以 $2x^2 + ax + 4$ 時，商式及餘式分別為 $3x + 7$ 及 $bx + c$，其中 $a$、$b$ 及 $c$ 均為常數。\n\n(a) 求 $a$。 (3 分)\n\n(b) 設 $g(x)$ 為二次多項式使得當 $g(x)$ 除以 $2x^2 + ax + 4$ 時，餘式為 $bx + c$。\n\n(i) 證明 $f(x) - g(x)$ 可被 $2x^2 + ax + 4$ 整除。\n\n(ii) 某人宣稱方程 $f(x) - g(x) = 0$ 所有的根均為整數。你是否同意？試解釋你的答案。 (5 分)",
+      "svgSlots": [],
+      "topic": "Coordinate Geometry of Circles and Loci",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q15",
+      "imagePath": "../images/p1/2017Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "15. 設 $a$ 及 $b$ 均為常數。將 $y = a + \\log_b x$ 的圖像記為 $G$。$G$ 的 $x$ 截距為 $9$ 且 $G$ 通過點 $(243, 3)$。以 $y$ 表 $x$。\n(4 分)",
+      "svgSlots": [],
+      "topic": "對數函數",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q16",
+      "imagePath": "../images/p1/2017Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "16. 某城市採納從另一城市輸入食水的計劃。已知自該計劃開始起計的第 $1$ 年所輸入的食水量為 $1.5 \\times 10^7\\text{ m}^3$，並且在隨後各年裏，每年所輸入的食水量均較前一年所輸入的食水量少 $10\\%$。\n\n(a) 求自該計劃開始起計的首 $20$ 年所輸入的總食水量。 (2 分)\n\n(b) 某人宣稱自該計劃開始起計所輸入的總食水量不會超過 $1.6 \\times 10^8\\text{ m}^3$。你是否同意？試解釋你的答案。 (2 分)",
+      "svgSlots": [],
+      "topic": "Geometric Sequence",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q17",
+      "imagePath": "../images/p1/2017Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "17. 某袋子內有 4 枝綠筆、7 枝藍筆及 8 枝黑筆。若從該袋子中隨機同時抽出 5 枝筆，\n\n(a) 求抽出恰好 4 枝綠筆的概率； (2分)\n\n(b) 求抽出恰好 3 枝綠筆的概率； (2分)\n\n(c) 求抽出不多於 2 枝綠筆的概率。 (2分)",
+      "svgSlots": [],
+      "topic": "等比數列",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2017Q18",
+      "imagePath": "../images/p1/2017Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "18. 拋物線 $\\Gamma$ 的方程為 $y = 2x^2 - 2kx + 2x - 3k + 8$，其中 $k$ 為一實常數。將直線 $y = 19$ 記為 $L$。\n\n(a) 證明 $L$ 與 $\\Gamma$ 相交於兩相異點。 (3 分)\n\n(b) $L$ 與 $\\Gamma$ 的交點為 $A$ 及 $B$。\n\n(i) 設 $a$ 及 $b$ 分別為 $A$ 及 $B$ 的 $x$ 坐標。證明 $(a - b)^2 = k^2 + 4k + 23$。\n\n(ii) $A$ 與 $B$ 間的距離有沒有可能少於 4？ 試解釋你的答案。 (5 分)",
+      "svgSlots": [],
+      "topic": "概率",
+      "year": 2017
+    },
+    {
+      "hasSvg": true,
+      "id": "2017Q19",
+      "imagePath": "../images/p1/2017Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一份數學試卷的題目，內容如下：\n\n19. $ABC$ 為三角形金屬薄片，其中 $BC = 24 \\text{ cm}$ 、 $\\angle BAC = 30^\\circ$ 及 $\\angle ACB = 42^\\circ$ 。\n    (a) 求 $AC$ 的長度。 (2分)\n    (b) 圖 2 中，把金屬薄片 $ABC$ 懸掛使得只有頂點 $B$ 位於水平地面上。$D$ 及 $E$ 均為水平地面上的點，且分別鉛垂於頂點 $A$ 及頂點 $C$ 之下。$AC$ 的延線與水平地面相交於點 $F$ 。某工匠得知 $AD = 10 \\text{ cm}$ 及 $CE = 2 \\text{ cm}$ 。\n\n（圖 2 展示了三角形 $ABC$ 懸浮在水平面上的立體幾何關係，其中 $A$ 投影到 $D$，$C$ 投影到 $E$，延伸線 $ACF$ 交地面於 $F$，頂點 $B$ 在地面上。）\n\n圖 2\n\n(i) 求 $C$ 與 $F$ 間的距離。\n(ii) 求 $\\triangle ABF$ 的面積。\n(iii) 求金屬薄片 $ABC$ 與水平地面間的傾角。\n(iv) 該工匠宣稱 $\\triangle BDF$ 的面積大於 $460 \\text{ cm}^2$ 。你是否同意？試解釋你的答案。 (11分)",
+      "svgSlots": [
+        "圖2"
+      ],
+      "topic": "三角學",
+      "year": 2017
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q01",
+      "imagePath": "../images/p1/2018Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "1. 令 $b$ 成為公式 $\\frac{a + 4}{3} = \\frac{b + 1}{2}$ 的主項。 (3 分)",
+      "svgSlots": [],
+      "topic": "代數運算",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q02",
+      "imagePath": "../images/p1/2018Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "2. 化簡 $\\frac{xy^7}{(x^{-2}y^3)^4}$ ，並以正指數表示答案。  (3 分)",
+      "svgSlots": [],
+      "topic": "指數運算",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q03",
+      "imagePath": "../images/p1/2018Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "3. (a) 將 265.473 上捨入至最接近的整數。\n\n    (b) 將 265.473 下捨入至一位小數。\n\n    (c) 將 265.473 捨入至二位有效數字。\n\n(3 分)",
+      "svgSlots": [],
+      "topic": "近似與誤差",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q04",
+      "imagePath": "../images/p1/2018Q04.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "4.  某盒子中有 $n$ 個白球、 5 個黑球及 8 個紅球。 若從該盒子中隨機抽出一個球， 則抽\n    出紅球的概率為 $\\frac{2}{5}$ 。 求 $n$ 的值。                                          (3 分)",
+      "svgSlots": [],
+      "topic": "概率",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q05",
+      "imagePath": "../images/p1/2018Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "5.  因式分解\n    (a) $9r^3 - 18r^2s$ ，\n    (b) $9r^3 - 18r^2s - rs^2 + 2s^3$ 。\n    (4 分)",
+      "svgSlots": [],
+      "topic": "因式分解",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q06",
+      "imagePath": "../images/p1/2018Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片包含了一道數學題目，內容如下：\n\n6. (a) 求同時滿足 $\\frac{3 - x}{2} > 2x + 7$ 及 $x + 8 \\ge 0$ 的 $x$ 值的範圍。\n\n    (b) 寫出同時滿足 (a) 的不等式的最大整數。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "不等式",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q07",
+      "imagePath": "../images/p1/2018Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "7. 某花瓶的標價較其成本高 30%。該花瓶以其標價六折售出並虧蝕 $88。求該花瓶的標價。\n(5 分)",
+      "svgSlots": [],
+      "topic": "百分數應用",
+      "year": 2018
+    },
+    {
+      "hasSvg": true,
+      "id": "2018Q08",
+      "imagePath": "../images/p1/2018Q08.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片包含了一道幾何數學題目，以下是識別出的所有文字內容、數學符號、變量及題目要求：\n\n8. 圖 1 中，$ABCDE$ 為一圓。已知 $AB // ED$。$AD$ 與 $BE$ 相交於點 $F$。\n\n*   圓上的點：$A, B, C, D, E$\n*   相交點：$F$\n*   角度變量：\n    *   $\\angle DAB = x$\n    *   $\\angle EFD = y$\n    *   $\\angle BCD = \\theta$\n*   圖下方的標題：圖 1\n\n以 $\\theta$ 表 $x$ 及 $y$。\n\n(5 分)",
+      "svgSlots": [
+        "圖1"
+      ],
+      "topic": "圓",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q09",
+      "imagePath": "../images/p1/2018Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "9. 某汽車以平均速率 $72\\text{ km/h}$ 由 $P$ 城駛至 $Q$ 城，該汽車然後以平均速率 $90\\text{ km/h}$ 由 $Q$ 城駛至 $R$ 城。已知該汽車在整段行程中以 $161$ 分鐘行駛 $210\\text{ km}$。該汽車由 $P$ 城駛至 $Q$ 城需時多久？\n(5 分)",
+      "svgSlots": [],
+      "topic": "速率與時間",
+      "year": 2018
+    },
+    {
+      "hasSvg": true,
+      "id": "2018Q10",
+      "imagePath": "../images/p1/2018Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片包含的數學題目文字內容如下：\n\n10. 下面的框線圖顯示某公司 $X$ 組文員的年歲的分佈。已知這分佈的分佈域及四分位數間距分別為 43 及 21。\n\n*   框線圖下的數軸標記值分別為：$19, 27, 38, a, b$\n*   橫軸標籤為：年歲\n\n(a) 求 $a$ 及 $b$。 (3 分)\n\n(b) 該公司 $Y$ 組有五名文員且其中三名的年歲均為 38。已知 $Y$ 組文員的年歲的分佈域為 20。 $X$ 組與 $Y$ 組現合併為一部門。公司經理宣稱該部門文員的年歲的分佈域與 $X$ 組文員的年歲的分佈域必為相同。你是否同意？試解釋你的答案。 (2 分)",
+      "svgSlots": [
+        "框線圖"
+      ],
+      "topic": "統計學",
+      "year": 2018
+    },
+    {
+      "hasSvg": true,
+      "id": "2018Q11",
+      "imagePath": "../images/p1/2018Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片中的數學題目完整文字內容如下：\n\n11. 下表顯示一些家庭的子女人數的分佈：\n\n| 子女人數 | 0 | 1 | 2 | 3 | 4 |\n| :--- | :---: | :---: | :---: | :---: | :---: |\n| 家庭數目 | $k$ | 2 | 9 | 6 | 7 |\n\n已知 $k$ 為一正整數。\n\n(a) 若該分佈的眾數為 2，寫出\n(i) $k$ 的最小可取值；\n(ii) $k$ 的最大可取值。\n(2 分)\n\n(b) 若該分佈的中位數為 2，寫出\n(i) $k$ 的最小可取值；\n(ii) $k$ 的最大可取值。\n(2 分)\n\n(c) 若該分佈的平均值為 2，求 $k$ 的值。\n(2 分)",
+      "svgSlots": [
+        "表格"
+      ],
+      "topic": "統計學",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q12",
+      "imagePath": "../images/p1/2018Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "12. 設 $f(x) = 4x(x + 1)^2 + ax + b$，其中 $a$ 及 $b$ 均為常數。已知 $x - 3$ 為 $f(x)$ 的因式。當 $f(x)$ 除以 $x + 2$ 時，餘數為 $2b + 165$。\n\n(a) 求 $a$ 及 $b$。 (3 分)\n\n(b) 某人宣稱方程 $f(x) = 0$ 有至少一個無理根。你是否同意？試解釋你的答案。 (4 分)",
+      "svgSlots": [],
+      "topic": "多項式",
+      "year": 2018
+    },
+    {
+      "hasSvg": true,
+      "id": "2018Q13",
+      "imagePath": "../images/p1/2018Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "13. 圖 2 中，$ABCD$ 為一梯形，且 $\\angle ABC = 90^\\circ$ 及 $AB \\parallel DC$。$E$ 為 $BC$ 上的一點使得 $\\angle AED = 90^\\circ$。\n\n[圖 2 顯示梯形 $ABCD$，其中 $\\angle B$ 和 $\\angle C$ 為直角，$E$ 在 $BC$ 上，連接 $AE$、$ED$ 和 $AD$，形成三角形。]\n\n$\\qquad\\qquad\\qquad\\qquad\\text{圖 2}$\n\n(a) $\\quad$ 證明 $\\triangle ABE \\sim \\triangle ECD$。 $\\hfill(2 \\text{ 分})$\n\n(b) $\\quad$ 已知 $AB = 15 \\text{ cm}$ 、 $AE = 25 \\text{ cm}$ 及 $CE = 36 \\text{ cm}$ 。\n\n$\\quad$ (i) $\\quad$ 求 $CD$ 的長度。\n\n$\\quad$ (ii) $\\quad$ 求 $\\triangle ADE$ 的面積。\n\n$\\quad$ (iii) $\\quad$ $AD$ 上是否有一點 $F$ 使得 $E$ 與 $F$ 間的距離少於 $23 \\text{ cm}$？試解釋你的答案。\n$\\hfill(6 \\text{ 分})$",
+      "svgSlots": [
+        "圖2"
+      ],
+      "topic": "三角形幾何",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q14",
+      "imagePath": "../images/p1/2018Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "14. 一底半徑為 $8\\text{ cm}$ 及高為 $64\\text{ cm}$ 的直立圓柱形的容器與一底半徑為 $20\\text{ cm}$ 及高為 $60\\text{ cm}$ 的倒置直立圓錐形的器皿均鉛垂放置。該容器載滿了水。現將該容器內的水倒入該器皿內。\n\n(a) 求該器皿內水的體積，答案以 $\\pi$ 表示。 (2 分)\n\n(b) 求該器皿內水的深度。 (4 分)\n\n(c) 若將一半徑為 $14\\text{ cm}$ 的實心金屬球體隨後放進該器皿內，且該球體完全浸入水中，水會否溢出？試解釋你的答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "立體幾何",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q15",
+      "imagePath": "../images/p1/2018Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "15. 一個八位電話號碼由 2、3、4、5、6、7、8 及 9 的排列所組成。\n\n    (a) 可組成多少個不同的八位電話號碼？ (1 分)\n\n    (b) 若八位電話號碼的第一個位及最後一個位均為奇數，則可組成多少個不同的八位電話號碼？ (2 分)",
+      "svgSlots": [],
+      "topic": "排列與組合",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q16",
+      "imagePath": "../images/p1/2018Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "16. 某等比數列的第 3 項及第 4 項分別為 720 及 864。\n\n(a) 求該數列的第 1 項。 (2 分)\n\n(b) 求 $n$ 的最大值使得第 $(n+1)$ 項與第 $(2n+1)$ 項之和小於 $5 \\times 10^{14}$。 (3 分)",
+      "svgSlots": [],
+      "topic": "Arithmetic Sequence",
+      "year": 2018
+    },
+    {
+      "hasSvg": true,
+      "id": "2018Q17",
+      "imagePath": "../images/p1/2018Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "3(a) 顯示一個平行四邊形 $ABCD$，其中畫有一條對角線 $BD$。頂點標記為 $A, B, C, D$。]\n\n[圖 3(b) 顯示摺起後的立體形狀，其中 $BD$ 為摺痕（虛線），$A$ 點被向上摺起。頂點標記為 $A, B, C, D$。]",
+      "svgSlots": [
+        "圖3(a)",
+        "圖3(b)"
+      ],
+      "topic": "立體幾何",
+      "year": 2018
+    },
+    {
+      "hasSvg": true,
+      "id": "2018Q18",
+      "imagePath": "../images/p1/2018Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "18. 已知 $f(x)$ 的一部分隨 $x^2$ 正變，而另一部分則隨 $x$ 正變。假定 $f(2) = 60$ 及 $f(3) = 99$。\n\n    (a) 求 $f(x)$ 。 (3 分)\n\n    (b) 設 $Q$ 為 $y = f(x)$ 的圖像的頂點及 $R$ 為 $y = 27 - f(x)$ 的圖像的頂點。\n        (i) 利用配方法，求 $Q$ 的坐標。\n        (ii) 寫出 $R$ 的坐標。\n        (iii) 點 $S$ 的坐標為 $(56, 0)$。設 $P$ 為 $\\Delta QRS$ 的外心。描述 $P$、 $Q$ 與 $R$ 之間的幾何關係。試解釋你的答案。\n        (5 分)",
+      "svgSlots": [],
+      "topic": "3D Trigonometry",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2018Q19",
+      "imagePath": "../images/p1/2018Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "19. 圓 $C$ 的圓心的坐標為 $(8, 2)$。將 $C$ 的半徑記為 $r$。設 $L$ 為直線 $kx - 5y - 21 = 0$ ，其中 $k$ 為一常數。已知 $L$ 為 $C$ 的切線。\n\n(a) 求 $C$ 的方程，答案以 $r$ 表示。由此，以 $k$ 表 $r^2$ 。 (4 分)\n\n(b) $L$ 通過點 $D(18, 39)$ 。\n(i) 求 $r$。\n(ii) 已知 $L$ 與 $y$ 軸相交於點 $E$。設 $F$ 為一點使得 $C$ 為 $\\Delta DEF$ 的內切圓。\n$\\Delta DEF$ 是否一鈍角三角形？試解釋你的答案。\n(8 分)",
+      "svgSlots": [],
+      "topic": "圓",
+      "year": 2018
+    },
+    {
+      "hasSvg": false,
+      "id": "2019Q01",
+      "imagePath": "../images/p1/2019Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "---\n\n*    1.\n*    將變量 $h$ 變更為給定公式的主項（即將公式整理成 $h = \\dots$ 的形式）。\n*    $9(h+6k) = 7h+8$\n*    $h, k$\n*    (3 分)",
+      "svgSlots": [],
+      "topic": "代數運算",
+      "year": 2019
+    },
+    {
+      "hasSvg": false,
+      "id": "2019Q02",
+      "imagePath": "../images/p1/2019Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "2. 化簡 $\\frac{3}{7x - 6} - \\frac{2}{5x - 4}$。 (3 分)",
+      "svgSlots": [],
+      "topic": "代數運算",
+      "year": 2019
+    },
+    {
+      "hasSvg": false,
+      "id": "2019Q03",
+      "imagePath": "../images/p1/2019Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "3. 一長方形的長及闊分別為 $24\\text{ cm}$ 及 $(13 + r)\\text{ cm}$。若該長方形的對角線的長度為 $(17 - 3r)\\text{ cm}$，求 $r$。\n(3 分)",
+      "svgSlots": [],
+      "topic": "代數運算",
+      "year": 2019
+    },
+    {
+      "hasSvg": false,
+      "id": "2019Q05",
+      "imagePath": "../images/p1/2019Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "5.  某錢包以其標價七五折售出。該錢包的售價為 $690 。\n\n    (a) 求該錢包的標價。\n\n    (b) 售出該錢包後，盈利百分率為 15%。求該錢包的成本。\n\n                                                                                                        (4分)",
+      "svgSlots": [],
+      "topic": "Percentages",
+      "year": 2019
+    },
+    {
+      "hasSvg": false,
+      "id": "2019Q07",
+      "imagePath": "../images/p1/2019Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "7. 在某遊樂場，成人人數與小童人數之比為 $13 : 6$。若 $9$ 名成人和 $24$ 名小童進入該遊樂場，則成人人數與小童人數之比為 $8 : 7$。求在該遊樂場原本的成人人數。（4 分）",
+      "svgSlots": [],
+      "topic": "Ratio and Proportion",
+      "year": 2019
+    },
+    {
+      "hasSvg": true,
+      "id": "2019Q08",
+      "imagePath": "../images/p1/2019Q08.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一道關於圓形圖（扇形統計圖）的數學題目。以下是圖片中的文字和數學內容的完整識別：\n\n---\n\n*   圓形圖標題：\n*   圖中顯示了四個扇形，分別代表擁有不同指環數目的女生比例：\n    *   擁有  枚指環的扇形，圓心角為 $144^\\circ$。\n    *   擁有  枚指環的扇形，圓心角為 $54^\\circ$。\n    *   擁有  枚指環的扇形，圓心角處標有直角符號（即 $90^\\circ$）。\n    *   擁有  枚指環的扇形，圓心角未直接標出（可計算得 $360^\\circ - 144^\\circ - 54^\\circ - 90^\\circ = 72^\\circ$）。\n\n(a) 寫出該分佈的眾數。\n(b) 求該分佈的平均值。\n(c) 若從該群中隨機選出一名女生，求所選出的女生擁有多於 3 枚指環的概率。",
+      "svgSlots": [],
+      "topic": "Statistics",
+      "year": 2019
+    },
+    {
+      "hasSvg": false,
+      "id": "2019Q10",
+      "imagePath": "../images/p1/2019Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "10. 已知 $h(x)$ 的一部分為常數，另一部分則隨 $x$ 正變。假定 $h(-2) = -96$ 及 $h(5) = 72$。\n\n(a) 求 $h(x)$ 。 (3 分)\n\n(b) 解方程 $h(x) = 3x^2$ 。 (2 分)",
+      "svgSlots": [],
+      "topic": "Variations",
+      "year": 2019
+    },
+    {
+      "hasSvg": false,
+      "id": "2019Q12",
+      "imagePath": "../images/p1/2019Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "12. 下面的幹葉圖顯示一些男生在 $400\\text{ m}$ 賽跑的成績（以秒為單位）的分佈。\n\n| 幹（十位） | 葉（個位） |\n| :--- | :--- |\n| 5 | $a$ |\n| 6 | 0  0  3  $c$  $c$  8  9  9  9 |\n| 7 | 0  1  1  1  2  2  5  6  9 |\n| 8 | $b$ |\n\n已知該分佈的四分位數間距為 $8$ 秒。\n\n(a) 求 $c$。 \n\n(b) 已知該分佈的分佈域超過 $34$ 秒且該分佈的平均值為 $69$ 秒。求\n    (i) $a$ 及 $b$，\n    (ii) 該分佈的最小可取標準差。",
+      "svgSlots": [],
+      "topic": "Measures of Dispersion",
+      "year": 2019
+    },
+    {
+      "hasSvg": true,
+      "id": "2019Q13",
+      "imagePath": "../images/p1/2019Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "13. 圖 1 中，$O$ 為圓 $ABCDE$ 的圓心。$AC$ 為該圓的一直徑。$BD$ 與 $OC$ 相交於點 $F$。\n已知 $\\angle AED = 115^\\circ$。\n\n（圖片標籤：圖 1，點包括 $A, B, C, D, E, O, F$）\n\n(a) 求 $\\angle CBF$。  (3 分)\n\n(b) 假定 $BC // OD$ 及 $OB = 18\\text{ cm}$。扇形 $OBC$ 的周界是否少於 $60\\text{ cm}$？試解釋你的答案。  (5 分)",
+      "svgSlots": [
+        "【1】"
+      ],
+      "topic": "Properties of Circles",
+      "year": 2019
+    },
+    {
+      "hasSvg": false,
+      "id": "2019Q17",
+      "imagePath": "../images/p1/2019Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "17. (a)  設 $a$ 及 $p$ 分別為 $\\Delta CDE$ 的面積及周界。將 $\\Delta CDE$ 的內切圓的半徑記為 $r$。\n證明 $pr = 2a$。\n(2 分)\n\n(b)  點 $H$ 及點 $K$ 的坐標分別為 $(9, 12)$ 及 $(14, 0)$。設 $P$ 為直角坐標平面上的一動點使得由 $P$ 至 $OH$ 的垂直距離等於由 $P$ 至 $HK$ 的垂直距離，其中 $O$ 為原點。將 $P$ 的軌跡記為 $\\Gamma$。\n\n(i)  描述 $\\Gamma$ 與 $\\angle OHK$ 之間的幾何關係。\n\n(ii)  利用 (a)，求 $\\Gamma$ 的方程。\n(5 分)",
+      "svgSlots": [],
+      "topic": "Coordinate Geometry",
+      "year": 2019
+    },
+    {
+      "hasSvg": false,
+      "id": "2019Q19",
+      "imagePath": "../images/p1/2019Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "19. 設 $f(x) = \\frac{1}{1+k} \\left( x^2 + (6k-2)x + (9k+25) \\right)$，其中 $k$ 為一正常數。將點 $(4, 33)$ 記為 $F$。\n\n(a) 證明 $y = f(x)$ 的圖像通過 $F$。 (1 分)\n\n(b) 將 $y = f(x)$ 的圖像對 $y$ 軸反射，然後將所得的圖像向上平移 4 單位得出 $y = g(x)$ 的圖像。設 $U$ 為 $y = g(x)$ 的圖像的頂點。將原點記為 $O$。\n\n(i) 利用配方法，以 $k$ 表 $U$ 的座標。\n\n(ii) 求 $k$ 使得通過 $F$、$O$ 及 $U$ 的圓的面積最小。\n\n(iii) 對任意正常數 $k$，$y = g(x)$ 的圖像均通過同一點 $G$。設 $V$ 為 $y = g(x)$ 的圖像的頂點使得通過 $F$、$O$ 及 $V$ 的圓的面積最小。$F$、$G$、$O$ 與 $V$ 是否共圓？試解釋你的答案。\n\n(11 分)",
+      "svgSlots": [],
+      "topic": "Quadratic Functions and Circles",
+      "year": 2019
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q02",
+      "imagePath": "../images/p1/2020Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "2. 因式分解\n(a) $\\alpha^2 + \\alpha - 6$ ，\n(b) $\\alpha^4 + \\alpha^3 - 6\\alpha^2$ 。\n(3 分)",
+      "svgSlots": [],
+      "topic": "Factorization",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q03",
+      "imagePath": "../images/p1/2020Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "3. (a) 將 534.7698 上捨入至最接近的百位。\n    (b) 將 534.7698 下捨入至二位小數。\n    (c) 將 534.7698 捨入至二位有效數字。\n    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3 分)",
+      "svgSlots": [],
+      "topic": "Approximation and Errors",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q06",
+      "imagePath": "../images/p1/2020Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "6. 考慮複合不等式\n$$3 - x > \\frac{7 - x}{2} \\text{ 或 } 5 + x > 4 \\quad \\dots\\dots\\dots\\dots\\dots\\dots\\dots\\dots (*) \\text{。}$$\n\n(a) 解 $(*)$ 。\n(b) 寫出滿足 $(*)$ 的最大負整數。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "Compound Inequalities",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q07",
+      "imagePath": "../images/p1/2020Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "7. 設 $p(x) = 4x^2 + 12x + c$，其中 $c$ 為一常數。方程 $p(x) = 0$ 有等根。求\n\n   (a) $c$ ，\n\n   (b) $y = p(x) - 169$ 的圖像的 $x$ 截距。\n\n(5 分)",
+      "svgSlots": [],
+      "topic": "Quadratic Equations",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q09",
+      "imagePath": "../images/p1/2020Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "9.  下表顯示某班學生所修科目的數目的分佈。\n\n| 所修科目的數目 | 4 | 5 | 6 | 7 |\n| :--- | :---: | :---: | :---: | :---: |\n| 學生人數 | 8 | 12 | 16 | 4 |\n\n(a) 寫出上述分佈的平均值、中位數及標準差。\n\n(b) 現有一新生加入該班。該新生所修科目的數目為 5。求加入這學生而引致該分佈的中位數的改變。\n\n(5 分)",
+      "svgSlots": [],
+      "topic": "Statistics",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q10",
+      "imagePath": "../images/p1/2020Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "10. 一個高度為 $h \\text{ cm}$ 的 $X$ 牌紀念品的價錢為 $\\$P$。$P$ 的一部分為常數，而另一部分隨 $h^3$ 正變。當 $h=3$ 時，$P=59$；且當 $h=7$ 時，$P=691$。\n\n(a) 求一個高度為 $4 \\text{ cm}$ 的 $X$ 牌紀念品的價錢。 (4 分)\n\n(b) 某人宣稱一個高度為 $5 \\text{ cm}$ 的 $X$ 牌紀念品的價錢高於兩個高度均為 $4 \\text{ cm}$ 的 $X$ 牌紀念品的總價錢。該宣稱是否正確？試解釋你的答案。 (2 分)",
+      "svgSlots": [],
+      "topic": "Variation",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q11",
+      "imagePath": "../images/p1/2020Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "11. 下面的幹葉圖顯示某袋子內的信件的重量（以克為單位）的分佈。\n\n| 幹（十位） | 葉（個位） | | | | | | |\n| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |\n| 1 | 1 | 2 | 3 | 3 | | | |\n| 2 | 3 | 3 | 4 | 5 | 6 | 9 | 9 |\n| 3 | 1 | 6 | 7 | 8 | 8 | 8 | |\n| 4 | 2 | | | | | | |\n| 5 | 0 | $w$ | | | | | |\n\n已知上述分佈的分佈域為其四分位數間距的三倍。\n\n(a) 求 $w$。 (4 分)\n\n(b) 若從該袋子中隨機抽取一信件，求所抽取的信件的重量不少於該分佈的眾數的概率。 (2 分)",
+      "svgSlots": [],
+      "topic": "Stem-and-leaf Diagrams and Measures of Dispersion",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q13",
+      "imagePath": "../images/p1/2020Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "13. 三次多項式 $f(x)$ 可被 $x-1$ 整除。當 $f(x)$ 除以 $x^2-1$ 時，餘式為 $kx+8$，其中 $k$ 為一常數。\n\n(a) 求 $k$。 (3 分)\n\n(b) 已知 $x+3$ 為 $f(x)$ 的因式。當 $f(x)$ 除以 $x$ 時，餘數為 24。某人宣稱方程 $f(x)=0$ 所有的根均為整數。該宣稱是否正確？試解釋你的答案。 (5 分)",
+      "svgSlots": [],
+      "topic": "Polynomials",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q15",
+      "imagePath": "../images/p1/2020Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "15. 某箱子內有 3 隻藍色碟、7 隻綠色碟及 9 隻紫色碟。若從該箱子中隨機同時抽出 4 隻碟，求\n\n(a) 抽出 4 隻相同顏色的碟的概率； (3 分)\n\n(b) 抽出至少 2 隻不同顏色的碟的概率。 (2 分)",
+      "svgSlots": [],
+      "topic": "Probability",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2020Q17",
+      "imagePath": "../images/p1/2020Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "17. 設 $g(x) = x^2 - 2kx + 2k^2 + 4$ ，其中 $k$ 為一實常數。\n\n(a) 利用配方法，以 $k$ 表 $y = g(x)$ 的圖像的頂點的坐標。 (2 分)\n\n(b) 在同一直角坐標系中，設 $D$ 及 $E$ 分別為 $y = g(x+2)$ 的圖像的頂點及 $y = -g(x-2)$ 的圖像的頂點。這直角坐標系中是否有一點 $F$ 使得 $\\Delta DEF$ 的外心的坐標為 $(0, 3)$？試解釋你的答案。 (4 分)",
+      "svgSlots": [],
+      "topic": "Quadratic Functions and Geometry",
+      "year": 2020
+    },
+    {
+      "hasSvg": false,
+      "id": "2021Q01",
+      "imagePath": "../images/p1/2021Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "1. 化簡 $(\\alpha\\beta^3)(\\alpha^{-2}\\beta^4)^5$ ，並以正指數表示答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "Laws of Indices",
+      "year": 2021
+    },
+    {
+      "hasSvg": false,
+      "id": "2021Q03",
+      "imagePath": "../images/p1/2021Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "3. 因式分解\n(a) $6x^2 + xy - 2y^2$ ，\n(b) $8x - 4y - 6x^2 - xy + 2y^2$ 。\n\n(3 分)",
+      "svgSlots": [],
+      "topic": "Factorization",
+      "year": 2021
+    },
+    {
+      "hasSvg": false,
+      "id": "2021Q05",
+      "imagePath": "../images/p1/2021Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "5. 某男生擁有貼紙的數目為某女生擁有的 3 倍。若該男生將他其中的 20 張貼紙送給該女生，則該女生擁有貼紙的數目為該男生擁有的 2 倍。求該男生和該女生擁有貼紙的總數。 (4 分)",
+      "svgSlots": [],
+      "topic": "Linear Equations in Two Unknowns",
+      "year": 2021
+    },
+    {
+      "hasSvg": false,
+      "id": "2021Q06",
+      "imagePath": "../images/p1/2021Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片中的文字內容如下：\n\n6.  某襯衣的標價較其成本高 $80。該襯衣以其標價九折售出。售出該襯衣後，盈利百分率為 30%。求該襯衣的標價。 (4 分)",
+      "svgSlots": [],
+      "topic": "Percentages",
+      "year": 2021
+    },
+    {
+      "hasSvg": true,
+      "id": "2021Q09",
+      "imagePath": "../images/p1/2021Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "這張圖片是一道關於統計圖表分析的數學題目。以下是圖片中所有文字和數學內容的完整識別：\n\n---\n\n### \n\n*    學生人數\n*    閱書數目\n*   \n    *   23 本：12 人\n    *   24 本：$k$ 人\n    *   25 本：16 人\n    *   26 本：9 人\n    *   27 本：11 人\n    *   28 本：4 人\n\n---",
+      "svgSlots": [],
+      "topic": "Measures of Dispersion",
+      "year": 2021
+    },
+    {
+      "hasSvg": false,
+      "id": "2021Q10",
+      "imagePath": "../images/p1/2021Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "10. 已知 $f(x)$ 的一部分為常數，另一部分則隨 $(x+4)^2$ 正變。 假定 $f(-3) = 0$ 及 $f(2) = 105$ 。\n\n(a) 求 $f(0)$ 。 (3 分)\n\n(b) 將 $y = f(x) + 3$ 的圖像記為 $G$ 。\n$\\quad$ (i) 寫出 $G$ 的 $y$ 截距。\n$\\quad$ (ii) 求 $G$ 的 $x$ 截距。 (3 分)",
+      "svgSlots": [],
+      "topic": "Variations",
+      "year": 2021
+    },
+    {
+      "hasSvg": true,
+      "id": "2021Q12",
+      "imagePath": "../images/p1/2021Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "12. 多項式 $p(x)$ 可被 $x-5$ 整除。當 $p(x)$ 除以 $x^2+x+1$ 時，商式及餘式分別為 $2x^2-37$ 及 $cx+c-1$，其中 $c$ 為一常數。\n\n(a) 求 $c$。 (3 分)\n\n(b) 證明 $x+3$ 為 $p(x)$ 的因式。 (1 分)\n\n(c) 某人宣稱方程 $p(x)=0$ 所有的根均為實數。該宣稱是否正確？試解釋你的答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "多項式",
+      "year": 2021
+    },
+    {
+      "hasSvg": true,
+      "id": "2021Q13",
+      "imagePath": "../images/p1/2021Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "13. 圓 $C$ 的方程為 $x^2 + y^2 - 12x - 16y - 69 = 0$ 。 設 $G$ 為 $C$ 的圓心。 將原點記為 $O$ 。\n\n(a) 求 $OG$ 。 (2 分)\n\n(b) $O$ 是否位於 $C$ 以內？ 試解釋你的答案。 (1 分)\n\n(c) 設 $P$ 為直角坐標平面上的一動點使得 $OP = GP$ 。 將 $P$ 的軌跡記為 $\\Gamma$ 。 假定 $\\Gamma$ 與 $C$ 相交於點 $M$ 及點 $N$ 。 求四邊形 $OMGN$ 的面積。 (4 分)",
+      "svgSlots": [],
+      "topic": "圓",
+      "year": 2021
+    },
+    {
+      "hasSvg": true,
+      "id": "2021Q14",
+      "imagePath": "../images/p1/2021Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "14. 實心直立圓柱體 $X$ 的底半徑與實心直立圓錐體 $Y$ 的底半徑相等。$X$ 及 $Y$ 的高分別為 $20\\text{ cm}$ 及 $24\\text{ cm}$。實心直立圓錐體 $Z$ 的體積等於 $X$ 的體積與 $Y$ 的體積之和。$Z$ 的底半徑等於 $X$ 的底直徑。某工匠得知 $Y$ 的體積為 $800\\pi\\text{ cm}^3$。\n\n    (a) 求 $Y$ 的底半徑。 (2 分)\n\n    (b) $Y$ 與 $Z$ 是否相似？試解釋你的答案。 (3 分)\n\n    (c) 該工匠宣稱 $X$ 的曲面面積與 $Y$ 的曲面面積之和大於 $Z$ 的曲面面積。你是否同意？試解釋你的答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "立體幾何",
+      "year": 2021
+    },
+    {
+      "hasSvg": false,
+      "id": "2021Q15",
+      "imagePath": "../images/p1/2021Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "15. 7 名教師與 3 名學生隨機排成一隊。\n\n(a) 可排成多少不同的隊？ (1 分)\n\n(b) 求沒有學生在該隊中相鄰而排的概率。 (3 分)",
+      "svgSlots": [],
+      "topic": "排列與組合",
+      "year": 2021
+    },
+    {
+      "hasSvg": false,
+      "id": "2021Q16",
+      "imagePath": "../images/p1/2021Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "16. 直線 $L_1$ 與直線 $L_2$ 互相垂直。$L_1$ 的 $y$ 截距為 $3$。已知 $L_1$ 與 $L_2$ 相交於點 $(2,6)$。設 $R$ 為 $L_1$、$L_2$ 與 $x$ 軸圍成的區域（包括邊界在內）。\n\n    (a) 已知 $R$ 表示某不等式組的解。求該不等式組。 (3 分)\n\n    (b) 求 $8x - 5y$ 的最小值，其中 $(x, y)$ 為 $R$ 中的一點。 (2 分)",
+      "svgSlots": [],
+      "topic": "幾何與不等式",
+      "year": 2021
+    },
+    {
+      "hasSvg": false,
+      "id": "2021Q17",
+      "imagePath": "../images/p1/2021Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "17. 設 $A(n)$ 為一等差數列的第 $n$ 項。已知 $A(5) = 26$ 及 $A(12) = 61$ 。\n\n(a) 求 $A(1)$ 。 (2 分)\n\n(b) 假定對任意正整數 $n$ ， $\\log_2 G(n) = A(n)$ 。\n求 $k$ 的最大值使得 $\\log_8(G(1)G(2)G(3) \\cdots G(k)) < 999$ 。 (5 分)",
+      "svgSlots": [],
+      "topic": "等差數列與對數運算",
+      "year": 2021
+    },
+    {
+      "hasSvg": true,
+      "id": "2021Q18",
+      "imagePath": "../images/p1/2021Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "18. (a) 金屬薄片 $ABCD$ 的形狀為一梯形，其中 $AD // BC$。已知 $AB = 45\\text{ cm}$、$\\angle ADC = 70^\\circ$ 及 $\\angle BAD = 50^\\circ$。求 $CD$。 (2 分)\n\n(b) 現給定 (a) 中所描述的金屬片 $ABCD$。設 $E$ 為 $AD$ 上的一點使得 $BE$ 垂直於 $AD$。將該金屬片沿 $BE$ 摺起使得 $AE$ 垂直於平面 $BCDE$。將三塊三角形金屬薄片放置在這已摺起的金屬片成一角錐體 (見圖 2)。得知 $BC = 40\\text{ cm}$。\n\n （圖中標註有頂點 $A, B, C, D, E$）\n\n(i) 求 $\\angle CAD$。\n\n(ii) 平面 $ACD$ 與平面 $BCDE$ 間的交角是否超過 $30^\\circ$？試解釋你的答案。 (5 分)",
+      "svgSlots": [],
+      "topic": "空間幾何",
+      "year": 2021
+    },
+    {
+      "hasSvg": false,
+      "id": "2021Q19",
+      "imagePath": "../images/p1/2021Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "19. 設 $f(x) = x^2 - 12kx - 14x + 36k^2 + 89k + 53$，其中 $k$ 為一正常數。在同一直角坐標系中，將 $y = f(x)$ 的圖像的頂點及 $y = f(14 - x)$ 的圖像的頂點分別記為 $Q$ 及 $R$。\n\n(a) 利用配方法，以 $k$ 表 $Q$ 的坐標。 (2 分)\n\n(b) 寫出 $R$ 的坐標，答案以 $k$ 表示。 (1 分)\n\n(c) 點 $S$ 的坐標為 $(7, 4 - 3k)$。將 $\\triangle QRS$ 的內切圓記為 $C$。\n\n(i) 以 $k$ 表通過 $Q$ 及 $S$ 的直線的方程。\n\n(ii) 以 $k$ 表 $C$ 的方程。\n\n(iii) 假定 $QS$ 為 $C$ 在點 $T$ 的切線。設 $U$ 為 $C$ 的圓心。已知點 $V$ 的坐標為 $(-29, -14)$。$STUV$ 有沒有可能為一長方形？試解釋你的答案。\n(9 分)",
+      "svgSlots": [],
+      "topic": "函數與內切圓幾何",
+      "year": 2021
+    },
+    {
+      "hasSvg": false,
+      "id": "2022Q10",
+      "imagePath": "../images/p1/2022Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "10. 已知 $f(x)$ 的一部分隨 $x^2$ 正變，而另一部分則隨 $x$ 正變。假定 $f(4) = 96$ 及 $f(-5) = 15$。\n\n(a) 求 $f(x)$。  (3 分)\n\n(b) 寫出 $y = 8f(x)$ 的圖像的 $x$ 截距。  (1 分)\n\n(c) 設 $k$ 為一實常數。求 $k$ 值的範圍使得方程 $f(x) = k$ 有兩個相異的實根。  (2 分)",
+      "svgSlots": [],
+      "topic": "變分（正變與反變）",
+      "year": 2022
+    },
+    {
+      "hasSvg": false,
+      "id": "2022Q11",
+      "imagePath": "../images/p1/2022Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "11. 下面的幹葉圖顯示某足球隊球員的年齡的分佈。\n\n$$\n\\begin{array}{r|l}\n\\text{幹 (十位)} & \\text{葉 (個位)} \\\\\n\\hline\n1 & 7 \\quad 8 \\quad 9 \\\\\n2 & 0 \\quad a \\quad a \\quad 8 \\quad 8 \\quad 9 \\\\\n3 & b \\quad b \\quad 5 \\quad 5 \\quad 6 \\quad 6 \\quad 6 \\quad 6 \\quad 7 \\quad 8 \\\\\n4 & 3\n\\end{array}\n$$\n\n該分佈的四分位數間距及中位數分別為 14 及 31。\n\n(a) 求 $a$ 及 $b$。 \\hfill (3 分)\n\n(b) 某球員現退出該足球隊。\n\n(i) 該分佈的眾數有否因該球員退出而改變？試解釋你的答案。\n\n(ii) 若該分佈的分佈域減小，求該分佈的最大可取標準差。 \\hfill (4 分)",
+      "svgSlots": [],
+      "topic": "統計（幹葉圖、描述統計）",
+      "year": 2022
+    },
+    {
+      "hasSvg": false,
+      "id": "2022Q12",
+      "imagePath": "../images/p1/2022Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "12. 圓 $C$ 的方程為 $x^2 + y^2 - 154x - 128y + 224 = 0$ 。 將 $C$ 的圓心記為 $G$ 。 點 $H$ 的坐標為 $(65, 48)$ 。\n\n(a) 求 $G$ 與 $H$ 間的距離。 （3 分）\n\n(b) 設 $P$ 為 $C$ 上的一動點。 當 $\\Delta GHP$ 的面積最大時，\n\n(i) 描述 $GH$ 與 $GP$ 之間的幾何關係 ；\n\n(ii) 求 $\\Delta GHP$ 的周界。\n（4 分）",
+      "svgSlots": [],
+      "topic": "坐標幾何（圓的方程）",
+      "year": 2022
+    },
+    {
+      "hasSvg": false,
+      "id": "2022Q13",
+      "imagePath": "../images/p1/2022Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "13. 現有兩實心金屬球體。較小的球體的表面面積與較大的球體的表面面積之比為 4 : 9 。較大的球體的半徑為 9 cm 。\n\n(a) 以 $\\pi$ 表較小的球體的體積。 (3 分)\n\n(b) 把該兩球體熔化，並重鑄成兩實心直立圓錐體。將該兩圓錐體記為 $A$ 及 $B$ 。已知 $A$ 的高及底半徑分別為 10 cm 及 6 cm 。某學生得知 $B$ 的底半徑為 12 cm 。該學生宣稱 $A$ 與 $B$ 相似。該宣稱是否正確？試解釋你的答案。 (4 分)",
+      "svgSlots": [],
+      "topic": "立體幾何（球體與圓錐體）",
+      "year": 2022
+    },
+    {
+      "hasSvg": true,
+      "id": "2022Q14",
+      "imagePath": "../images/p1/2022Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "14. 設 $p(x) = 2x^3 + ax^2 + bx - 20$ ，其中 $a$ 及 $b$ 均為常數。當 $p(x)$ 除以 $x^2 - 2x + 3$ 時，餘式為 $x + 13$ 。\n\n(a) 求 $a$ 及 $b$ 。 (3 分)\n\n(b) $x - 5$ 是否 $p(x)$ 的因式？試解釋你的答案。 (2 分)\n\n(c) 某人宣稱方程 $p(x) = 0$ 有兩個無理根。你是否同意？試解釋你的答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "多項式",
+      "year": 2022
+    },
+    {
+      "hasSvg": false,
+      "id": "2022Q15",
+      "imagePath": "../images/p1/2022Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "15. 某班有 10 名男生及 12 名女生。若從該班中隨機選出 4 名學生組成一個委員會，\n\n(a) 求該委員會有 2 名男生及 2 名女生的概率； (2 分)\n\n(b) 求該委員會男生人數與女生人數不同的概率。 (2 分)",
+      "svgSlots": [],
+      "topic": "概率",
+      "year": 2022
+    },
+    {
+      "hasSvg": true,
+      "id": "2022Q16",
+      "imagePath": "../images/p1/2022Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "16.  設 $g(x) = 3x^2 + 12kx + 16k^2 + 8$，其中 $k$ 為一非零的實常數。\n\n(a) 利用配方法，以 $k$ 表 $y = g(x)$ 的圖像的頂點的坐標。 (2 分)\n\n(b) 在同一直角坐標系中，將 $y = g(x)$ 的圖像的頂點及 $y = 2g(-x)$ 的圖像的頂點分別記為 $A$ 及 $B$。設 $M$ 為 $AB$ 上的一點使得 $\\triangle OBM$ 的面積為 $\\triangle OAM$ 的面積之三倍，其中 $O$ 為原點。以 $k$ 表 $M$ 的坐標。 (3 分)",
+      "svgSlots": [],
+      "topic": "代數",
+      "year": 2022
+    },
+    {
+      "hasSvg": true,
+      "id": "2022Q17",
+      "imagePath": "../images/p1/2022Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "17\\. 設 $c$ 為一實常數。方程 $x^2 + cx - 9 = 0$ 的根為 $\\alpha$ 及 $\\beta$。\n\n(a) 以 $c$ 表 $\\alpha^2 + \\beta^2$。 (3 分)\n\n(b) 某等差數列的第 1 項、第 2 項及第 3 項分別為 $c^2$ 、 $\\alpha^2 + \\beta^2$ 及 85。求 $n$ 的最小值使得該數列的首 $n$ 項之和大於 $2 \\times 10^6$。 (4 分)",
+      "svgSlots": [],
+      "topic": "代數",
+      "year": 2022
+    },
+    {
+      "hasSvg": true,
+      "id": "2022Q18",
+      "imagePath": "../images/p1/2022Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "18. 圖 2 中，把三角形紙卡 $PQR$ 懸掛使得 $PQ$ 位於水平地面上。已知 $PQ = 30 \\text{ cm}$ 、 $PR = 25 \\text{ cm}$ 及 $\\angle QPR = 95^\\circ$ 。\n\n[圖 2：顯示三角形 $PQR$ 與水平地面（虛線平行四邊形）的關係，$PQ$ 位於地面上，$R$ 點在地面上方。]\n\n(a) 求\n(i) $QR$ 的長度，\n(ii) $\\angle PQR$ 。\n(4 分)\n\n(b) 設 $M$ 為 $QR$ 的中點。某工匠得知 $PR$ 與水平地面間的交角為 $70^\\circ$ 。該工匠宣稱 $PM$ 與水平地面間的交角超過 $40^\\circ$ 。該宣稱是否正確？試解釋你的答案。\n(3 分)",
+      "svgSlots": [
+        "圖2：三角形紙卡PQR懸掛示意圖"
+      ],
+      "topic": "三角學",
+      "year": 2022
+    },
+    {
+      "hasSvg": false,
+      "id": "2022Q19",
+      "imagePath": "../images/p1/2022Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "19. 圓 $C$ 的圓心為點 $G(83, 112)$。得知點 $A(158, 12)$ 位於 $C$ 以外。$AP$ 及 $AQ$ 分別為 $C$ 在點 $P$ 及點 $Q$ 的切線。已知 $C$ 通過點 $(23, 67)$。\n\n(a) 求通過 $A$ 及 $G$ 的直線的方程。 (2 分)\n\n(b) 求 $AG$ 與 $PQ$ 的交點的座標。 (3 分)\n\n(c) 求 $\\triangle APQ$ 的內切圓的方程。 (4 分)\n\n(d) 某人宣稱 $\\triangle APQ$ 的內切圓的面積與外接圓的面積之比為 $1:4$。你是否同意？試解釋你的答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "圓的方程",
+      "year": 2022
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q01",
+      "imagePath": "../images/p1/2023Q01.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "1. 令 $h$ 成為公式 $\\frac{5}{h+k} = \\frac{k}{h-3}$ 的主項。 （3 分）",
+      "svgSlots": [],
+      "topic": "代數：變量主項",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q02",
+      "imagePath": "../images/p1/2023Q02.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "2. 化簡 $\\frac{x^{-8} y}{(x^7 y^9)^{-6}}$，並以正指數表示答案。 (3 分)",
+      "svgSlots": [],
+      "topic": "指數運算",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q03",
+      "imagePath": "../images/p1/2023Q03.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "3. 若一包芝士的重量量得 $220\\text{ g}$ 準確至最接近的 $10\\text{ g}$，則稱它為普通裝。某人宣稱 $250$ 包普通裝芝士的總重量可量得 $53.6\\text{ kg}$ 準確至最接近的 $0.1\\text{ kg}$。該宣稱是否正確？試解釋你的答案。\n(3 分)",
+      "svgSlots": [],
+      "topic": "估計與誤差",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q04",
+      "imagePath": "../images/p1/2023Q04.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "4.  考慮複合不等式\n    $$3x+2 > \\frac{4x-5}{2} \\text{ 及 } 3x-2 < 7 \\quad \\dots\\dots\\dots\\dots\\dots\\dots\\dots\\dots (*)\\text{。}$$\n\n    (a) 解 $(*)\\text{。}$\n\n    (b) 有多少個負整數滿足 $(*)$ ？\n\n    (4 分)",
+      "svgSlots": [],
+      "topic": "複合不等式",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q05",
+      "imagePath": "../images/p1/2023Q05.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "5. 在某渡輪上，女乘客人數較男乘客人數多 40% 。 若 24 名女乘客離開該渡輪，則男乘客人數較女乘客人數多 40% 。 求在該渡輪上男乘客人數。 (4 分)",
+      "svgSlots": [],
+      "topic": "代數與比例",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q06",
+      "imagePath": "../images/p1/2023Q06.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "6.  設 $a$、$b$ 及 $c$ 均為非零的數使得 $7a = 6b$ 及 $\\frac{4a - 3c}{2b - c} = 9$。求\n\n    (a) $a : b : c$ ，\n\n    (b) $\\frac{5a + 8b}{7b + 3c}$ 。\n\n(4 分)",
+      "svgSlots": [],
+      "topic": "比與比例",
+      "year": 2023
+    },
+    {
+      "hasSvg": true,
+      "id": "2023Q07",
+      "imagePath": "../images/p1/2023Q07.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "7. 圖 1 中，$PR$ 為圓 $PQRS$ 的一直徑。將 $PR$ 與 $QS$ 的交點記為 $T$。\n\n   交點：$T$\n   圖下方說明：圖 1\n\n若 $\\angle PSQ = 41^\\circ$ 及 $\\angle PTQ = 68^\\circ$ ，求 $\\angle RQS$ 及 $\\angle PQS$ 。 (4 分)",
+      "svgSlots": [],
+      "topic": "幾何",
+      "year": 2023
+    },
+    {
+      "hasSvg": true,
+      "id": "2023Q08",
+      "imagePath": "../images/p1/2023Q08.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "8. 圖 2 中，$AB$ 與 $CD$ 相交於點 $E$。已知 $AC // DB$。\n\n（圖片中標註了點 $A$、$C$、$E$、$D$、$B$，並標明為「圖 2」）\n\n(a) 證明 $\\triangle ACE \\sim \\triangle BDE$ 。\n\n(b) 假定 $AB = 20 \\text{ cm}、AC = 10 \\text{ cm}、BD = 15 \\text{ cm}$ 及 $CE = 7 \\text{ cm}$。 $\\triangle BDE$ 是否一直角三角形？試解釋你的答案。\n\n(5 分)",
+      "svgSlots": [],
+      "topic": "相似三角形",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q09",
+      "imagePath": "../images/p1/2023Q09.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "9.  下面的幹葉圖顯示一群工人在某星期的工作時數的分佈。\n\n$$\n\\begin{array}{r|l l l l l l l l l}\n\\text{幹 (十位)} & \\text{葉 (個位)} \\\\\n\\hline\n2 & a & 5 & 5 & 6 & 6 & 8 & 8 & & \\\\\n3 & 3 & 3 & 3 & 4 & 5 & 5 & 9 & 9 & \\\\\n4 & 0 & 1 & 4 & 4 & 5 & 6 & 7 & 7 & 9\n\\end{array}\n$$\n\n該分佈的分佈域為 27。\n\n(a) 求該分佈的平均值及眾數。\n\n(b) 若從該群中隨機選出一名工人，求所選出的工人在該星期的工作時數超過該分佈的眾數的概率。\n\n(5 分)",
+      "svgSlots": [],
+      "topic": "統計",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q10",
+      "imagePath": "../images/p1/2023Q10.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "10. 已知 $A$ 及 $B$ 為直角坐標平面上的兩相異點。 設 $P$ 為該直角坐標平面上的一動點使得 $P$ 與 $A$ 及 $B$ 等距。 將 $P$ 的軌跡記為 $\\Gamma$。\n\n(a) 描述 $\\Gamma$ 與 $AB$ 之間的幾何關係。 (1 分)\n\n(b) 假定 $A$ 的坐標為 $(2, -4)$ 及 $\\Gamma$ 的方程為 $3x + y - 12 = 0$。 求\n\n(i) 通過 $A$ 及 $B$ 的直線的方程，\n\n(ii) 以 $AB$ 為一直徑的圓的方程。 (5 分)",
+      "svgSlots": [],
+      "topic": "幾何",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q11",
+      "imagePath": "../images/p1/2023Q11.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "1 | 2 | 3 | 4 |\n| :--- | :---: | :---: | :---: | :---: |\n| 學生人數 | 8 | 5 | $n$ | 1 |",
+      "svgSlots": [],
+      "topic": "統計（平均值、中位數、四分位數間距、方差）",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q12",
+      "imagePath": "../images/p1/2023Q12.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "12. 已知 $f(x)$ 的一部分為常數，而另一部分則隨 $x^2$ 正變。 假定 $f(10) = 62$ 及 $f(15) = 122$ 。\n\n(a) 求 $f(5)$ 。 (3 分)\n\n(b) 假定 $U(0, u)$ 及 $V(5, v)$ 均為 $y = f(x)$ 的圖像上的點。 通過 $V$ 的水平線與 $y$ 軸相交於點 $W$ 。 將通過 $U$ 、 $V$ 及 $W$ 的圓記為 $C$ 。 以 $\\pi$ 表 $C$ 的圓周。 (4 分)",
+      "svgSlots": [],
+      "topic": "函數與變分、圓的方程",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q13",
+      "imagePath": "../images/p1/2023Q13.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "13. 定義 $g(x) = x^3 + 5x^2 - 12x - 1$。設 $h(x) = 3x^4 + ax^3 - 16x^2 + bx + c$，其中 $a$、$b$ 及 $c$ 均為常數。當 $h(x)$ 除以 $g(x)$ 時，商式與餘式相等。\n\n    (a) 求當 $h(x)$ 除以 $g(x)$ 時的商式。 (3 分)\n\n    (b) 方程 $h(x) = 0$ 有多少個有理根？試解釋你的答案。 (4 分)",
+      "svgSlots": [],
+      "topic": "多項式除法、有理根",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q14",
+      "imagePath": "../images/p1/2023Q14.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "14. 某實心金屬直立圓錐體的底半徑及曲面面積分別為 $14\\text{ cm}$ 及 $700\\pi\\text{ cm}^2$ 。\n\n(a) 求該圓錐體的高。 (3 分)\n\n(b) 將該圓錐體以一平行於其底的平面分成一直立圓錐體 $X$ 及一平截頭體 $Y$ 。 $Y$ 的曲面面積為 $X$ 的曲面面積之 $15$ 倍。\n\n(i) 以 $\\pi$ 表 $Y$ 的體積。\n\n(ii) 若把 $Y$ 熔化，並重鑄成 $2$ 個完全相同的實心球體，求每個球體的直徑。\n(5 分)",
+      "svgSlots": [],
+      "topic": "立體幾何（圓錐體、截頭體、球體）",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q15",
+      "imagePath": "../images/p1/2023Q15.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "15. 某盒子內有 5 個紅球及 4 個黑球。從該盒子中隨機同時抽出 2 個球。\n\n(a) 求所抽出的 2 個球均為紅色的概率。 (2 分)\n\n(b) 某袋子內有 8 個紅球。把從該盒子中所抽出的 2 個球放入該袋子內，然後從該袋子中隨機同時抽出 3 個球。求所抽出的 3 個球為相同顏色的概率。 (2 分)",
+      "svgSlots": [],
+      "topic": "概率",
+      "year": 2023
+    },
+    {
+      "hasSvg": true,
+      "id": "2023Q16",
+      "imagePath": "../images/p1/2023Q16.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "16. (a) 設 $a$ 及 $b$ 均為實常數。若方程 $x^2 + ax + b = 0$ 的根為 $p$ 及 $5p$，\n證明 $5a^2 = 36b$。 (2 分)\n\n(b) 將圓 $x^2 + y^2 - 6x - 12y + 20 = 0$ 記為 $C$。求常數 $m$ 使得直線 $y = mx$ 與 $C$ 相交於\n點 $Q$ 及點 $R$ 且 $OQ : QR = 1 : 4$，其中 $O$ 為原點。 (3 分)",
+      "svgSlots": [],
+      "topic": "代數與坐標幾何",
+      "year": 2023
+    },
+    {
+      "hasSvg": true,
+      "id": "2023Q17",
+      "imagePath": "../images/p1/2023Q17.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "$Z$ 為頂點，$W, X, Y$ 為底面頂點；圖下標：）",
+      "svgSlots": [
+        "圖3"
+      ],
+      "topic": "幾何與立體幾何",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q18",
+      "imagePath": "../images/p1/2023Q18.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "18. 假定 $\\alpha, 7, \\beta$ 為一等比數列，其中 $1 < \\alpha < \\beta$ 。\n\n(a) 以 $\\log_7 \\beta$ 表 $\\log_7 \\alpha$ 。 (3 分)\n\n(b) 若 $\\log_\\beta \\alpha, \\log_7 \\beta, \\log_\\alpha \\beta$ 為一等差數列，求該等差數列的公差。 (5 分)",
+      "svgSlots": [],
+      "topic": "等比數列與對數",
+      "year": 2023
+    },
+    {
+      "hasSvg": false,
+      "id": "2023Q19",
+      "imagePath": "../images/p1/2023Q19.jpg",
+      "ocrStatus": "unverified",
+      "options": {},
+      "question": "19.  點 $P$ 及點 $Q$ 的坐標分別為 $(50, 0)$ 及 $(32, t)$ ，其中 $t > 0$ 。將原點記為 $O$ 。設 $R$ 為一點使得 $OQ$ 為 $\\Delta OPR$ 的中線。假定 $G$ 及 $H$ 分別為 $\\Delta OPR$ 的外心及垂心。\n\n    (a) 以 $t$ 表 $G$ 及 $H$ 的坐標。 (5 分)\n\n    (b) 設 $S$ 為 $OP$ 上的一點使得 $QS$ 垂直於 $OP$ 。已知 $\\angle PQS = \\angle POQ$ 。\n\n        (i) 藉考慮 $\\tan \\angle PQS$ ，證明 $t = 24$ 。\n\n        (ii) $O$ 、 $G$ 與 $Q$ 是否共線？試解釋你的答案。\n\n        (iii) 將 $\\Delta OPR$ 的內心記為 $I$ 。求 $\\Delta GHR$ 的面積與 $\\Delta IPQ$ 的面積之比。 (7 分)",
+      "svgSlots": [],
+      "topic": "坐標幾何與三角形",
+      "year": 2023
+    }
+  ]
+}

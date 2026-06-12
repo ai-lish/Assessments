@@ -1,0 +1,32 @@
+{
+  "changed": [],
+  "changedCount": 0,
+  "metadata": {
+    "importedAt": "2026-06-12T00:00:00.000Z",
+    "schemaVersion": 1,
+    "sourceCommit": "ef5a578a04f424754ca3733f44f16eaff590f266",
+    "sourceRepository": "ai-lish/ai-learning"
+  },
+  "onlyInPages": [],
+  "onlyInRoot": [
+    "2021Q32",
+    "2022Q34"
+  ],
+  "pages": {
+    "exists": true,
+    "fileCount": 1,
+    "path": "hkdse/pages/p2_solutions.json",
+    "sha256": "de85c5f5d51baf8e96f1cdb9e4b9916186cd56f9c25a661b6221a7f946c42a73",
+    "sizeBytes": 257070
+  },
+  "pagesKeyCount": 435,
+  "relationship": "manual-review; not deduplicated",
+  "root": {
+    "exists": true,
+    "fileCount": 1,
+    "path": "hkdse/p2_solutions.json",
+    "sha256": "a6328e0167e292927d26a9e5e63fa817a3609307028c1f439734468348f797b3",
+    "sizeBytes": 257244
+  },
+  "rootKeyCount": 437
+}

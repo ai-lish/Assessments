@@ -1,0 +1,457 @@
+{
+  "changed": [
+    {
+      "id": "2014Q03",
+      "pages": {
+        "answer": "B",
+        "has_svg": false,
+        "hk_rate": "63",
+        "id": "2014Q03",
+        "lsc_rate": "",
+        "options": {
+          "A": "$1$",
+          "B": "$2$",
+          "C": "$3$",
+          "D": "$4$"
+        },
+        "question": "若 $p$ 及 $q$ 均為常數使得 $px(x-1) + x^{2} \\equiv qx(x-2) + 4x$ ， 則 $p =$",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      },
+      "root": {
+        "answer": "B",
+        "has_svg": false,
+        "hk_rate": "63",
+        "id": "2014Q03",
+        "lsc_rate": "",
+        "options": {
+          "A": "1",
+          "B": "2",
+          "C": "3",
+          "D": "4"
+        },
+        "question": "若 $p$ 及 $q$ 均為常數使得 $px(x-1) + x^{2} \\equiv qx(x-2) + 4x$ ， 則 $p =$",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      }
+    },
+    {
+      "id": "2015Q05",
+      "pages": {
+        "answer": "B",
+        "has_svg": false,
+        "hk_rate": "65",
+        "id": "2015Q05",
+        "lsc_rate": "",
+        "options": {
+          "A": "$-8$",
+          "B": "$-2$",
+          "C": "$2$",
+          "D": "$6$"
+        },
+        "question": "若 $m$ 及 $n$ 均為常數使得 $x^2+mx+n \\equiv (x+4)(x-m)+6$，則 $n=$",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      },
+      "root": {
+        "answer": "B",
+        "has_svg": false,
+        "hk_rate": "65",
+        "id": "2015Q05",
+        "lsc_rate": "",
+        "options": {
+          "A": "-8",
+          "B": "-2",
+          "C": "2",
+          "D": "6"
+        },
+        "question": "若 $m$ 及 $n$ 均為常數使得 $x^2+mx+n \\equiv (x+4)(x-m)+6$，則 $n=$",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      }
+    },
+    {
+      "id": "2017Q08",
+      "pages": {
+        "answer": "A",
+        "has_svg": false,
+        "hk_rate": "62",
+        "id": "2017Q08",
+        "lsc_rate": "",
+        "options": {
+          "A": "$-8$",
+          "B": "$-7$",
+          "C": "$4$",
+          "D": "$16$"
+        },
+        "question": "$4x^2 + m(x+1) +28 \\equiv mx(x+3) + n(x-4)$，則 $n =$",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      },
+      "root": {
+        "answer": "A",
+        "has_svg": false,
+        "hk_rate": "62",
+        "id": "2017Q08",
+        "lsc_rate": "",
+        "options": {
+          "A": "\\(-8\\)",
+          "B": "\\(-7\\)",
+          "C": "\\(4\\)",
+          "D": "\\(16\\)"
+        },
+        "question": "\\(4x^2 + m(x+1) +28 \\equiv mx(x+3) + n(x-4)\\)，則 \\(n =\\)",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      }
+    },
+    {
+      "id": "2019Q01",
+      "pages": {
+        "answer": "C",
+        "has_svg": false,
+        "hk_rate": "67",
+        "id": "2019Q01",
+        "lsc_rate": "61",
+        "options": {
+          "A": "$(a - b)^3$",
+          "B": "$a^3 - b^3$",
+          "C": "$a^3 - 2ab^2 + b^3$",
+          "D": "$a^3 - 2a^2b + 2ab^2 + b^3$"
+        },
+        "question": "$(a - b)(a^2 + ab - b^2) =$",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      },
+      "root": {
+        "answer": "C",
+        "has_svg": false,
+        "hk_rate": "67",
+        "id": "2019Q01",
+        "lsc_rate": "61",
+        "options": {
+          "A": "\\((a - b)^3\\)",
+          "B": "\\(a^3 - b^3\\)",
+          "C": "\\(a^3 - 2ab^2 + b^3\\)",
+          "D": "\\(a^3 - 2a^2b + 2ab^2 + b^3\\)"
+        },
+        "question": "\\((a - b)(a^2 + ab - b^2) =\\)",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      }
+    },
+    {
+      "id": "2019Q04",
+      "pages": {
+        "answer": "C",
+        "has_svg": false,
+        "hk_rate": "69",
+        "id": "2019Q04",
+        "lsc_rate": "48",
+        "options": {
+          "A": "$-26$",
+          "B": "$-10$",
+          "C": "$-7$",
+          "D": "$-6$"
+        },
+        "question": "若 $\\alpha$ 及 $\\beta$ 均為常數使得 $(x-8)(x+\\alpha)-6 \\equiv (x-9)^2+\\beta$，則 $\\beta =$",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      },
+      "root": {
+        "answer": "C",
+        "has_svg": false,
+        "hk_rate": "69",
+        "id": "2019Q04",
+        "lsc_rate": "48",
+        "options": {
+          "A": "\\(-26\\)",
+          "B": "\\(-10\\)",
+          "C": "\\(-7\\)",
+          "D": "\\(-6\\)"
+        },
+        "question": "若 \\(\\alpha\\) 及 \\(\\beta\\) 均為常數使得 \\((x-8)(x+\\alpha)-6 \\equiv (x-9)^2+\\beta\\)，則 \\(\\beta =\\)",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      }
+    },
+    {
+      "id": "2019Q32",
+      "pages": {
+        "answer": "D",
+        "has_svg": false,
+        "hk_rate": "35",
+        "id": "2019Q32",
+        "lsc_rate": "23",
+        "options": {
+          "A": "$-3$ 或 $3$ 。",
+          "B": "$-2$ 或 $2$ 。",
+          "C": "$\\frac{-1}{3}$ 或 $\\frac{1}{2}$ 。",
+          "D": "$\\frac{-1}{2}$ 或 $\\frac{1}{3}$ 。"
+        },
+        "question": "32. 若 $\\frac{3}{3 \\log x - 2} + 7 = \\frac{2}{2 \\log x + 1}$，則 $\\log \\frac{1}{x} =$",
+        "svg_slots": [],
+        "topic": "對數函數"
+      },
+      "root": {
+        "answer": "D",
+        "has_svg": false,
+        "hk_rate": "35",
+        "id": "2019Q32",
+        "lsc_rate": "23",
+        "options": {
+          "A": "-3 或 2 。",
+          "B": "-2 或 3 。",
+          "C": "\\frac{-1}{3} 或 \\frac{1}{2} 。",
+          "D": "\\frac{-1}{2} 或 \\frac{1}{3} 。"
+        },
+        "question": "32. 若 \\frac{3}{3 \\log x - 2} + 7 = \\frac{2}{2 \\log x + 1} ， 則 \\log \\frac{1}{x} =",
+        "svg_slots": [],
+        "topic": "對數函數"
+      }
+    },
+    {
+      "id": "2019Q34",
+      "pages": {
+        "answer": "D",
+        "has_svg": false,
+        "hk_rate": "46",
+        "id": "2019Q34",
+        "lsc_rate": "35",
+        "options": {
+          "A": "$\\frac{4a+1}{a^2-1}$ 。",
+          "B": "$\\frac{4a+1}{a^2+1}$ 。",
+          "C": "$\\frac{a^2+4a+2}{a^2-1}$ 。",
+          "D": "$\\frac{a^2+4a+2}{a^2+1}$ 。"
+        },
+        "question": "34. 若 $a$ 為一實數，則 $\\frac{4+i^5}{a+i} - i^6$ 的實部為",
+        "svg_slots": [],
+        "topic": "虛數"
+      },
+      "root": {
+        "answer": "D",
+        "has_svg": false,
+        "hk_rate": "46",
+        "id": "2019Q34",
+        "lsc_rate": "35",
+        "options": {
+          "A": "\\frac{4a+1}{a^2-1} 。",
+          "B": "\\frac{4a+1}{a^2+1} 。",
+          "C": "\\frac{a^2+4a+2}{a^2-1} 。",
+          "D": "\\frac{a^2+4a+2}{a^2+1} 。"
+        },
+        "question": "34. 若 $a$ 為一實數，則 \\frac{4+i^5}{a+i} - i^6 的實部為",
+        "svg_slots": [],
+        "topic": "虛數"
+      }
+    },
+    {
+      "id": "2019Q43",
+      "pages": {
+        "answer": "D",
+        "has_svg": false,
+        "hk_rate": "47",
+        "id": "2019Q43",
+        "lsc_rate": "16",
+        "options": {
+          "A": "$\\frac{1}{105}$ 。",
+          "B": "$\\frac{13}{105}$ 。",
+          "C": "$\\frac{92}{105}$ 。",
+          "D": "$\\frac{104}{105}$ 。"
+        },
+        "question": "43. 某數學比賽共設三題。 素珊答對第一題、答對第二題及答對第三題的概率分別為 $\\frac{1}{3}$ 、 $\\frac{1}{5}$ 及 $\\frac{1}{7}$ 。 素珊在該比賽中答對至多 2 題的概率為",
+        "svg_slots": [],
+        "topic": "高中概率"
+      },
+      "root": {
+        "answer": "D",
+        "has_svg": false,
+        "hk_rate": "47",
+        "id": "2019Q43",
+        "lsc_rate": "16",
+        "options": {
+          "A": "\\frac{1}{105} 。",
+          "B": "\\frac{13}{105} 。",
+          "C": "\\frac{92}{105} 。",
+          "D": "\\frac{104}{105} 。"
+        },
+        "question": "43. 某數學比賽共設三題。 素珊答對第一題、答對第二題及答對第三題的概率分別為 \\frac{1}{3} 、 \\frac{1}{5} 及 \\frac{1}{7} 。 素珊在該比賽中答對至多 2 題的概率為",
+        "svg_slots": [],
+        "topic": "高中概率"
+      }
+    },
+    {
+      "id": "2020Q07",
+      "pages": {
+        "answer": "C",
+        "has_svg": false,
+        "hk_rate": "79",
+        "id": "2020Q07",
+        "lsc_rate": "52",
+        "options": {
+          "A": "$-28$",
+          "B": "$-16$",
+          "C": "$-4$",
+          "D": "$2$"
+        },
+        "question": "若 $h$ 及 $k$ 均為常數使得 $(x + h)(x + 6) \\equiv (x + 4)^2 + k$，則 $k =$",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      },
+      "root": {
+        "answer": "C",
+        "has_svg": false,
+        "hk_rate": "79",
+        "id": "2020Q07",
+        "lsc_rate": "52",
+        "options": {
+          "A": "-28",
+          "B": "-16",
+          "C": "-4",
+          "D": "2"
+        },
+        "question": "若 h 及 k 均為常數使得 (x + h)(x + 6) ≡ (x + 4)² + k ，則 k =",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      }
+    },
+    {
+      "id": "2021Q03",
+      "pages": {
+        "answer": "D",
+        "has_svg": false,
+        "hk_rate": "82",
+        "id": "2021Q03",
+        "lsc_rate": "63",
+        "options": {
+          "A": "$u^3 + u^2 + uv^2 + v^2$",
+          "B": "$u^3 + u^2 - uv^2 + v^2$",
+          "C": "$u^3 - u^2 + uv^2 + v^2$",
+          "D": "$u^3 - u^2 - uv^2 + v^2$"
+        },
+        "question": "$(u + v)(u - v)(u - 1) =$",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      },
+      "root": {
+        "answer": "D",
+        "has_svg": false,
+        "hk_rate": "82",
+        "id": "2021Q03",
+        "lsc_rate": "63",
+        "options": {
+          "A": "\\(u^3 + u^2 + uv^2 + v^2\\)",
+          "B": "\\(u^3 + u^2 - uv^2 + v^2\\)",
+          "C": "\\(u^3 - u^2 + uv^2 + v^2\\)",
+          "D": "\\(u^3 - u^2 - uv^2 + v^2\\)"
+        },
+        "question": "\\((u + v)(u - v)(u - 1) =\\)",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      }
+    },
+    {
+      "id": "2021Q24",
+      "pages": {
+        "answer": "D",
+        "has_svg": true,
+        "hk_rate": "64",
+        "id": "2021Q24",
+        "lsc_rate": "31",
+        "options": {
+          "A": "\\cos \\theta \\sin \\phi",
+          "B": "\\sin \\theta \\cos \\phi",
+          "C": "\\tan \\theta \\cos \\phi",
+          "D": "\\tan \\theta \\sin \\phi"
+        },
+        "question": "[Q1] 圖中，$\\frac{AB}{CD} =$",
+        "svg_slots": [
+          "diagram"
+        ],
+        "topic": "初中三角學"
+      },
+      "root": {
+        "answer": "D",
+        "has_svg": true,
+        "hk_rate": "64",
+        "id": "2021Q24",
+        "lsc_rate": "31",
+        "options": {
+          "A": "\\cos \\theta \\sin \\phi",
+          "B": "\\sin \\theta \\cos \\phi",
+          "C": "\\tan \\theta \\cos \\phi",
+          "D": "\\tan \\theta \\sin \\phi"
+        },
+        "question": "[Q1] 圖中， \\frac{AB}{CD} =",
+        "svg_slots": [
+          "diagram"
+        ],
+        "topic": "初中三角學"
+      }
+    },
+    {
+      "id": "2022Q03",
+      "pages": {
+        "answer": "A",
+        "has_svg": false,
+        "hk_rate": "64",
+        "id": "2022Q03",
+        "lsc_rate": "30",
+        "options": {
+          "A": "$-14$",
+          "B": "$-8$",
+          "C": "$6$",
+          "D": "$16$"
+        },
+        "path": "hkdse/ocr-output/images-p2/2022Q03.jpg",
+        "question": "若 $m$ 及 $n$ 均為常數使得 $(x+3)^2 + mx \\equiv (x-n)(x+1) + 2n$，則 $m =$",
+        "status": "ocr_done",
+        "svg_slots": [],
+        "topic": "展開及恆等式"
+      },
+      "root": {
+        "answer": "A",
+        "has_svg": true,
+        "hk_rate": "64",
+        "id": "2022Q03",
+        "lsc_rate": "30",
+        "options": {
+          "A": " -14",
+          "B": " -8",
+          "C": "",
+          "D": ""
+        },
+        "path": "hkdse/ocr-output/images-p2/2022Q03.jpg",
+        "question": "[Q]\n若m及n均為常敷使得 3. (x+3)+mx=(x-n)(x+1)+2n ， m =",
+        "status": "ocr_done",
+        "topic": "展開及恆等式"
+      }
+    }
+  ],
+  "changedCount": 12,
+  "metadata": {
+    "importedAt": "2026-06-12T00:00:00.000Z",
+    "schemaVersion": 1,
+    "sourceCommit": "ef5a578a04f424754ca3733f44f16eaff590f266",
+    "sourceRepository": "ai-lish/ai-learning"
+  },
+  "onlyInPages": [],
+  "onlyInRoot": [],
+  "pages": {
+    "exists": true,
+    "fileCount": 1,
+    "path": "hkdse/pages/p2_latex_ocr_results.json",
+    "sha256": "e0a3f4787c36d08037ba7cfc975c1b90a8d8dbe454c2da8389b8260a82cf01b5",
+    "sizeBytes": 238551
+  },
+  "pagesKeyCount": 495,
+  "relationship": "manual-review; not deduplicated",
+  "root": {
+    "exists": true,
+    "fileCount": 1,
+    "path": "hkdse/p2_latex_ocr_results.json",
+    "sha256": "70ca365b6d2aa169b83999ee2b94ffa81c30e78c56367796b1c1137a2e3bbdd3",
+    "sizeBytes": 238518
+  },
+  "rootKeyCount": 495
+}
