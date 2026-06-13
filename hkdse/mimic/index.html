@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HKDSE 已驗證類似題</title>
+  <link rel="stylesheet" href="../assets/hkdse.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1>HKDSE 已驗證類似題</h1>
+      <p>只有逐模板通過答案核對及 hash 驗證的題目才可計分。</p>
+      <nav class="top-links" aria-label="主要連結">
+        <a href="../">HKDSE 工具首頁</a>
+        <a href="../guide.html">使用指南</a>
+        <a href="https://ai-lish.github.io/ai-learning/">返回少康老師教學網站</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <div class="notice">
+      類似題資料預設不載入。未驗證、驗證失敗或 hash 已改變的模板不會計分，
+      亦不會混入歷屆真題統計。
+    </div>
+    <p id="storage-status" class="notice" hidden>瀏覽器未能使用 localStorage；你仍可完成本次練習，但重新載入後不會保留答案。</p>
+    <p id="mimic-error" class="error-message" role="alert" hidden></p>
+    <section class="panel" aria-labelledby="mimic-settings-title">
+      <h2 id="mimic-settings-title">類似題設定</h2>
+      <div class="field">
+        <label for="mimic-seed">固定 seed</label>
+        <input id="mimic-seed" value="hkdse-mimic" maxlength="80">
+      </div>
+      <div class="actions">
+        <button id="load-mimic" type="button">載入已驗證類似題</button>
+        <button id="clear-mimic" type="button" class="danger">清除類似題本機紀錄</button>
+      </div>
+      <p id="mimic-status" class="footer-note" role="status">尚未載入模板資料。</p>
+    </section>
+    <section id="mimic-panel" class="question-card" hidden></section>
+  </main>
+  <script type="module" src="../assets/mimic.js"></script>
+</body>
+</html>
