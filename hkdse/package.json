@@ -4,6 +4,7 @@
   "type": "module",
   "scripts": {
     "test:a1": "node test/run-all.mjs",
-    "test:a2": "node test/validate-student-ui.mjs"
+    "test:a2": "node test/validate-student-ui.mjs",
+    "test:a3": "node scripts/validate-mimic-templates.mjs && node test/validate-mimic.mjs"
   }
 }
