@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HKDSE 數學卷一練習</title>
+  <link rel="stylesheet" href="../assets/hkdse.css">
+  <script>
+    window.MathJax = { tex: { inlineMath: [["$", "$"], ["\\(", "\\)"]] } };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1>HKDSE 數學卷一：草稿與自評</h1>
+      <p>卷一不會自動判定正確率。</p>
+      <nav class="top-links" aria-label="主要連結">
+        <a href="../">HKDSE 工具首頁</a>
+        <a href="../guide.html">使用指南</a>
+        <a href="https://ai-lish.github.io/ai-learning/">返回少康老師教學網站</a>
+      </nav>
+    </div>
+  </header>
+  <main>
+    <p id="load-error" class="error-message" role="alert" hidden></p>
+    <p id="storage-status" class="notice" hidden>瀏覽器未能使用 localStorage；你仍可完成本次練習，但重新載入後不會保留作答。</p>
+    <section class="panel" aria-labelledby="filter-title">
+      <h2 id="filter-title">篩選題目</h2>
+      <div class="filters">
+        <div class="field"><label for="year-filter">年份</label><select id="year-filter"></select></div>
+        <div class="field"><label for="topic-filter">課題</label><select id="topic-filter"></select></div>
+        <div class="field"><label for="limit-filter">每頁題數</label><select id="limit-filter"><option>5</option><option selected>10</option><option>20</option></select></div>
+        <div class="field"><label for="mode-filter">次序</label><select id="mode-filter"><option value="ordered">順序</option><option value="random">隨機</option></select></div>
+        <div class="field" id="seed-field" hidden><label for="seed-filter">隨機 seed</label><input id="seed-filter" value="hkdse" maxlength="80"></div>
+      </div>
+      <div class="actions">
+        <button id="toggle-keyboard" type="button" class="secondary">顯示／收起數學快捷輸入</button>
+        <button id="clear-progress" type="button" class="danger">清除此卷本機紀錄</button>
+      </div>
+      <div class="coverage-grid" aria-label="答案資料覆蓋">
+        <div class="stat">有答案文字<strong id="coverage-text">–</strong></div>
+        <div class="stat">有答案圖片<strong id="coverage-image">–</strong></div>
+        <div class="stat">文字圖片皆無<strong id="coverage-neither">–</strong></div>
+        <div class="stat">已驗證<strong id="coverage-verified">–</strong></div>
+      </div>
+      <div class="summary-grid" aria-label="我的進度">
+        <div class="stat">已輸入草稿<strong id="draft-count">0</strong></div>
+        <div class="stat">已自評<strong id="rating-count">0</strong></div>
+      </div>
+    </section>
+    <aside id="math-keyboard" class="math-keyboard" hidden aria-label="數學快捷輸入">
+      <strong>共用數學快捷輸入</strong>
+      <div class="math-keys">
+        <button type="button" data-insert="²">x²</button>
+        <button type="button" data-insert="√()">√</button>
+        <button type="button" data-insert="÷">÷</button>
+        <button type="button" data-insert="×">×</button>
+        <button type="button" data-insert="π">π</button>
+        <button type="button" data-insert="=">=</button>
+      </div>
+    </aside>
+    <p id="range-status" class="status-message" role="status">載入中…</p>
+    <section id="question-list" class="question-list" aria-label="卷一題目"></section>
+    <nav id="pagination" class="pagination" aria-label="分頁"></nav>
+    <p class="footer-note">答案文字及 OCR 狀態只供練習參考；未核對內容會清楚標示。</p>
+  </main>
+  <script type="module" src="../assets/p1.js"></script>
+</body>
+</html>
