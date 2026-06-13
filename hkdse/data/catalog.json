@@ -1,0 +1,48 @@
+{
+  "metadata": {
+    "importedAt": "2026-06-12T00:00:00.000Z",
+    "schemaVersion": 1,
+    "sourceCommit": "ef5a578a04f424754ca3733f44f16eaff590f266",
+    "sourceRepository": "ai-lish/ai-learning"
+  },
+  "papers": {
+    "p1": {
+      "answerTextCount": 126,
+      "answerTextMissingCount": 72,
+      "questionCount": 198,
+      "years": [
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ]
+    },
+    "p2": {
+      "questionCount": 495,
+      "solutionCount": 437,
+      "solutionMissingCount": 58,
+      "years": [
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022
+      ]
+    }
+  },
+  "totalQuestionCount": 693
+}

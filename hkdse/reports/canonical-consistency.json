@@ -1,0 +1,24 @@
+{
+  "metadata": {
+    "importedAt": "2026-06-12T00:00:00.000Z",
+    "schemaVersion": 1,
+    "sourceCommit": "ef5a578a04f424754ca3733f44f16eaff590f266",
+    "sourceRepository": "ai-lish/ai-learning"
+  },
+  "p2LatexDifferenceReport": "hkdse/reports/p2-latex-root-vs-pages.json",
+  "p2Solutions": {
+    "canonicalSourcePath": "hkdse/p2_solutions.json",
+    "canonicalSourceSha256": "a6328e0167e292927d26a9e5e63fa817a3609307028c1f439734468348f797b3",
+    "differenceReport": "hkdse/reports/p2-solutions-root-vs-pages.json",
+    "outputPath": "hkdse/data/p2-solutions.json",
+    "outputSha256": "5ed0a9f92f3ee35fc699a22ee74bfa81eaeda8e1232f5222786c1238bb259b7c",
+    "outputSolutionCount": 437,
+    "sourceQuestionCount": 437,
+    "transformationRules": [
+      "Sort and normalize stable ids as YYYYQNN.",
+      "Copy answer, solution, topic, and source question without inventing missing data.",
+      "Add checkType=choiceKey and canonicalSource metadata.",
+      "Do not merge or overwrite from the divergent pages copy."
+    ]
+  }
+}

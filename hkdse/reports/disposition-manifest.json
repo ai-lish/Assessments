@@ -1,0 +1,278 @@
+{
+  "entries": [
+    {
+      "canonicalReason": "The live P2 student page fetches the root file; V3 designates it canonical.",
+      "consumerCount": 4,
+      "consumers": [
+        "hkdse/dse-practice-p2.html",
+        "hkdse/pages/p2_final_results.json",
+        "hkdse/planning/進制仿題測試規劃.md",
+        "hkdse/review_p2.html"
+      ],
+      "destinationPath": "hkdse/data/p2-solutions.json",
+      "disposition": "keep",
+      "resolvedSourcePath": "hkdse/p2_solutions.json",
+      "source": {
+        "exists": true,
+        "fileCount": 1,
+        "sha256": "a6328e0167e292927d26a9e5e63fa817a3609307028c1f439734468348f797b3",
+        "sizeBytes": 257244
+      },
+      "sourcePath": "hkdse/p2_solutions.json",
+      "unresolvedDifference": "pages copy has two fewer keys; see p2-solutions-root-vs-pages.json"
+    },
+    {
+      "canonicalReason": "Divergent pages copy cannot override the live root canonical.",
+      "consumerCount": 0,
+      "consumers": [],
+      "destinationPath": null,
+      "disposition": "manual-review",
+      "resolvedSourcePath": "hkdse/pages/p2_solutions.json",
+      "source": {
+        "exists": true,
+        "fileCount": 1,
+        "sha256": "de85c5f5d51baf8e96f1cdb9e4b9916186cd56f9c25a661b6221a7f946c42a73",
+        "sizeBytes": 257070
+      },
+      "sourcePath": "hkdse/pages/p2_solutions.json",
+      "unresolvedDifference": "2021Q32 and 2022Q34 exist only in root; see difference report."
+    },
+    {
+      "canonicalReason": "The teacher P2 review page fetches the root file; migration is deferred to A4.",
+      "consumerCount": 5,
+      "consumers": [
+        "hkdse/mimic-generator/index.html",
+        "hkdse/mimic-generator/template-editor-v2.html",
+        "hkdse/mimic-generator/template-editor-v3.html",
+        "hkdse/review_p2.html",
+        "hkdse/topic-analysis/進制.md"
+      ],
+      "destinationPath": null,
+      "disposition": "manual-review",
+      "resolvedSourcePath": "hkdse/p2_latex_ocr_results.json",
+      "source": {
+        "exists": true,
+        "fileCount": 1,
+        "sha256": "70ca365b6d2aa169b83999ee2b94ffa81c30e78c56367796b1c1137a2e3bbdd3",
+        "sizeBytes": 238518
+      },
+      "sourcePath": "hkdse/p2_latex_ocr_results.json",
+      "unresolvedDifference": "Root and pages contain 12 changed records; see p2-latex-root-vs-pages.json."
+    },
+    {
+      "canonicalReason": "Teacher/editor dependency is deferred to A4.",
+      "consumerCount": 2,
+      "consumers": [
+        "hkdse/mimic-generator/template-editor-v2.html",
+        "hkdse/mimic-generator/template-editor-v3.html"
+      ],
+      "destinationPath": null,
+      "disposition": "manual-review",
+      "resolvedSourcePath": "hkdse/pages/p2_latex_ocr_results.json",
+      "source": {
+        "exists": true,
+        "fileCount": 1,
+        "sha256": "e0a3f4787c36d08037ba7cfc975c1b90a8d8dbe454c2da8389b8260a82cf01b5",
+        "sizeBytes": 238551
+      },
+      "sourcePath": "hkdse/pages/p2_latex_ocr_results.json",
+      "unresolvedDifference": "Root and pages contain 12 changed records; see difference report."
+    },
+    {
+      "canonicalReason": "Historical backup is not student runtime.",
+      "consumerCount": 0,
+      "consumers": [],
+      "destinationPath": null,
+      "disposition": "exclude",
+      "resolvedSourcePath": "hkdse/pages/backup-20260412T031151Z",
+      "source": {
+        "exists": true,
+        "fileCount": 1,
+        "sha256": "094307b239479025629a737442812de7f6a6316a691dcee96a17cc9e90b53aa6",
+        "sizeBytes": 299875
+      },
+      "sourcePath": "hkdse/pages/backup-20260412T031151Z",
+      "unresolvedDifference": null
+    },
+    {
+      "canonicalReason": "Python build artifacts are reproducible and not runtime.",
+      "consumerCount": 0,
+      "consumers": [],
+      "destinationPath": null,
+      "disposition": "exclude",
+      "resolvedSourcePath": "hkdse/__pycache__",
+      "source": {
+        "exists": true,
+        "fileCount": 1,
+        "sha256": "a03aeea04250b24812d6644b5bd3a39403e07f7ce0037c9eeab378ff4f623980",
+        "sizeBytes": 33148
+      },
+      "sourcePath": "hkdse/__pycache__",
+      "unresolvedDifference": null
+    },
+    {
+      "canonicalReason": "Evidence is teacher workflow data and is outside A1 student runtime.",
+      "consumerCount": 1,
+      "consumers": [
+        "hkdse/dualpath_verify_p2.py"
+      ],
+      "destinationPath": null,
+      "disposition": "reference-check",
+      "resolvedSourcePath": "hkdse/evidence",
+      "source": {
+        "exists": true,
+        "fileCount": 270,
+        "sha256": "51b7e8448653a5c5880c6b39aa2b614a62ea6ec9d7306c26ab4e6b252b05e74a",
+        "sizeBytes": 307694
+      },
+      "sourcePath": "hkdse/evidence",
+      "unresolvedDifference": "A4 must decide each actual teacher-page dependency."
+    },
+    {
+      "canonicalReason": "Review/editor fallbacks must only be repointed when source files exist.",
+      "consumerCount": 2,
+      "consumers": [
+        "hkdse/review_p1.html",
+        "hkdse/review_p2.html"
+      ],
+      "destinationPath": null,
+      "disposition": "reference-check",
+      "resolvedSourcePath": "hkdse/ocr-output",
+      "source": {
+        "exists": false,
+        "fileCount": 0,
+        "sha256": null,
+        "sizeBytes": 0
+      },
+      "sourcePath": "../ocr-output/",
+      "unresolvedDifference": "The source directory is absent at the pinned commit; A4 must show unavailable state instead of silent 404."
+    },
+    {
+      "canonicalReason": "Selected mimic runtime belongs to A3; template editor belongs to A4.",
+      "consumerCount": 6,
+      "consumers": [
+        "hkdse/dse-practice-p2.html",
+        "hkdse/generate_all_templates.py",
+        "hkdse/mimic-generator/README.md",
+        "hkdse/planning/進制仿題測試規劃.md",
+        "hkdse/review_p1.html",
+        "hkdse/review_p2.html"
+      ],
+      "destinationPath": null,
+      "disposition": "keep-selected",
+      "resolvedSourcePath": "hkdse/mimic-generator",
+      "source": {
+        "exists": true,
+        "fileCount": 14,
+        "sha256": "1c9d065148fe18b785abb3eb37babd11dcdefe883ade3fbf41e8bd33070ce9e8",
+        "sizeBytes": 1660860
+      },
+      "sourcePath": "hkdse/mimic-generator",
+      "unresolvedDifference": "A1 records references only and intentionally does not copy A3/A4 assets."
+    },
+    {
+      "canonicalReason": "Referenced by review_p1.html and template-editor-v3.html.",
+      "consumerCount": 3,
+      "consumers": [
+        "hkdse/generate_all_templates.py",
+        "hkdse/mimic-generator/template-editor-v3.html",
+        "hkdse/review_p1.html"
+      ],
+      "destinationPath": null,
+      "disposition": "reference-check",
+      "resolvedSourcePath": "hkdse/mimic-generator/auto_templates_all.json",
+      "source": {
+        "exists": true,
+        "fileCount": 1,
+        "sha256": "95996ef3af9033c5ce47a354dfabc05d6628df51e0b2535d64e45088e20da050",
+        "sizeBytes": 251816
+      },
+      "sourcePath": "hkdse/mimic-generator/auto_templates_all.json",
+      "unresolvedDifference": "A3/A4 must choose keep, repoint, or remove; old relative URLs may not remain."
+    },
+    {
+      "canonicalReason": "Pinned source file is empty and has no runtime purpose.",
+      "consumerCount": 0,
+      "consumers": [],
+      "destinationPath": null,
+      "disposition": "exclude",
+      "resolvedSourcePath": "hkdse/ocr_log.txt",
+      "source": {
+        "exists": true,
+        "fileCount": 1,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "sizeBytes": 0
+      },
+      "sourcePath": "hkdse/ocr_log.txt",
+      "unresolvedDifference": null
+    },
+    {
+      "canonicalReason": "Only images referenced by the 198 P1 runtime records are copied.",
+      "consumerCount": 2,
+      "consumers": [
+        "hkdse/dse-practice-p1.html",
+        "hkdse/review_p1.html"
+      ],
+      "destinationPath": "hkdse/images/p1",
+      "disposition": "keep-allowlist",
+      "resolvedSourcePath": "hkdse/images-p1",
+      "source": {
+        "exists": true,
+        "fileCount": 220,
+        "sha256": "b9b6f89f5bf2ba87a229c423a1cb0c85c26812c6b93d101e8b83251db3bd0cd8",
+        "sizeBytes": 13278605
+      },
+      "sourcePath": "hkdse/images-p1",
+      "unresolvedDifference": "Unreferenced source images remain listed as orphans."
+    },
+    {
+      "canonicalReason": "All 495 P2 runtime records reference one source image.",
+      "consumerCount": 7,
+      "consumers": [
+        "hkdse/dse-practice-p2.html",
+        "hkdse/p2_latex_ocr_results.json",
+        "hkdse/pages/backup-20260412T031151Z/p2_final_results.json",
+        "hkdse/pages/p2_final_results.json",
+        "hkdse/pages/p2_latex_ocr_results.json",
+        "hkdse/pages/p2_ocr_results.json",
+        "hkdse/review_p2.html"
+      ],
+      "destinationPath": "hkdse/images/p2",
+      "disposition": "keep-allowlist",
+      "resolvedSourcePath": "hkdse/images-p2",
+      "source": {
+        "exists": true,
+        "fileCount": 495,
+        "sha256": "4bc8bf0bf5de5b03110e95d6b3cb099f46681966464fa9a588f29fcfe57ec43d",
+        "sizeBytes": 25055693
+      },
+      "sourcePath": "hkdse/images-p2",
+      "unresolvedDifference": null
+    },
+    {
+      "canonicalReason": "Only answer images referenced by the 198-question P1 intersection are copied.",
+      "consumerCount": 2,
+      "consumers": [
+        "hkdse/pages/p1_answer_ocr_results.json",
+        "hkdse/review_p1_answers.html"
+      ],
+      "destinationPath": "hkdse/images/p1-answers",
+      "disposition": "keep-allowlist",
+      "resolvedSourcePath": "hkdse/answer-images",
+      "source": {
+        "exists": true,
+        "fileCount": 229,
+        "sha256": "022ba3785be649d4f8cb1765b67d0539b5439ef3ad89c00ec938eb85563e7945",
+        "sizeBytes": 9493878
+      },
+      "sourcePath": "hkdse/answer-images",
+      "unresolvedDifference": "Unreferenced source images remain listed as orphans."
+    }
+  ],
+  "metadata": {
+    "importedAt": "2026-06-12T00:00:00.000Z",
+    "schemaVersion": 1,
+    "sourceCommit": "ef5a578a04f424754ca3733f44f16eaff590f266",
+    "sourceRepository": "ai-lish/ai-learning"
+  }
+}

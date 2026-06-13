@@ -1,0 +1,53 @@
+{
+  "counts": {
+    "p1AnswersWithText": 126,
+    "p1AnswersWithoutText": 72,
+    "p1Questions": 198,
+    "p2MissingSolutions": 58,
+    "p2Questions": 495,
+    "p2Solutions": 437,
+    "totalQuestions": 693
+  },
+  "metadata": {
+    "importedAt": "2026-06-12T00:00:00.000Z",
+    "schemaVersion": 1,
+    "sourceCommit": "ef5a578a04f424754ca3733f44f16eaff590f266",
+    "sourceRepository": "ai-lish/ai-learning"
+  },
+  "questionBankIntegrity": {
+    "mergeBase": "3e128a75829dad6894833e0ca02ba86caab21f0b",
+    "mergeBaseSha256": "f396a11e2927061921ae162e396e447e923ee360b118ecf619b431d81166ab16",
+    "unchanged": true,
+    "workingTreeSha256": "f396a11e2927061921ae162e396e447e923ee360b118ecf619b431d81166ab16"
+  },
+  "runtimeSizeBytes": 45913986,
+  "sourceImages": {
+    "answer-images": {
+      "copiedBytes": 8270107,
+      "copiedFiles": 198,
+      "missingReferences": 0,
+      "orphanFiles": 31,
+      "referencedFiles": 198,
+      "sourceBytes": 9493878,
+      "sourceFiles": 229
+    },
+    "images-p1": {
+      "copiedBytes": 11825976,
+      "copiedFiles": 198,
+      "missingReferences": 0,
+      "orphanFiles": 22,
+      "referencedFiles": 198,
+      "sourceBytes": 13278605,
+      "sourceFiles": 220
+    },
+    "images-p2": {
+      "copiedBytes": 25055693,
+      "copiedFiles": 495,
+      "missingReferences": 0,
+      "orphanFiles": 0,
+      "referencedFiles": 495,
+      "sourceBytes": 25055693,
+      "sourceFiles": 495
+    }
+  }
+}
