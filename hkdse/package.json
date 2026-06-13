@@ -1,0 +1,9 @@
+{
+  "name": "assessments-hkdse",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test:a1": "node test/run-all.mjs",
+    "test:a2": "node test/validate-student-ui.mjs"
+  }
+}
