@@ -4,6 +4,29 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>初中短答題老師選題工具</title>
+<!-- MathJax 3 (公式預覽) -->
+<script>
+  window.MathJax = {
+    tex: {
+      inlineMath: [['\\(', '\\)'], ['$', '$']],
+      displayMath: [['\\[', '\\]'], ['$$', '$$']]
+    },
+    svg: { fontCache: 'global' },
+    startup: {
+      ready: () => {
+        MathJax.startup.defaultReady();
+        window.dispatchEvent(new Event('mathjax-ready'));
+      },
+      pageReady: () => { window.dispatchEvent(new Event('mathjax-pageReady')); },
+      fail: () => {
+        window.dispatchEvent(new Event('mathjax-fail'));
+        console.warn('[MathJax] startup failed');
+      }
+    }
+  };
+</script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"
+        onerror="window.dispatchEvent(new Event('mathjax-fail')); console.warn('[MathJax] CDN load failed');"></script>
 <style>
   /* ============================================================
      Layout: 1-column on mobile, 2-column on desktop
@@ -154,6 +177,7 @@
       <button class="secondary" onclick="clearUrls()">🗑️ 清除</button>
     </div>
     <div id="loadStatus" class="status"></div>
+    <div id="mathjaxStatus" class="status" style="display:none;"></div>
   </div>
 
   <div class="layout">
@@ -215,7 +239,8 @@
           </div>
           <div>
             <label>檔名（不含 .html）</label>
-            <input type="text" id="filename" value="student-practice">
+            <input type="text" id="filename" value="student-practice-custom" readonly
+              title="檔名根據 activePresetKey 自動產生，PRESET_KEY 會填返同一個 key 入 HTML">
           </div>
         </div>
         <p class="sub" style="margin-top:8px;">匯出只包含已確認嘅題目，使用預覽時生成嘅實際內容（唔會再重新隨機）。</p>
@@ -240,6 +265,9 @@
   </div>
 </div>
 
+<!-- 共享篩選邏輯（tool/filter.js）— 頁面同 test 共用 -->
+<script src="filter.js"></script>
+
 <script>
 /* ============================================================
    狀態管理
@@ -248,6 +276,8 @@ const STORAGE_KEY = "assess_tool_v2";
 let bank = null;
 let tmpl = null;
 let activeMode = "custom";
+let activePresetKey = "custom";  // "custom" 或實際 preset key（例如 s1_term3_part_a）
+let mathjaxStatus = "loading";   // "loading" | "ready" | "failed"
 let selectedGrade = "";
 let selectedTerm = "";
 let selectedTopic = "";
@@ -261,8 +291,33 @@ window.addEventListener("DOMContentLoaded", () => {
   if (saved.bankUrl) document.getElementById("bankUrl").value = saved.bankUrl;
   if (saved.tmplUrl) document.getElementById("tmplUrl").value = saved.tmplUrl;
   if (saved.activeMode) activeMode = saved.activeMode;
+  // MathJax lifecycle
+  window.addEventListener("mathjax-ready", () => {
+    mathjaxStatus = "ready";
+    showMathjaxStatus("ok", "MathJax 載入完成（公式預覽可用）");
+  });
+  window.addEventListener("mathjax-fail", () => {
+    mathjaxStatus = "failed";
+    showMathjaxStatus("err",
+      "MathJax 載入失敗。檢查網絡連線或 CDN 可達性。預覽區嘅公式會以原始字串顯示，唔會自動排版。");
+  });
+  // 3 秒後仍未 ready → 標記 failed
+  setTimeout(() => {
+    if (mathjaxStatus === "loading") {
+      mathjaxStatus = "failed";
+      showMathjaxStatus("err",
+        "MathJax 載入超時。預覽區嘅公式會以原始字串顯示，唔會自動排版。");
+    }
+  }, 3000);
   switchMode(activeMode);
 });
+
+function showMathjaxStatus(type, msg) {
+  const el = document.getElementById("mathjaxStatus");
+  if (!el) return;
+  el.className = "status " + type;
+  el.innerHTML = msg;
+}
 
 function saveUrls() {
   const data = {
@@ -287,17 +342,28 @@ function showStatus(id, type, msg) {
 
 function switchMode(mode) {
   activeMode = mode;
+  // 切換模式時重設 activePresetKey。custom 模式 → "custom"；preset 模式 → 邏輯由 loadPreset() 設
+  if (mode === "custom") {
+    activePresetKey = "custom";
+  }
+  // else: 保留上一個 preset key，loadPreset() 會更新
   document.getElementById("mode-custom").style.display = (mode === "custom") ? "block" : "none";
   document.getElementById("mode-preset").style.display = (mode === "preset") ? "block" : "none";
   const bc = document.getElementById("btn-mode-custom");
   const bp = document.getElementById("btn-mode-preset");
   bc.className = (mode === "custom") ? "" : "secondary";
   bp.className = (mode === "preset") ? "" : "secondary";
+  syncFilenameFromPreset();
   if (bank) {
     if (mode === "custom") buildGradeOptions();
     else renderPresetArea();
   }
   saveUrls();
+}
+
+function syncFilenameFromPreset() {
+  // 根據 activePresetKey 自動產生檔名基底（read-only）
+  document.getElementById("filename").value = "student-practice-" + activePresetKey;
 }
 
 /* ============================================================
@@ -319,9 +385,19 @@ async function loadAll() {
         !tmpl.includes("{{BANK_HASH}}") || !tmpl.includes("{{PRESET_KEY}}")) {
       throw new Error("模板缺少必要佔位符（{{TITLE}} / {{QUESTIONS_DATA}} / {{BANK_HASH}} / {{PRESET_KEY}}）");
     }
-    // Bank validation
+    // Bank validation（先過題目庫）
     const validation = validateBank(bank);
-    if (!validation.ok) throw new Error("題目庫驗證失敗：" + validation.errors.join("；"));
+    if (!validation.ok) {
+      // 題目庫驗證失敗 → 不載入任何嘢，避免半完成狀態
+      bank = null; tmpl = null;
+      throw new Error("題目庫驗證失敗：" + validation.errors.join("；"));
+    }
+    // 模板佔位符驗證
+    const tmplValidation = validateTemplate(tmpl);
+    if (!tmplValidation.ok) {
+      bank = null; tmpl = null;
+      throw new Error("模板缺少必要佔位符：" + tmplValidation.missing.join("、"));
+    }
     saveUrls();
     if (activeMode === "custom") buildGradeOptions();
     else renderPresetArea();
@@ -336,37 +412,91 @@ async function loadAll() {
 
 function validateBank(b) {
   const errors = [], warnings = [];
-  if (!b || !Array.isArray(b.data)) { errors.push("data 不是陣列"); return { ok: false, errors, warnings }; }
+  // 1. JSON 可解析 + data 係陣列
+  if (!b || typeof b !== "object") { errors.push("題目庫不是有效 JSON object"); return { ok: false, errors, warnings }; }
+  if (!Array.isArray(b.data)) { errors.push("data 不是陣列"); return { ok: false, errors, warnings }; }
   const keys = new Set();
+  // 支援嘅 type/checkType 白名單
+  const SUPPORTED_TYPES = new Set(["text", "choice", "coordinate", "congruence"]);
+  const SUPPORTED_CHECKS = new Set([
+    "textExact", "numeric", "fracPct", "primeFactor",
+    "algebraQ8", "hcfLcm", "choiceKey", "congruenceReason", "coordinatePoint"
+  ]);
   for (const t of b.data) {
-    if (!t.key) errors.push("題型缺少 key");
+    if (!t.key) { errors.push("有題型缺少 key"); continue; }
     if (keys.has(t.key)) errors.push("重複 key: " + t.key);
     keys.add(t.key);
-    if (!t.name) errors.push(t.key + " 缺 name");
-    if (!t.type) errors.push(t.key + " 缺 type");
-    if (!t.checkType) errors.push(t.key + " 缺 checkType");
-    if (!t.generate) errors.push(t.key + " 缺 generate");
+    if (!t.name) errors.push(`題型「${t.key}」缺 name`);
+    if (!t.generate) errors.push(`題型「${t.key}」缺 generate`);
+    if (!t.type) {
+      errors.push(`題型「${t.key}」缺 type`);
+    } else if (!SUPPORTED_TYPES.has(t.type)) {
+      errors.push(`題型「${t.key}」嘅 type「${t.type}」不在支援範圍（只可用 text / choice / coordinate / congruence）`);
+    }
+    if (!t.checkType) {
+      errors.push(`題型「${t.key}」缺 checkType`);
+    } else if (!SUPPORTED_CHECKS.has(t.checkType)) {
+      errors.push(`題型「${t.key}」嘅 checkType「${t.checkType}」不在支援範圍`);
+    }
+    // grade/term 可空（未分類示範題），但 topicKey/topicName 必須有有效值
     if (t.grade === undefined || t.term === undefined) {
-      warnings.push(t.key + " 缺 grade/term（會列入『未分類』）");
+      warnings.push(`題型「${t.key}」缺 grade/term（會列入『未分類』）`);
+    }
+    if (!t.topicKey || typeof t.topicKey !== "string") {
+      errors.push(`題型「${t.key}」缺 topicKey（示範題亦要有效值）`);
+    }
+    if (!t.topicName || typeof t.topicName !== "string") {
+      errors.push(`題型「${t.key}」缺 topicName（示範題亦要有效值）`);
+    }
+    // choice 題必須有 options
+    if (t.type === "choice") {
+      if (!Array.isArray(t.options) || t.options.length === 0) {
+        errors.push(`題型「${t.key}」係 choice 類但缺 options`);
+      } else {
+        for (const o of t.options) {
+          if (!o || !o.key || !o.label) {
+            errors.push(`題型「${t.key}」嘅 options 格式錯誤（要有 key/label）`);
+            break;
+          }
+        }
+      }
     }
   }
-  // preset references
+  // 2. preset 引用嘅 typeKey 全部存在
   for (const p of b.presets || []) {
-    for (const pq of p.questions || []) {
-      if (!keys.has(pq.typeKey)) errors.push("preset " + p.key + " 引用咗唔存在嘅題型: " + pq.typeKey);
+    if (!p.key) errors.push("preset 缺少 key");
+    if (!p.name) errors.push(`preset「${p.key || "?"}」缺 name`);
+    if (!Array.isArray(p.questions)) {
+      errors.push(`preset「${p.key || "?"}」缺 questions 陣列`);
+      continue;
+    }
+    for (const pq of p.questions) {
+      if (!pq.typeKey) {
+        errors.push(`preset「${p.key}」有題目缺 typeKey`);
+        continue;
+      }
+      if (!keys.has(pq.typeKey)) {
+        errors.push(`preset「${p.key}」引用咗唔存在嘅題型：${pq.typeKey}`);
+      }
     }
   }
   return { ok: errors.length === 0, errors, warnings };
 }
 
+function validateTemplate(s) {
+  const required = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}"];
+  const missing = required.filter(ph => !s.includes(ph));
+  return { ok: missing.length === 0, missing };
+}
+
 /* ============================================================
    分層選擇：年級 → 學期 → 課題 → 題目
+   全部使用 tool/filter.js 內的 filterBankStrict，
+   保持頁面同測試共用同一個篩選邏輯。
    ============================================================ */
-function uniqueValues(arr) { return Array.from(new Set(arr.filter(x => x !== undefined && x !== null && x !== ""))); }
-
 function buildGradeOptions() {
   const sel = document.getElementById("sel-grade");
-  const grades = uniqueValues(bank.data.map(t => t.grade || "")).sort();
+  const grades = AssessTool.uniqueValuesForKey(bank.data, "grade");
   sel.innerHTML = '<option value="">—</option>' + grades.map(g => `<option value="${g}">${g || "未分類"}</option>`).join("");
   // Reset downstream
   selectedGrade = "";
@@ -383,7 +513,7 @@ function onGradeChange() {
   selectedTopic = "";
   // Populate term dropdown
   const filtered = bank.data.filter(t => (t.grade || "") === selectedGrade);
-  const terms = uniqueValues(filtered.map(t => t.term || "")).sort();
+  const terms = AssessTool.uniqueValuesForKey(filtered, "term");
   const tSel = document.getElementById("sel-term");
   tSel.innerHTML = '<option value="">—</option>' + terms.map(t => `<option value="${t}">${t || "未分類"}</option>`).join("");
   tSel.disabled = terms.length === 0;
@@ -419,14 +549,17 @@ function onTopicChange() {
 
 function renderQuestionBrowser() {
   const ul = document.getElementById("qlist-browser");
-  const filtered = bank.data.filter(t => {
-    if ((t.grade || "") !== selectedGrade) return false;
-    if ((t.term || "") !== selectedTerm) return false;
-    if (selectedTopic && (t.topicKey || "uncategorized") !== selectedTopic) return false;
-    return true;
-  });
+  // 使用共享篩選邏輯，保證頁面同測試一致
+  const filtered = AssessTool.filterBankStrict(bank.data, selectedGrade, selectedTerm, selectedTopic);
   if (filtered.length === 0) {
-    ul.innerHTML = '<li class="empty">呢個組合暫無題目。</li>';
+    const missing = [];
+    if (!selectedGrade) missing.push("年級");
+    if (!selectedTerm)  missing.push("學期");
+    if (!selectedTopic) missing.push("課題");
+    const msg = (missing.length === 3)
+      ? "請先完成年級、學期及課題選擇。"
+      : "呢個組合暫無題目。";
+    ul.innerHTML = `<li class="empty">${msg}</li>`;
     return;
   }
   ul.innerHTML = filtered.map(t => `
@@ -545,11 +678,13 @@ function loadPreset(presetKey) {
       });
     }
   }
+  // 記住來源 preset key，export 時會用呢個填 PRESET_KEY
+  activePresetKey = p.key;
   document.getElementById("title").value = p.name;
-  document.getElementById("filename").value = "student-practice-" + p.key;
+  syncFilenameFromPreset();
   markPreviewDirty();
   renderBasket();
-  showStatus("loadStatus", "ok", `✓ 已載入 preset：${p.name}（${basket.length} 題）— 撳「生成預覽」開始`);
+  showStatus("loadStatus", "ok", `✓ 已載入 preset：${p.name}（${basket.length} 題，presetKey=${p.key}）— 撳「生成預覽」開始`);
 }
 
 /* ============================================================
@@ -785,11 +920,29 @@ function renderPreview() {
     html += `</div>`;
   });
   area.innerHTML = html;
-  // After render, typeset math
-  if (window.MathJax && MathJax.typesetPromise) {
-    MathJax.typesetPromise([area]).catch(() => {});
-  }
+  // After render, typeset math. If MathJax 仲未 ready，讀 1–2 次。
+  scheduleMathjaxTypeset(area);
   updateProgressBar();
+}
+
+function scheduleMathjaxTypeset(node) {
+  if (!node) return;
+  const tryTypeset = () => {
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise([node]).catch((e) => {
+        console.warn('[MathJax] typeset failed:', e);
+      });
+    } else if (mathjaxStatus === "loading") {
+      // MathJax 仍在 load，最多 3 秒
+      setTimeout(tryTypeset, 200);
+    } else {
+      // failed：預覽區已包含原始 \( \) 字串，提示用戶
+      console.warn('[MathJax] skipped typeset: load failed');
+    }
+  };
+  if (mathjaxStatus === "ready") tryTypeset();
+  else if (mathjaxStatus === "loading") setTimeout(tryTypeset, 200);
+  // failed → 唔 typeset，用戶已見到 loadStatus 提示
 }
 
 function escapeHtml(s) {
@@ -897,7 +1050,7 @@ function exportStudent() {
     showStatus("exportStatus", "err", "匯出閘門未通過"); return;
   }
   const title = document.getElementById("title").value.trim() || "數學短答練習";
-  const baseName = (document.getElementById("filename").value.trim() || "student-practice")
+  const baseName = (document.getElementById("filename").value.trim() || ("student-practice-" + activePresetKey))
                      .replace(/[^a-zA-Z0-9_\\-]/g, "_");
   const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
   const questions = basket.map((b, i) => {
@@ -934,7 +1087,15 @@ function exportStudent() {
   }
   const bankHash = "b" + bank.data.length + "_" + questions.length + "_" + Date.now().toString(36);
   const generatedAt = new Date().toISOString();
-  const presetKey = "custom";
+  // 一致性檢查：filename 必須包含 activePresetKey，避免顯示檔名講一套、HTML 入面 PRESET_KEY 講另一套
+  if (!baseName.includes(activePresetKey)) {
+    showStatus("exportStatus", "err",
+      "檔名基底「" + baseName + "」冇包含 activePresetKey「" + activePresetKey + "」。"
+      + "請重新載入 preset 或切換返 custom 模式。");
+    return;
+  }
+  // PRESET_KEY 一律用 activePresetKey，唔可以寫死做 "custom"
+  const presetKey = activePresetKey;
   const gasUrl = "";
 
   const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);

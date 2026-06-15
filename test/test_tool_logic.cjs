@@ -1,178 +1,231 @@
-// Headless test: simulate the teacher tool's full workflow
-// 1. Load bank + template (skip HTTP, use local files)
-// 2. Run hierarchical filter (grade=》s1, term=》3, topic=》number_and_algebra)
-// 3. Add the 11 questions in that topic to the basket
-// 4. Generate preview (call generate() for each)
-// 5. Confirm all
-// 6. Export → verify HTML
+// Headless test: exercise tool/filter.js + extract tool/index.html's inline
+// script to verify the page actually USES the shared filter. This is the
+// regression test for the "selectedTopic empty shows 16" bug.
 
 const fs = require('fs');
 const path = require('path');
 
-const ROOT = '/Users/zachli/ai-learning/Assessments';
+const ROOT = path.resolve(__dirname, '..');
 const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'question-bank.json'), 'utf-8'));
 const tmpl = fs.readFileSync(path.join(ROOT, 'templates/student.html'), 'utf-8');
 
-// === 1. Validate bank structure ===
-console.log('=== 1. 題目庫結構 ===');
-const keys = new Set();
-for (const t of bank.data) {
-  if (keys.has(t.key)) throw new Error('Duplicate key: ' + t.key);
-  keys.add(t.key);
-  if (!('grade' in t)) throw new Error(t.key + ' missing grade');
-  if (!('term' in t)) throw new Error(t.key + ' missing term');
-  if (!('topicKey' in t)) throw new Error(t.key + ' missing topicKey');
-  if (!('topicName' in t)) throw new Error(t.key + ' missing topicName');
+let PASSED = 0, FAILED = 0;
+const FAILURES = [];
+function check(name, cond, detail) {
+  if (cond) { PASSED++; console.log(`  ✓ ${name}`); }
+  else { FAILED++; FAILURES.push(name + (detail ? ` — ${detail}` : '')); console.log(`  ✗ ${name}${detail ? '  ' + detail : ''}`); }
 }
-console.log(`  ✓ 18 types, all unique, all have grade/term/topicKey/topicName`);
+function section(title) { console.log(`\n=== ${title} ===`); }
 
-// === 2. Hierarchical filter: grade=s1, term=3, topic=number_and_algebra ===
-console.log('\n=== 2. 分層篩選：s1 / 3 / number_and_algebra ===');
-const selectedGrade = 's1', selectedTerm = '3', selectedTopic = 'number_and_algebra';
-const filtered = bank.data.filter(t =>
-  (t.grade || '') === selectedGrade &&
-  (t.term || '') === selectedTerm &&
-  (t.topicKey || 'uncategorized') === selectedTopic
-);
-console.log(`  ✓ ${filtered.length} 題:`);
-filtered.forEach(t => console.log(`    - ${t.key}  ${t.name}`));
-if (filtered.length < 10) throw new Error('Expected at least 10 題 in number_and_algebra');
-if (filtered.length > 15) throw new Error('Expected <= 15 題');
+// === 0. Load shared filter module ===
+section('0. 載入共享篩選模組 (tool/filter.js)');
+const { filterBankStrict, uniqueValuesForKey } = require(path.join(ROOT, 'tool/filter.js'));
+check('filter.js 載入成功', typeof filterBankStrict === 'function');
+check('uniqueValuesForKey 載入成功', typeof uniqueValuesForKey === 'function');
 
-// === 3. Add to basket & generate preview ===
-console.log('\n=== 3. 預覽生成 ===');
-const basket = filtered.map(t => ({ typeDef: t, params: null, generated: null, confirmed: false, hasError: false }));
-const results = [];
-for (const b of basket) {
-  // Simple params (tool does this randomly)
-  const params = genParamsForType(b.typeDef);
-  b.params = params;
-  try {
-    const fn = new Function('p', 'return (' + b.typeDef.generate + ')(p);');
-    const res = fn(params);
-    if (!res || !res.questionHTML || res.correctAnswer === undefined) {
-      b.hasError = true; b.errorMsg = 'missing fields'; continue;
-    }
-    b.generated = res;
-    results.push({ typeKey: b.typeDef.key, questionHTML: res.questionHTML, correctAnswer: res.correctAnswer });
-  } catch (e) {
-    b.hasError = true; b.errorMsg = e.message;
-  }
+// === 1. filterBankStrict 行為 ===
+section('1. filterBankStrict 行為');
+// 全部空 → []
+check('全部空 → []', filterBankStrict(bank.data, '', '', '').length === 0);
+// 只填年級 → []
+check('只填年級 s1 → []', filterBankStrict(bank.data, 's1', '', '').length === 0);
+// 只填年級+學期 → []  ← 這係 PR #2 review 搵到嘅 bug
+check('只填年級+學期 s1/3 → []  (regression for 16 題 bug)', filterBankStrict(bank.data, 's1', '3', '').length === 0);
+// 三層齊 → 預期題數
+check('s1/3/number_and_algebra → 11 題', filterBankStrict(bank.data, 's1', '3', 'number_and_algebra').length === 11);
+check('s1/3/measurement → 2 題', filterBankStrict(bank.data, 's1', '3', 'measurement').length === 2);
+check('s1/3/geometry → 2 題', filterBankStrict(bank.data, 's1', '3', 'geometry').length === 2);
+check('s1/3/data_handling → 1 題', filterBankStrict(bank.data, 's1', '3', 'data_handling').length === 1);
+// 演示題型
+check('示範題型 (no grade) → []', filterBankStrict(bank.data, '', '', 'uncategorized').length === 0);
+
+// === 2. 頁面源碼檢查：必須使用 filterBankStrict ===
+section('2. 頁面源碼檢查：renderQuestionBrowser 使用共享函式');
+const toolHtml = fs.readFileSync(path.join(ROOT, 'tool/filter.js').replace(/filter\.js$/, 'index.html'), 'utf-8');
+// (Re-read toolHtml here because of the strange path dance above)
+const toolHtmlFixed = fs.readFileSync(path.join(ROOT, 'tool/index.html'), 'utf-8');
+
+check('頁面 <script src="filter.js">', /<script src="filter\.js">/.test(toolHtmlFixed));
+check('頁面 renderQuestionBrowser 內使用 AssessTool.filterBankStrict',
+      /renderQuestionBrowser[\s\S]{0,300}filterBankStrict/.test(toolHtmlFixed));
+check('頁面入面冇內聯 (t.grade \|\| "") !== selectedGrade 篩選邏輯',
+      !/function renderQuestionBrowser[\s\S]{0,500}\(t\.grade \|\| ""\) !== selectedGrade/.test(toolHtmlFixed));
+// 確保舊嘅 buggy 條件 (selectedTopic && (t.topicKey || "uncategorized") !== selectedTopic) 唔喺 renderQuestionBrowser 入面
+const renderBlock = toolHtmlFixed.match(/function renderQuestionBrowser\(\)[\s\S]{0,800}/);
+if (renderBlock) {
+  const buggy = /selectedTopic\s*&&\s*\(t\.topicKey \|\| "uncategorized"\)\s*!==\s*selectedTopic/.test(renderBlock[0]);
+  check('renderQuestionBrowser 唔包含 buggy "selectedTopic && ..." 條件', !buggy);
+} else {
+  check('renderQuestionBrowser 函式存在', false, '未搵到');
 }
-const ok = basket.filter(b => !b.hasError);
-console.log(`  ✓ ${ok.length} / ${basket.length} 預覽成功`);
-if (ok.length !== basket.length) throw new Error('Some previews failed: ' + JSON.stringify(basket.filter(b => b.hasError).map(b => ({key: b.typeDef.key, err: b.errorMsg}))));
 
-// === 4. Confirm all ===
-console.log('\n=== 4. 全部確認 ===');
-for (const b of basket) {
-  if (!b.hasError) b.confirmed = true;
-}
-console.log(`  ✓ ${basket.filter(b => b.confirmed).length} / ${basket.length} confirmed`);
+// === 3. 執行頁面真實的 renderQuestionBrowser ===
+section('3. 執行頁面真實的 renderQuestionBrowser (DOM mock)');
+// 從 tool/index.html 抽出所有 inline <script>，第一個係 MathJax config (skip)
+// 第二個係主程式。第三個未必存在。
+const inlineScripts = [...toolHtmlFixed.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
+console.log(`  找到 ${inlineScripts.length} 個 inline <script>`);
+// 揀第一個長度 > 1000 嘅（即係主程式，唔係 MathJax config）
+const mainScript = inlineScripts.find(s => s.length > 1000);
+if (!mainScript) { FAILURES.push('冇搵到主程式'); process.exit(1); }
 
-// === 5. Export gate ===
-console.log('\n=== 5. 匯出閘門 ===');
-const gate_ok = basket.length > 0 &&
-                !basket.some(b => b.hasError) &&
-                !basket.some(b => !b.confirmed);
-if (!gate_ok) throw new Error('Export gate should be open');
-console.log('  ✓ 全部閘門通過');
-
-// === 6. Export HTML ===
-console.log('\n=== 6. 匯出 ===');
-const questions = basket.map((b, i) => {
-  const q = b.generated;
+// 構造 DOM mock（記住每個 getElementById 叫到嘅 element）
+const docStore = {};
+function makeMockEl() {
   return {
-    qid: 'q' + String(i + 1).padStart(3, '0'),
-    typeKey: b.typeDef.key,
-    type: b.typeDef.type,
-    checkType: b.typeDef.checkType,
-    questionHTML: q.questionHTML,
-    correctAnswer: q.correctAnswer,
-    paramsUsed: q.paramsUsed,
-    solutionHTML: q.solutionHTML || '',
-    pdfText: q.pdfText || '',
-    displayAnswer: q.displayAnswer || q.correctAnswer,
-    steps: q.steps || ''
+    value: '', textContent: '', innerHTML: '', disabled: false, style: {}, className: '',
+    setAttribute: () => {}, addEventListener: () => {}, appendChild: () => {},
+    querySelector: () => makeMockEl(), querySelectorAll: () => [],
+    getElementsByTagName: () => [],
+    dispatchEvent: () => {},
   };
-});
-const title = '中一第三學期 — 數與代數';
-const generatedAt = new Date().toISOString();
-const bankHash = 'test_tool_' + Date.now().toString(36);
-const presetKey = 'custom';
-const gasUrl = '';
-
-const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
-let html = tmpl;
-html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
-html = safeReplace(html, /\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions));
-html = safeReplace(html, /\{\{GENERATED_AT\}\}/g, JSON.stringify(generatedAt));
-html = safeReplace(html, /\{\{BANK_HASH\}\}/g, JSON.stringify(bankHash));
-html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
-html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl));
-
-// Verify no placeholders
-const leftover = html.match(/\{\{[A-Z_]+\}\}/g);
-if (leftover) throw new Error('Residual placeholders: ' + leftover.join(', '));
-console.log('  ✓ 匯出 HTML 冇殘留佔位符');
-
-// Verify each questionHTML is in the output
-for (let i = 0; i < questions.length; i++) {
-  const q = questions[i];
-  const escaped = JSON.stringify(q.questionHTML).slice(1, -1);
-  if (!html.includes(escaped)) {
-    throw new Error('Q' + (i+1) + ' questionHTML not found in export');
-  }
 }
-console.log(`  ✓ 全部 ${questions.length} 題 questionHTML 都喺 HTML 內`);
+const mockDoc = {
+  getElementById: (id) => {
+    if (!docStore[id]) docStore[id] = makeMockEl();
+    return docStore[id];
+  },
+  querySelector: () => makeMockEl(),
+  querySelectorAll: () => [],
+  createElement: () => makeMockEl(),
+  addEventListener: () => {},
+};
 
-// Verify JS syntax
-const scripts = html.match(/<script>([\s\S]*?)<\/script>/g);
-let allJsOk = true;
-for (let i = 0; i < scripts.length; i++) {
-  const sc = scripts[i].replace(/<script>/, '').replace(/<\/script>/, '');
-  fs.writeFileSync('/tmp/tool_flow_' + i + '.js', sc);
-  const { execSync } = require('child_process');
+// 運行主程式（會設定 window / document mock）
+const vm = require('vm');
+const winMock = { addEventListener: () => {}, dispatchEvent: () => {}, document: mockDoc, localStorage: { getItem: () => null, setItem: () => {} } };
+const sandbox = {
+  document: mockDoc,
+  window: winMock,
+  console,
+  setTimeout, clearTimeout,
+  Math,
+  Date,
+  JSON,
+  Object,
+  Set, Map, Array, String, Number, Boolean, Error, Promise,
+  URL: { createObjectURL: () => '', revokeObjectURL: () => {} },
+  Blob: function() {},
+  MathJax: null,
+  localStorage: { getItem: () => null, setItem: () => {} },
+};
+// Make window properties visible to the script (AssessTool = window.AssessTool etc.)
+for (const k of Object.keys(sandbox)) sandbox[k === 'window' ? '__skip__' : k] = sandbox[k];
+
+// 先載 filter.js（建立 AssessTool 全局變量）
+const filterScript = fs.readFileSync(path.join(ROOT, 'tool/filter.js'), 'utf-8');
+try {
+  vm.createContext(sandbox);
+  vm.runInContext(filterScript, sandbox, { filename: 'tool/filter.js' });
+} catch (e) {
+  FAILURES.push('filter.js 載入失敗: ' + e.message);
+  process.exit(1);
+}
+try {
+  vm.runInContext(mainScript, sandbox, { filename: 'tool/index.html#mainScript' });
+} catch (e) {
+  console.log('  ⚠️ 主程式加載失敗:', e.message);
+}
+
+// 找出 renderQuestionBrowser 函式
+const renderFn = sandbox.renderQuestionBrowser;
+check('renderQuestionBrowser 喺 sandbox 內可訪問', typeof renderFn === 'function');
+
+// 嘗試調用
+if (typeof renderFn === 'function') {
+  // 設置 bank + 全部 selection（全部喺 context 內跑，let binding 才會更新）
+  const setupAndRender = (g, t, tp) => {
+    const s = 'bank = ' + JSON.stringify(bank) + ';\n'
+      + `selectedGrade = ${JSON.stringify(g)};\n`
+      + `selectedTerm = ${JSON.stringify(t)};\n`
+      + `selectedTopic = ${JSON.stringify(tp)};\n`
+      + 'renderQuestionBrowser();';
+    vm.runInContext(s, sandbox);
+  };
+
+  // ① s1/3/''  → 期望 empty (bug fix regression)
   try {
-    execSync('node --check /tmp/tool_flow_' + i + '.js', { stdio: 'pipe' });
+    setupAndRender('s1', '3', '');
+    const ul = docStore['qlist-browser'];
+    const html = ul ? ul.innerHTML : '';
+    const listItemCount = (html.match(/<li[^>]*>/g) || []).length;
+    check(`renderQuestionBrowser(s1, 3, '') → <li> 數 = ${listItemCount} (期望 1 empty li, 唔應該 16)`,
+          listItemCount === 1,
+          `got ${listItemCount} <li>; html: ${html.slice(0, 200)}`);
+    check('empty message 提示「請先完成年級、學期及課題選擇」',
+          html.includes('請先完成年級、學期及課題選擇') || html.includes('呢個組合暫無題目'));
   } catch (e) {
-    allJsOk = false;
-    console.log('  ✗ Script ' + i + ' syntax error:', e.stderr.toString().split('\n')[0]);
+    FAILURES.push('renderQuestionBrowser (s1/3/empty) 調用失敗: ' + e.message);
+  }
+
+  // ② s1/3/number_and_algebra  → 期望 11
+  try {
+    setupAndRender('s1', '3', 'number_and_algebra');
+    const ul = docStore['qlist-browser'];
+    const html = ul ? ul.innerHTML : '';
+    const listItemCount = (html.match(/<li[^>]*>/g) || []).length;
+    check(`renderQuestionBrowser(s1, 3, number_and_algebra) → ${listItemCount} <li> (期望 11)`,
+          listItemCount === 11, `got ${listItemCount}`);
+  } catch (e) {
+    FAILURES.push('renderQuestionBrowser(s1/3/na) 調用失敗: ' + e.message);
+  }
+
+  // ③ 全部空  → 期望 empty
+  try {
+    setupAndRender('', '', '');
+    const ul = docStore['qlist-browser'];
+    const html = ul ? ul.innerHTML : '';
+    const listItemCount = (html.match(/<li[^>]*>/g) || []).length;
+    check(`renderQuestionBrowser('', '', '') → ${listItemCount} <li> (期望 1)`,
+          listItemCount === 1, `got ${listItemCount}`);
+  } catch (e) {
+    FAILURES.push('renderQuestionBrowser (all empty) 調用失敗: ' + e.message);
   }
 }
-if (!allJsOk) throw new Error('Some scripts failed syntax check');
-console.log(`  ✓ 全部 ${scripts.length} 個 inline script 通過語法檢查`);
 
-// Write test output
-const outFile = path.join(ROOT, 'test', 'tool_flow_export.html');
-fs.writeFileSync(outFile, html);
-console.log(`  ✓ Wrote ${outFile} (${html.length} bytes)`);
-
-console.log('\n✅ Tool flow headless test passed.');
-
-// Helper
-function genParamsForType(type) {
-  const r = (lo, hi) => Math.floor(Math.random() * (hi - lo + 1)) + lo;
-  const pick = (arr) => arr[Math.floor(Math.random() * arr.length)];
-  switch (type.key) {
-    case 'frac_arith':   return { a: r(2, 9), b: r(2, 9), c: r(2, 9), d: r(2, 9), op: pick(['add', 'sub']) };
-    case 'neg_power':    return { n: r(2, 5) };
-    case 'prime_factor': return { n: pick([12, 18, 20, 24, 28, 30, 36, 40, 45, 48, 50, 60, 72, 75, 90, 100]) };
-    case 'hcf_or_lcm':   return { n1: r(8, 60), n2: r(8, 60), askLCM: Math.random() < 0.5 };
-    case 'exp_law':      return { t: r(1, 6) };
-    case 'alg_simplify': return { a: r(2, 5), b: r(2, 5), op: pick(['add', 'sub']) };
-    case 'solve_eq':     return { a: r(2, 5), b: r(1, 10), c: r(1, 20) };
-    case 'word_to_alg':  return { t: r(1, 5), a: r(2, 8), b: r(2, 8) };
-    case 'sig_fig':      return { type: r(1, 3), a: r(1, 3), n: pick([0.01234, 0.12345, 1.2345, 12.345, 123.45, 1234.5, 2700, 45000, 5000.0, 0.009, 0.000456, 1.020, 0.020, 1.00]) };
-    case 'frac_to_pct':  return { num: r(1, 9), den: r(2, 10) };
-    case 'poly_desc':    return { a: r(1, 3), b: r(1, 7), c: r(1, 9) };
-    case 'formula_sub':  return { a: pick([-3, -2, -1, 2, 3, 4, 5]), b: pick([-2, -1, 0, 1, 2, 3]), c: pick([-3, -1, 0, 1, 2, 3]) };
-    case 'congruence':   return { reason: pick(['S.S.S.', 'S.A.S.', 'A.S.A.', 'A.A.S.', 'R.H.S.']), t1: ['A','B','C'], t2: ['D','E','F'] };
-    case 'coordinate':   return { targetX: pick([-2, -1, 1, 2]), targetY: pick([-2, -1, 1, 2]), askAxis: pick(['x', 'y']) };
-    case 'seq_nth':      return { a: r(1,4), d: r(1,4), n: r(10,20) };
-    case 'data_type':    return { scenario: pick(['一箱蘋果的數量', '一班學生的身高', '一袋米的重量']) };
-    case 'area_circle':  return { radius: r(1, 20) };
-    case 'angle_type':   return { degrees: r(0, 359) };
-    default:             return {};
-  }
+// === 4. 模板佔位符 ===
+section('4. 模板 6 個必要佔位符');
+const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}'];
+for (const ph of REQUIRED) {
+  check(`模板有 ${ph}`, tmpl.includes(ph));
 }
+
+// === 5. 其他 features: MathJax / activePresetKey / export gate ===
+section('5. 其他修正（MathJax / activePresetKey / 匯出閘門）');
+check('頁面載入 MathJax 3 CDN', toolHtmlFixed.includes('cdn.jsdelivr.net/npm/mathjax@3'));
+check('頁面有 mathjax-ready / mathjax-fail events', toolHtmlFixed.includes('mathjax-fail'));
+check('頁面有 mathjaxStatus 元素', toolHtmlFixed.includes('id="mathjaxStatus"'));
+check('頁面有 activePresetKey 變量', toolHtmlFixed.includes('let activePresetKey'));
+check('頁面有 syncFilenameFromPreset()', toolHtmlFixed.includes('function syncFilenameFromPreset'));
+check('頁面有 validateTemplate 函式', toolHtmlFixed.includes('function validateTemplate'));
+check('頁面有 scheduleMathjaxTypeset 函式', toolHtmlFixed.includes('function scheduleMathjaxTypeset'));
+check('匯出閘門檢查 baseName.includes(activePresetKey)',
+      /baseName\.includes\(activePresetKey\)/.test(toolHtmlFixed));
+check('PRESET_KEY 用 activePresetKey (唔係 hard-coded "custom")',
+      /const presetKey = activePresetKey/.test(toolHtmlFixed));
+check('filename 輸入框係 readonly', /id="filename"[^>]*readonly/.test(toolHtmlFixed));
+check('loadAll 失敗時 reset bank = null', /bank = null; tmpl = null;/.test(toolHtmlFixed));
+
+// === 6. JS 語法檢查 ===
+section('6. JS 語法檢查');
+const { execSync } = require('child_process');
+let toolSyntaxOk = true;
+inlineScripts.forEach((sc, i) => {
+  if (sc.includes('MathJax-script') || sc.includes('cdn.jsdelivr.net')) return;
+  const f = `/tmp/tool_test_${i}.js`;
+  fs.writeFileSync(f, sc);
+  try { execSync(`node --check ${f}`, { stdio: 'pipe' }); }
+  catch (e) { toolSyntaxOk = false; console.log(`    script ${i} syntax error: ${e.stderr.toString().split('\n')[0]}`); }
+});
+check(`tool/index.html 全部 inline script 通過語法`, toolSyntaxOk);
+
+// === Done ===
+console.log('\n' + '='.repeat(60));
+console.log(`✅ ${PASSED} 項通過, ${FAILED} 項失敗`);
+if (FAILED > 0) {
+  console.log('失敗項目:');
+  for (const f of FAILURES) console.log('  - ' + f);
+  process.exit(1);
+}
+console.log('✅ Teacher tool headless regression test passed.');
+process.exit(0);

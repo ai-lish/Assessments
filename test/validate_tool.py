@@ -27,10 +27,13 @@ tool_html = (ROOT / "tool" / "index.html").read_text(encoding="utf-8")
 
 ERRORS = []
 WARNINGS = []
+PASSES = 0  # 獨立計數 check() 成功次數，避免 `len([c for c in ERRORS if not c])` 永遠顯示 0 嘅 bug
 
 
 def check(name, condition, detail=""):
+    global PASSES
     if condition:
+        PASSES += 1
         print(f"  ✓ {name}")
     else:
         print(f"  ✗ {name}  {detail}")
@@ -319,6 +322,27 @@ check("s1/3/number_and_algebra 至少 10 題", len(s1_t3_na) >= 10, f"got {len(s
 names = sorted(set(t["topicName"] for t in s1_t3_types))
 print(f"  課題顯示名：{names}")
 
+# === 重要：頁面源碼 + JS 模擬中的篩選必須一致 ===
+# 之前的 bug：頁面用 (t.grade || "") !== selectedGrade 隱含 「selectedGrade 為空時隱含所有 t 匹配」，
+# 進而 selectedTopic 空時透出全部 16 題。修正後頁面使用共享 filterBankStrict。
+print("\n=== 額外：頁面必須使用共享篩選 (filter.js) ===")
+check("頁面 <script src=\"filter.js\">", '<script src="filter.js">' in tool_html)
+check("頁面使用 AssessTool.filterBankStrict", "AssessTool.filterBankStrict" in tool_html)
+check("filter.js 檔案存在", (ROOT / "tool" / "filter.js").exists())
+# 載入 filter.js 並跨語言同樣驗證「未選課題時必須是空清單」
+fjs = (ROOT / "tool" / "filter.js").read_text(encoding="utf-8")
+r = subprocess.run(['node', '-e', fjs
+  + ' const bank = require("fs").readFileSync("question-bank.json", "utf-8");'
+  + ' const data = JSON.parse(bank).data;'
+  + ' const out = AssessTool.filterBankStrict(data, "s1", "3", "");'
+  + ' process.stdout.write(JSON.stringify(out.length));'], capture_output=True, text=True, cwd=str(ROOT))
+check("filterBankStrict(s1,3,'') 在 node 內返回 0 (唔可以是 16)",
+      r.returncode == 0 and r.stdout.strip() == "0",
+      f"got {r.stdout!r} (rc={r.returncode})")
+# 頁面用舊有 buggy 寫法 `if (selectedTopic && ...) return false` 時會 3 項失敗
+buggy = 'selectedTopic && (t.topicKey || "uncategorized") !== selectedTopic' in tool_html
+check("頁面入面冇 buggy 'selectedTopic &&' 篩選條件", not buggy)
+
 # ----------------------------------------------------------------------
 # Done
 # ----------------------------------------------------------------------
@@ -329,5 +353,5 @@ if ERRORS:
         print(f"  - {e}")
     sys.exit(1)
 else:
-    print(f"✅ 全部 {len([c for c in ERRORS if not c])} 項檢查通過")
+    print(f"✅ 全部 {PASSES} 項檢查通過")
     sys.exit(0)

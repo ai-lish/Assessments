@@ -125,6 +125,11 @@ print(f"\n✓ Wrote {out_path} ({len(html)} bytes)")
 scripts = re.findall(r'<script>(.*?)</script>', html, re.DOTALL)
 print(f"Inline script blocks: {len(scripts)}")
 for i, sc in enumerate(scripts):
+    # 跳過 MathJax config：個 config 含 `window.MathJax = {...}` 同 CDN script 標記，node --check 處理唔到
+    if ('tex-svg' in sc or 'cdn.jsdelivr.net' in sc or 'MathJax-script' in sc
+        or 'window.MathJax =' in sc or 'window.MathJax={' in sc):
+        print(f"  ↪ Script {i} skipped (MathJax config)")
+        continue
     test_js = sc
     test_js = test_js.replace('window.MathJax', '({})')  # stub
     test_js = test_js.replace('MathJax.typesetPromise', 'null')
