@@ -5,7 +5,7 @@
 import json, subprocess, os, re, hashlib
 from pathlib import Path
 
-ROOT = Path('/Users/zachli/ai-learning/Assessments')
+ROOT = Path(__file__).resolve().parent.parent
 bank = json.loads((ROOT / 'question-bank.json').read_text())
 tmpl = (ROOT / 'templates/student.html').read_text()
 
@@ -108,13 +108,21 @@ assert not leftover, f"Leftover placeholders: {leftover}"
 assert 'TEACHER_PASSWORD' not in html, "Teacher password placeholder should be removed"
 
 # Sanity: all 16 questions present (look for unique parts of questionHTML)
+# The HTML embeds the questions list via json.dumps(questions, ensure_ascii=False),
+# so backslashes in LaTeX (`\(`) become `\\(` and double quotes become `\"`.
+# To match what's actually in the HTML, we must JSON-encode the snippet the same way.
 present = 0
 for q in questions:
-    # Use first 20 chars stripped of any regex special chars
-    snippet = re.escape(q['questionHTML'][:30])
+    # JSON-encode the snippet (and strip the wrapping quotes json.dumps adds)
+    snippet_raw = json.dumps(q['questionHTML'][:30], ensure_ascii=False)[1:-1]
+    snippet = re.escape(snippet_raw)
     if re.search(snippet, html):
         present += 1
 print(f"Found {present}/{len(questions)} questions in the rendered HTML")
+assert present == len(questions), (
+    f"e2e_tool: expected all {len(questions)} questions in rendered HTML, "
+    f"but only {present} matched. Aborting."
+)
 
 # Write the test output
 out_path = ROOT / 'test' / 'e2e_student.html'
