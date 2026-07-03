@@ -20,7 +20,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "exp_law"
+      "generator": "exp_law",
+      "code": "S1T3-NA-05"
     },
     {
       "key": "alg_simplify",
@@ -46,7 +47,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "alg_simplify"
+      "generator": "alg_simplify",
+      "code": "S1T3-NA-06"
     },
     {
       "key": "solve_eq",
@@ -71,5 +73,6 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "numeric",
-      "generator": "solve_eq"
+      "generator": "solve_eq",
+      "code": "S1T3-NA-07"
     },

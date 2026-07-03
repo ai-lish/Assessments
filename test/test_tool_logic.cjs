@@ -230,6 +230,23 @@ check('PRESET_KEY 用 activePresetKey (唔係 hard-coded "custom")',
 check('filename 輸入框係 readonly', /id="filename"[^>]*readonly/.test(toolHtmlFixed));
 check('loadAll 失敗時 reset bank = null', /bank = null; tmpl = null;/.test(toolHtmlFixed));
 
+// === 5b. PR-UI1 teacher preview UX ===
+section('5b. PR-UI1 老師工具 UX');
+check('18 題全部有 code 且唯一',
+      bank.data.every(t => /^S\d+T\d+-(NA|ME|GE|DH|UC)-\d{2}$/.test(t.code || '')) &&
+      new Set(bank.data.map(t => t.code)).size === bank.data.length);
+check('頁面有 QUESTION_TYPE_NAMES mapping', toolHtmlFixed.includes('const QUESTION_TYPE_NAMES'));
+check('18 個 key 全部出現在 QUESTION_TYPE_NAMES 或題庫 code UI 支援內',
+      bank.data.every(t => toolHtmlFixed.includes(`${t.key}:`) || toolHtmlFixed.includes(`"${t.key}"`)));
+check('題目清單/預覽有 code-badge 顯示', toolHtmlFixed.includes('code-badge'));
+check('有 copyQuestionCode()', toolHtmlFixed.includes('function copyQuestionCode'));
+check('預覽使用 details.advanced-data 收起技術欄位', toolHtmlFixed.includes('<details class="advanced-data">'));
+check('有模擬測試面板', toolHtmlFixed.includes('function renderSimulationPanel') && toolHtmlFixed.includes('模擬測試'));
+check('模擬判分調用 AssessValidators.checkAnswer',
+      /submitSimulation[\s\S]{0,500}AssessValidators\.checkAnswer/.test(toolHtmlFixed));
+check('模擬測試沒有 Google Sheets / fetch 寫入',
+      !/function submitSimulation[\s\S]{0,900}(fetch|GAS|Sheets|attemptLog)/.test(toolHtmlFixed));
+
 // === 6. JS 語法檢查 ===
 section('6. JS 語法檢查');
 const { execSync } = require('child_process');

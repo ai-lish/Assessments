@@ -21,5 +21,6 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "algebraQ8",
-      "generator": "word_to_alg"
+      "generator": "word_to_alg",
+      "code": "S1T3-NA-08"
     },

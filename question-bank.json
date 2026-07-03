@@ -28,7 +28,8 @@
       "validator": "validator registry key；現階段由 checkType alias 映射而來。",
       "generator": "generator registry key；對應 tool/generators.js。",
       "answerSpec": "互動題答案規格；coordinate 題需指定 coordinateMode。",
-      "figure": "幾何／全等題圖形規格；可指向 generated SVG。"
+      "figure": "幾何／全等題圖形規格；可指向 generated SVG。",
+      "code": "展示用題目編碼，格式 S{年級}T{學期}-{課題縮寫}-{兩位題號}；示範未分類題用 S0T0-UC。"
     },
     "laTeX_escape_rule": "JSON 中 LaTeX 寫 \\( 與 \\)，JSON 解析後變 \\( \\)，MathJax 收到 1 個反斜線。",
     "filter_rule": "老師工具按 grade -> term -> topicKey -> key 篩選；grade 為空嘅題型列喺『未分類』群組。",
@@ -107,7 +108,8 @@
       "schemaVersion": 1,
       "part": "demo",
       "validator": "textExact",
-      "generator": "area_circle"
+      "generator": "area_circle",
+      "code": "S0T0-UC-01"
     },
     {
       "key": "angle_type",
@@ -156,7 +158,8 @@
       "schemaVersion": 1,
       "part": "demo",
       "validator": "choiceKey",
-      "generator": "angle_type"
+      "generator": "angle_type",
+      "code": "S0T0-UC-02"
     },
     {
       "key": "frac_arith",
@@ -182,7 +185,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "frac_arith"
+      "generator": "frac_arith",
+      "code": "S1T3-NA-01"
     },
     {
       "key": "neg_power",
@@ -206,7 +210,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "numeric",
-      "generator": "neg_power"
+      "generator": "neg_power",
+      "code": "S1T3-NA-02"
     },
     {
       "key": "prime_factor",
@@ -229,7 +234,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "primeFactor",
-      "generator": "prime_factor"
+      "generator": "prime_factor",
+      "code": "S1T3-NA-03"
     },
     {
       "key": "hcf_or_lcm",
@@ -254,7 +260,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "hcfLcm",
-      "generator": "hcf_or_lcm"
+      "generator": "hcf_or_lcm",
+      "code": "S1T3-NA-04"
     },
     {
       "key": "exp_law",
@@ -278,7 +285,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "exp_law"
+      "generator": "exp_law",
+      "code": "S1T3-NA-05"
     },
     {
       "key": "alg_simplify",
@@ -304,7 +312,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "alg_simplify"
+      "generator": "alg_simplify",
+      "code": "S1T3-NA-06"
     },
     {
       "key": "solve_eq",
@@ -329,7 +338,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "numeric",
-      "generator": "solve_eq"
+      "generator": "solve_eq",
+      "code": "S1T3-NA-07"
     },
     {
       "key": "word_to_alg",
@@ -354,7 +364,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "algebraQ8",
-      "generator": "word_to_alg"
+      "generator": "word_to_alg",
+      "code": "S1T3-NA-08"
     },
     {
       "key": "sig_fig",
@@ -378,7 +389,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "sig_fig"
+      "generator": "sig_fig",
+      "code": "S1T3-ME-01"
     },
     {
       "key": "frac_to_pct",
@@ -401,7 +413,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "fracPct",
-      "generator": "frac_to_pct"
+      "generator": "frac_to_pct",
+      "code": "S1T3-ME-02"
     },
     {
       "key": "poly_desc",
@@ -425,7 +438,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "poly_desc"
+      "generator": "poly_desc",
+      "code": "S1T3-NA-09"
     },
     {
       "key": "formula_sub",
@@ -452,7 +466,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "numeric",
-      "generator": "formula_sub"
+      "generator": "formula_sub",
+      "code": "S1T3-NA-10"
     },
     {
       "key": "congruence",
@@ -478,6 +493,7 @@
       "part": "part_a",
       "validator": "congruenceReason",
       "generator": "congruence",
+      "code": "S1T3-GE-01",
       "figure": {
         "kind": "generated-svg-triangle-pair"
       }
@@ -506,6 +522,7 @@
       "part": "part_a",
       "validator": "coordinatePoint",
       "generator": "coordinate",
+      "code": "S1T3-GE-02",
       "answerSpec": {
         "coordinateMode": "axis-value",
         "interaction": {
@@ -538,7 +555,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "numeric",
-      "generator": "seq_nth"
+      "generator": "seq_nth",
+      "code": "S1T3-NA-11"
     },
     {
       "key": "data_type",
@@ -571,7 +589,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "choiceKey",
-      "generator": "data_type"
+      "generator": "data_type",
+      "code": "S1T3-DH-01"
     }
   ],
   "presets": [

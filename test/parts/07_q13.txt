@@ -22,6 +22,7 @@
       "part": "part_a",
       "validator": "congruenceReason",
       "generator": "congruence",
+      "code": "S1T3-GE-01",
       "figure": {
         "kind": "generated-svg-triangle-pair"
       }

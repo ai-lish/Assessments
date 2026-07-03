@@ -22,7 +22,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "frac_arith"
+      "generator": "frac_arith",
+      "code": "S1T3-NA-01"
     },
     {
       "key": "neg_power",
@@ -46,5 +47,6 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "numeric",
-      "generator": "neg_power"
+      "generator": "neg_power",
+      "code": "S1T3-NA-02"
     },

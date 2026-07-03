@@ -111,6 +111,9 @@
   .preview-header .badge.term { background: #d5f5e3; color: #196f3d; }
   .preview-header .badge.topic { background: #fcf3cf; color: #7d6608; }
   .preview-header .badge.type { background: #e8daef; color: #6c3483; }
+  .code-badge { display: inline-flex; align-items: center; gap: 5px; background: #1f618d; color: #fff; border-radius: 999px; padding: 3px 9px; font-size: 0.78em; font-weight: 700; letter-spacing: 0.02em; }
+  .copy-code { border: 0; background: rgba(255,255,255,0.18); color: inherit; padding: 1px 5px; min-width: auto; font-size: 0.9em; }
+  .copy-code:hover { background: rgba(255,255,255,0.28); }
   .preview-section { border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 10px; }
   .preview-section h4 { margin: 0 0 6px 0; font-size: 0.9em; color: var(--primary); }
   .preview-section .label { font-size: 0.78em; color: var(--muted); font-weight: 600; }
@@ -120,6 +123,22 @@
   .preview-data { font-size: 0.85em; }
   .preview-data code { background: #ecf0f1; padding: 1px 5px; border-radius: 3px; }
   .preview-data .row-kv { display: grid; grid-template-columns: 110px 1fr; gap: 4px 10px; align-items: baseline; }
+  .advanced-data { margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 8px; }
+  .advanced-data summary { cursor: pointer; color: var(--accent); font-weight: 700; font-size: 0.9em; }
+  .advanced-grid { display: grid; grid-template-columns: 130px 1fr; gap: 5px 10px; margin-top: 8px; font-size: 0.85em; }
+  .advanced-grid .label { color: var(--muted); font-weight: 700; }
+  .simulate-panel { border: 1px solid #d6eaf8; background: #f8fbfe; border-radius: 10px; padding: 12px; margin-top: 10px; }
+  .simulate-panel h4 { margin: 0 0 8px 0; color: var(--primary); }
+  .simulate-answer-row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 8px; }
+  .simulate-answer-row input[type="text"] { max-width: 220px; }
+  .simulate-choice { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+  .simulate-choice label { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--border); border-radius: 999px; padding: 5px 10px; background: #fff; cursor: pointer; }
+  .coord-grid { display: grid; grid-template-columns: repeat(5, 36px); gap: 4px; margin: 8px 0; }
+  .coord-grid button { min-width: 36px; padding: 6px 0; font-size: 0.78em; background: #fff; color: var(--primary); border-color: #bcd7ea; }
+  .coord-grid button.selected { background: var(--accent); color: #fff; }
+  .simulate-result { margin-top: 8px; font-weight: 700; }
+  .simulate-result.ok { color: var(--success); }
+  .simulate-result.err { color: var(--danger); }
   .preview-actions { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
   .preview-actions .confirm-label { display: flex; align-items: center; gap: 6px; font-size: 0.9em; font-weight: 600; cursor: pointer; }
   .preview-actions .confirm-label input { width: 18px; height: 18px; cursor: pointer; }
@@ -275,6 +294,27 @@
    狀態管理
    ============================================================ */
 const STORAGE_KEY = "assess_tool_v2";
+const QUESTION_CODE_RE = /^S\d+T\d+-(NA|ME|GE|DH|UC)-\d{2}$/;
+const QUESTION_TYPE_NAMES = Object.freeze({
+  area_circle: "圓面積",
+  angle_type: "角的類型",
+  frac_arith: "分數運算",
+  neg_power: "負數乘方",
+  prime_factor: "質因數分解",
+  hcf_or_lcm: "HCF / LCM",
+  exp_law: "指數律",
+  alg_simplify: "代數化簡",
+  solve_eq: "解一元一次方程",
+  word_to_alg: "文字轉代數式",
+  sig_fig: "有效數字",
+  frac_to_pct: "分數化百分數",
+  poly_desc: "多項式排列",
+  formula_sub: "公式代入",
+  congruence: "全等三角形",
+  coordinate: "坐標輸入及點選",
+  seq_nth: "數列通項",
+  data_type: "離散 / 連續數據"
+});
 let bank = null;
 let tmpl = null;
 let activeMode = "custom";
@@ -286,6 +326,7 @@ let selectedTopic = "";
 let basket = [];          // [{ typeKey, typeDef, params, generated, confirmed, hasError, errorMsg, qid }]
 let previewResults = [];  // 緩存預覽生成嘅結果，匯出時用同一批
 let previewDirty = true;  // 任何改動令預覽失效
+let activeSimulationId = null;
 let lastExportConfirmVersion = 0;  // 確認狀態嘅 hash，匯出門閘檢查用
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -425,10 +466,20 @@ function validateBank(b) {
     "textExact", "numeric", "fracPct", "primeFactor",
     "algebraQ8", "hcfLcm", "choiceKey", "congruenceReason", "coordinatePoint"
   ]);
+  const codes = new Set();
   for (const t of b.data) {
     if (!t.key) { errors.push("有題型缺少 key"); continue; }
     if (keys.has(t.key)) errors.push("重複 key: " + t.key);
     keys.add(t.key);
+    if (!t.code) {
+      errors.push(`題型「${t.key}」缺 code`);
+    } else if (!QUESTION_CODE_RE.test(t.code)) {
+      errors.push(`題型「${t.key}」嘅 code「${t.code}」格式不正確`);
+    } else if (codes.has(t.code)) {
+      errors.push(`重複 code: ${t.code}`);
+    } else {
+      codes.add(t.code);
+    }
     if (!t.name) errors.push(`題型「${t.key}」缺 name`);
     if (t.generate) errors.push(`題型「${t.key}」仍包含舊 generate 字串，請改用 generator key`);
     if (t.schemaVersion === undefined || t.schemaVersion === null) errors.push(`題型「${t.key}」缺 schemaVersion`);
@@ -591,9 +642,9 @@ function renderQuestionBrowser() {
   ul.innerHTML = filtered.map(t => `
     <li>
       <span class="name">
-        <span class="type-key">${t.key}</span>
+        ${renderCodeBadge(t)}
         <b>${t.name}</b>
-        <span class="meta">(${t.topicName || t.topicKey || ""} · 難度 <span class="difficulty">${"★".repeat(t.difficulty)}</span> · ${t.type}/${t.checkType})</span>
+        <span class="meta">(${t.topicName || t.topicKey || ""} · ${getTypeChineseName(t)} · <span class="type-key">${t.key}</span>)</span>
       </span>
       <button onclick="addToBasket('${t.key}')" data-key="${t.key}">加入</button>
     </li>
@@ -651,9 +702,9 @@ function renderBasket() {
       return `<li class="basket-item">
         <span class="idx">${i + 1}.</span>
         <span class="name">
-          <span class="type-key">${b.typeKey}</span>
+          ${renderCodeBadge(t)}
           <b>${t.name}</b>
-          <span class="meta">· 難度 ${"★".repeat(t.difficulty)}</span>
+          <span class="meta">· ${getTypeChineseName(t)} · <span class="type-key">${b.typeKey}</span></span>
           ${b.hasError ? '<span class="meta" style="color:var(--danger);"> · 預覽失敗</span>' : ""}
           ${b.confirmed ? '<span class="meta" style="color:var(--success);"> · ✓ 已確認</span>' : ""}
         </span>
@@ -718,6 +769,7 @@ function loadPreset(presetKey) {
    ============================================================ */
 function markPreviewDirty() {
   previewDirty = true;
+  activeSimulationId = null;
   document.getElementById("previewCard").style.display = "none";
   document.getElementById("exportCard").style.display = "none";
   document.getElementById("btn-back").style.display = "none";
@@ -866,64 +918,50 @@ function renderPreview() {
     html += `<div class="${cls}" id="card-${b.id}">
       <div class="preview-header">
         <span class="qid">Q${i + 1}.</span>
+        ${renderCodeBadge(t)}
         <span class="name">${t.name}</span>
-        <span class="badge grade">年級: ${t.grade || "未分類"}</span>
-        <span class="badge term">學期: ${t.term || "未分類"}</span>
-        <span class="badge topic">課題: ${t.topicName || t.topicKey || "—"}</span>
-        <span class="badge">難度 ${"★".repeat(t.difficulty)}</span>
-        <span class="badge type">type=${t.type} · checkType=${t.checkType}</span>
-        <span class="type-key">${t.key}</span>
+        <span class="badge type">${getTypeChineseName(t)}</span>
       </div>`;
     if (b.hasError) {
       html += `<div class="error-text">✗ 預覽失敗：${b.errorMsg}</div>`;
     } else {
       const q = b.generated;
-      // Section 1: student sees
       html += `<div class="preview-section">
-        <h4>1. 學生看到的題目</h4>
+        <h4>學生題目</h4>
         <div class="preview-html"><div class="question-text">${q.questionHTML}</div>
         ${q.imageSvg ? `<div class="geo-image">${q.imageSvg}</div>` : ""}
         </div>
-        ${q.type === "choice" ? `<div class="preview-data">
+        ${q.type === "choice" ? `<div class="preview-data teacher-option-summary">
           <span class="label">選項：</span>
           ${(q.options || []).map(o => `<code>${o.key} = ${o.label}</code>`).join("  ")}
         </div>` : ""}
-        ${q.type === "coordinate" ? `<div class="preview-data">
-          <span class="label">坐標互動：</span> 點擊目標 (${q.interaction.targetX}, ${q.interaction.targetY}) 嘅 <code>${q.interaction.askAxis}</code> 坐標
-        </div>` : ""}
-        ${q.type === "congruence" ? `<div class="preview-data">
-          <span class="label">全等提示：</span> 學生需要揀 5 個理由之一 (S.S.S. / S.A.S. / A.S.A. / A.A.S. / R.H.S.)
-        </div>` : ""}
       </div>`;
-      // Section 2: 作答格式
       html += `<div class="preview-section">
-        <h4>2. 作答格式</h4>
+        <h4>正確答案</h4>
         <div class="preview-data row-kv">
-          <span class="label">type:</span> <code>${q.type}</code>
-          <span class="label">checkType:</span> <code>${q.checkType}</code>
+          <span class="label">答案:</span> <code>${escapeHtml(String(q.displayAnswer || q.correctAnswer))}</code>
+        </div>
+      </div>`;
+      html += `<details class="advanced-data">
+        <summary>進階資料</summary>
+        <div class="advanced-grid">
+          <span class="label">key:</span> <code>${escapeHtml(t.key)}</code>
+          <span class="label">code:</span> <code>${escapeHtml(t.code || "")}</code>
+          <span class="label">年級 / 學期:</span> <span>${escapeHtml(t.grade || "未分類")} / ${escapeHtml(t.term || "未分類")}</span>
+          <span class="label">課題:</span> <span>${escapeHtml(t.topicName || t.topicKey || "—")}</span>
+          <span class="label">difficulty:</span> <code>${escapeHtml(String(t.difficulty))}</code>
+          <span class="label">type:</span> <code>${escapeHtml(q.type)}</code>
+          <span class="label">checkType:</span> <code>${escapeHtml(q.checkType)}</code>
+          <span class="label">validator:</span> <code>${escapeHtml(q.validator || t.validator || "")}</code>
+          <span class="label">generator:</span> <code>${escapeHtml(t.generator || "")}</code>
+          <span class="label">作答方式:</span> <span>${describeInteraction(q)}</span>
           ${q.prefix ? `<span class="label">prefix:</span> <code>${escapeHtml(q.prefix)}</code>` : ""}
           ${q.suffix ? `<span class="label">suffix:</span> <code>${escapeHtml(q.suffix)}</code>` : ""}
-          <span class="label">作答方式:</span> <span>${describeInteraction(q)}</span>
-          ${q.checkType === "primeFactor" && q.primeFactors ? `<span class="label">primeFactors:</span> <code>${JSON.stringify(q.primeFactors)}</code>` : ""}
-          ${q.checkType === "algebraQ8" ? `<span class="label">q8subtype:</span> <code>${q.q8subtype}</code>` : ""}
-        </div>
-      </div>`;
-      // Section 3: 答案
-      html += `<div class="preview-section">
-        <h4>3. 答案</h4>
-        <div class="preview-data row-kv">
-          <span class="label">correctAnswer:</span> <code>${escapeHtml(String(q.correctAnswer))}</code>
-          <span class="label">displayAnswer:</span> <code>${escapeHtml(String(q.displayAnswer))}</code>
           ${q.answers ? `<span class="label">可接受答案:</span> <code>${q.answers.map(a => escapeHtml(String(a))).join(" / ")}</code>` : ""}
-          ${q.checkType === "coordinatePoint" ? `<span class="label">坐標目標:</span> <code>(${q.interaction.targetX}, ${q.interaction.targetY})</code>, 問 <code>${q.interaction.askAxis}</code>` : ""}
-        </div>
-      </div>`;
-      // Section 4: 回饋及教學
-      html += `<div class="preview-section">
-        <h4>4. 回饋及教學</h4>
-        <div class="preview-data">
-          <div><span class="label">答對回饋：</span> 「✓ 正確！」</div>
-          <div><span class="label">答錯回饋：</span> 「✗ 答錯。正確答案： ${escapeHtml(String(q.displayAnswer))}」</div>
+          ${q.checkType === "primeFactor" && q.primeFactors ? `<span class="label">primeFactors:</span> <code>${escapeHtml(JSON.stringify(q.primeFactors))}</code>` : ""}
+          ${q.checkType === "algebraQ8" ? `<span class="label">q8subtype:</span> <code>${escapeHtml(String(q.q8subtype))}</code>` : ""}
+          ${t.answerSpec ? `<span class="label">answerSpec:</span> <code>${escapeHtml(JSON.stringify(t.answerSpec))}</code>` : ""}
+          ${t.figure ? `<span class="label">figure:</span> <code>${escapeHtml(JSON.stringify(t.figure))}</code>` : ""}
         </div>
         <div class="preview-data" style="margin-top:6px;">
           <div class="label">教學步驟 (solutionHTML)：</div>
@@ -933,11 +971,13 @@ function renderPreview() {
           <div class="label">PDF 文字 (pdfText)：</div>
           <div class="preview-html">${escapeHtml(q.pdfText || "")}</div>
         </div>
-      </div>`;
+      </details>`;
+      html += renderSimulationPanel(b);
     }
     // Actions
     html += `<div class="preview-actions">
       <button class="secondary" onclick="regenerateOne('${b.id}')" ${b.hasError ? "" : ""}>🔄 重新生成此題</button>
+      ${!b.hasError ? `<button class="secondary" onclick="toggleSimulation('${b.id}')">🧪 模擬測試</button>` : ""}
       <button class="danger" onclick="removeFromBasket('${b.id}')">🗑️ 從清單移除</button>
       <label class="confirm-label ${b.confirmed ? "checked" : ""}">
         <input type="checkbox" data-id="${b.id}" onchange="toggleConfirm('${b.id}', this.checked)" ${b.confirmed ? "checked" : ""} ${b.hasError ? "disabled" : ""}>
@@ -975,12 +1015,148 @@ function scheduleMathjaxTypeset(node) {
 function escapeHtml(s) {
   return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 }
+
+function getTypeChineseName(typeDef) {
+  if (!typeDef) return "—";
+  return QUESTION_TYPE_NAMES[typeDef.key] || typeDef.type || typeDef.key || "—";
+}
+
+function renderCodeBadge(typeDef) {
+  const code = typeDef && typeDef.code ? typeDef.code : "NO-CODE";
+  return `<span class="code-badge" title="題目編碼">
+    <span>${escapeHtml(code)}</span>
+    <button type="button" class="copy-code" onclick="copyQuestionCode('${escapeAttr(code)}'); event.stopPropagation();" title="複製編碼">複製</button>
+  </span>`;
+}
+
+function escapeAttr(s) {
+  return String(s).replace(/\\/g, "\\\\").replace(/'/g, "\\'").replace(/\n/g, "\\n").replace(/\r/g, "");
+}
+
+function copyQuestionCode(code) {
+  const done = () => showStatus("previewSummary", "ok", `✓ 已複製編碼：<code>${escapeHtml(code)}</code>`);
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(code).then(done).catch(() => fallbackCopy(code, done));
+  } else {
+    fallbackCopy(code, done);
+  }
+}
+
+function fallbackCopy(text, done) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  ta.setAttribute("readonly", "readonly");
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand("copy"); } catch (e) {}
+  document.body.removeChild(ta);
+  done();
+}
+
 function describeInteraction(q) {
   if (q.type === "text") return "學生喺輸入框打答案";
   if (q.type === "choice") return "學生點擊選項按鈕";
   if (q.type === "coordinate") return "學生先喺坐標平面點擊 A 點，再輸入 " + q.interaction.askAxis + " 坐標";
   if (q.type === "congruence") return "學生揀 5 個全等理由之一";
   return "—";
+}
+
+function renderSimulationPanel(b) {
+  if (activeSimulationId !== b.id) return "";
+  const q = b.generated;
+  const t = b.typeDef;
+  let controls = "";
+  if (q.type === "choice") {
+    controls = `<div class="simulate-choice">${(q.options || []).map((o, idx) => `
+      <label><input type="radio" name="sim-${b.id}" value="${escapeHtml(o.key)}" ${idx === 0 ? "autofocus" : ""}> ${escapeHtml(o.label)}</label>
+    `).join("")}</div>`;
+  } else if (q.type === "congruence") {
+    const reasons = ["S.S.S.", "S.A.S.", "A.S.A.", "A.A.S.", "R.H.S."];
+    controls = `<div class="simulate-choice">${reasons.map((r, idx) => `
+      <label><input type="radio" name="sim-${b.id}" value="${r}" ${idx === 0 ? "autofocus" : ""}> ${r}</label>
+    `).join("")}</div>`;
+  } else if (q.type === "coordinate") {
+    const points = [];
+    for (let y = 2; y >= -2; y--) {
+      for (let x = -2; x <= 2; x++) points.push({ x, y });
+    }
+    controls = `<div class="preview-html">${q.imageSvg || ""}</div>
+      <div class="simulate-answer-row"><span class="label">點擊 A 點位置：</span></div>
+      <div class="coord-grid" id="coord-grid-${b.id}" data-selected-x="" data-selected-y="">
+        ${points.map(p => `<button type="button" onclick="selectSimCoordinate('${b.id}', ${p.x}, ${p.y})" data-x="${p.x}" data-y="${p.y}">(${p.x},${p.y})</button>`).join("")}
+      </div>
+      <div class="simulate-answer-row">
+        <label>${escapeHtml(q.interaction.askAxis)} = <input type="text" id="sim-input-${b.id}" placeholder="輸入 ${escapeHtml(q.interaction.askAxis)} 坐標"></label>
+      </div>`;
+  } else {
+    controls = `<div class="simulate-answer-row">
+      <label>${q.prefix ? escapeHtml(q.prefix) : ""}<input type="text" id="sim-input-${b.id}" placeholder="輸入答案" autofocus>${q.suffix ? escapeHtml(q.suffix) : ""}</label>
+    </div>`;
+  }
+  return `<div class="simulate-panel" id="sim-panel-${b.id}" data-type="${escapeHtml(q.type)}">
+    <h4>模擬學生測試：${escapeHtml(t.code || t.key)}</h4>
+    <div class="preview-html"><div class="question-text">${q.questionHTML}</div>${q.type !== "coordinate" && q.imageSvg ? `<div class="geo-image">${q.imageSvg}</div>` : ""}</div>
+    ${controls}
+    <div class="simulate-answer-row">
+      <button type="button" onclick="submitSimulation('${b.id}')">提交模擬答案</button>
+      <button type="button" class="secondary" onclick="closeSimulation()">關閉</button>
+    </div>
+    <div class="simulate-result" id="sim-result-${b.id}"></div>
+  </div>`;
+}
+
+function toggleSimulation(id) {
+  activeSimulationId = (activeSimulationId === id) ? null : id;
+  renderPreview();
+}
+
+function closeSimulation() {
+  activeSimulationId = null;
+  renderPreview();
+}
+
+function selectSimCoordinate(id, x, y) {
+  const grid = document.getElementById("coord-grid-" + id);
+  if (!grid) return;
+  grid.dataset.selectedX = String(x);
+  grid.dataset.selectedY = String(y);
+  for (const btn of grid.querySelectorAll("button")) {
+    btn.classList.toggle("selected", btn.dataset.x === String(x) && btn.dataset.y === String(y));
+  }
+}
+
+function getSimulationAnswer(b) {
+  const q = b.generated;
+  if (q.type === "choice" || q.type === "congruence") {
+    const checked = document.querySelector(`input[name="sim-${b.id}"]:checked`);
+    return checked ? checked.value : "";
+  }
+  const input = document.getElementById("sim-input-" + b.id);
+  return input ? input.value : "";
+}
+
+function submitSimulation(id) {
+  const b = basket.find(x => x.id === id);
+  if (!b || !b.generated) return;
+  const q = b.generated;
+  const answer = getSimulationAnswer(b);
+  const registryOk = AssessValidators.checkAnswer(q, answer);
+  let ok = registryOk;
+  let extra = "";
+  if (q.type === "coordinate") {
+    const grid = document.getElementById("coord-grid-" + id);
+    const clickedOk = grid && grid.dataset.selectedX === String(q.interaction.targetX) && grid.dataset.selectedY === String(q.interaction.targetY);
+    ok = registryOk && clickedOk;
+    extra = clickedOk ? "" : "；點擊位置不正確";
+  }
+  const result = document.getElementById("sim-result-" + id);
+  if (!result) return;
+  result.className = "simulate-result " + (ok ? "ok" : "err");
+  result.innerHTML = ok
+    ? "✓ 模擬判分：正確"
+    : `✗ 模擬判分：錯誤${extra}。正確答案：<code>${escapeHtml(String(q.displayAnswer || q.correctAnswer))}</code>`;
 }
 
 function regenerateOne(id) {

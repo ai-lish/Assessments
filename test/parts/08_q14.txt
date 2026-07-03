@@ -22,6 +22,7 @@
       "part": "part_a",
       "validator": "coordinatePoint",
       "generator": "coordinate",
+      "code": "S1T3-GE-02",
       "answerSpec": {
         "coordinateMode": "axis-value",
         "interaction": {

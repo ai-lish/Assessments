@@ -21,7 +21,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "numeric",
-      "generator": "seq_nth"
+      "generator": "seq_nth",
+      "code": "S1T3-NA-11"
     },
     {
       "key": "data_type",
@@ -54,5 +55,6 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "choiceKey",
-      "generator": "data_type"
+      "generator": "data_type",
+      "code": "S1T3-DH-01"
     }

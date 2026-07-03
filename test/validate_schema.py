@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """PR-A2 schema contract validation for all current question-bank entries."""
 import json
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -12,15 +13,24 @@ BANK = ROOT / "question-bank.json"
 def main():
     bank = json.loads(BANK.read_text(encoding="utf-8"))
     errors = []
+    code_re = re.compile(r"^S\d+T\d+-(NA|ME|GE|DH|UC)-\d{2}$")
     required = [
-        "key", "grade", "term", "part", "topicKey", "topicName",
+        "key", "code", "grade", "term", "part", "topicKey", "topicName",
         "type", "validator", "schemaVersion", "generator",
     ]
+    codes = set()
     for item in bank["data"]:
         key = item.get("key", "?")
         for field in required:
             if field not in item or item[field] is None:
                 errors.append(f"{key}: missing {field}")
+        code = item.get("code")
+        if code in codes:
+            errors.append(f"{key}: duplicate code {code}")
+        if code:
+            codes.add(code)
+            if not code_re.match(code):
+                errors.append(f"{key}: invalid code format {code}")
         if "generate" in item:
             errors.append(f"{key}: legacy generate string remains")
         if item.get("type") == "choice" and not item.get("options"):

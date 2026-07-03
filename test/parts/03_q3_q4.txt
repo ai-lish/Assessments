@@ -19,7 +19,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "primeFactor",
-      "generator": "prime_factor"
+      "generator": "prime_factor",
+      "code": "S1T3-NA-03"
     },
     {
       "key": "hcf_or_lcm",
@@ -44,5 +45,6 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "hcfLcm",
-      "generator": "hcf_or_lcm"
+      "generator": "hcf_or_lcm",
+      "code": "S1T3-NA-04"
     },
