@@ -20,7 +20,8 @@
       "part": "part_a",
       "validator": "primeFactor",
       "generator": "prime_factor",
-      "code": "S1T3-NA-03"
+      "code": "2526-S1-T3-03-NA-3",
+      "source": ""
     },
     {
       "key": "hcf_or_lcm",
@@ -46,5 +47,6 @@
       "part": "part_a",
       "validator": "hcfLcm",
       "generator": "hcf_or_lcm",
-      "code": "S1T3-NA-04"
+      "code": "2526-S1-T3-04-NA-4",
+      "source": ""
     },

@@ -294,7 +294,7 @@
    狀態管理
    ============================================================ */
 const STORAGE_KEY = "assess_tool_v2";
-const QUESTION_CODE_RE = /^S\d+T\d+-(NA|ME|GE|DH|UC)-\d{2}$/;
+const QUESTION_CODE_RE = /^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+$/;
 const QUESTION_TYPE_NAMES = Object.freeze({
   area_circle: "圓面積",
   angle_type: "角的類型",
@@ -479,6 +479,9 @@ function validateBank(b) {
       errors.push(`重複 code: ${t.code}`);
     } else {
       codes.add(t.code);
+    }
+    if (t.source !== undefined && typeof t.source !== "string") {
+      errors.push(`題型「${t.key}」嘅 source 必須係字串`);
     }
     if (!t.name) errors.push(`題型「${t.key}」缺 name`);
     if (t.generate) errors.push(`題型「${t.key}」仍包含舊 generate 字串，請改用 generator key`);
@@ -954,6 +957,7 @@ function renderPreview() {
           <span class="label">checkType:</span> <code>${escapeHtml(q.checkType)}</code>
           <span class="label">validator:</span> <code>${escapeHtml(q.validator || t.validator || "")}</code>
           <span class="label">generator:</span> <code>${escapeHtml(t.generator || "")}</code>
+          ${t.source ? `<span class="label">source:</span> <code>${escapeHtml(t.source)}</code>` : ""}
           <span class="label">作答方式:</span> <span>${describeInteraction(q)}</span>
           ${q.prefix ? `<span class="label">prefix:</span> <code>${escapeHtml(q.prefix)}</code>` : ""}
           ${q.suffix ? `<span class="label">suffix:</span> <code>${escapeHtml(q.suffix)}</code>` : ""}

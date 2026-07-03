@@ -22,7 +22,8 @@
       "part": "part_a",
       "validator": "congruenceReason",
       "generator": "congruence",
-      "code": "S1T3-GE-01",
+      "code": "2526-S1-T3-13-GE-1",
+      "source": "",
       "figure": {
         "kind": "generated-svg-triangle-pair"
       }

@@ -23,7 +23,8 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "frac_arith",
-      "code": "S1T3-NA-01"
+      "code": "2526-S1-T3-01-NA-1",
+      "source": ""
     },
     {
       "key": "neg_power",
@@ -48,5 +49,6 @@
       "part": "part_a",
       "validator": "numeric",
       "generator": "neg_power",
-      "code": "S1T3-NA-02"
+      "code": "2526-S1-T3-02-NA-2",
+      "source": ""
     },
