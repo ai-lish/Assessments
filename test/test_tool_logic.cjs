@@ -39,6 +39,28 @@ check('s1/3/data_handling → 1 題', filterBankStrict(bank.data, 's1', '3', 'da
 // 演示題型
 check('示範題型 (no grade) → []', filterBankStrict(bank.data, '', '', 'uncategorized').length === 0);
 
+// === 1b. uniqueValuesForKey 行為（含 falsy duplicate regression） ===
+section('1b. uniqueValuesForKey 行為');
+// 真實題庫：grade 唯一值必須係 ["", "s1"]，唔可以有 duplicate 空 string
+const realGrades = uniqueValuesForKey(bank.data, 'grade');
+check('真實題庫 grade 唯一值 = ["", "s1"] (len 2)',
+      realGrades.length === 2 && realGrades[0] === '' && realGrades[1] === 's1');
+const realTerms = uniqueValuesForKey(bank.data, 'term');
+check('真實題庫 term 唯一值 = ["", "3"] (len 2)',
+      realTerms.length === 2 && realTerms[0] === '' && realTerms[1] === '3');
+// Synthetic：3 個 empty string 必須 collapse 成 1 個
+// (regression for seen[v]=out.length sentinel bug — Codex review round 2)
+check('3 個空 string 必須 collapse → ["","x","y"] (len 3)',
+      (function () {
+        const r = uniqueValuesForKey([{a:''},{a:''},{a:''},{a:'x'},{a:'x'},{a:'y'}], 'a');
+        return r.length === 3 && r[0] === '' && r[1] === 'x' && r[2] === 'y';
+      })());
+// 排序
+check('結果已排序', (function () {
+  const r = uniqueValuesForKey([{a:'c'},{a:'a'},{a:'b'}], 'a');
+  return r.length === 3 && r[0] === 'a' && r[1] === 'b' && r[2] === 'c';
+})());
+
 // === 2. 頁面源碼檢查：必須使用 filterBankStrict ===
 section('2. 頁面源碼檢查：renderQuestionBrowser 使用共享函式');
 const toolHtml = fs.readFileSync(path.join(ROOT, 'tool/filter.js').replace(/filter\.js$/, 'index.html'), 'utf-8');

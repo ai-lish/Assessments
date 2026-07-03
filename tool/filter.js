@@ -43,13 +43,11 @@
    * current set of (grade, term) selections.
    */
   function uniqueValuesForKey(questions, key) {
-    var seen = Object.create(null);
-    var out = [];
+    var set = new Set();
     for (var i = 0; i < questions.length; i++) {
-      var v = questions[i][key] || "";
-      if (!seen[v]) { seen[v] = out.length; out.push(v); }
+      set.add(questions[i][key] || "");
     }
-    return out.sort();
+    return Array.from(set).sort();
   }
 
   exports.filterBankStrict = filterBankStrict;
