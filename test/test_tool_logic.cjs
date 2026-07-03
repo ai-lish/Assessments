@@ -8,6 +8,7 @@ const path = require('path');
 const ROOT = path.resolve(__dirname, '..');
 const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'question-bank.json'), 'utf-8'));
 const tmpl = fs.readFileSync(path.join(ROOT, 'templates/student.html'), 'utf-8');
+const questionCodeDocs = fs.readFileSync(path.join(ROOT, 'docs/question-codes.md'), 'utf-8');
 
 let PASSED = 0, FAILED = 0;
 const FAILURES = [];
@@ -233,8 +234,27 @@ check('loadAll 失敗時 reset bank = null', /bank = null; tmpl = null;/.test(to
 // === 5b. PR-UI1 teacher preview UX ===
 section('5b. PR-UI1 老師工具 UX');
 check('18 題全部有 code 且唯一',
-      bank.data.every(t => /^S\d+T\d+-(NA|ME|GE|DH|UC)-\d{2}$/.test(t.code || '')) &&
+      bank.data.every(t => /^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+$/.test(t.code || '')) &&
       new Set(bank.data.map(t => t.code)).size === bank.data.length);
+check('同一 generator 只對應同一課題家族',
+      (function () {
+        const seen = new Map();
+        for (const t of bank.data) {
+          const m = String(t.code || '').match(/^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-(\d+)$/);
+          if (!m) return false;
+          const family = `${m[1]}-${m[2]}`;
+          if (seen.has(t.generator) && seen.get(t.generator) !== family) return false;
+          seen.set(t.generator, family);
+        }
+        return true;
+      })());
+check('docs/question-codes.md 登記所有 generator family',
+      bank.data.every(t => {
+        const m = String(t.code || '').match(/^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-(\d+)$/);
+        if (!m) return false;
+        return questionCodeDocs.includes(`| \`${m[1]}-${m[2]}\` |`) &&
+          questionCodeDocs.includes(`\`${t.generator}\``);
+      }));
 check('頁面有 QUESTION_TYPE_NAMES mapping', toolHtmlFixed.includes('const QUESTION_TYPE_NAMES'));
 check('18 個 key 全部出現在 QUESTION_TYPE_NAMES 或題庫 code UI 支援內',
       bank.data.every(t => toolHtmlFixed.includes(`${t.key}:`) || toolHtmlFixed.includes(`"${t.key}"`)));

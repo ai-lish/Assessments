@@ -17,7 +17,7 @@ SUPPORTED_CHECKS = {
     "primeFactor", "algebraQ8", "hcfLcm",
     "choiceKey", "congruenceReason", "coordinatePoint"
 }
-CODE_RE = re.compile(r"^S\d+T\d+-(NA|ME|GE|DH|UC)-\d{2}$")
+CODE_RE = re.compile(r"^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-(\d+)$")
 
 
 def run_js(code, timeout=10):
@@ -78,12 +78,13 @@ def main():
     print("=== Schema ===")
     keys = {}
     codes = {}
+    family_by_generator = {}
     for t in bank["data"]:
         required = (
             "key", "name", "category", "difficulty", "type", "checkType",
             "validator", "generator", "schemaVersion", "part", "code",
             "answers", "displayAnswer", "steps", "pdfText",
-            "grade", "term", "topicKey", "topicName",
+            "grade", "term", "topicKey", "topicName", "source",
         )
         for field in required:
             if field not in t or t[field] is None:
@@ -100,8 +101,19 @@ def main():
             print(f"  ERR: duplicate code: {t['code']}")
             failures += 1
         codes[t.get("code")] = t
-        if not CODE_RE.match(str(t.get("code", ""))):
+        code_match = CODE_RE.match(str(t.get("code", "")))
+        if not code_match:
             print(f"  ERR: invalid code format '{t.get('code')}' for key {t.get('key')}")
+            failures += 1
+        else:
+            family = f"{code_match.group(1)}-{code_match.group(2)}"
+            generator = t.get("generator")
+            if generator in family_by_generator and family_by_generator[generator] != family:
+                print(f"  ERR: generator family mismatch for key {t.get('key')}: {family_by_generator[generator]} vs {family}")
+                failures += 1
+            family_by_generator[generator] = family
+        if not isinstance(t.get("source"), str):
+            print(f"  ERR: source must be string: key={t.get('key')}")
             failures += 1
         if t.get("type") not in SUPPORTED_TYPES:
             print(f"  ERR: unsupported type '{t.get('type')}' for key {t.get('key')}")

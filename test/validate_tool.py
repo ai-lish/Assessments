@@ -50,7 +50,7 @@ check("data 係陣列", isinstance(bank["data"], list))
 check("所有 key 唯一", len(keys) == len(set(keys)))
 required_fields = [
     "code", "grade", "term", "topicKey", "topicName", "type", "checkType",
-    "validator", "generator", "schemaVersion", "part", "name", "key",
+    "validator", "generator", "schemaVersion", "part", "name", "key", "source",
 ]
 for t in bank["data"]:
     missing = []

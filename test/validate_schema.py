@@ -13,24 +13,41 @@ BANK = ROOT / "question-bank.json"
 def main():
     bank = json.loads(BANK.read_text(encoding="utf-8"))
     errors = []
-    code_re = re.compile(r"^S\d+T\d+-(NA|ME|GE|DH|UC)-\d{2}$")
+    code_re = re.compile(r"^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-(\d+)$")
     required = [
         "key", "code", "grade", "term", "part", "topicKey", "topicName",
-        "type", "validator", "schemaVersion", "generator",
+        "type", "validator", "schemaVersion", "generator", "source",
     ]
+    schema_fields = bank.get("_schema_guide", {}).get("entry_fields", {})
+    if "source" not in schema_fields:
+        errors.append("_schema_guide.entry_fields: missing source contract")
+    docs = (ROOT / "docs/question-codes.md").read_text(encoding="utf-8")
     codes = set()
+    family_by_generator = {}
     for item in bank["data"]:
         key = item.get("key", "?")
         for field in required:
             if field not in item or item[field] is None:
                 errors.append(f"{key}: missing {field}")
+        if "source" in item and not isinstance(item.get("source"), str):
+            errors.append(f"{key}: source must be a string")
         code = item.get("code")
         if code in codes:
             errors.append(f"{key}: duplicate code {code}")
         if code:
             codes.add(code)
-            if not code_re.match(code):
+            match = code_re.match(code)
+            if not match:
                 errors.append(f"{key}: invalid code format {code}")
+            else:
+                family = f"{match.group(1)}-{match.group(2)}"
+                generator = item.get("generator")
+                previous = family_by_generator.get(generator)
+                if previous and previous != family:
+                    errors.append(f"{key}: generator {generator} uses multiple families: {previous}, {family}")
+                family_by_generator[generator] = family
+                if f"| `{family}` |" not in docs or f"`{generator}`" not in docs:
+                    errors.append(f"{key}: docs/question-codes.md missing family registry for {family}/{generator}")
         if "generate" in item:
             errors.append(f"{key}: legacy generate string remains")
         if item.get("type") == "choice" and not item.get("options"):
