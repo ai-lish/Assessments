@@ -2,6 +2,7 @@
 """Validate the question bank against the PR-A2 generator and validator registries."""
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -16,6 +17,7 @@ SUPPORTED_CHECKS = {
     "primeFactor", "algebraQ8", "hcfLcm",
     "choiceKey", "congruenceReason", "coordinatePoint"
 }
+CODE_RE = re.compile(r"^S\d+T\d+-(NA|ME|GE|DH|UC)-\d{2}$")
 
 
 def run_js(code, timeout=10):
@@ -75,10 +77,11 @@ def main():
 
     print("=== Schema ===")
     keys = {}
+    codes = {}
     for t in bank["data"]:
         required = (
             "key", "name", "category", "difficulty", "type", "checkType",
-            "validator", "generator", "schemaVersion", "part",
+            "validator", "generator", "schemaVersion", "part", "code",
             "answers", "displayAnswer", "steps", "pdfText",
             "grade", "term", "topicKey", "topicName",
         )
@@ -93,6 +96,13 @@ def main():
             print(f"  ERR: duplicate key: {t['key']}")
             failures += 1
         keys[t.get("key")] = t
+        if t.get("code") in codes:
+            print(f"  ERR: duplicate code: {t['code']}")
+            failures += 1
+        codes[t.get("code")] = t
+        if not CODE_RE.match(str(t.get("code", ""))):
+            print(f"  ERR: invalid code format '{t.get('code')}' for key {t.get('key')}")
+            failures += 1
         if t.get("type") not in SUPPORTED_TYPES:
             print(f"  ERR: unsupported type '{t.get('type')}' for key {t.get('key')}")
             failures += 1

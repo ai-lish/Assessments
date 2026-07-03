@@ -20,7 +20,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "sig_fig"
+      "generator": "sig_fig",
+      "code": "S1T3-ME-01"
     },
     {
       "key": "frac_to_pct",
@@ -43,7 +44,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "fracPct",
-      "generator": "frac_to_pct"
+      "generator": "frac_to_pct",
+      "code": "S1T3-ME-02"
     },
     {
       "key": "poly_desc",
@@ -67,7 +69,8 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "textExact",
-      "generator": "poly_desc"
+      "generator": "poly_desc",
+      "code": "S1T3-NA-09"
     },
     {
       "key": "formula_sub",
@@ -94,5 +97,6 @@
       "schemaVersion": 1,
       "part": "part_a",
       "validator": "numeric",
-      "generator": "formula_sub"
+      "generator": "formula_sub",
+      "code": "S1T3-NA-10"
     },
