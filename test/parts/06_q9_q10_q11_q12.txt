@@ -9,12 +9,18 @@
       "topicName": "度量",
       "type": "text",
       "checkType": "textExact",
-      "params_schema": {"baseNum": "示範數 9 選 1", "sf": "2..3 位有效數字"},
-      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var baseNums = [12.345, 184.62, 2.7183, 345.28, 8.9372, 45.192, 762.81, 5.0483, 29.981]; var baseNum = p.baseNum || baseNums[r(0, baseNums.length-1)]; var sf = p.sf || r(2, 3); var p10 = Math.floor(Math.log10(baseNum)); var power = Math.pow(10, p10 - sf + 1); var roundedVal = Math.round(baseNum / power) * power; var L_val = Math.floor(baseNum / power) * power; var H_val = L_val + power; var decimals = Math.max(0, sf - p10 - 1); var res = roundedVal.toFixed(decimals); var L = L_val.toFixed(decimals); var H = H_val.toFixed(decimals); var pos = Math.round(((baseNum - L_val) / (H_val - L_val)) * 100); var text = '9. 把 \\\\( ' + baseNum + ' \\\\) 捨入至 ' + sf + ' 位有效數字。'; var steps = '<div>步驟圖解：</div><div style=\"margin:15px 0;padding:12px;background:#fffcf5;border:1px solid #fce8b2;border-radius:8px;font-family:monospace;max-width:320px;margin-left:auto;margin-right:auto;\"><div style=\"display:flex;justify-content:space-between;font-weight:bold;color:#2c3e50;font-size:1.05em;margin-bottom:4px;\"><span>' + L + '</span><span>' + H + '</span></div><div style=\"position:relative;height:16px;border-bottom:2px solid #34495e;margin:4px 0;\"><span style=\"position:absolute;left:0;bottom:0;height:8px;border-left:2px solid #34495e;\"></span><span style=\"position:absolute;left:50%;bottom:0;height:8px;border-left:2px solid #7f8c8d;\"></span><span style=\"position:absolute;right:0;bottom:0;height:8px;border-left:2px solid #34495e;\"></span><span style=\"position:absolute;left:' + pos + '%;top:-8px;color:#e74c3c;font-weight:bold;transform:translateX(-50%);\">\\u2193</span></div><div style=\"position:relative;height:18px;margin-top:4px;\"><span style=\"position:absolute;left:' + pos + '%;transform:translateX(-50%);color:#e74c3c;font-weight:bold;font-size:1em;\">' + baseNum + '</span></div></div><div style=\"margin-top:10px;line-height:1.6;\">因 \\\\( ' + baseNum + ' \\\\) 較接近 \\\\( ' + res + ' \\\\) ，<br>故 \\\\( ' + baseNum + ' \\\\approx ' + res + ' \\\\) 。</div>'; return { questionHTML: text, correctAnswer: res, paramsUsed: {baseNum: baseNum, sf: sf, roundedVal: roundedVal}, solutionHTML: steps, pdfText: text, answers: [res, parseFloat(res).toString()], displayAnswer: res, steps: steps, checkType: 'textExact' }; }",
+      "params_schema": {
+        "baseNum": "示範數 9 選 1",
+        "sf": "2..3 位有效數字"
+      },
       "answers": [],
       "displayAnswer": "",
       "steps": "",
-      "pdfText": ""
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "textExact",
+      "generator": "sig_fig"
     },
     {
       "key": "frac_to_pct",
@@ -27,12 +33,17 @@
       "topicName": "度量",
       "type": "text",
       "checkType": "fracPct",
-      "params_schema": {"item": "從 9 個示範分數中選"},
-      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var dataset = [{f:'3/4',tex:'\\\\frac{3}{4}',ans:'75'},{f:'1/4',tex:'\\\\frac{1}{4}',ans:'25'},{f:'1/2',tex:'\\\\frac{1}{2}',ans:'50'},{f:'1/5',tex:'\\\\frac{1}{5}',ans:'20'},{f:'2/5',tex:'\\\\frac{2}{5}',ans:'40'},{f:'3/5',tex:'\\\\frac{3}{5}',ans:'60'},{f:'4/5',tex:'\\\\frac{4}{5}',ans:'80'},{f:'1/10',tex:'\\\\frac{1}{10}',ans:'10'},{f:'7/10',tex:'\\\\frac{7}{10}',ans:'70'}]; var item = p.item || dataset[r(0, dataset.length-1)]; var text = '10. 把 \\\\( ' + item.tex + ' \\\\) 化為百分數。'; var steps = '<div>步驟：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\\\( \\\\begin{aligned} &\\\\quad ' + item.tex + ' \\\\times 100\\\\% \\\\\\\\&=\\\\left(' + item.tex + ' \\\\times 100 \\\\right)\\\\% \\\\\\\\&= ' + item.ans + '\\\\% \\\\end{aligned} \\\\)</div>'; return { questionHTML: text, correctAnswer: item.ans + '%', paramsUsed: {item: item.f}, solutionHTML: steps, pdfText: text, answers: [item.ans + '%', item.ans + ' %'], displayAnswer: item.ans + '\\\\%', steps: steps, checkType: 'fracPct' }; }",
+      "params_schema": {
+        "item": "從 9 個示範分數中選"
+      },
       "answers": [],
       "displayAnswer": "",
       "steps": "",
-      "pdfText": ""
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "fracPct",
+      "generator": "frac_to_pct"
     },
     {
       "key": "poly_desc",
@@ -45,12 +56,18 @@
       "topicName": "數與代數",
       "type": "text",
       "checkType": "textExact",
-      "params_schema": {"b": "整數 2..9", "c": "整數 2..9"},
-      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var b = p.b || r(2, 9); var c = p.c || r(2, 9); var std = 'x^2+' + b + 'x-' + c; var text = '11. 按 \\\\( x \\\\) 的降冪次序排列多項式： \\\\( ' + b + 'x + x^2 - ' + c + ' \\\\) 。'; var steps = '<div>降冪次序是指按變數 \\\\( x \\\\) 的「次方」從大到小排列。</div><div style=\"margin-top:5px;line-height:1.6;\">各項次方分析：<br>- \\\\( x^2 \\\\) (2次項)<br>- \\\\( ' + b + 'x \\\\) (1次項)<br>- \\\\( -' + c + ' \\\\) (0次項/常數項)</div><div style=\"margin-top:8px;font-weight:bold;\">排列結果：\\\\(' + std + '\\\\)</div>'; return { questionHTML: text, correctAnswer: std, paramsUsed: {b:b, c:c}, solutionHTML: steps, pdfText: text, answers: [std, 'x**2+' + b + 'x-' + c], displayAnswer: std, steps: steps, checkType: 'textExact' }; }",
+      "params_schema": {
+        "b": "整數 2..9",
+        "c": "整數 2..9"
+      },
       "answers": [],
       "displayAnswer": "",
       "steps": "",
-      "pdfText": ""
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "textExact",
+      "generator": "poly_desc"
     },
     {
       "key": "formula_sub",
@@ -63,11 +80,19 @@
       "topicName": "數與代數",
       "type": "text",
       "checkType": "numeric",
-      "params_schema": {"a": "整數 3..8", "b": "整數 2..5", "c": "整數 -5..-2", "isPlus": "bool：true=加法、false=減法"},
+      "params_schema": {
+        "a": "整數 3..8",
+        "b": "整數 2..5",
+        "c": "整數 -5..-2",
+        "isPlus": "bool：true=加法、false=減法"
+      },
       "prefix": "y = ",
-      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var a = p.a || r(3, 8); var b = p.b || r(2, 5); var c = p.c || r(-5, -2); var isPlus = (p.isPlus !== undefined) ? p.isPlus : (r(0, 1) === 0); var formula = 'y = ' + a + ' ' + (isPlus ? '+' : '-') + ' ' + b + 'x'; var result = isPlus ? (a + b * c) : (a - b * c); var text = '12. 已知 \\\\( ' + formula + ' \\\\)。若 \\\\( x = ' + c + ' \\\\) ，求 \\\\( y \\\\) 的值。'; var steps = '<div>步驟：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\\\( \\\\text{當 } x = ' + c + ' \\\\text{ 時，} \\\\) <br>\\\\( \\\\begin{aligned} y &= ' + a + ' ' + (isPlus ? '+' : '-') + ' ' + b + '(' + c + ') \\\\\\\\ &= ' + a + ' ' + (isPlus ? '+' : '-') + ' (' + (b * c) + ') \\\\\\\\ &= ' + result + ' \\\\end{aligned} \\\\)</div>'; return { questionHTML: text, correctAnswer: result.toString(), paramsUsed: {a:a, b:b, c:c, isPlus:isPlus, result:result}, solutionHTML: steps, pdfText: text, answers: [result.toString()], displayAnswer: result.toString(), steps: steps, checkType: 'numeric', prefix: 'y = ' }; }",
       "answers": [],
       "displayAnswer": "",
       "steps": "",
-      "pdfText": ""
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "numeric",
+      "generator": "formula_sub"
     },

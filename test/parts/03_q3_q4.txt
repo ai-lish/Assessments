@@ -9,12 +9,17 @@
       "topicName": "數與代數",
       "type": "text",
       "checkType": "primeFactor",
-      "params_schema": {"n": "整數（必須含 ≥2 個質因數），預設從 9 個示範數中選"},
-      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var pool = [12, 18, 20, 36, 45, 50, 63, 75, 98]; var n = p.n || pool[r(0, pool.length-1)]; var divs = [], rems = [n], temp = n; while (true) { var f = false; for (var i = 2; i * i <= temp; i++) { if (temp % i === 0) { divs.push(i); temp /= i; rems.push(temp); f = true; break; } } if (!f) break; } var factors = {}; var all = [].concat(divs, [temp]); for (var k = 0; k < all.length; k++) { factors[all[k]] = (factors[all[k]] || 0) + 1; } var keys = Object.keys(factors); var ansParts = []; for (var q = 0; q < keys.length; q++) { var bk = keys[q]; if (factors[bk] > 1) ansParts.push(bk + '^' + factors[bk]); else ansParts.push(bk); } var ansStr = ansParts.join(' \\\\times '); var rawAns = ansParts.join('x'); var expandedStr = all.join(' \\\\times '); var text = '3. 把 \\\\( ' + n + ' \\\\) 寫成質因數連乘式 (指數記數法)。'; var tbl = '<table style=\"border-collapse:collapse;margin:10px auto;font-family:Times New Roman,serif;font-size:1.2em;\">'; for (var h = 0; h < divs.length; h++) { tbl += '<tr><td style=\"border-right:1px solid black;padding:2px 8px;color:#e74c3c;font-weight:bold;text-align:right;\">' + divs[h] + '</td><td style=\"border-bottom:1px solid black;padding:2px 12px;text-align:left;\">' + rems[h] + '</td></tr>'; } tbl += '<tr><td></td><td style=\"padding:2px 12px;text-align:left;font-weight:bold;color:#e74c3c;\">' + temp + '</td></tr></table>'; var steps = tbl + '<div style=\"text-align:center;margin-top:5px;font-size:1.1em;\">\\\\( ' + n + ' = ' + expandedStr + ' = ' + ansStr + ' \\\\)</div><div style=\"font-size:0.85em;color:#7f8c8d;margin-top:6px;text-align:center;\">註：重複質因數必須以指數形式書寫（如 \\\\(2^2\\\\)），不能寫成 \\\\(2 \\\\times 2\\\\)。</div>'; return { questionHTML: text, correctAnswer: rawAns, paramsUsed: {n:n, primeFactors: factors, factors: factors}, solutionHTML: steps, pdfText: text, answers: [rawAns], displayAnswer: ansStr, steps: steps, checkType: 'primeFactor', primeFactors: factors }; }",
+      "params_schema": {
+        "n": "整數（必須含 ≥2 個質因數），預設從 9 個示範數中選"
+      },
       "answers": [],
       "displayAnswer": "",
       "steps": "",
-      "pdfText": ""
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "primeFactor",
+      "generator": "prime_factor"
     },
     {
       "key": "hcf_or_lcm",
@@ -32,9 +37,12 @@
         "n2": "18..36 三的倍數（≠ n1）",
         "askLCM": "bool：true=問 LCM，false=問 HCF"
       },
-      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var n1 = p.n1; if (n1 === undefined) n1 = r(6,12) * 2; var n2 = p.n2; if (n2 === undefined) n2 = r(6,12) * 3; if (n1 === n2) n2 += 3; var askLCM = p.askLCM; if (askLCM === undefined) askLCM = (r(0,1) === 1); var a = n1, b = n2, common = [], rows = [a + ' \\\\quad ' + b]; while (true) { var d = 1; var primes = [2,3,5,7]; for (var i = 0; i < primes.length; i++) { var k = primes[i]; if (a % k === 0 && b % k === 0) { d = k; break; } } if (d === 1) break; common.push(d); a /= d; b /= d; rows.push(a + ' \\\\quad ' + b); } if (common.length === 0) { common = [1]; rows.push(a + ' \\\\quad ' + b); } var tbl = '<table style=\"border-collapse:collapse;margin:10px auto;font-family:Times New Roman,serif;font-size:1.2em;\">'; for (var i = 0; i < common.length; i++) { tbl += '<tr><td style=\"border-right:1px solid black;padding:2px 8px;color:#e74c3c;font-weight:bold;text-align:right;\">' + common[i] + '</td><td style=\"border-bottom:1px solid black;padding:2px 12px;text-align:left;\">\\\\( ' + rows[i] + ' \\\\)</td></tr>'; } tbl += '<tr><td></td><td style=\"padding:2px 12px;text-align:left;\">\\\\( ' + rows[rows.length-1] + ' \\\\)</td></tr></table>'; function g2(a,b){ while(b){var t=b; b=a%b; a=t;} return a; } var hcf = g2(n1, n2); var lcm = (n1 * n2) / hcf; var text, askedAns, displayAns, stepsTail; if (askLCM) { text = '4. 求 \\\\( ' + n1 + ' \\\\) 和 \\\\( ' + n2 + ' \\\\) 的 L.C.M. (最小公倍數)。'; askedAns = lcm.toString(); displayAns = lcm.toString(); stepsTail = '<div style=\"margin-top:5px;text-align:left;font-size:1.1em;\">H.C.F. \\\\( = ' + hcf + ' \\\\)</div><div style=\"margin-top:5px;text-align:left;font-size:1.1em;\">L.C.M. \\\\( = ' + hcf + ' \\\\times ' + (n1/hcf) + ' \\\\times ' + (n2/hcf) + ' = ' + lcm + ' \\\\)</div>'; } else { text = '4. 求 \\\\( ' + n1 + ' \\\\) 和 \\\\( ' + n2 + ' \\\\) 的 H.C.F. (最大公因數)。'; askedAns = hcf.toString(); displayAns = hcf.toString(); stepsTail = '<div style=\"margin-top:5px;text-align:left;font-size:1.1em;\">H.C.F. \\\\( = ' + common.join(' \\\\times ') + ' = ' + hcf + ' \\\\)</div>'; } var steps = tbl + stepsTail; return { questionHTML: text, correctAnswer: askedAns, paramsUsed: {n1:n1, n2:n2, askLCM:askLCM, hcf:hcf, lcm:lcm}, solutionHTML: steps, pdfText: text, answers: [askedAns], displayAnswer: displayAns, steps: steps, checkType: 'hcfLcm', askLCM: askLCM, hcf: hcf, lcm: lcm }; }",
       "answers": [],
       "displayAnswer": "",
       "steps": "",
-      "pdfText": ""
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "hcfLcm",
+      "generator": "hcf_or_lcm"
     },

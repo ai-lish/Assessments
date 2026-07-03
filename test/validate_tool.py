@@ -12,6 +12,7 @@ in Python. Tests:
   8. 佔位符及 inline JavaScript 語法
 """
 import json
+import os
 import subprocess
 import re
 import sys
@@ -47,7 +48,10 @@ print("\n=== 1. 題目庫分類欄位及唯一 key 驗證 ===")
 keys = [t["key"] for t in bank["data"]]
 check("data 係陣列", isinstance(bank["data"], list))
 check("所有 key 唯一", len(keys) == len(set(keys)))
-required_fields = ["grade", "term", "topicKey", "topicName", "type", "checkType", "name", "generate", "key"]
+required_fields = [
+    "grade", "term", "topicKey", "topicName", "type", "checkType",
+    "validator", "generator", "schemaVersion", "part", "name", "key",
+]
 for t in bank["data"]:
     missing = []
     for f in required_fields:
@@ -101,8 +105,22 @@ missing = [k for k in preset_keys if k not in bank_keys]
 check("preset 引用嘅 typeKey 全部存在", not missing, f"missing: {missing}")
 
 def call_gen(type_def, params):
-    js = f'const g = {type_def["generate"]}; const r = g({json.dumps(params)}); process.stdout.write(JSON.stringify(r));'
-    p = subprocess.run(['node', '-e', js], capture_output=True, text=True)
+    js = """
+const generators = require("./tool/generators.js");
+const bank = require("./question-bank.json");
+const key = process.env.TYPE_KEY;
+const params = JSON.parse(process.env.PARAMS_JSON);
+const typeDef = bank.data.find((item) => item.key === key);
+const r = generators.generateQuestion(typeDef, params);
+process.stdout.write(JSON.stringify(r));
+"""
+    p = subprocess.run(
+        ['node', '-e', js],
+        capture_output=True,
+        text=True,
+        cwd=str(ROOT),
+        env={**os.environ, "TYPE_KEY": type_def["key"], "PARAMS_JSON": json.dumps(params, ensure_ascii=False)},
+    )
     if p.returncode != 0:
         return None
     return json.loads(p.stdout)
@@ -148,6 +166,7 @@ for pq in preset["questions"]:
 print("\n=== 4. 每種 type 嘅預覽資料完整性 ===")
 def assemble_q(type_def, res):
     q = {"typeKey": type_def["key"], "type": type_def["type"], "checkType": type_def["checkType"],
+         "validator": type_def.get("validator", type_def["checkType"]),
          "questionHTML": res["questionHTML"], "correctAnswer": res["correctAnswer"],
          "paramsUsed": res.get("paramsUsed", {}),
          "solutionHTML": res.get("solutionHTML", ""), "pdfText": res.get("pdfText", ""),
@@ -264,6 +283,7 @@ html = html.replace("{{GENERATED_AT}}", json.dumps(generated_at))
 html = html.replace("{{BANK_HASH}}", json.dumps(bank_hash))
 html = html.replace("{{PRESET_KEY}}", json.dumps(preset_key))
 html = html.replace("{{GAS_URL}}", json.dumps(gas_url))
+html = html.replace("{{VALIDATORS_SCRIPT}}", (ROOT / "tool" / "validators.js").read_text(encoding="utf-8"))
 
 # Verify no placeholder residue
 leftover = re.findall(r"\{\{[A-Z_]+\}\}", html)
@@ -288,7 +308,7 @@ print(f"  (wrote {out}, {len(html)} bytes)")
 # 8. 佔位符 + JS 語法
 # ----------------------------------------------------------------------
 print("\n=== 8. 佔位符 + JS 語法 ===")
-required_placeholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}"]
+required_placeholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}"]
 for ph in required_placeholders:
     check(f"模板有 {ph}", ph in tmpl)
 
@@ -327,8 +347,12 @@ print(f"  課題顯示名：{names}")
 # 進而 selectedTopic 空時透出全部 16 題。修正後頁面使用共享 filterBankStrict。
 print("\n=== 額外：頁面必須使用共享篩選 (filter.js) ===")
 check("頁面 <script src=\"filter.js\">", '<script src="filter.js">' in tool_html)
+check("頁面 <script src=\"generators.js\">", '<script src="generators.js">' in tool_html)
+check("頁面 <script src=\"validators.js\">", '<script src="validators.js">' in tool_html)
 check("頁面使用 AssessTool.filterBankStrict", "AssessTool.filterBankStrict" in tool_html)
 check("filter.js 檔案存在", (ROOT / "tool" / "filter.js").exists())
+check("generators.js 檔案存在", (ROOT / "tool" / "generators.js").exists())
+check("validators.js 檔案存在", (ROOT / "tool" / "validators.js").exists())
 # 載入 filter.js 並跨語言同樣驗證「未選課題時必須是空清單」
 fjs = (ROOT / "tool" / "filter.js").read_text(encoding="utf-8")
 r = subprocess.run(['node', '-e', fjs

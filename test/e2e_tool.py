@@ -13,10 +13,24 @@ tmpl = (ROOT / 'templates/student.html').read_text()
 preset = bank['presets'][0]
 print(f"Preset: {preset['key']} ({preset['name']}) — {len(preset['questions'])} questions")
 
-# Run each generate() with random params (simulate tool)
+# Run each registry generator with random params (simulate tool)
 def call_generate(type_def, params):
-    js = f'const g = {type_def["generate"]}; const r = g({json.dumps(params)}); process.stdout.write(JSON.stringify(r));'
-    p = subprocess.run(['node', '-e', js], capture_output=True, text=True)
+    js = """
+const generators = require("./tool/generators.js");
+const bank = require("./question-bank.json");
+const key = process.env.TYPE_KEY;
+const params = JSON.parse(process.env.PARAMS_JSON);
+const typeDef = bank.data.find((item) => item.key === key);
+const r = generators.generateQuestion(typeDef, params);
+process.stdout.write(JSON.stringify(r));
+"""
+    p = subprocess.run(
+        ['node', '-e', js],
+        capture_output=True,
+        text=True,
+        cwd=str(ROOT),
+        env={**os.environ, "TYPE_KEY": type_def["key"], "PARAMS_JSON": json.dumps(params, ensure_ascii=False)},
+    )
     if p.returncode != 0:
         return None
     return json.loads(p.stdout)
@@ -58,6 +72,7 @@ for pq in preset['questions']:
         "typeKey": type_def['key'],
         "type": type_def['type'],
         "checkType": type_def['checkType'],
+        "validator": type_def.get('validator', type_def['checkType']),
         "questionHTML": res['questionHTML'],
         "correctAnswer": res['correctAnswer'],
         "paramsUsed": res['paramsUsed'],
@@ -99,6 +114,7 @@ html = html.replace('{{GENERATED_AT}}', json.dumps(generated_at))
 html = html.replace('{{BANK_HASH}}', json.dumps(bank_hash))
 html = html.replace('{{PRESET_KEY}}', json.dumps(preset_key))
 html = html.replace('{{GAS_URL}}', json.dumps(gas_url))
+html = html.replace('{{VALIDATORS_SCRIPT}}', (ROOT / 'tool' / 'validators.js').read_text())
 
 # Sanity: no placeholders left
 leftover = re.findall(r'\{\{[A-Z_]+\}\}', html)

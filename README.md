@@ -99,24 +99,31 @@
 
 ```bash
 # 1. 題目庫完整性
-python3 test/validate_bank.py      # 17 passed, 0 failed
+python3 test/validate_bank.py      # 18 passed, 0 failed
 
-# 2. Preset 端到端生成
+# 2. PR-A2 schema / generator / validator contract
+python3 test/validate_schema.py
+node test/test_generators_equivalence.cjs
+node test/test_validators.cjs
+node test/no_dynamic_code.cjs
+
+# 3. Preset 端到端生成
 python3 test/validate_preset.py    # 16 generated, 0 failures
 
-# 3. 老師選題工具 8 項驗收
-python3 test/validate_tool.py      # 112 項檢查通過
+# 4. 老師選題工具驗收
+python3 test/validate_tool.py      # 123 項檢查通過
 
-# 4. 老師工具 headless 端到端流程
+# 5. 老師工具 headless 端到端流程
 node test/test_tool_logic.cjs      # 篩選 → 預覽 → 確認 → 匯出
 
-# 5. 重建題目庫（從 parts/ 組裝）
+# 6. 重建題目庫（從 parts/ 組裝）
 python3 test/assemble.py
 ```
 
 ### 修改注意
 
 - 改動題目庫後必須跑 `python3 test/assemble.py` 重新組裝 `question-bank.json`。
+- 題庫只保存 `generator` / `validator` key；實作分別集中於 `tool/generators.js` / `tool/validators.js`。
 - 學生模板改動後必須跑 `python3 test/validate_preset.py` 確認仍能生成 16 題。
 - 工具改動後必須跑 `python3 test/validate_tool.py` 及 `node test/test_tool_logic.cjs`。
 - 唔可以將 `test/*.html` 或 `test/generated_practice.json` commit 入 repo（已加入 `.gitignore`）。
@@ -124,7 +131,7 @@ python3 test/assemble.py
 ### LaTeX Escape
 
 - **題目庫 JSON 內：** 反斜線用 `\\`，即 `\\( x \\)` 寫作 `\\(` 同 `\\)`。
-- **JS template literal 內（generate() 函式體內）：** 反斜線用 `\\\\`。
+- **generator 模組內：** 反斜線按 JavaScript 字串規則保留。
 - **JSON 內 `string.replace`：** 用 function 替換避免 `\\` 被當 regex replacement 解讀。
 
 ### 部署

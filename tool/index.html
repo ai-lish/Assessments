@@ -267,6 +267,8 @@
 
 <!-- 共享篩選邏輯（tool/filter.js）— 頁面同 test 共用 -->
 <script src="filter.js"></script>
+<script src="generators.js"></script>
+<script src="validators.js"></script>
 
 <script>
 /* ============================================================
@@ -382,8 +384,9 @@ async function loadAll() {
     tmpl = await tmplRes.text();
     // Basic template sanity check
     if (!tmpl.includes("{{TITLE}}") || !tmpl.includes("{{QUESTIONS_DATA}}") ||
-        !tmpl.includes("{{BANK_HASH}}") || !tmpl.includes("{{PRESET_KEY}}")) {
-      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{QUESTIONS_DATA}} / {{BANK_HASH}} / {{PRESET_KEY}}）");
+        !tmpl.includes("{{BANK_HASH}}") || !tmpl.includes("{{PRESET_KEY}}") ||
+        !tmpl.includes("{{VALIDATORS_SCRIPT}}")) {
+      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{QUESTIONS_DATA}} / {{BANK_HASH}} / {{PRESET_KEY}} / {{VALIDATORS_SCRIPT}}）");
     }
     // Bank validation（先過題目庫）
     const validation = validateBank(bank);
@@ -427,7 +430,19 @@ function validateBank(b) {
     if (keys.has(t.key)) errors.push("重複 key: " + t.key);
     keys.add(t.key);
     if (!t.name) errors.push(`題型「${t.key}」缺 name`);
-    if (!t.generate) errors.push(`題型「${t.key}」缺 generate`);
+    if (t.generate) errors.push(`題型「${t.key}」仍包含舊 generate 字串，請改用 generator key`);
+    if (t.schemaVersion === undefined || t.schemaVersion === null) errors.push(`題型「${t.key}」缺 schemaVersion`);
+    if (t.part === undefined || t.part === null) errors.push(`題型「${t.key}」缺 part`);
+    if (!t.generator) {
+      errors.push(`題型「${t.key}」缺 generator`);
+    } else if (!window.AssessGenerators || !AssessGenerators.hasGenerator(t.generator)) {
+      errors.push(`題型「${t.key}」嘅 generator「${t.generator}」不存在`);
+    }
+    if (!t.validator) {
+      errors.push(`題型「${t.key}」缺 validator`);
+    } else if (!window.AssessValidators || !AssessValidators.hasValidator(t.validator)) {
+      errors.push(`題型「${t.key}」嘅 validator「${t.validator}」不存在`);
+    }
     if (!t.type) {
       errors.push(`題型「${t.key}」缺 type`);
     } else if (!SUPPORTED_TYPES.has(t.type)) {
@@ -461,6 +476,17 @@ function validateBank(b) {
         }
       }
     }
+    if (t.type === "coordinate") {
+      if (!t.answerSpec || t.answerSpec.coordinateMode !== "axis-value") {
+        errors.push(`題型「${t.key}」係 coordinate 類但缺 answerSpec.coordinateMode=axis-value`);
+      }
+      if (!t.answerSpec || !t.answerSpec.interaction) {
+        errors.push(`題型「${t.key}」係 coordinate 類但缺 answerSpec.interaction`);
+      }
+    }
+    if (t.type === "congruence") {
+      if (!t.figure) errors.push(`題型「${t.key}」係 congruence 類但缺 figure`);
+    }
   }
   // 2. preset 引用嘅 typeKey 全部存在
   for (const p of b.presets || []) {
@@ -484,7 +510,7 @@ function validateBank(b) {
 }
 
 function validateTemplate(s) {
-  const required = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}"];
+  const required = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}"];
   const missing = required.filter(ph => !s.includes(ph));
   return { ok: missing.length === 0, missing };
 }
@@ -725,14 +751,14 @@ function genParamsForType(type) {
 
 function callGenerate(type, params) {
   try {
-    const fn = new Function("p", "return (" + type.generate + ")(p);");
-    const res = fn(params);
-    if (!res || typeof res !== "object") return { ok: false, err: "generate() 未回傳 object" };
+    if (!window.AssessGenerators) return { ok: false, err: "generators.js 未載入" };
+    const res = AssessGenerators.generateQuestion(type, params);
+    if (!res || typeof res !== "object") return { ok: false, err: "generator 未回傳 object" };
     if (!res.questionHTML) return { ok: false, err: "缺 questionHTML" };
     if (res.correctAnswer === undefined || res.correctAnswer === null) return { ok: false, err: "缺 correctAnswer" };
     return { ok: true, res };
   } catch (e) {
-    return { ok: false, err: "generate() 拋出例外：" + (e.message || e) };
+    return { ok: false, err: "generator 拋出例外：" + (e.message || e) };
   }
 }
 
@@ -741,6 +767,7 @@ function assembleQ(typeDef, res) {
     typeKey: typeDef.key,
     type: typeDef.type,
     checkType: typeDef.checkType,
+    validator: typeDef.validator || typeDef.checkType,
     questionHTML: res.questionHTML,
     correctAnswer: res.correctAnswer,
     paramsUsed: res.paramsUsed,
@@ -1060,6 +1087,7 @@ function exportStudent() {
       typeKey: b.typeKey,
       type: q.type,
       checkType: q.checkType,
+      validator: q.validator,
       questionHTML: q.questionHTML,
       correctAnswer: q.correctAnswer,
       paramsUsed: q.paramsUsed,
@@ -1078,7 +1106,7 @@ function exportStudent() {
     };
   });
   // Validate placeholders before replace
-  const requiredPlaceholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}"];
+  const requiredPlaceholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}"];
   for (const ph of requiredPlaceholders) {
     if (!tmpl.includes(ph)) {
       showStatus("exportStatus", "err", "模板缺少必要佔位符：" + ph);
@@ -1101,6 +1129,7 @@ function exportStudent() {
   const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
   let html = tmpl;
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
+  html = safeReplace(html, /\{\{VALIDATORS_SCRIPT\}\}/g, AssessValidators.toStandaloneScript());
   html = safeReplace(html, /\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions));
   html = safeReplace(html, /\{\{GENERATED_AT\}\}/g, JSON.stringify(generatedAt));
   html = safeReplace(html, /\{\{BANK_HASH\}\}/g, JSON.stringify(bankHash));
