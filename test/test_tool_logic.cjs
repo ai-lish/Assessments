@@ -67,9 +67,9 @@ const toolHtml = fs.readFileSync(path.join(ROOT, 'tool/filter.js').replace(/filt
 // (Re-read toolHtml here because of the strange path dance above)
 const toolHtmlFixed = fs.readFileSync(path.join(ROOT, 'tool/index.html'), 'utf-8');
 
-check('頁面 <script src="filter.js">', /<script src="filter\.js">/.test(toolHtmlFixed));
-check('頁面 <script src="generators.js">', /<script src="generators\.js">/.test(toolHtmlFixed));
-check('頁面 <script src="validators.js">', /<script src="validators\.js">/.test(toolHtmlFixed));
+check('頁面 <script src="filter.js?...">', /<script src="filter\.js\?v=[^"]+">/.test(toolHtmlFixed));
+check('頁面 <script src="generators.js?...">', /<script src="generators\.js\?v=[^"]+">/.test(toolHtmlFixed));
+check('頁面 <script src="validators.js?...">', /<script src="validators\.js\?v=[^"]+">/.test(toolHtmlFixed));
 check('頁面 renderQuestionBrowser 內使用 AssessTool.filterBankStrict',
       /renderQuestionBrowser[\s\S]{0,300}filterBankStrict/.test(toolHtmlFixed));
 check('頁面入面冇內聯 (t.grade \|\| "") !== selectedGrade 篩選邏輯',

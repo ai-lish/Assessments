@@ -346,9 +346,9 @@ print(f"  課題顯示名：{names}")
 # 之前的 bug：頁面用 (t.grade || "") !== selectedGrade 隱含 「selectedGrade 為空時隱含所有 t 匹配」，
 # 進而 selectedTopic 空時透出全部 16 題。修正後頁面使用共享 filterBankStrict。
 print("\n=== 額外：頁面必須使用共享篩選 (filter.js) ===")
-check("頁面 <script src=\"filter.js\">", '<script src="filter.js">' in tool_html)
-check("頁面 <script src=\"generators.js\">", '<script src="generators.js">' in tool_html)
-check("頁面 <script src=\"validators.js\">", '<script src="validators.js">' in tool_html)
+check("頁面 <script src=\"filter.js?...\">", re.search(r'<script src="filter\.js\?v=[^"]+">', tool_html) is not None)
+check("頁面 <script src=\"generators.js?...\">", re.search(r'<script src="generators\.js\?v=[^"]+">', tool_html) is not None)
+check("頁面 <script src=\"validators.js?...\">", re.search(r'<script src="validators\.js\?v=[^"]+">', tool_html) is not None)
 check("頁面使用 AssessTool.filterBankStrict", "AssessTool.filterBankStrict" in tool_html)
 check("filter.js 檔案存在", (ROOT / "tool" / "filter.js").exists())
 check("generators.js 檔案存在", (ROOT / "tool" / "generators.js").exists())
