@@ -1,0 +1,56 @@
+name: Assessments CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+      - debug/teacher-tool-render-filter
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Teacher tool filter regression
+        run: node test/test_tool_logic.cjs
+
+      - name: Python filter subprocess regression
+        run: python3 test/validate_filter_subprocess.py
+
+      - name: Teacher tool validator
+        run: python3 test/validate_tool.py
+
+      - name: Question bank validator
+        run: python3 test/validate_bank.py
+
+      - name: Preset validator
+        run: python3 test/validate_preset.py
+
+      - name: Teacher tool e2e
+        run: python3 test/e2e_tool.py
+
+      - name: S1 Term 3 baseline
+        run: node test/s1_term3_baseline.cjs
+
+      - name: HKDSE A1 tests
+        run: npm --prefix hkdse run test:a1
+
+      - name: HKDSE A2 tests
+        run: npm --prefix hkdse run test:a2
+
+      - name: HKDSE path guard
+        env:
+          BASE_REF: ${{ github.base_ref || 'main' }}
+        run: |
+          git fetch origin "$BASE_REF"
+          node scripts/check-hkdse-path-guard.mjs --base "origin/$BASE_REF" --head HEAD
