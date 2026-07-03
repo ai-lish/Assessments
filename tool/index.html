@@ -277,7 +277,6 @@
 const STORAGE_KEY = "assess_tool_v2";
 let bank = null;
 let tmpl = null;
-let validatorsScript = null;
 let activeMode = "custom";
 let activePresetKey = "custom";  // "custom" 或實際 preset key（例如 s1_term3_part_a）
 let mathjaxStatus = "loading";   // "loading" | "ready" | "failed"
@@ -378,14 +377,11 @@ async function loadAll() {
   if (!bankUrl || !tmplUrl) { showStatus("loadStatus", "err", "請先填兩個 URL"); return; }
   showStatus("loadStatus", "warn", "載入中...");
   try {
-    const validatorsUrl = new URL("validators.js", window.location.href).href;
-    const [bankRes, tmplRes, validatorsRes] = await Promise.all([fetch(bankUrl), fetch(tmplUrl), fetch(validatorsUrl)]);
+    const [bankRes, tmplRes] = await Promise.all([fetch(bankUrl), fetch(tmplUrl)]);
     if (!bankRes.ok) throw new Error("題目庫 HTTP " + bankRes.status);
     if (!tmplRes.ok) throw new Error("模板 HTTP " + tmplRes.status);
-    if (!validatorsRes.ok) throw new Error("validators.js HTTP " + validatorsRes.status);
     bank = await bankRes.json();
     tmpl = await tmplRes.text();
-    validatorsScript = await validatorsRes.text();
     // Basic template sanity check
     if (!tmpl.includes("{{TITLE}}") || !tmpl.includes("{{QUESTIONS_DATA}}") ||
         !tmpl.includes("{{BANK_HASH}}") || !tmpl.includes("{{PRESET_KEY}}") ||
@@ -396,13 +392,13 @@ async function loadAll() {
     const validation = validateBank(bank);
     if (!validation.ok) {
       // 題目庫驗證失敗 → 不載入任何嘢，避免半完成狀態
-      bank = null; tmpl = null; validatorsScript = null;
+      bank = null; tmpl = null;
       throw new Error("題目庫驗證失敗：" + validation.errors.join("；"));
     }
     // 模板佔位符驗證
     const tmplValidation = validateTemplate(tmpl);
     if (!tmplValidation.ok) {
-      bank = null; tmpl = null; validatorsScript = null;
+      bank = null; tmpl = null;
       throw new Error("模板缺少必要佔位符：" + tmplValidation.missing.join("、"));
     }
     saveUrls();
@@ -1133,7 +1129,7 @@ function exportStudent() {
   const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
   let html = tmpl;
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
-  html = safeReplace(html, /\{\{VALIDATORS_SCRIPT\}\}/g, validatorsScript || "");
+  html = safeReplace(html, /\{\{VALIDATORS_SCRIPT\}\}/g, AssessValidators.toStandaloneScript());
   html = safeReplace(html, /\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions));
   html = safeReplace(html, /\{\{GENERATED_AT\}\}/g, JSON.stringify(generatedAt));
   html = safeReplace(html, /\{\{BANK_HASH\}\}/g, JSON.stringify(bankHash));

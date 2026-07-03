@@ -7,7 +7,9 @@
   const api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;
   root.AssessValidators = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function() {
+})(typeof globalThis !== "undefined" ? globalThis : this, createAssessValidators);
+
+function createAssessValidators() {
   function normalize(s) {
     return String(s || "").trim().replace(/\s+/g, "")
       .replace(/×/g, "*").replace(/÷/g, "/").replace(/π/g, "pi").replace(/−/g, "-").toUpperCase();
@@ -157,6 +159,16 @@
     return validator(q, userInput);
   }
 
+  function toStandaloneScript() {
+    return [
+      "/* Embedded from tool/validators.js by tool/index.html. */",
+      "(function(root, factory) {",
+      "  const api = factory();",
+      "  root.AssessValidators = api;",
+      "})(typeof globalThis !== \"undefined\" ? globalThis : this, " + createAssessValidators.toString() + ");",
+    ].join("\n");
+  }
+
   return {
     validators,
     aliases,
@@ -165,5 +177,6 @@
     getValidatorKey,
     hasValidator,
     checkAnswer,
+    toStandaloneScript,
   };
-});
+}
