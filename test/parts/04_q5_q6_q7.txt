@@ -9,12 +9,18 @@
       "topicName": "數與代數",
       "type": "text",
       "checkType": "textExact",
-      "params_schema": {"a": "整數 2..6", "b": "整數 2..6"},
-      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var a = p.a || r(2, 6); var b = p.b || r(2, 6); var sum = a + b; var text = '5. 化簡 \\\\( x^{' + a + '}(x^{' + b + '}) \\\\)。'; var chainA = []; for (var i = 0; i < a; i++) chainA.push('x'); var chainB = []; for (var j = 0; j < b; j++) chainB.push('x'); var steps = '<div>步驟：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\\\( \\\\begin{aligned} &\\\\quad x^{' + a + '}(x^{' + b + '}) \\\\\\\\&=' + chainA.join(' \\\\cdot ') + ')(' + chainB.join(' \\\\cdot ') + ') \\\\\\\\&=' + chainA.join('') + chainB.join('') + ' \\\\\\\\&=x^{' + sum + '} \\\\end{aligned} \\\\)</div>'; return { questionHTML: text, correctAnswer: 'x^' + sum, paramsUsed: {a:a, b:b}, solutionHTML: steps, pdfText: text, answers: ['x^' + sum, 'x^(' + sum + ')', 'x**' + sum], displayAnswer: 'x^{' + sum + '}', steps: steps, checkType: 'textExact' }; }",
+      "params_schema": {
+        "a": "整數 2..6",
+        "b": "整數 2..6"
+      },
       "answers": [],
       "displayAnswer": "",
       "steps": "",
-      "pdfText": ""
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "textExact",
+      "generator": "exp_law"
     },
     {
       "key": "alg_simplify",
@@ -33,11 +39,14 @@
         "c": "整數 2..6（x 係數）",
         "d": "整數 -9..-2（常數項）"
       },
-      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var a = (p.a !== undefined) ? p.a : r(-6, -2); var b = (p.b !== undefined) ? p.b : r(-8, -2); var c = (p.c !== undefined) ? p.c : r(2, 6); var d = (p.d !== undefined) ? p.d : r(-9, -2); var xCoeff = a + c; var constTerm = b + d; var t1 = a + 'x'; var t2 = (b >= 0 ? '+ ' : '- ') + (Math.abs(b)); var t3 = (c >= 0 ? '+ ' : '- ') + (Math.abs(c)) + 'x'; var t4 = (d >= 0 ? '+ ' : '- ') + (Math.abs(d)); var polyStr = t1 + ' ' + t2 + ' ' + t3 + ' ' + t4; var groupedStr = t1 + ' ' + t3 + ' ' + t2 + ' ' + t4; var text = '6. 化簡 \\\\( ' + polyStr + ' \\\\) 。'; var stdAns = ''; if (xCoeff === 1) stdAns = 'x' + (constTerm >= 0 ? '+' : '-') + Math.abs(constTerm); else if (xCoeff === -1) stdAns = '-x' + (constTerm >= 0 ? '+' : '-') + Math.abs(constTerm); else if (xCoeff === 0) stdAns = constTerm.toString(); else stdAns = xCoeff + 'x' + (constTerm >= 0 ? '+' : '-') + Math.abs(constTerm); var steps = '<div>步驟：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\\\( \\\\begin{aligned} &\\\\quad ' + polyStr + ' \\\\\\\\&= ' + groupedStr + ' \\\\\\\\&= ' + stdAns + ' \\\\end{aligned} \\\\)</div>'; return { questionHTML: text, correctAnswer: stdAns, paramsUsed: {a:a, b:b, c:c, d:d, xCoeff:xCoeff, constTerm:constTerm}, solutionHTML: steps, pdfText: text, answers: [stdAns], displayAnswer: stdAns, steps: steps, checkType: 'textExact' }; }",
       "answers": [],
       "displayAnswer": "",
       "steps": "",
-      "pdfText": ""
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "textExact",
+      "generator": "alg_simplify"
     },
     {
       "key": "solve_eq",
@@ -50,11 +59,17 @@
       "topicName": "數與代數",
       "type": "text",
       "checkType": "numeric",
-      "params_schema": {"coeff": "整數 2..7", "xVal": "整數 -9..-2"},
+      "params_schema": {
+        "coeff": "整數 2..7",
+        "xVal": "整數 -9..-2"
+      },
       "prefix": "x = ",
-      "generate": "function(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var coeff = p.coeff || r(2, 7); var xVal = p.xVal || r(-9, -2); var rVal = coeff * xVal; var text = '7. 解方程 \\\\( ' + coeff + 'x = ' + rVal + ' \\\\)。'; var steps = '<div style=\"font-size:1.05em;margin-top:5px;\">\\\\( \\\\begin{aligned} ' + coeff + 'x &= ' + rVal + ' \\\\\\\\ x &= \\\\frac{' + rVal + '}{' + coeff + '} \\\\\\\\ x &= ' + xVal + ' \\\\end{aligned} \\\\)</div>'; return { questionHTML: text, correctAnswer: xVal.toString(), paramsUsed: {coeff:coeff, xVal:xVal, rVal:rVal}, solutionHTML: steps, pdfText: text, answers: [xVal.toString()], displayAnswer: xVal.toString(), steps: steps, checkType: 'numeric', prefix: 'x = ' }; }",
       "answers": [],
       "displayAnswer": "",
       "steps": "",
-      "pdfText": ""
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "numeric",
+      "generator": "solve_eq"
     },

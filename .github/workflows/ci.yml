@@ -33,6 +33,18 @@ jobs:
       - name: Question bank validator
         run: python3 test/validate_bank.py
 
+      - name: Schema contract validator
+        run: python3 test/validate_schema.py
+
+      - name: Generator equivalence validator
+        run: node test/test_generators_equivalence.cjs
+
+      - name: Validator fixture test
+        run: node test/test_validators.cjs
+
+      - name: Dynamic code scan
+        run: node test/no_dynamic_code.cjs
+
       - name: Preset validator
         run: python3 test/validate_preset.py
 

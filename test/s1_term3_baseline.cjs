@@ -7,6 +7,8 @@ const vm = require("vm");
 const ROOT = path.resolve(__dirname, "..");
 const bank = JSON.parse(fs.readFileSync(path.join(ROOT, "question-bank.json"), "utf8"));
 const template = fs.readFileSync(path.join(ROOT, "templates/student.html"), "utf8");
+const generators = require(path.join(ROOT, "tool/generators.js"));
+const validatorsScript = fs.readFileSync(path.join(ROOT, "tool/validators.js"), "utf8");
 
 let passed = 0;
 const failures = [];
@@ -63,9 +65,7 @@ const fixedParams = {
 };
 
 function callGenerate(def, params) {
-  // Baseline intentionally follows the current bank contract: generate is a JS string.
-  const fn = new Function("p", `return (${def.generate})(p);`);
-  return fn(params);
+  return generators.generateQuestion(def, params);
 }
 
 function assembleQuestions() {
@@ -77,6 +77,7 @@ function assembleQuestions() {
       typeKey: def.key,
       type: def.type,
       checkType: def.checkType,
+      validator: def.validator || def.checkType,
       questionHTML: res.questionHTML,
       correctAnswer: res.correctAnswer,
       paramsUsed: res.paramsUsed,
@@ -217,14 +218,18 @@ function buildSandbox(questions) {
     .replace(/\{\{GENERATED_AT\}\}/g, JSON.stringify("2026-07-03T00:00:00.000Z"))
     .replace(/\{\{BANK_HASH\}\}/g, JSON.stringify("baseline_hash"))
     .replace(/\{\{PRESET_KEY\}\}/g, JSON.stringify("s1_term3_part_a"))
-    .replace(/\{\{GAS_URL\}\}/g, JSON.stringify("https://example.invalid/sheets"));
-  const mainScript = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]
-    .map((m) => m[1])
-    .find((script) => script.includes("function checkAnswer"));
-  if (!mainScript) throw new Error("student main script not found");
+    .replace(/\{\{GAS_URL\}\}/g, JSON.stringify("https://example.invalid/sheets"))
+    .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validatorsScript);
+  const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
+  const runnableScripts = scripts.filter((script) => !script.includes("window.MathJax ="));
+  if (!runnableScripts.some((script) => script.includes("function checkAnswer"))) {
+    throw new Error("student main script not found");
+  }
 
   vm.createContext(sandbox);
-  vm.runInContext(mainScript, sandbox, { filename: "templates/student.html" });
+  runnableScripts.forEach((script, index) => {
+    vm.runInContext(script, sandbox, { filename: `templates/student.html#script${index}` });
+  });
   return sandbox;
 }
 
@@ -258,7 +263,7 @@ check("hcfLcm accepts generated numeric answer", checkStudentAnswer("hcf_or_lcm"
 check("algebraQ8 accepts equivalent commuted product", checkStudentAnswer("word_to_alg", "(x+4)5"));
 check("fracPct accepts answer with percent sign", checkStudentAnswer("frac_to_pct", `${questions[9].correctAnswer}%`));
 check("congruenceReason accepts lowercase dotted reason", checkStudentAnswer("congruence", "s.a.s."));
-check("congruenceReason currently rejects dot-stripped reason", !checkStudentAnswer("congruence", "SAS"));
+check("congruenceReason accepts dot-stripped reason (PR-A2 authorized)", checkStudentAnswer("congruence", "SAS"));
 check("coordinatePoint text check remains single axis value", checkStudentAnswer("coordinate", questions[13].correctAnswer));
 check("choiceKey accepts generated option key", checkStudentAnswer("data_type", questions[15].correctAnswer));
 

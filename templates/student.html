@@ -6,6 +6,7 @@
        {{BANK_HASH}}          題目庫版本摘要
        {{PRESET_KEY}}         使用的 preset key（'s1_term3_part_a'、'custom' 等）
        {{GAS_URL}}            Google Sheets 提交網址（可為空字串）
+       {{VALIDATORS_SCRIPT}}  由 tool/validators.js 內嵌的共用判分 registry
 -->
 <!DOCTYPE html>
 <html lang="zh-HK">
@@ -194,6 +195,10 @@
 <div id="toast" class="toast"></div>
 
 <script>
+{{VALIDATORS_SCRIPT}}
+</script>
+
+<script>
 /* === 內嵌資料（由 tool 替換佔位符注入）=== */
 const TITLE = {{TITLE}};
 const QUESTIONS = {{QUESTIONS_DATA}};
@@ -232,118 +237,9 @@ function saveAttempts() {
   catch (e) {}
 }
 
-/* === 標準化 === */
-function normalize(s) {
-  return String(s || "").trim().replace(/\s+/g, "")
-    .replace(/×/g, "*").replace(/÷/g, "/").replace(/π/g, "pi").replace(/−/g, "-").toUpperCase();
-}
-function equalAns(a, b) {
-  if (a === b) return true;
-  const na = normalize(a), nb = normalize(b);
-  if (na === nb) return true;
-  const fa = parseFloat(na), fb = parseFloat(nb);
-  if (!isNaN(fa) && !isNaN(fb) && Math.abs(fa - fb) < 0.01) return true;
-  return false;
-}
-
-/* === 專用判分：質因數指數記數法 === */
-function checkPrimeFactorIndexForm(userInput, expectedFactors) {
-  if (userInput === null || userInput === undefined) return false;
-  let s = String(userInput).toUpperCase().replace(/\s+/g, "").replace(/[×*X]/g, "*");
-  if (s === "") return false;
-  const tokens = s.split("*").filter(t => t !== "");
-  if (tokens.length === 0) return false;
-  const map = {};
-  const baseCount = {};
-  for (const tok of tokens) {
-    const m = tok.match(/^(\d+)(?:\^(\d+))?$/);
-    if (!m) return false;
-    const base = parseInt(m[1], 10);
-    const exp = m[2] ? parseInt(m[2], 10) : 1;
-    if (exp < 1) return false;
-    map[base] = (map[base] || 0) + exp;
-    baseCount[base] = (baseCount[base] || 0) + 1;
-  }
-  // 拒絕展開式：同底數出現多於一次
-  for (const b in baseCount) {
-    if (baseCount[b] > 1) return false;
-  }
-  const expKeys = Object.keys(expectedFactors);
-  const userKeys = Object.keys(map);
-  if (expKeys.length !== userKeys.length) return false;
-  for (const k of expKeys) {
-    if (map[k] !== expectedFactors[k]) return false;
-  }
-  return true;
-}
-
-/* === 專用判分：Q8 代數式結構 === */
-function checkAlgebraQ8(userInput, q) {
-  if (userInput === null || userInput === undefined) return false;
-  let s = String(userInput).toUpperCase().replace(/\s+/g, "")
-    .replace(/÷/g, "/").replace(/[×*]/g, "*");
-  if (s === "") return false;
-  const t = q.q8subtype;
-  let m;
-  if (t === 1) {
-    m = (q.answers[0] || "").match(/^(\d+)x-(\d+)$/);
-    if (!m) return false;
-    return s === `${m[1]}X-${m[2]}`;
-  }
-  if (t === 2) {
-    m = (q.answers[0] || "").match(/^\(x-(\d+)\)\/(\d+)$/);
-    if (!m) return false;
-    return s === `(X-${m[1]})/${m[2]}`;
-  }
-  if (t === 3) {
-    m = (q.answers[0] || "").match(/^(\d+)\(x\+(\d+)\)$/);
-    if (!m) return false;
-    return s === `${m[1]}(X+${m[2]})` || s === `(X+${m[2]})${m[1]}` ||
-           s === `${m[1]}*(X+${m[2]})` || s === `(X+${m[2]})*${m[1]}`;
-  }
-  if (t === 4) {
-    m = (q.answers[0] || "").match(/^x\/(\d+)\+(\d+)$/);
-    if (!m) return false;
-    return s === `X/${m[1]}+${m[2]}`;
-  }
-  if (t === 5) {
-    m = (q.answers[0] || "").match(/^(\d+)\((\d+)-x\)$/);
-    if (!m) return false;
-    return s === `${m[1]}(${m[2]}-X)` || s === `(${m[2]}-X)${m[1]}` ||
-           s === `${m[1]}*(${m[2]}-X)` || s === `(${m[2]}-X)*${m[1]}`;
-  }
-  return false;
-}
-
-/* === 統一判分 === */
+/* === 統一判分：調用共用 validator registry === */
 function checkAnswer(q, userInput) {
-  const ct = q.checkType || "textExact";
-  if (ct === "primeFactor") return checkPrimeFactorIndexForm(userInput, q.primeFactors || {});
-  if (ct === "algebraQ8")   return checkAlgebraQ8(userInput, q);
-  if (ct === "numeric") {
-    try { return Math.abs(parseFloat(userInput) - parseFloat(q.correctAnswer)) < 0.01; }
-    catch (e) { return false; }
-  }
-  if (ct === "fracPct") {
-    const sNoPct = String(userInput || "").replace(/%/g, "").trim();
-    const ans = String(q.correctAnswer || "").replace(/%/g, "").trim();
-    return sNoPct === ans;
-  }
-  if (ct === "choiceKey")      return normalize(userInput) === normalize(q.correctAnswer);
-  if (ct === "congruenceReason") {
-    const ansList = (q.answers || [q.correctAnswer]).map(a => normalize(a));
-    return ansList.indexOf(normalize(userInput)) !== -1;
-  }
-  if (ct === "coordinatePoint") {
-    // coordinatePoint 嘅 text 部分
-    return String(userInput).trim() === String(q.correctAnswer).trim();
-  }
-  // textExact
-  const ansList = (q.answers && q.answers.length > 0) ? q.answers : [q.correctAnswer];
-  for (const ans of ansList) {
-    if (equalAns(userInput, ans)) return true;
-  }
-  return false;
+  return AssessValidators.checkAnswer(q, userInput);
 }
 
 /* === 互動元件：坐標點擊網格 === */
