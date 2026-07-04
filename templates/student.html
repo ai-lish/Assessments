@@ -742,13 +742,14 @@ loadAttempts();
 if (allAttempts.length > 0) {
   // 直接顯示上次結果（用戶可以再玩或重做錯題）
   lastResult = allAttempts[allAttempts.length - 1];
-  // 還原 qList + origWrongIds 令「重做錯題」同「重做此題」reload 後仍然 work。
-  // （上次嘅 qList 冇直接 serialize 入 attempt，但 details 紀錄咗每題 qid，可從 QUESTIONS 重組。）
+  // 還原 origWrongIds 令「重做錯題」reload 後 work。
+  // qList 用 full QUESTIONS pool 而唔係 last-attempt subset —
+  // 咁 history「重做此題」對舊 entry 都搵到 qid（retrySingle 搜 qList），
+  // initGame('all'/'wrong') 會自己覆寫 qList，所以 saved-state qList 唔影響新 session。
   if (Array.isArray(lastResult.details) && lastResult.details.length > 0) {
-    const lastQids = lastResult.details.map(d => d.qid);
-    qList = QUESTIONS.filter(q => lastQids.indexOf(q.qid) !== -1);
     origWrongIds = lastResult.details.filter(d => !d.correct).map(d => d.qid);
   }
+  qList = QUESTIONS.slice();
   showResult();
 } else {
   initGame("all");
