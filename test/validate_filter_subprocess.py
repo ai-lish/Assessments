@@ -23,6 +23,10 @@ const cases = [
   ["s1", "3", "measurement", 2],
   ["s1", "3", "geometry", 2],
   ["s1", "3", "data_handling", 1],
+  ["s1", "2", "number_and_algebra", 11],
+  ["s1", "2", "measurement", 1],
+  ["s1", "2", "geometry", 2],
+  ["s1", "2", "data_handling", 0],
 ];
 const results = cases.map(([grade, term, topic, expected]) => ({
   grade, term, topic, expected,

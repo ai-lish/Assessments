@@ -39,6 +39,10 @@ check('s1/3/number_and_algebra → 11 題', filterBankStrict(bank.data, 's1', '3
 check('s1/3/measurement → 2 題', filterBankStrict(bank.data, 's1', '3', 'measurement').length === 2);
 check('s1/3/geometry → 2 題', filterBankStrict(bank.data, 's1', '3', 'geometry').length === 2);
 check('s1/3/data_handling → 1 題', filterBankStrict(bank.data, 's1', '3', 'data_handling').length === 1);
+check('s1/2/number_and_algebra → 11 題', filterBankStrict(bank.data, 's1', '2', 'number_and_algebra').length === 11);
+check('s1/2/measurement → 1 題', filterBankStrict(bank.data, 's1', '2', 'measurement').length === 1);
+check('s1/2/geometry → 2 題', filterBankStrict(bank.data, 's1', '2', 'geometry').length === 2);
+check('s1/2/data_handling → 0 題', filterBankStrict(bank.data, 's1', '2', 'data_handling').length === 0);
 // 演示題型
 check('示範題型 (no grade) → []', filterBankStrict(bank.data, '', '', 'uncategorized').length === 0);
 
@@ -49,8 +53,8 @@ const realGrades = uniqueValuesForKey(bank.data, 'grade');
 check('真實題庫 grade 唯一值 = ["", "s1"] (len 2)',
       realGrades.length === 2 && realGrades[0] === '' && realGrades[1] === 's1');
 const realTerms = uniqueValuesForKey(bank.data, 'term');
-check('真實題庫 term 唯一值 = ["", "3"] (len 2)',
-      realTerms.length === 2 && realTerms[0] === '' && realTerms[1] === '3');
+check('真實題庫 term 唯一值 = ["", "2", "3"] (len 3)',
+      realTerms.length === 3 && realTerms[0] === '' && realTerms[1] === '2' && realTerms[2] === '3');
 // Synthetic：3 個 empty string 必須 collapse 成 1 個
 // (regression for seen[v]=out.length sentinel bug — Codex review round 2)
 check('3 個空 string 必須 collapse → ["","x","y"] (len 3)',
@@ -235,7 +239,7 @@ check('loadAll 失敗時 reset bank = null', /bank = null; tmpl = null;/.test(to
 
 // === 5b. PR-UI1 teacher preview UX ===
 section('5b. PR-UI1 老師工具 UX');
-check('18 題全部有 code 且唯一',
+check('全部題型有 code 且唯一',
       bank.data.every(t => QUESTION_CODE_RE.test(t.code || '') && String(t.code).startsWith('LSC-')) &&
       new Set(bank.data.map(t => t.code)).size === bank.data.length);
 check('DSE 保留格式 regex 可接受假想碼',

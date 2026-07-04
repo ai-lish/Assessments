@@ -27,7 +27,7 @@ function stable(value) {
 
 console.log("=== Generator registry equivalence ===");
 for (const typeDef of bank.data) {
-  const cases = fixture[typeDef.key] || [];
+  const cases = fixture[typeDef.key] || fixture[typeDef.generator] || [];
   check(`${typeDef.key} has registry entry`, generators.hasGenerator(typeDef.generator));
   check(`${typeDef.key} has fixture cases`, cases.length > 0);
   cases.forEach((item, index) => {

@@ -25,6 +25,72 @@ function createAssessValidators() {
     return !Number.isNaN(fa) && !Number.isNaN(fb) && Math.abs(fa - fb) < 0.01;
   }
 
+  function parseSignedNumber(value) {
+    const s = String(value || "").trim().replace(/−/g, "-").replace(/\s+/g, "");
+    const frac = s.match(/^(-?\d+)\/(-?\d+)$/);
+    if (frac) {
+      const den = parseFloat(frac[2]);
+      if (den === 0) return NaN;
+      return parseFloat(frac[1]) / den;
+    }
+    return parseFloat(s);
+  }
+
+  function normalizePolynomialInput(value) {
+    return String(value || "")
+      .replace(/−/g, "-")
+      .replace(/\s+/g, "")
+      .replace(/\*\*/g, "^")
+      .replace(/×/g, "*")
+      .replace(/\*/g, "")
+      .toLowerCase();
+  }
+
+  function parsePolynomial(value) {
+    let s = normalizePolynomialInput(value);
+    if (s === "") return null;
+    if (s[0] !== "+" && s[0] !== "-") s = "+" + s;
+    const tokenRe = /[+-][^+-]+/g;
+    const tokens = s.match(tokenRe);
+    if (!tokens || tokens.join("") !== s) return null;
+    const coeffs = {};
+    const order = [];
+    for (const token of tokens) {
+      const sign = token[0] === "-" ? -1 : 1;
+      const body = token.slice(1);
+      let coeff, degree;
+      if (body.includes("x")) {
+        const match = body.match(/^(\d*)x(?:\^(\d+))?$/);
+        if (!match) return null;
+        coeff = match[1] === "" ? 1 : parseInt(match[1], 10);
+        degree = match[2] ? parseInt(match[2], 10) : 1;
+      } else {
+        if (!/^\d+$/.test(body)) return null;
+        coeff = parseInt(body, 10);
+        degree = 0;
+      }
+      const signedCoeff = sign * coeff;
+      coeffs[degree] = (coeffs[degree] || 0) + signedCoeff;
+      if (signedCoeff !== 0) order.push(degree);
+    }
+    Object.keys(coeffs).forEach((degree) => {
+      if (coeffs[degree] === 0) delete coeffs[degree];
+    });
+    return { coeffs, order };
+  }
+
+  function samePolynomial(a, b) {
+    if (!a || !b) return false;
+    const keysA = Object.keys(a.coeffs).sort();
+    const keysB = Object.keys(b.coeffs).sort();
+    if (keysA.length !== keysB.length) return false;
+    for (let i = 0; i < keysA.length; i += 1) {
+      if (keysA[i] !== keysB[i]) return false;
+      if (a.coeffs[keysA[i]] !== b.coeffs[keysB[i]]) return false;
+    }
+    return true;
+  }
+
   function checkPrimeFactorIndexForm(userInput, expectedFactors) {
     if (userInput === null || userInput === undefined) return false;
     const s = String(userInput).toUpperCase().replace(/\s+/g, "").replace(/[×*X]/g, "*");
@@ -105,6 +171,26 @@ function createAssessValidators() {
       const answer = parseFloat(q.correctAnswer);
       return !Number.isNaN(user) && !Number.isNaN(answer) && Math.abs(user - answer) < 0.01;
     },
+    signedNumeric(q, userInput) {
+      const user = parseSignedNumber(userInput);
+      const answer = parseSignedNumber(q.correctAnswer);
+      return !Number.isNaN(user) && !Number.isNaN(answer) && Math.abs(user - answer) < 0.01;
+    },
+    numericOrFraction(q, userInput) {
+      const user = parseSignedNumber(userInput);
+      const answer = parseSignedNumber(q.correctAnswer);
+      return !Number.isNaN(user) && !Number.isNaN(answer) && Math.abs(user - answer) < 0.01;
+    },
+    unitNumeric(q, userInput) {
+      const spec = q.answerSpec || {};
+      let s = String(userInput || "").trim().replace(/−/g, "-");
+      if (spec.allowUnit) {
+        s = s.replace(/cm³/gi, "").replace(/cm\^3/gi, "").replace(/立方厘米/g, "");
+      }
+      const user = parseSignedNumber(s);
+      const answer = parseSignedNumber(q.correctAnswer);
+      return !Number.isNaN(user) && !Number.isNaN(answer) && Math.abs(user - answer) < 0.01;
+    },
     fracPct(q, userInput) {
       const sNoPct = String(userInput || "").replace(/%/g, "").trim();
       const answer = String(q.correctAnswer || "").replace(/%/g, "").trim();
@@ -130,11 +216,25 @@ function createAssessValidators() {
     coordinatePoint(q, userInput) {
       return String(userInput).trim() === String(q.correctAnswer).trim();
     },
+    polyTerms(q, userInput) {
+      const expected = parsePolynomial(q.correctAnswer);
+      const user = parsePolynomial(userInput);
+      if (!samePolynomial(user, expected)) return false;
+      const mode = (q.answerSpec && q.answerSpec.order) || "loose";
+      if (mode === "strict") {
+        if (user.order.length !== expected.order.length) return false;
+        return user.order.every((degree, index) => degree === expected.order[index]);
+      }
+      return true;
+    },
   });
 
   const aliases = Object.freeze({
     textExact: "textExact",
     numeric: "numeric",
+    signedNumeric: "signedNumeric",
+    numericOrFraction: "numericOrFraction",
+    unitNumeric: "unitNumeric",
     fracPct: "fracPct",
     primeFactor: "primeFactor",
     algebraQ8: "algebraQ8",
@@ -142,6 +242,7 @@ function createAssessValidators() {
     choiceKey: "choiceKey",
     congruenceReason: "congruenceReason",
     coordinatePoint: "coordinatePoint",
+    polyTerms: "polyTerms",
   });
 
   function getValidatorKey(key) {

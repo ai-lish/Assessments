@@ -8,7 +8,7 @@
       "category": "分類名（例：數與代數 / 幾何 / 數據處理）。",
       "difficulty": "1=初階（F.1）/ 2=進階（F.2-F.3）/ 3=挑戰。",
       "type": "題型輸入類別：text / choice / coordinate / congruence。",
-      "checkType": "判分方式：textExact / numeric / fracPct / primeFactor / algebraQ8 / hcfLcm / choiceKey / congruenceReason / coordinatePoint。",
+      "checkType": "判分方式：textExact / numeric / signedNumeric / numericOrFraction / unitNumeric / fracPct / primeFactor / algebraQ8 / hcfLcm / polyTerms / choiceKey / congruenceReason / coordinatePoint。",
       "params_schema": "題型參數定義，給 AI 生成新題型時參考。",
       "answers": "後備答案陣列（textExact / choiceKey 用）。",
       "displayAnswer": "教師答案／步驟顯示用。",
@@ -27,6 +27,7 @@
       "part": "卷別／部分，例如 part_a；示範題可用 demo。",
       "validator": "validator registry key；現階段由 checkType alias 映射而來。",
       "generator": "generator registry key；對應 tool/generators.js。",
+      "defaultParams": "optional object；傳入 generator 的固定預設參數，用於同一 generator 在不同 preset 題型中保留同一家族但限制模式或答案特性。",
       "answerSpec": "互動題答案規格；coordinate 題需指定 coordinateMode。",
       "figure": "幾何／全等題圖形規格；可指向 generated SVG。",
       "code": "展示用題目編碼；校內題格式 {來源}-{學年}-{年級}-{學期}-{題號}-{課題碼}-{家族號}，例如 LSC-2526-S1-T3-01-NA-1；DSE 保留格式 DSE-{年份}-{卷別}-{部分}-{題號}-{課題碼}-{家族號}。指定後永不更改。",
@@ -610,9 +611,492 @@
       "generator": "data_type",
       "code": "LSC-2526-S1-T3-16-DH-1",
       "source": ""
+    },
+    {
+      "key": "s1t2_prime_factor",
+      "name": "質因數連乘式及指數記數法",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "primeFactor",
+      "params_schema": {
+        "n": "可分解為質因數指數式的正整數"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "primeFactor",
+      "generator": "prime_factor",
+      "code": "LSC-2526-S1-T2-01-NA-3",
+      "source": ""
+    },
+    {
+      "key": "s1t2_hcf",
+      "name": "H.C.F.",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "hcfLcm",
+      "params_schema": {
+        "n1": "正整數",
+        "n2": "正整數",
+        "askLCM": "固定 false，只問 H.C.F."
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "hcfLcm",
+      "generator": "hcf_or_lcm",
+      "defaultParams": {
+        "askLCM": false
+      },
+      "code": "LSC-2526-S1-T2-02-NA-4",
+      "source": ""
+    },
+    {
+      "key": "directed_add",
+      "name": "有向數加法",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "signedNumeric",
+      "params_schema": {
+        "a": "整數 -9..9，不取 0",
+        "b": "整數 -9..9，不取 0"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "signedNumeric",
+      "generator": "directed_add",
+      "code": "LSC-2526-S1-T2-03-NA-12",
+      "source": ""
+    },
+    {
+      "key": "directed_mul",
+      "name": "有向數乘法",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "signedNumeric",
+      "params_schema": {
+        "a": "整數 -8..8，不取 0",
+        "b": "整數 -8..8，不取 0"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "signedNumeric",
+      "generator": "directed_mul",
+      "code": "LSC-2526-S1-T2-04-NA-13",
+      "source": ""
+    },
+    {
+      "key": "s1t2_word_to_alg",
+      "name": "文字轉代數式",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "algebraQ8",
+      "params_schema": {
+        "t": "現有 5 種語句模板",
+        "a": "整數 2..9",
+        "b": "整數 2..9"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "algebraQ8",
+      "generator": "word_to_alg",
+      "code": "LSC-2526-S1-T2-05-NA-8",
+      "source": ""
+    },
+    {
+      "key": "s1t2_solve_eq_fraction",
+      "name": "一元一次方程",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "numericOrFraction",
+      "params_schema": {
+        "coeff": "方程 ax=b 的 a",
+        "rVal": "方程 ax=b 的 b，可令答案為分數"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "numericOrFraction",
+      "generator": "solve_eq",
+      "defaultParams": {
+        "coeff": 4,
+        "rVal": 6
+      },
+      "prefix": "x = ",
+      "code": "LSC-2526-S1-T2-06-NA-7",
+      "source": ""
+    },
+    {
+      "key": "s1t2_solve_eq_negative",
+      "name": "含負數解一元一次方程",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "numericOrFraction",
+      "params_schema": {
+        "coeff": "方程 ax=b 的 a",
+        "xVal": "固定生成負數解"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "numericOrFraction",
+      "generator": "solve_eq",
+      "defaultParams": {
+        "xVal": -3
+      },
+      "prefix": "x = ",
+      "code": "LSC-2526-S1-T2-07-NA-7",
+      "source": ""
+    },
+    {
+      "key": "cuboid_volume",
+      "name": "長方體體積",
+      "category": "度量",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "measurement",
+      "topicName": "度量",
+      "type": "text",
+      "checkType": "unitNumeric",
+      "params_schema": {
+        "l": "長 cm",
+        "w": "闊 cm",
+        "h": "高 cm"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "unitNumeric",
+      "generator": "cuboid_volume",
+      "answerSpec": {
+        "unit": "cm^3",
+        "allowUnit": true
+      },
+      "code": "LSC-2526-S1-T2-08-ME-4",
+      "source": ""
+    },
+    {
+      "key": "s1t2_poly_desc",
+      "name": "多項式降冪排列",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "polyTerms",
+      "params_schema": {
+        "b": "x 項係數",
+        "c": "常數項絕對值"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "polyTerms",
+      "generator": "poly_desc",
+      "answerSpec": {
+        "order": "strict"
+      },
+      "code": "LSC-2526-S1-T2-09-NA-9",
+      "source": ""
+    },
+    {
+      "key": "poly_constant",
+      "name": "常數項",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "signedNumeric",
+      "params_schema": {
+        "a": "二次項係數",
+        "b": "一次項係數",
+        "c": "常數項，可為負"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "signedNumeric",
+      "generator": "poly_constant",
+      "code": "LSC-2526-S1-T2-10-NA-14",
+      "source": ""
+    },
+    {
+      "key": "s1t2_alg_simplify",
+      "name": "合併同類項",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "polyTerms",
+      "params_schema": {
+        "a": "第一個 x 項係數",
+        "b": "第一個常數項",
+        "c": "第二個 x 項係數",
+        "d": "第二個常數項"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "polyTerms",
+      "generator": "alg_simplify",
+      "answerSpec": {
+        "order": "loose"
+      },
+      "code": "LSC-2526-S1-T2-11-NA-6",
+      "source": ""
+    },
+    {
+      "key": "expand_bracket",
+      "name": "展開括號",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "polyTerms",
+      "params_schema": {
+        "k": "括號外係數，可為負",
+        "a": "括號內 x 項係數",
+        "b": "括號內常數項，可為負"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "polyTerms",
+      "generator": "expand_bracket",
+      "answerSpec": {
+        "order": "loose"
+      },
+      "code": "LSC-2526-S1-T2-12-NA-15",
+      "source": ""
+    },
+    {
+      "key": "s1t2_coordinate",
+      "name": "坐標的 x/y 坐標",
+      "category": "幾何",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "geometry",
+      "topicName": "幾何",
+      "type": "coordinate",
+      "checkType": "coordinatePoint",
+      "params_schema": {
+        "rx": "A 點 x 坐標",
+        "ry": "A 點 y 坐標",
+        "askAxis": "x 或 y"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "coordinatePoint",
+      "generator": "coordinate",
+      "answerSpec": {
+        "coordinateMode": "axis-value",
+        "interaction": {
+          "clickTolerance": 0
+        }
+      },
+      "code": "LSC-2526-S1-T2-13-GE-2",
+      "source": ""
+    },
+    {
+      "key": "quadrant",
+      "name": "象限判斷",
+      "category": "幾何",
+      "difficulty": 1,
+      "grade": "s1",
+      "term": "2",
+      "topicKey": "geometry",
+      "topicName": "幾何",
+      "type": "choice",
+      "checkType": "choiceKey",
+      "options": [
+        {
+          "key": "I",
+          "label": "A. 第一象限"
+        },
+        {
+          "key": "II",
+          "label": "B. 第二象限"
+        },
+        {
+          "key": "III",
+          "label": "C. 第三象限"
+        },
+        {
+          "key": "IV",
+          "label": "D. 第四象限"
+        }
+      ],
+      "params_schema": {
+        "x": "非零整數",
+        "y": "非零整數"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "choiceKey",
+      "generator": "quadrant",
+      "code": "LSC-2526-S1-T2-14-GE-4",
+      "source": ""
     }
   ],
   "presets": [
+    {
+      "key": "s1_term2_part_a",
+      "name": "中一第二學期甲部",
+      "description": "2025-26 中一第二學期甲部 14 題固定組合。每題 1 條，題型與順序按 PR-B 規格。",
+      "questions": [
+        {
+          "typeKey": "s1t2_prime_factor",
+          "count": 1
+        },
+        {
+          "typeKey": "s1t2_hcf",
+          "count": 1
+        },
+        {
+          "typeKey": "directed_add",
+          "count": 1
+        },
+        {
+          "typeKey": "directed_mul",
+          "count": 1
+        },
+        {
+          "typeKey": "s1t2_word_to_alg",
+          "count": 1
+        },
+        {
+          "typeKey": "s1t2_solve_eq_fraction",
+          "count": 1
+        },
+        {
+          "typeKey": "s1t2_solve_eq_negative",
+          "count": 1
+        },
+        {
+          "typeKey": "cuboid_volume",
+          "count": 1
+        },
+        {
+          "typeKey": "s1t2_poly_desc",
+          "count": 1
+        },
+        {
+          "typeKey": "poly_constant",
+          "count": 1
+        },
+        {
+          "typeKey": "s1t2_alg_simplify",
+          "count": 1
+        },
+        {
+          "typeKey": "expand_bracket",
+          "count": 1
+        },
+        {
+          "typeKey": "s1t2_coordinate",
+          "count": 1
+        },
+        {
+          "typeKey": "quadrant",
+          "count": 1
+        }
+      ]
+    },
     {
       "key": "s1_term3_part_a",
       "name": "中一第三學期甲部",
