@@ -46,6 +46,8 @@
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
   .question-text { font-size: 1.1em; color: var(--text-main); margin: 0; text-align: left; width: 100%; line-height: 1.6; }
   .question-text b { color: var(--accent); }
+  .question-code { font-size: 0.78rem; color: var(--text-muted); margin: 6px 0 0; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.02em; }
+  .question-code::before { content: "題型編碼："; font-family: inherit; opacity: 0.7; }
   .geo-image { margin-bottom: 15px; text-align: center; display: flex; justify-content: center; width: 100%; }
   .hint-text { color: var(--text-muted); font-size: 0.9em; margin-bottom: 10px; font-weight: 600; }
   .opt-btn-large { background: #fff; border: 2px solid var(--accent); color: var(--accent); padding: 10px 16px; border-radius: 10px; font-weight: bold; font-size: 1.0em; cursor: pointer; transition: all 0.2s; outline: none; min-width: 90px; }
@@ -121,6 +123,7 @@
     <div class="quiz-content">
       <div class="question-card">
         <div id="q-text" class="question-text">題目載入中...</div>
+        <div id="q-code" class="question-code" style="display:none;"></div>
       </div>
       <div id="q-image" class="geo-image" style="display:none;"></div>
       <div id="q-hint" class="hint-text" style="display:none;"></div>
@@ -358,6 +361,14 @@ function showQ() {
   answered = false;
   document.getElementById("p-text").textContent = "Q " + (currIdx + 1) + " / " + qList.length;
   document.getElementById("q-text").innerHTML = q.questionHTML;
+  // 顯示題型編碼（純 metadata，唔影響判分）。冇 code 就隱藏。
+  const codeEl = document.getElementById("q-code");
+  if (q.code) {
+    codeEl.textContent = q.code;
+    codeEl.style.display = "block";
+  } else {
+    codeEl.style.display = "none";
+  }
   document.getElementById("q-feedback").style.display = "none";
   document.getElementById("q-feedback").textContent = "";
   document.getElementById("btn-check").style.display = "block";

@@ -14,6 +14,31 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+// --- Seeded PRNG (xorshift32) for deterministic regeneration ---
+// tool/generators.js 用 Math.random() 抽取參數。為咗令兩次 regen 嘅
+// QUESTIONS 完全一樣，我哋喺每個 preset 開頭 override Math.random()
+// 用一個 fixed seed + counter 嘅 PRNG。每個 preset 用唔同 seed
+// （preset.key 派生），所以唔同 preset 之間嘅隨機性保持獨立。
+// 呢個改動只影響 generator script 嘅 runtime，唔修改 tool/generators.js。
+function makeSeededRng(seedStr) {
+  let s = 0;
+  for (let i = 0; i < seedStr.length; i++) {
+    s = ((s << 5) - s + seedStr.charCodeAt(i)) | 0;
+  }
+  if (s === 0) s = 0x12345678;
+  return function() {
+    s ^= s << 13; s ^= s >>> 17; s ^= s << 5;
+    return ((s >>> 0) / 0x100000000);
+  };
+}
+function withSeededRandom(seedStr, fn) {
+  const origRandom = Math.random;
+  const rng = makeSeededRng(seedStr);
+  Math.random = rng;
+  try { return fn(); }
+  finally { Math.random = origRandom; }
+}
+
 const ROOT = process.cwd();
 const bankPath = process.argv[2] || path.join(ROOT, 'question-bank.json');
 const templatePath = process.argv[3] || path.join(ROOT, 'templates/student.html');
@@ -46,6 +71,8 @@ function genQuestion(typeKey, params) {
     options: t.options,
     prefix: t.prefix,
     suffix: t.suffix,
+    // 新增：題型編碼（唔影響判分，純 metadata）。
+    code: t.code || null,
   }, q);
 }
 
@@ -80,6 +107,8 @@ function genPresetQuestions(preset) {
         answers: q.answers,
         q8subtype: q.q8subtype,
         answerSpec: q.answerSpec,
+        // 新增：題型編碼 metadata。唔影響判分。
+        code: q.code !== undefined ? q.code : null,
       });
     } catch (e) {
       console.error(`  Q${i} ${typeKey} FAIL generate:`, e.message);
@@ -121,7 +150,10 @@ const ymd = new Date().toISOString().slice(0,10).replace(/-/g, '');
 
 for (const preset of presets) {
   console.log(`\n=== ${preset.key} (${preset.name}) ===`);
-  const questions = genPresetQuestions(preset);
+  // 固定 seed：每個 preset 用自己嘅 key 做 seed base，確保 diff stable。
+  const questions = withSeededRandom('assess-samples-' + preset.key, () =>
+    genPresetQuestions(preset)
+  );
   const title = `${titlePrefix} — ${preset.name}`;
   const bankHash = computeBankHash(preset.key, questions);
   const generatedAt = new Date().toISOString();
