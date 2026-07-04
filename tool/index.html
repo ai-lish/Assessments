@@ -1388,9 +1388,31 @@ function exportStudent() {
   const a = document.createElement("a");
   a.href = url;
   a.download = baseName + "-" + ymd + ".html";
+  a.textContent = "download";
+  a.style.position = "fixed";
+  a.style.left = "-9999px";
+  a.style.top = "0";
+  a.style.width = "1px";
+  a.style.height = "1px";
+  document.body.appendChild(a);
   a.click();
-  setTimeout(() => URL.revokeObjectURL(url), 1000);
-  showStatus("exportStatus", "ok", `✓ 已匯出 ${questions.length} 題：<code>${a.download}</code>`);
+
+  const isIOSLike = /iPad|iPhone|iPod/.test(navigator.userAgent)
+    || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  if (isIOSLike) {
+    const opened = window.open(url, "_blank");
+    const fallback = opened
+      ? "如未見下載檔案，請喺新分頁使用「分享」→「儲存至檔案」。"
+      : `如未見下載檔案，請<a href="${url}" target="_blank" rel="noopener" download="${a.download}">開啟匯出內容</a>，再使用「分享」→「儲存至檔案」。`;
+    showStatus("exportStatus", "ok", `✓ 已準備 ${questions.length} 題：<code>${a.download}</code><br>${fallback}`);
+  } else {
+    showStatus("exportStatus", "ok", `✓ 已匯出 ${questions.length} 題：<code>${a.download}</code>`);
+  }
+
+  setTimeout(() => {
+    a.remove();
+    URL.revokeObjectURL(url);
+  }, isIOSLike ? 300000 : 30000);
 }
 </script>
 </body>
