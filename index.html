@@ -3,90 +3,171 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Assessments — 免登入數學練習工具</title>
-  <meta name="description" content="免登入使用的數學練習工具：初中甲部短答練習、中學文憑試歷屆試題練習、老師選題工具。">
+  <title>Assessments — 拎個 link 就做到</title>
+  <meta name="description" content="免登入使用的數學練習工具：中一至中三甲部短答練習、HKDSE 數學歷屆試題、老師選題工具。">
   <style>
     :root {
       color-scheme: light;
+
+      /* Surface */
       --bg: #f5f7fb;
       --surface: #ffffff;
       --surface-soft: #eef4ff;
+      --surface-elevated: #fafbff;
+
+      /* Ink */
       --ink: #172033;
       --muted: #5d687b;
       --line: #ccd5e4;
+
+      /* Brand */
       --primary: #2457a7;
       --primary-dark: #173b74;
       --primary-soft: #e1ecff;
+
+      /* Status */
       --success: #146c43;
+      --success-bg: #e8f6ee;
       --warning: #8a5500;
       --warning-bg: #fff4d6;
+
+      /* Focus & shadow */
+      --focus: #ffbf47;
       --shadow: 0 8px 24px rgb(31 52 86 / 10%);
       --shadow-lg: 0 16px 40px rgb(31 52 86 / 12%);
+
+      /* Type scale */
+      --font-xs:  0.78rem;
+      --font-sm:  0.85rem;
+      --font-base:0.95rem;
+      --font-md:  1.05rem;
+      --font-lg:  1.2rem;
+      --font-xl:  1.4rem;
+      --font-3xl: clamp(2rem, 5vw, 3.2rem);
+
+      /* Line + weight */
+      --line-tight: 1.25;
+      --line-base:  1.55;
+      --weight-semi: 600;
+      --weight-bold: 700;
+
+      /* Radius */
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 14px;
+      --radius-pill: 999px;
+
       font-family:
         -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans HK",
         "PingFang HK", "Microsoft JhengHei", sans-serif;
     }
+
     * { box-sizing: border-box; }
     html { background: var(--bg); color: var(--ink); scroll-behavior: smooth; }
-    body { margin: 0; min-width: 0; overflow-wrap: anywhere; line-height: 1.55; }
+    body { margin: 0; min-width: 0; overflow-wrap: anywhere; line-height: var(--line-base); }
     a { color: var(--primary); text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* --- Hero --- */
+    /* --- Skip link (a11y §10.7) --- */
+    .skip-link {
+      position: absolute;
+      left: -9999px;
+      top: 0;
+      background: var(--primary);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: 0 0 var(--radius-sm) 0;
+      z-index: 100;
+      font-weight: var(--weight-semi);
+    }
+    .skip-link:focus { left: 8px; top: 8px; outline: 3px solid var(--focus); outline-offset: 2px; text-decoration: none; }
+
+    /* --- Hero (§5/§6.2) --- */
     .hero {
+      position: relative;
+      padding: 64px 20px 40px;
       background:
-        radial-gradient(1200px 500px at 80% -10%, #c8dbff 0%, transparent 60%),
-        radial-gradient(900px 400px at 0% 100%, #d9e6ff 0%, transparent 60%),
+        radial-gradient(1100px 460px at 88% -10%, #c8dbff 0%, transparent 62%),
+        radial-gradient(820px 380px at 0% 100%, #d9e6ff 0%, transparent 62%),
         linear-gradient(180deg, #eaf1ff 0%, var(--bg) 100%);
-      padding: 56px 20px 36px;
     }
     .hero-inner {
       max-width: 1100px;
       margin: 0 auto;
     }
-    .hero h1 {
-      font-size: clamp(1.8rem, 4vw, 2.5rem);
-      margin: 0 0 6px;
-      letter-spacing: -0.01em;
+    .hero-eyebrow {
+      display: inline-block;
+      font-size: var(--font-sm);
+      font-weight: var(--weight-semi);
+      color: var(--primary-dark);
+      background: var(--primary-soft);
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      margin: 0 0 12px;
+      letter-spacing: 0.02em;
     }
-    .hero p.subtitle {
+    .hero-title {
+      font-size: var(--font-3xl);
+      font-weight: var(--weight-bold);
+      letter-spacing: -0.015em;
+      line-height: var(--line-tight);
+      margin: 0 0 12px;
+      color: var(--ink);
+      max-width: 18ch;
+    }
+    .hero-meta {
+      font-size: var(--font-md);
       color: var(--muted);
-      font-size: 1.05rem;
-      margin: 0 0 18px;
-      max-width: 720px;
+      margin: 0 0 24px;
+      max-width: 32ch;
     }
-    .top-links {
+    .hero-cta {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px 18px;
-      font-size: 0.95rem;
+      gap: 10px;
     }
-    .top-links a { color: var(--primary-dark); font-weight: 500; }
 
-    /* --- Container --- */
+    /* --- Trust strip (§6.3) --- */
+    .trust-strip {
+      max-width: 1100px;
+      margin: -8px auto 0;
+      padding: 14px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px 12px;
+      font-size: var(--font-sm);
+      color: var(--muted);
+    }
+    .trust-divider {
+      color: var(--line);
+    }
+
+    /* --- Container (§6.8) --- */
     .container {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 28px 20px 80px;
+      padding: 32px 20px 80px;
     }
 
-    /* --- Section --- */
-    section.section { margin: 0 0 44px; }
+    /* --- Section (§6) --- */
+    .section { margin: 0 0 48px; }
     .section-head {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
       gap: 16px;
       flex-wrap: wrap;
-      margin: 0 0 16px;
+      margin: 0 0 18px;
     }
     .section-head h2 {
-      font-size: 1.4rem;
+      font-size: var(--font-xl);
+      font-weight: var(--weight-bold);
       margin: 0;
     }
     .section-head .section-note {
       color: var(--muted);
-      font-size: 0.9rem;
+      font-size: var(--font-sm);
     }
 
     /* --- Card grid --- */
@@ -95,119 +176,139 @@
       gap: 18px;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
     }
-    article.card {
+
+    /* --- Card (§8.4) --- */
+    .card {
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 14px;
+      border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
       padding: 22px;
       display: flex;
       flex-direction: column;
       gap: 10px;
-      transition: transform .15s ease, box-shadow .15s ease;
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      min-width: 0;
     }
-    article.card:hover {
+    .card:hover {
       transform: translateY(-2px);
       box-shadow: var(--shadow-lg);
     }
-    article.card .badge {
-      align-self: flex-start;
-      display: inline-block;
-      background: var(--primary-soft);
-      color: var(--primary-dark);
-      border-radius: 999px;
-      padding: 2px 10px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.02em;
+    .card--placeholder {
+      background: var(--surface);
+      border-style: dashed;
     }
-    article.card .badge.muted {
-      background: #f0f2f6;
-      color: var(--muted);
+    .card--placeholder h3 { color: var(--muted); }
+    .card-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
-    article.card .badge.warn {
-      background: var(--warning-bg);
-      color: var(--warning);
-    }
-    article.card h3 {
+    .card h3 {
+      font-size: var(--font-lg);
+      font-weight: var(--weight-semi);
       margin: 4px 0 0;
-      font-size: 1.2rem;
+      line-height: 1.45;
     }
-    article.card p {
+    .card p {
       margin: 0;
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: var(--font-base);
       flex: 1;
     }
-    article.card .card-meta {
+    .card-meta {
       display: flex;
       flex-wrap: wrap;
       gap: 6px 12px;
-      font-size: 0.85rem;
+      font-size: var(--font-sm);
       color: var(--muted);
     }
-    article.card .card-meta b { color: var(--ink); font-weight: 600; }
-    article.card .card-cta {
+    .card-meta b { color: var(--ink); font-weight: 600; }
+    .card-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
       margin-top: 8px;
     }
+
+    /* --- Button (§8.2) --- */
     .button-link {
-      border: 1px solid var(--primary);
-      border-radius: 0.65rem;
-      background: var(--primary);
-      color: #fff;
-      cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.35rem;
       padding: 0.6rem 1.05rem;
-      text-decoration: none;
-      font-size: 0.95rem;
+      border: 1px solid var(--primary);
+      border-radius: 0.65rem;
+      background: var(--primary);
+      color: #fff;
+      font-size: var(--font-base);
       font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      min-height: 44px;
+      transition: background 0.15s ease;
     }
-    .button-link:hover { background: var(--primary-dark); text-decoration: none; }
-    .button-link.secondary {
+    .button-link:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+      text-decoration: none;
+    }
+    .button-link:focus-visible {
+      outline: 3px solid var(--focus);
+      outline-offset: 2px;
+    }
+    .button-link--secondary {
       background: #fff;
       color: var(--primary-dark);
+      border-color: var(--primary);
     }
-    .button-link.secondary:hover {
+    .button-link--secondary:hover {
       background: var(--primary-soft);
       color: var(--primary-dark);
     }
-    .button-link[disabled],
-    .button-link.disabled {
-      background: #e2e6ee;
-      border-color: #d6dbe5;
-      color: var(--muted);
-      cursor: not-allowed;
-      pointer-events: none;
-    }
 
-    /* --- Notice / info panel --- */
+    /* --- Badge (§8.3) --- */
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      font-size: var(--font-xs);
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      border-radius: var(--radius-pill);
+      line-height: 1.6;
+    }
+    .badge--active { background: var(--primary-soft); color: var(--primary-dark); }
+    .badge--warn   { background: var(--warning-bg); color: var(--warning); }
+    .badge--success{ background: var(--success-bg); color: var(--success); }
+    .badge--teacher{ background: var(--surface-soft); color: var(--primary-dark); }
+
+    /* --- Panel (§8.5) --- */
     .panel {
       background: var(--surface);
       border: 1px solid var(--line);
-      border-radius: 12px;
+      border-radius: var(--radius-md);
       padding: 18px 22px;
       color: var(--muted);
-      font-size: 0.93rem;
+      font-size: var(--font-base);
+      margin-top: 18px;
     }
-    .panel h3 { margin: 0 0 6px; color: var(--ink); font-size: 1.05rem; }
+    .panel h3 { margin: 0 0 6px; color: var(--ink); font-size: 1.05rem; font-weight: 600; }
     .panel p { margin: 6px 0; }
     .panel code {
-      background: #f0f3f8;
+      background: var(--surface-soft);
       padding: 1px 6px;
       border-radius: 4px;
       font-size: 0.88em;
       color: var(--ink);
     }
 
-    /* --- Footer --- */
+    /* --- Footer (§6.7) --- */
     footer {
       border-top: 1px solid var(--line);
       background: #eef2fa;
       color: var(--muted);
-      font-size: 0.88rem;
+      font-size: var(--font-sm);
       padding: 22px 20px;
     }
     .footer-inner {
@@ -216,131 +317,184 @@
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;
+      align-items: center;
       gap: 10px;
     }
-    .footer-inner a { color: var(--primary-dark); }
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 14px;
+    }
+    .footer-links a { color: var(--primary-dark); }
 
+    /* --- Reduced motion (§9.4) --- */
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .card, .button-link { transition: none; }
+      .card:hover { transform: none; }
+    }
+
+    /* --- Mobile (§6.8) --- */
     @media (max-width: 540px) {
-      .hero { padding: 36px 18px 24px; }
+      .hero { padding: 40px 18px 28px; }
+      .hero-title { font-size: 1.8rem; }
+      .trust-strip { font-size: 0.78rem; padding: 12px 16px; }
       .container { padding: 18px 16px 60px; }
-      article.card { padding: 18px; }
+      .section { margin: 0 0 36px; }
+      .card { padding: 18px; }
     }
   </style>
 </head>
 <body>
 
-  <header class="hero">
+  <a class="skip-link" href="#sec-junior">跳至練習</a>
+
+  <header class="hero" role="banner">
     <div class="hero-inner">
-      <h1>Assessments</h1>
-      <p class="subtitle">免登入使用嘅數學練習工具。集中存放初中短答題目庫、HKDSE 歷屆試題同老師選題工具。</p>
-      <nav class="top-links" aria-label="主要連結">
-        <a href="#sec-junior">初中甲部</a>
-        <a href="#sec-hkdse">HKDSE 練習</a>
-        <a href="#sec-tool">老師選題工具</a>
-        <a href="https://github.com/ai-lish/Assessments">GitHub Repo</a>
-      </nav>
+      <p class="hero-eyebrow">數學練習</p>
+      <h1 class="hero-title">拎個 link 就做到。</h1>
+      <p class="hero-meta">中一甲部第三學期 · 16 題 · 即開即做</p>
+      <div class="hero-cta">
+        <a class="button-link" href="s1/part-a.html" aria-label="開始中一甲部第三學期練習（16 題）">開始練習 →</a>
+        <a class="button-link button-link--secondary" href="s1/index.html" aria-label="揀其他初中練習">揀其他練習</a>
+      </div>
     </div>
   </header>
 
+  <aside class="trust-strip" aria-label="信任資訊">
+    <span>🌐 公開 GitHub Pages</span>
+    <span class="trust-divider">·</span>
+    <span>🔒 答題只存本機</span>
+    <span class="trust-divider">·</span>
+    <span>📝 已有 16 條初中題型 · 693 條 HKDSE 真題</span>
+    <span class="trust-divider">·</span>
+    <span>⚙ 免登記免追蹤</span>
+  </aside>
+
   <main class="container">
 
-    <section class="section" id="sec-junior">
+    <!-- §6.4 Primary section: 學生入口 -->
+    <section class="section" id="sec-junior" aria-labelledby="sec-junior-h">
       <div class="section-head">
-        <h2>初中甲部練習</h2>
-        <span class="section-note">中一至中三 · 短答題 · 即開即做</span>
+        <h2 id="sec-junior-h">初中甲部練習</h2>
+        <span class="section-note">中一至中三 · 短答題 · 由題目庫隨機生成</span>
       </div>
       <div class="card-grid">
 
-        <article class="card">
-          <span class="badge">中一</span>
+        <!-- S1 active -->
+        <article class="card card--active">
+          <div class="card-badges">
+            <span class="badge badge--active">中一</span>
+            <span class="badge badge--success">✓ 可即做</span>
+          </div>
           <h3>中一甲部練習</h3>
-          <p>第三學期短答題，共 16 題；涵蓋分數、指數、質因數、HCF/LCM、簡易代數、坐標及全等三角形。</p>
+          <p>第三學期短答題，16 題。涵蓋分數、指數、質因數、HCF/LCM、代數、坐標、全等三角形。</p>
           <div class="card-meta">
             <span>題目數：<b>16</b></span>
             <span>學期：<b>T3</b></span>
+            <span>難度：<b>基礎</b></span>
           </div>
           <div class="card-cta">
-            <a class="button-link" href="s1/part-a.html">開始練習</a>
-            <a class="button-link secondary" href="s1/index.html">第二學期版（14 題）→</a>
+            <a class="button-link" href="s1/part-a.html" aria-label="開始中一甲部第三學期練習（16 題）">開始練習 →</a>
+            <a class="button-link button-link--secondary" href="s1/index.html">第二學期版（14 題）</a>
           </div>
         </article>
 
-        <article class="card">
-          <span class="badge muted">中二</span>
+        <!-- S2 placeholder -->
+        <article class="card card--placeholder">
+          <div class="card-badges">
+            <span class="badge badge--warn">⚠ 中二</span>
+            <span class="badge badge--warn">題目庫籌備中</span>
+          </div>
           <h3>中二甲部練習</h3>
-          <p>中二甲部題目庫正籌備中。題型待設計（暫無可練習內容）。</p>
+          <p>中二題目庫尚未入庫。<b>等你嘅第一份中二練習：</b>用下面嘅「老師選題工具」自訂題目，自動產生 standalone HTML 派畀學生。</p>
           <div class="card-meta">
-            <span>狀態：<b>題目庫籌備中</b></span>
+            <span>狀態：<b>在建</b></span>
+            <span>替代：<a href="s1/index.html">中一</a> · <a href="s3/index.html">中三</a></span>
           </div>
           <div class="card-cta">
-            <a class="button-link disabled" aria-disabled="true" tabindex="-1">尚未提供</a>
+            <a class="button-link button-link--secondary" href="tool/">用老師工具自訂 →</a>
           </div>
         </article>
 
-        <article class="card">
-          <span class="badge">中三</span>
+        <!-- S3 active -->
+        <article class="card card--active">
+          <div class="card-badges">
+            <span class="badge badge--active">中三</span>
+            <span class="badge badge--success">✓ 可即做</span>
+          </div>
           <h3>中三甲部練習</h3>
-          <p>第三學期短答題，共 14 題；涵蓋多項式、十字相乘、平方差、科學記數、不等式、立體體積及扇形面積。</p>
+          <p>第三學期短答題，14 題。涵蓋多項式、十字相乘、平方差、科學記數、不等式、立體體積、扇形面積。</p>
           <div class="card-meta">
             <span>題目數：<b>14</b></span>
             <span>學期：<b>T3</b></span>
+            <span>難度：<b>進階</b></span>
           </div>
           <div class="card-cta">
-            <a class="button-link" href="s3/part-a.html">開始練習</a>
+            <a class="button-link" href="s3/part-a.html" aria-label="開始中三甲部第三學期練習（14 題）">開始練習 →</a>
           </div>
         </article>
 
       </div>
-      <div class="panel" style="margin-top:18px;">
+      <div class="panel">
         <h3>關於初中甲部題目</h3>
-        <p>每份練習由題目庫（<code>question-bank.json</code>）隨機參數生成，每次開新頁都會產生新題目組合；作答紀錄只儲存喺你本機瀏覽器（localStorage），不上傳。</p>
+        <p>每份練習由題目庫隨機參數生成，每次開新頁都會產生新題目組合；作答紀錄只儲存喺你本機瀏覽器（localStorage），不上傳。</p>
         <p>想自訂範圍或加入其他題型？請用 <a href="#sec-tool">老師選題工具</a>。</p>
       </div>
     </section>
 
-    <section class="section" id="sec-hkdse">
+    <!-- §6.5 Secondary section: HKDSE 進階 -->
+    <section class="section" id="sec-hkdse" aria-labelledby="sec-hkdse-h">
       <div class="section-head">
-        <h2>中學文憑試練習</h2>
-        <span class="section-note">HKDSE 數學 · 卷一長答 + 卷二選擇</span>
+        <h2 id="sec-hkdse-h">中學文憑試練習</h2>
+        <span class="section-note">HKDSE 數學 · 卷一長答 + 卷二選擇 · 公開真題</span>
       </div>
       <div class="card-grid">
-
-        <article class="card">
-          <span class="badge">HKDSE</span>
+        <article class="card card--active">
+          <div class="card-badges">
+            <span class="badge badge--success">✓ HKDSE 真題</span>
+            <span class="badge badge--success">可即做</span>
+          </div>
           <h3>HKDSE 數學卷一／卷二</h3>
           <p>卷一 198 題（2012–2023）長答草稿 + 自評；卷二 495 題（2012–2022）選擇核對。免登入，作答只保存喺本機。</p>
           <div class="card-meta">
-            <span>卷一：<b>198 題</b></span>
-            <span>卷二：<b>495 題</b></span>
+            <span>卷一：<b>198 題</b>（長答）</span>
+            <span>卷二：<b>495 題</b>（選擇）</span>
+            <span>合共：<b>693 題</b></span>
           </div>
           <div class="card-cta">
-            <a class="button-link" href="hkdse/">前往 HKDSE 工具</a>
+            <a class="button-link" href="hkdse/">前往 HKDSE 工具 →</a>
           </div>
         </article>
-
+      </div>
+      <div class="panel">
+        <p>部分題目與答案文字由 OCR 整理，未核對內容會清楚標示。卷一採學生自評；卷二只有具備有效 A/B/C/D 答案的題目才會計分。</p>
       </div>
     </section>
 
-    <section class="section" id="sec-tool">
+    <!-- §6.6 Tertiary section: 老師工具 -->
+    <section class="section" id="sec-tool" aria-labelledby="sec-tool-h">
       <div class="section-head">
-        <h2>HTML 製作套件</h2>
-        <span class="section-note">老師自訂練習 · 一鍵生成 standalone HTML</span>
+        <h2 id="sec-tool-h">老師：自訂練習</h2>
+        <span class="section-note">按年級 → 學期 → 課題揀題 · 一鍵生成 standalone HTML · 離線派發</span>
       </div>
       <div class="card-grid">
-
-        <article class="card">
-          <span class="badge">老師</span>
+        <article class="card card--active">
+          <div class="card-badges">
+            <span class="badge badge--teacher">🎓 老師</span>
+            <span class="badge badge--success">工具就緒</span>
+          </div>
           <h3>初中短答題老師選題工具</h3>
           <p>按年級 → 學期 → 課題揀題、逐題預覽、全部確認後一鍵匯出 standalone 學生版 HTML。匯出檔可離線派發，唔需要登入。</p>
           <div class="card-meta">
             <span>題目庫：<b>16 個核心題型</b></span>
-            <span>題目數：<b>46</b> 個動態題型</span>
+            <span>題目數：<b>46</b> 個動態變體</span>
+            <span>匯出：<b>獨立 HTML</b></span>
           </div>
           <div class="card-cta">
-            <a class="button-link" href="tool/">開啟老師工具</a>
+            <a class="button-link" href="tool/">開啟老師工具 →</a>
           </div>
         </article>
-
       </div>
     </section>
 
@@ -348,14 +502,12 @@
 
   <footer>
     <div class="footer-inner">
-      <div>
-        由 <a href="https://github.com/ai-lish">ai-lish</a> 維護 · 公開 GitHub Pages
-      </div>
-      <div>
+      <div>由 <a href="https://github.com/ai-lish">ai-lish</a> 維護 · 公開 GitHub Pages</div>
+      <nav class="footer-links" aria-label="次要連結">
         <a href="https://github.com/ai-lish/Assessments">Repo</a>
-        ·
         <a href="README.md">README</a>
-      </div>
+        <a href="hkdse/guide.html">HKDSE 使用指南</a>
+      </nav>
     </div>
   </footer>
 
