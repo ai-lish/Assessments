@@ -285,9 +285,9 @@
 </div>
 
 <!-- 共享篩選邏輯（tool/filter.js）— 頁面同 test 共用 -->
-<script src="filter.js?v=s1t2-prb"></script>
-<script src="generators.js?v=s1t2-prb"></script>
-<script src="validators.js?v=s1t2-prb"></script>
+<script src="filter.js?v=s3t3-prc"></script>
+<script src="generators.js?v=s3t3-prc"></script>
+<script src="validators.js?v=s3t3-prc"></script>
 
 <script>
 /* ============================================================
@@ -316,6 +316,20 @@ const QUESTION_TYPE_NAMES = Object.freeze({
   poly_constant: "常數項",
   expand_bracket: "展開括號",
   quadrant: "象限判斷",
+  poly_add_sub: "多項式加減及去括號",
+  binomial_expand: "兩個二項式展開",
+  s3t3_square_expand: "完全平方公式",
+  s3t3_zero_exp: "零指數定律",
+  factor_diff_sq: "平方差因式分解",
+  factor_cross: "十字相乘法",
+  sci_notation: "科學記數法",
+  solve_ineq: "一元一次不等式",
+  triangle_center: "三角形四心",
+  solid_sphere: "球體及半球體量度",
+  solid_cylinder: "圓柱量度",
+  solid_cone: "圓錐量度",
+  sector_measure: "扇形量度",
+  pyth_cone: "畢氏定理配合圓錐",
   word_to_alg: "文字轉代數式",
   s1t2_word_to_alg: "文字轉代數式",
   sig_fig: "有效數字",
@@ -479,7 +493,8 @@ function validateBank(b) {
   const SUPPORTED_CHECKS = new Set([
     "textExact", "numeric", "fracPct", "primeFactor",
     "algebraQ8", "hcfLcm", "choiceKey", "congruenceReason", "coordinatePoint",
-    "signedNumeric", "numericOrFraction", "unitNumeric", "polyTerms"
+    "signedNumeric", "numericOrFraction", "unitNumeric", "polyTerms",
+    "factorPair", "scientificNotation", "inequality"
   ]);
   const codes = new Set();
   for (const t of b.data) {
@@ -820,6 +835,20 @@ function genParamsForType(type) {
     case "cuboid_volume": return { l: r(2, 12), w: r(2, 10), h: r(2, 8) };
     case "poly_constant": return { a: r(1, 6), b: r(1, 9), c: -r(2, 12) };
     case "expand_bracket": return { k: pick([-5,-4,-3,-2,2,3,4,5]), a: r(1, 4), b: pick([-9,-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9]) };
+    case "poly_add_sub": return { a: r(2, 5), b: r(-6, 6), c: r(-8, 8), d: r(1, 4), e: r(-6, 6), f: r(-8, 8), op: pick(["+", "-"]) };
+    case "binomial_expand": return { a: r(1, 4), b: pick([-6,-5,-4,-3,-2,2,3,4,5,6]), c: r(1, 4), d: pick([-6,-5,-4,-3,-2,2,3,4,5,6]) };
+    case "s3t3_square_expand": return { a: r(1, 4), b: pick([-6,-5,-4,-3,-2,2,3,4,5,6]), square: true };
+    case "s3t3_zero_exp": return { base: r(2, 9), zeroCase: true };
+    case "factor_diff_sq": return { a: pick([1,2,3]), b: r(2, 9) };
+    case "factor_cross": return { a: pick([1,2,3]), b: pick([-6,-5,-4,-3,-2,2,3,4,5,6]), c: pick([1,2,3]), d: pick([-6,-5,-4,-3,-2,2,3,4,5,6]) };
+    case "sci_notation": return { mantissa: pick([1.2,2.5,3.2,4.8,6.4,8.75]), exponent: r(3, 7) };
+    case "solve_ineq": return { a: pick([-5,-4,-3,-2]), b: r(-6, 6), boundary: r(-5, 5), op: pick(["<", "<=", ">", ">="]) };
+    case "triangle_center": return { center: pick(["circumcenter", "incenter", "centroid", "orthocenter"]) };
+    case "solid_sphere": return { solidType: pick(["sphere", "hemisphere"]), r: r(2, 6) };
+    case "solid_cylinder": return { solidType: "cylinder", r: r(2, 6), h: r(4, 12) };
+    case "solid_cone": return { solidType: "cone", r: r(2, 6), h: r(4, 12) };
+    case "sector_measure": return { r: r(3, 10), angle: pick([30,45,60,90,120]), ask: pick(["arc", "area"]) };
+    case "pyth_cone": return { mode: pick(["findL", "findH"]), r: 5, h: 12, l: 13 };
     case "formula_sub":  return { a: pick([-3, -2, -1, 2, 3, 4, 5]), b: pick([-2, -1, 0, 1, 2, 3]), c: pick([-3, -1, 0, 1, 2, 3]) };
     case "congruence":   return { reason: pick(["S.S.S.", "S.A.S.", "A.S.A.", "A.A.S.", "R.H.S."]), t1: pick([["A","B","C"], ["P","Q","R"], ["X","Y","Z"]]), t2: pick([["D","E","F"], ["L","M","N"], ["U","V","W"]]) };
     case "coordinate":   return { targetX: pick([-2, -1, 1, 2]), targetY: pick([-2, -1, 1, 2]), askAxis: pick(["x", "y"]) };

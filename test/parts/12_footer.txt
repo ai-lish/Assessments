@@ -1,6 +1,69 @@
   ],
   "presets": [
     {
+      "key": "s3_term3_part_a",
+      "name": "中三第三學期甲部",
+      "description": "2025-26 中三第三學期甲部 14 題固定組合。每題 1 條，題型與順序按 PR-C 規格。",
+      "questions": [
+        {
+          "typeKey": "poly_add_sub",
+          "count": 1
+        },
+        {
+          "typeKey": "binomial_expand",
+          "count": 1
+        },
+        {
+          "typeKey": "s3t3_square_expand",
+          "count": 1
+        },
+        {
+          "typeKey": "s3t3_zero_exp",
+          "count": 1
+        },
+        {
+          "typeKey": "factor_diff_sq",
+          "count": 1
+        },
+        {
+          "typeKey": "factor_cross",
+          "count": 1
+        },
+        {
+          "typeKey": "sci_notation",
+          "count": 1
+        },
+        {
+          "typeKey": "solve_ineq",
+          "count": 1
+        },
+        {
+          "typeKey": "triangle_center",
+          "count": 1
+        },
+        {
+          "typeKey": "solid_sphere",
+          "count": 1
+        },
+        {
+          "typeKey": "solid_cylinder",
+          "count": 1
+        },
+        {
+          "typeKey": "solid_cone",
+          "count": 1
+        },
+        {
+          "typeKey": "sector_measure",
+          "count": 1
+        },
+        {
+          "typeKey": "pyth_cone",
+          "count": 1
+        }
+      ]
+    },
+    {
       "key": "s1_term2_part_a",
       "name": "中一第二學期甲部",
       "description": "2025-26 中一第二學期甲部 14 題固定組合。每題 1 條，題型與順序按 PR-B 規格。",

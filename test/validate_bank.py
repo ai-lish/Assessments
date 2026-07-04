@@ -15,7 +15,8 @@ SUPPORTED_TYPES = {"text", "choice", "coordinate", "congruence"}
 SUPPORTED_CHECKS = {
     "textExact", "numeric", "signedNumeric", "numericOrFraction", "unitNumeric", "fracPct",
     "primeFactor", "algebraQ8", "hcfLcm",
-    "polyTerms", "choiceKey", "congruenceReason", "coordinatePoint"
+    "polyTerms", "factorPair", "scientificNotation", "inequality",
+    "choiceKey", "congruenceReason", "coordinatePoint"
 }
 CODE_RE = re.compile(r"^(?:LSC-\d{4}-S\d+-T\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+|DSE-\d{4}-P\d+-[A-Z]\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+)$")
 FAMILY_RE = re.compile(r"-(NA|ME|GE|DH|UC)-(\d+)$")
@@ -173,6 +174,12 @@ process.stdout.write(JSON.stringify(bad));
 
     print("=== Preset ===")
     preset_orders = {
+        "s3_term3_part_a": [
+            "poly_add_sub", "binomial_expand", "s3t3_square_expand", "s3t3_zero_exp",
+            "factor_diff_sq", "factor_cross", "sci_notation", "solve_ineq",
+            "triangle_center", "solid_sphere", "solid_cylinder", "solid_cone",
+            "sector_measure", "pyth_cone",
+        ],
         "s1_term3_part_a": [
             "frac_arith", "neg_power", "prime_factor", "hcf_or_lcm",
             "exp_law", "alg_simplify", "solve_eq", "word_to_alg",

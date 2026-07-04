@@ -8,7 +8,7 @@
       "category": "分類名（例：數與代數 / 幾何 / 數據處理）。",
       "difficulty": "1=初階（F.1）/ 2=進階（F.2-F.3）/ 3=挑戰。",
       "type": "題型輸入類別：text / choice / coordinate / congruence。",
-      "checkType": "判分方式：textExact / numeric / signedNumeric / numericOrFraction / unitNumeric / fracPct / primeFactor / algebraQ8 / hcfLcm / polyTerms / choiceKey / congruenceReason / coordinatePoint。",
+      "checkType": "判分方式：textExact / numeric / signedNumeric / numericOrFraction / unitNumeric / fracPct / primeFactor / algebraQ8 / hcfLcm / polyTerms / factorPair / scientificNotation / inequality / choiceKey / congruenceReason / coordinatePoint。",
       "params_schema": "題型參數定義，給 AI 生成新題型時參考。",
       "answers": "後備答案陣列（textExact / choiceKey 用）。",
       "displayAnswer": "教師答案／步驟顯示用。",

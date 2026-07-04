@@ -43,6 +43,10 @@ check('s1/2/number_and_algebra → 11 題', filterBankStrict(bank.data, 's1', '2
 check('s1/2/measurement → 1 題', filterBankStrict(bank.data, 's1', '2', 'measurement').length === 1);
 check('s1/2/geometry → 2 題', filterBankStrict(bank.data, 's1', '2', 'geometry').length === 2);
 check('s1/2/data_handling → 0 題', filterBankStrict(bank.data, 's1', '2', 'data_handling').length === 0);
+check('s3/3/number_and_algebra → 8 題', filterBankStrict(bank.data, 's3', '3', 'number_and_algebra').length === 8);
+check('s3/3/measurement → 5 題', filterBankStrict(bank.data, 's3', '3', 'measurement').length === 5);
+check('s3/3/geometry → 1 題', filterBankStrict(bank.data, 's3', '3', 'geometry').length === 1);
+check('s3/3/data_handling → 0 題', filterBankStrict(bank.data, 's3', '3', 'data_handling').length === 0);
 // 演示題型
 check('示範題型 (no grade) → []', filterBankStrict(bank.data, '', '', 'uncategorized').length === 0);
 
@@ -50,8 +54,8 @@ check('示範題型 (no grade) → []', filterBankStrict(bank.data, '', '', 'unc
 section('1b. uniqueValuesForKey 行為');
 // 真實題庫：grade 唯一值必須係 ["", "s1"]，唔可以有 duplicate 空 string
 const realGrades = uniqueValuesForKey(bank.data, 'grade');
-check('真實題庫 grade 唯一值 = ["", "s1"] (len 2)',
-      realGrades.length === 2 && realGrades[0] === '' && realGrades[1] === 's1');
+check('真實題庫 grade 唯一值 = ["", "s1", "s3"] (len 3)',
+      realGrades.length === 3 && realGrades[0] === '' && realGrades[1] === 's1' && realGrades[2] === 's3');
 const realTerms = uniqueValuesForKey(bank.data, 'term');
 check('真實題庫 term 唯一值 = ["", "2", "3"] (len 3)',
       realTerms.length === 3 && realTerms[0] === '' && realTerms[1] === '2' && realTerms[2] === '3');
@@ -268,7 +272,7 @@ check('docs/question-codes.md 登記所有 generator family',
           questionCodeDocs.includes(`\`${t.generator}\``);
       }));
 check('頁面有 QUESTION_TYPE_NAMES mapping', toolHtmlFixed.includes('const QUESTION_TYPE_NAMES'));
-check('18 個 key 全部出現在 QUESTION_TYPE_NAMES 或題庫 code UI 支援內',
+check('全部 key 出現在 QUESTION_TYPE_NAMES 或題庫 code UI 支援內',
       bank.data.every(t => toolHtmlFixed.includes(`${t.key}:`) || toolHtmlFixed.includes(`"${t.key}"`)));
 check('題目清單/預覽有 code-badge 顯示', toolHtmlFixed.includes('code-badge'));
 check('有 copyQuestionCode()', toolHtmlFixed.includes('function copyQuestionCode'));

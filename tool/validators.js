@@ -36,6 +36,27 @@ function createAssessValidators() {
     return parseFloat(s);
   }
 
+  function parsePiNumber(value) {
+    let s = String(value || "").trim()
+      .replace(/−/g, "-")
+      .replace(/\s+/g, "")
+      .replace(/π/gi, "pi")
+      .replace(/×/g, "*");
+    if (s === "") return NaN;
+    if (!s.toLowerCase().includes("pi")) return parseSignedNumber(s);
+    s = s.replace(/x(?=pi)/gi, "*").replace(/\*/g, "");
+    const match = s.match(/^(-?(?:\d+(?:\.\d+)?|\.\d+)?)pi(?:\/(-?\d+(?:\.\d+)?))?$/i);
+    if (!match) return NaN;
+    let coeffRaw = match[1];
+    let coeff;
+    if (coeffRaw === "" || coeffRaw === "+") coeff = 1;
+    else if (coeffRaw === "-") coeff = -1;
+    else coeff = parseFloat(coeffRaw);
+    const den = match[2] ? parseFloat(match[2]) : 1;
+    if (Number.isNaN(coeff) || Number.isNaN(den) || den === 0) return NaN;
+    return coeff * Math.PI / den;
+  }
+
   function normalizePolynomialInput(value) {
     return String(value || "")
       .replace(/−/g, "-")
@@ -89,6 +110,90 @@ function createAssessValidators() {
       if (a.coeffs[keysA[i]] !== b.coeffs[keysB[i]]) return false;
     }
     return true;
+  }
+
+  function parseLinearFactor(raw) {
+    let s = normalizePolynomialInput(raw);
+    if (s === "") return null;
+    if (s[0] !== "+" && s[0] !== "-") s = "+" + s;
+    const tokens = s.match(/[+-][^+-]+/g);
+    if (!tokens || tokens.join("") !== s) return null;
+    let xCoeff = 0;
+    let constant = 0;
+    for (const token of tokens) {
+      const sign = token[0] === "-" ? -1 : 1;
+      const body = token.slice(1);
+      if (body.includes("x")) {
+        const match = body.match(/^(\d*)x$/);
+        if (!match) return null;
+        xCoeff += sign * (match[1] === "" ? 1 : parseInt(match[1], 10));
+      } else {
+        if (!/^\d+$/.test(body)) return null;
+        constant += sign * parseInt(body, 10);
+      }
+    }
+    if (xCoeff === 0) return null;
+    return [xCoeff, constant];
+  }
+
+  function parseFactorPairInput(value) {
+    const s = String(value || "").trim().replace(/\s+/g, "").replace(/−/g, "-");
+    const match = s.match(/^\(([^()]+)\)\*?\(([^()]+)\)$/);
+    if (!match) return null;
+    const f1 = parseLinearFactor(match[1]);
+    const f2 = parseLinearFactor(match[2]);
+    if (!f1 || !f2) return null;
+    return [f1, f2];
+  }
+
+  function sameLinearFactor(a, b) {
+    return Array.isArray(a) && Array.isArray(b) && a[0] === b[0] && a[1] === b[1];
+  }
+
+  function sameFactorPair(user, expected) {
+    if (!Array.isArray(user) || !Array.isArray(expected) || user.length !== 2 || expected.length !== 2) return false;
+    return (sameLinearFactor(user[0], expected[0]) && sameLinearFactor(user[1], expected[1])) ||
+           (sameLinearFactor(user[0], expected[1]) && sameLinearFactor(user[1], expected[0]));
+  }
+
+  function parseScientificNotation(value) {
+    let s = String(value || "").trim()
+      .replace(/−/g, "-")
+      .replace(/\s+/g, "")
+      .replace(/×/g, "*")
+      .replace(/X(?=10)/g, "*")
+      .replace(/x(?=10)/g, "*")
+      .replace(/\^\{(-?\d+)\}/g, "^$1");
+    const match = s.match(/^(-?(?:\d+(?:\.\d+)?|\.\d+))\*?10\^(-?\d+)$/);
+    if (!match) return null;
+    const mantissa = parseFloat(match[1]);
+    const exponent = parseInt(match[2], 10);
+    if (Number.isNaN(mantissa) || Number.isNaN(exponent)) return null;
+    return { mantissa, exponent, value: mantissa * Math.pow(10, exponent) };
+  }
+
+  function parseInequality(value, variable) {
+    const v = variable || "x";
+    const s = String(value || "").trim()
+      .replace(/−/g, "-")
+      .replace(/\s+/g, "")
+      .replace(/≥/g, ">=")
+      .replace(/≤/g, "<=");
+    const match = s.match(/^(.+?)(>=|<=|>|<)(.+)$/);
+    if (!match) return null;
+    const left = match[1];
+    const op = match[2];
+    const right = match[3];
+    const invert = { ">": "<", "<": ">", ">=": "<=", "<=": ">=" };
+    if (left === v && right !== v) {
+      const num = parseSignedNumber(right);
+      return Number.isNaN(num) ? null : { op, value: num };
+    }
+    if (right === v && left !== v) {
+      const num = parseSignedNumber(left);
+      return Number.isNaN(num) ? null : { op: invert[op], value: num };
+    }
+    return null;
   }
 
   function checkPrimeFactorIndexForm(userInput, expectedFactors) {
@@ -186,10 +291,13 @@ function createAssessValidators() {
       let s = String(userInput || "").trim().replace(/−/g, "-");
       if (spec.allowUnit) {
         s = s.replace(/cm³/gi, "").replace(/cm\^3/gi, "").replace(/立方厘米/g, "");
+        s = s.replace(/cm²/gi, "").replace(/cm\^2/gi, "").replace(/平方厘米/g, "");
+        s = s.replace(/cm\b/gi, "").replace(/厘米/g, "");
       }
-      const user = parseSignedNumber(s);
-      const answer = parseSignedNumber(q.correctAnswer);
-      return !Number.isNaN(user) && !Number.isNaN(answer) && Math.abs(user - answer) < 0.01;
+      const user = parsePiNumber(s);
+      const answer = parsePiNumber(q.correctAnswer);
+      const tolerance = spec.tolerance === undefined ? 0.05 : Number(spec.tolerance);
+      return !Number.isNaN(user) && !Number.isNaN(answer) && Math.abs(user - answer) <= tolerance;
     },
     fracPct(q, userInput) {
       const sNoPct = String(userInput || "").replace(/%/g, "").trim();
@@ -227,6 +335,24 @@ function createAssessValidators() {
       }
       return true;
     },
+    factorPair(q, userInput) {
+      const expected = q.answerSpec && q.answerSpec.factors;
+      return sameFactorPair(parseFactorPairInput(userInput), expected);
+    },
+    scientificNotation(q, userInput) {
+      const parsed = parseScientificNotation(userInput);
+      if (!parsed) return false;
+      if (Math.abs(parsed.mantissa) < 1 || Math.abs(parsed.mantissa) >= 10) return false;
+      const expected = q.answerSpec && q.answerSpec.value;
+      if (expected === undefined || expected === null) return false;
+      return Math.abs(parsed.value - Number(expected)) <= Math.max(0.01, Math.abs(Number(expected)) * 1e-10);
+    },
+    inequality(q, userInput) {
+      const spec = q.answerSpec || {};
+      const parsed = parseInequality(userInput, spec.variable || "x");
+      if (!parsed) return false;
+      return parsed.op === spec.op && Math.abs(parsed.value - Number(spec.value)) < 0.01;
+    },
   });
 
   const aliases = Object.freeze({
@@ -243,6 +369,9 @@ function createAssessValidators() {
     congruenceReason: "congruenceReason",
     coordinatePoint: "coordinatePoint",
     polyTerms: "polyTerms",
+    factorPair: "factorPair",
+    scientificNotation: "scientificNotation",
+    inequality: "inequality",
   });
 
   function getValidatorKey(key) {

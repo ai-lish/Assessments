@@ -54,6 +54,12 @@ const fixtures = [
   ["polyTerms strict rejects term reordering", q("polyTerms", { correctAnswer: "x^2+3x-4", answerSpec: { order: "strict" } }), "3x+x^2-4", false],
   ["polyTerms loose accepts term reordering", q("polyTerms", { correctAnswer: "3x-4", answerSpec: { order: "loose" } }), "-4+3x", true],
   ["polyTerms loose rejects wrong coefficient", q("polyTerms", { correctAnswer: "3x-4", answerSpec: { order: "loose" } }), "-4+2x", false],
+  ["factorPair accepts factor order swap", q("factorPair", { correctAnswer: "(x+2)(x+3)", answerSpec: { factors: [[1, 2], [1, 3]] } }), "(x+3)(x+2)", true],
+  ["factorPair rejects sign error", q("factorPair", { correctAnswer: "(x+2)(x+3)", answerSpec: { factors: [[1, 2], [1, 3]] } }), "(x-2)(x+3)", false],
+  ["scientificNotation accepts structured equivalent", q("scientificNotation", { correctAnswer: "3.2×10^5", answerSpec: { value: 320000 } }), "3.2x10^5", true],
+  ["scientificNotation rejects mantissa >= 10", q("scientificNotation", { correctAnswer: "3.2×10^5", answerSpec: { value: 320000 } }), "32×10^4", false],
+  ["inequality accepts reversed equivalent", q("inequality", { correctAnswer: "x>-3", answerSpec: { variable: "x", op: ">", value: -3 } }), "-3<x", true],
+  ["inequality rejects wrong direction", q("inequality", { correctAnswer: "x>-3", answerSpec: { variable: "x", op: ">", value: -3 } }), "x<-3", false],
 ];
 
 for (const [label, question, input, expected] of fixtures) {
