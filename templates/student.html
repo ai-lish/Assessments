@@ -649,10 +649,13 @@ function retrySingle(qid) {
   closeModal();
   backupState();
   isSingleRetry = true;
-  // 喺當前 qList 入面搵呢題（注意：details 嘅 qid 對應原題目池）
-  const idx = qList.findIndex(q => q.qid === qid);
-  if (idx === -1) { showToast("搵唔到題目"); return; }
-  currIdx = idx;
+  // 由完整題庫搵呢題（唔靠 qList — 咁 history 舊 entry 嘅 qid 都搵到），
+  // 同時 set qList = [singleQ] 做一個 one-question session。
+  // finishGame 嘅 isSingleRetry branch 會用 backup 還原返之前嘅 qList / origWrongIds。
+  const q = QUESTIONS.find(q => q.qid === qid);
+  if (!q) { showToast("搵唔到題目"); return; }
+  qList = [q];
+  currIdx = 0;
   // 重置呢題嘅 myAnswer 顯示
   // 唔清空 sessionLog / origWrongIds（會喺 finishGame 後還原）
   currInput = "";
@@ -753,11 +756,10 @@ loadAttempts();
 if (allAttempts.length > 0) {
   // 直接顯示上次結果（用戶可以再玩或重做錯題）
   lastResult = allAttempts[allAttempts.length - 1];
-  // 還原 qList + origWrongIds 令「重做錯題」同「重做此題」reload 後仍然 work。
-  // （上次嘅 qList 冇直接 serialize 入 attempt，但 details 紀錄咗每題 qid，可從 QUESTIONS 重組。）
+  // 還原 origWrongIds 令「重做錯題」reload 後 work。
+  // qList 由 retrySingle 自己 handle（佢會 lookup QUESTIONS + set qList = [singleQ]），
+  // 所以 saved-state 唔需要 touch qList。
   if (Array.isArray(lastResult.details) && lastResult.details.length > 0) {
-    const lastQids = lastResult.details.map(d => d.qid);
-    qList = QUESTIONS.filter(q => lastQids.indexOf(q.qid) !== -1);
     origWrongIds = lastResult.details.filter(d => !d.correct).map(d => d.qid);
   }
   showResult();
