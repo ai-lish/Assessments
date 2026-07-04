@@ -1776,5 +1776,951 @@
         "prefix": "x = "
       }
     }
+  ],
+  "poly_add_sub": [
+    {
+      "params": {
+        "a": 3,
+        "b": -2,
+        "c": 5,
+        "d": 1,
+        "e": -4,
+        "f": -1,
+        "op": "-"
+      },
+      "result": {
+        "questionHTML": "1. 化簡 \\( (3x^2-2x+5) - (x^2-4x-1) \\)。",
+        "correctAnswer": "2x^2+2x+6",
+        "paramsUsed": {
+          "a": 3,
+          "b": -2,
+          "c": 5,
+          "d": 1,
+          "e": -4,
+          "f": -1,
+          "op": "-"
+        },
+        "solutionHTML": "<div>先去括號，再合併同類項：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (3x^2-2x+5) - (x^2-4x-1) = 2x^2+2x+6 \\)</div>",
+        "pdfText": "1. 化簡 \\( (3x^2-2x+5) - (x^2-4x-1) \\)。",
+        "answers": [
+          "2x^2+2x+6"
+        ],
+        "displayAnswer": "2x^2+2x+6",
+        "steps": "<div>先去括號，再合併同類項：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (3x^2-2x+5) - (x^2-4x-1) = 2x^2+2x+6 \\)</div>",
+        "checkType": "polyTerms",
+        "answerSpec": {
+          "order": "loose"
+        }
+      }
+    },
+    {
+      "params": {
+        "a": 2,
+        "b": 3,
+        "c": -4,
+        "d": 2,
+        "e": -1,
+        "f": 6,
+        "op": "+"
+      },
+      "result": {
+        "questionHTML": "1. 化簡 \\( (2x^2+3x-4) + (2x^2-x+6) \\)。",
+        "correctAnswer": "4x^2+2x+2",
+        "paramsUsed": {
+          "a": 2,
+          "b": 3,
+          "c": -4,
+          "d": 2,
+          "e": -1,
+          "f": 6,
+          "op": "+"
+        },
+        "solutionHTML": "<div>先去括號，再合併同類項：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x^2+3x-4) + (2x^2-x+6) = 4x^2+2x+2 \\)</div>",
+        "pdfText": "1. 化簡 \\( (2x^2+3x-4) + (2x^2-x+6) \\)。",
+        "answers": [
+          "4x^2+2x+2"
+        ],
+        "displayAnswer": "4x^2+2x+2",
+        "steps": "<div>先去括號，再合併同類項：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x^2+3x-4) + (2x^2-x+6) = 4x^2+2x+2 \\)</div>",
+        "checkType": "polyTerms",
+        "answerSpec": {
+          "order": "loose"
+        }
+      }
+    }
+  ],
+  "binomial_expand": [
+    {
+      "params": {
+        "a": 2,
+        "b": 3,
+        "c": 1,
+        "d": -4
+      },
+      "result": {
+        "questionHTML": "2. 展開並化簡 \\( (2x+3)(1x-4) \\)。",
+        "correctAnswer": "2x^2-5x-12",
+        "paramsUsed": {
+          "a": 2,
+          "b": 3,
+          "c": 1,
+          "d": -4,
+          "square": false,
+          "x2": 2,
+          "x1": -5,
+          "constTerm": -12
+        },
+        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(1x-4) = 2x^2-5x-12 \\)</div>",
+        "pdfText": "2. 展開並化簡 \\( (2x+3)(1x-4) \\)。",
+        "answers": [
+          "2x^2-5x-12"
+        ],
+        "displayAnswer": "2x^2-5x-12",
+        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(1x-4) = 2x^2-5x-12 \\)</div>",
+        "checkType": "polyTerms",
+        "answerSpec": {
+          "order": "loose"
+        }
+      }
+    },
+    {
+      "params": {
+        "a": 3,
+        "b": -2,
+        "c": 2,
+        "d": 5
+      },
+      "result": {
+        "questionHTML": "2. 展開並化簡 \\( (3x-2)(2x+5) \\)。",
+        "correctAnswer": "6x^2+11x-10",
+        "paramsUsed": {
+          "a": 3,
+          "b": -2,
+          "c": 2,
+          "d": 5,
+          "square": false,
+          "x2": 6,
+          "x1": 11,
+          "constTerm": -10
+        },
+        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (3x-2)(2x+5) = 6x^2+11x-10 \\)</div>",
+        "pdfText": "2. 展開並化簡 \\( (3x-2)(2x+5) \\)。",
+        "answers": [
+          "6x^2+11x-10"
+        ],
+        "displayAnswer": "6x^2+11x-10",
+        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (3x-2)(2x+5) = 6x^2+11x-10 \\)</div>",
+        "checkType": "polyTerms",
+        "answerSpec": {
+          "order": "loose"
+        }
+      }
+    }
+  ],
+  "s3t3_square_expand": [
+    {
+      "params": {
+        "a": 2,
+        "b": -3,
+        "square": true
+      },
+      "result": {
+        "questionHTML": "3. 展開並化簡 \\( (2x-3)^2 \\)。",
+        "correctAnswer": "4x^2-12x+9",
+        "paramsUsed": {
+          "a": 2,
+          "b": -3,
+          "c": 2,
+          "d": -3,
+          "square": true,
+          "x2": 4,
+          "x1": -12,
+          "constTerm": 9
+        },
+        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x-3)^2 = 4x^2-12x+9 \\)</div>",
+        "pdfText": "3. 展開並化簡 \\( (2x-3)^2 \\)。",
+        "answers": [
+          "4x^2-12x+9"
+        ],
+        "displayAnswer": "4x^2-12x+9",
+        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x-3)^2 = 4x^2-12x+9 \\)</div>",
+        "checkType": "polyTerms",
+        "answerSpec": {
+          "order": "loose"
+        }
+      }
+    },
+    {
+      "params": {
+        "a": 1,
+        "b": 5,
+        "square": true
+      },
+      "result": {
+        "questionHTML": "3. 展開並化簡 \\( (1x+5)^2 \\)。",
+        "correctAnswer": "x^2+10x+25",
+        "paramsUsed": {
+          "a": 1,
+          "b": 5,
+          "c": 1,
+          "d": 5,
+          "square": true,
+          "x2": 1,
+          "x1": 10,
+          "constTerm": 25
+        },
+        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (1x+5)^2 = x^2+10x+25 \\)</div>",
+        "pdfText": "3. 展開並化簡 \\( (1x+5)^2 \\)。",
+        "answers": [
+          "x^2+10x+25"
+        ],
+        "displayAnswer": "x^2+10x+25",
+        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (1x+5)^2 = x^2+10x+25 \\)</div>",
+        "checkType": "polyTerms",
+        "answerSpec": {
+          "order": "loose"
+        }
+      }
+    }
+  ],
+  "s3t3_zero_exp": [
+    {
+      "params": {
+        "base": 7,
+        "zeroCase": true
+      },
+      "result": {
+        "questionHTML": "4. 計算 \\( 7^0 \\)。",
+        "correctAnswer": "1",
+        "paramsUsed": {
+          "base": 7,
+          "zeroCase": true
+        },
+        "solutionHTML": "<div>零指數定律：</div><div style=\"font-size:1.05em;margin-top:5px;\">任何非零數的零次方都等於 \\(1\\)，所以 \\( 7^0 = 1 \\)。</div>",
+        "pdfText": "4. 計算 \\( 7^0 \\)。",
+        "answers": [
+          "1"
+        ],
+        "displayAnswer": "1",
+        "steps": "<div>零指數定律：</div><div style=\"font-size:1.05em;margin-top:5px;\">任何非零數的零次方都等於 \\(1\\)，所以 \\( 7^0 = 1 \\)。</div>",
+        "checkType": "numeric"
+      }
+    },
+    {
+      "params": {
+        "base": 4,
+        "zeroCase": true
+      },
+      "result": {
+        "questionHTML": "4. 計算 \\( 4^0 \\)。",
+        "correctAnswer": "1",
+        "paramsUsed": {
+          "base": 4,
+          "zeroCase": true
+        },
+        "solutionHTML": "<div>零指數定律：</div><div style=\"font-size:1.05em;margin-top:5px;\">任何非零數的零次方都等於 \\(1\\)，所以 \\( 4^0 = 1 \\)。</div>",
+        "pdfText": "4. 計算 \\( 4^0 \\)。",
+        "answers": [
+          "1"
+        ],
+        "displayAnswer": "1",
+        "steps": "<div>零指數定律：</div><div style=\"font-size:1.05em;margin-top:5px;\">任何非零數的零次方都等於 \\(1\\)，所以 \\( 4^0 = 1 \\)。</div>",
+        "checkType": "numeric"
+      }
+    }
+  ],
+  "factor_diff_sq": [
+    {
+      "params": {
+        "a": 1,
+        "b": 5
+      },
+      "result": {
+        "questionHTML": "5. 因式分解 \\( x^2 - 25 \\)。",
+        "correctAnswer": "(x-5)(x+5)",
+        "paramsUsed": {
+          "a": 1,
+          "b": 5
+        },
+        "solutionHTML": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=x\\)，\\(B=5\\)，所以答案是 \\((x-5)(x+5)\\)。</div>",
+        "pdfText": "5. 因式分解 \\( x^2 - 25 \\)。",
+        "answers": [
+          "(x-5)(x+5)"
+        ],
+        "displayAnswer": "(x-5)(x+5)",
+        "steps": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=x\\)，\\(B=5\\)，所以答案是 \\((x-5)(x+5)\\)。</div>",
+        "checkType": "factorPair",
+        "answerSpec": {
+          "factors": [
+            [
+              1,
+              -5
+            ],
+            [
+              1,
+              5
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "params": {
+        "a": 2,
+        "b": 3
+      },
+      "result": {
+        "questionHTML": "5. 因式分解 \\( 4x^2 - 9 \\)。",
+        "correctAnswer": "(2x-3)(2x+3)",
+        "paramsUsed": {
+          "a": 2,
+          "b": 3
+        },
+        "solutionHTML": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=2x\\)，\\(B=3\\)，所以答案是 \\((2x-3)(2x+3)\\)。</div>",
+        "pdfText": "5. 因式分解 \\( 4x^2 - 9 \\)。",
+        "answers": [
+          "(2x-3)(2x+3)"
+        ],
+        "displayAnswer": "(2x-3)(2x+3)",
+        "steps": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=2x\\)，\\(B=3\\)，所以答案是 \\((2x-3)(2x+3)\\)。</div>",
+        "checkType": "factorPair",
+        "answerSpec": {
+          "factors": [
+            [
+              2,
+              -3
+            ],
+            [
+              2,
+              3
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "factor_cross": [
+    {
+      "params": {
+        "a": 2,
+        "b": 3,
+        "c": 1,
+        "d": -4
+      },
+      "result": {
+        "questionHTML": "6. 因式分解 \\( 2x^2-5x-12 \\)。",
+        "correctAnswer": "(2x+3)(x-4)",
+        "paramsUsed": {
+          "a": 2,
+          "b": 3,
+          "c": 1,
+          "d": -4,
+          "x2": 2,
+          "x1": -5,
+          "constTerm": -12
+        },
+        "solutionHTML": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-5x\\)。</div><div>\\( 2x^2-5x-12 = (2x+3)(x-4) \\)</div>",
+        "pdfText": "6. 因式分解 \\( 2x^2-5x-12 \\)。",
+        "answers": [
+          "(2x+3)(x-4)"
+        ],
+        "displayAnswer": "(2x+3)(x-4)",
+        "steps": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-5x\\)。</div><div>\\( 2x^2-5x-12 = (2x+3)(x-4) \\)</div>",
+        "checkType": "factorPair",
+        "answerSpec": {
+          "factors": [
+            [
+              2,
+              3
+            ],
+            [
+              1,
+              -4
+            ]
+          ]
+        }
+      }
+    },
+    {
+      "params": {
+        "a": 1,
+        "b": -5,
+        "c": 1,
+        "d": -2
+      },
+      "result": {
+        "questionHTML": "6. 因式分解 \\( x^2-7x+10 \\)。",
+        "correctAnswer": "(x-5)(x-2)",
+        "paramsUsed": {
+          "a": 1,
+          "b": -5,
+          "c": 1,
+          "d": -2,
+          "x2": 1,
+          "x1": -7,
+          "constTerm": 10
+        },
+        "solutionHTML": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-7x\\)。</div><div>\\( x^2-7x+10 = (x-5)(x-2) \\)</div>",
+        "pdfText": "6. 因式分解 \\( x^2-7x+10 \\)。",
+        "answers": [
+          "(x-5)(x-2)"
+        ],
+        "displayAnswer": "(x-5)(x-2)",
+        "steps": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-7x\\)。</div><div>\\( x^2-7x+10 = (x-5)(x-2) \\)</div>",
+        "checkType": "factorPair",
+        "answerSpec": {
+          "factors": [
+            [
+              1,
+              -5
+            ],
+            [
+              1,
+              -2
+            ]
+          ]
+        }
+      }
+    }
+  ],
+  "sci_notation": [
+    {
+      "params": {
+        "mantissa": 3.2,
+        "exponent": 5
+      },
+      "result": {
+        "questionHTML": "7. 把 \\( 320000 \\) 寫成科學記數法。",
+        "correctAnswer": "3.2×10^5",
+        "paramsUsed": {
+          "mantissa": 3.2,
+          "exponent": 5,
+          "value": 320000
+        },
+        "solutionHTML": "<div>科學記數法形如 \\(a\\times10^n\\)，其中 \\(1\\leq a<10\\)。</div><div>\\( 320000 = 3.2×10^5 \\)</div>",
+        "pdfText": "7. 把 \\( 320000 \\) 寫成科學記數法。",
+        "answers": [
+          "3.2×10^5"
+        ],
+        "displayAnswer": "3.2×10^5",
+        "steps": "<div>科學記數法形如 \\(a\\times10^n\\)，其中 \\(1\\leq a<10\\)。</div><div>\\( 320000 = 3.2×10^5 \\)</div>",
+        "checkType": "scientificNotation",
+        "answerSpec": {
+          "mantissa": 3.2,
+          "exponent": 5,
+          "value": 320000
+        }
+      }
+    },
+    {
+      "params": {
+        "mantissa": 8.75,
+        "exponent": 3
+      },
+      "result": {
+        "questionHTML": "7. 把 \\( 8750 \\) 寫成科學記數法。",
+        "correctAnswer": "8.75×10^3",
+        "paramsUsed": {
+          "mantissa": 8.75,
+          "exponent": 3,
+          "value": 8750
+        },
+        "solutionHTML": "<div>科學記數法形如 \\(a\\times10^n\\)，其中 \\(1\\leq a<10\\)。</div><div>\\( 8750 = 8.75×10^3 \\)</div>",
+        "pdfText": "7. 把 \\( 8750 \\) 寫成科學記數法。",
+        "answers": [
+          "8.75×10^3"
+        ],
+        "displayAnswer": "8.75×10^3",
+        "steps": "<div>科學記數法形如 \\(a\\times10^n\\)，其中 \\(1\\leq a<10\\)。</div><div>\\( 8750 = 8.75×10^3 \\)</div>",
+        "checkType": "scientificNotation",
+        "answerSpec": {
+          "mantissa": 8.75,
+          "exponent": 3,
+          "value": 8750
+        }
+      }
+    }
+  ],
+  "solve_ineq": [
+    {
+      "params": {
+        "a": -2,
+        "b": 5,
+        "boundary": -3,
+        "op": "<"
+      },
+      "result": {
+        "questionHTML": "8. 解不等式 \\( -2x + 5 < 11 \\)。",
+        "correctAnswer": "x>-3",
+        "paramsUsed": {
+          "a": -2,
+          "b": 5,
+          "rhs": 11,
+          "boundary": -3,
+          "op": ">"
+        },
+        "solutionHTML": "<div>先移項，再除以 \\(-2\\)。</div><div>因為除以負數時，不等號方向要相反。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( x > -3 \\)</div>",
+        "pdfText": "8. 解不等式 \\( -2x + 5 < 11 \\)。",
+        "answers": [
+          "x>-3"
+        ],
+        "displayAnswer": "x > -3",
+        "steps": "<div>先移項，再除以 \\(-2\\)。</div><div>因為除以負數時，不等號方向要相反。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( x > -3 \\)</div>",
+        "checkType": "inequality",
+        "answerSpec": {
+          "variable": "x",
+          "op": ">",
+          "value": -3
+        }
+      }
+    },
+    {
+      "params": {
+        "a": -4,
+        "b": -1,
+        "boundary": 2,
+        "op": ">="
+      },
+      "result": {
+        "questionHTML": "8. 解不等式 \\( -4x - 1 >= -9 \\)。",
+        "correctAnswer": "x<=2",
+        "paramsUsed": {
+          "a": -4,
+          "b": -1,
+          "rhs": -9,
+          "boundary": 2,
+          "op": "<="
+        },
+        "solutionHTML": "<div>先移項，再除以 \\(-4\\)。</div><div>因為除以負數時，不等號方向要相反。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( x <= 2 \\)</div>",
+        "pdfText": "8. 解不等式 \\( -4x - 1 >= -9 \\)。",
+        "answers": [
+          "x<=2"
+        ],
+        "displayAnswer": "x <= 2",
+        "steps": "<div>先移項，再除以 \\(-4\\)。</div><div>因為除以負數時，不等號方向要相反。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( x <= 2 \\)</div>",
+        "checkType": "inequality",
+        "answerSpec": {
+          "variable": "x",
+          "op": "<=",
+          "value": 2
+        }
+      }
+    }
+  ],
+  "triangle_center": [
+    {
+      "params": {
+        "center": "centroid"
+      },
+      "result": {
+        "questionHTML": "9. 下圖顯示三角形內三條線段交於點 \\(P\\)。若這三條線段是三條中線的交點，點 \\(P\\) 是三角形的哪一個心？<br><svg width=\"250\" height=\"150\" style=\"background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"45,120 205,120 115,30\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"115\" y1=\"30\" x2=\"125\" y2=\"120\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"45\" y1=\"120\" x2=\"160\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"205\" y1=\"120\" x2=\"80\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><circle cx=\"123\" cy=\"88\" r=\"5\" fill=\"#e74c3c\"/><text x=\"132\" y=\"91\" font-size=\"12\" fill=\"#e74c3c\">P</text></svg>",
+        "correctAnswer": "centroid",
+        "paramsUsed": {
+          "center": "centroid"
+        },
+        "solutionHTML": "<div>形心：三條中線的交點。</div>",
+        "pdfText": "9. 判斷三角形四心。",
+        "answers": [
+          "centroid"
+        ],
+        "displayAnswer": "形心",
+        "steps": "<div>形心：三條中線的交點。</div>",
+        "checkType": "choiceKey",
+        "options": [
+          {
+            "key": "circumcenter",
+            "label": "外心"
+          },
+          {
+            "key": "incenter",
+            "label": "內心"
+          },
+          {
+            "key": "centroid",
+            "label": "形心"
+          },
+          {
+            "key": "orthocenter",
+            "label": "垂心"
+          }
+        ],
+        "imageSvg": "<svg width=\"250\" height=\"150\" style=\"background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"45,120 205,120 115,30\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"115\" y1=\"30\" x2=\"125\" y2=\"120\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"45\" y1=\"120\" x2=\"160\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"205\" y1=\"120\" x2=\"80\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><circle cx=\"123\" cy=\"88\" r=\"5\" fill=\"#e74c3c\"/><text x=\"132\" y=\"91\" font-size=\"12\" fill=\"#e74c3c\">P</text></svg>"
+      }
+    },
+    {
+      "params": {
+        "center": "orthocenter"
+      },
+      "result": {
+        "questionHTML": "9. 下圖顯示三角形內三條線段交於點 \\(P\\)。若這三條線段是三條高的交點，點 \\(P\\) 是三角形的哪一個心？<br><svg width=\"250\" height=\"150\" style=\"background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"45,120 205,120 115,30\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"115\" y1=\"30\" x2=\"125\" y2=\"120\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"45\" y1=\"120\" x2=\"160\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"205\" y1=\"120\" x2=\"80\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><circle cx=\"123\" cy=\"88\" r=\"5\" fill=\"#e74c3c\"/><text x=\"132\" y=\"91\" font-size=\"12\" fill=\"#e74c3c\">P</text></svg>",
+        "correctAnswer": "orthocenter",
+        "paramsUsed": {
+          "center": "orthocenter"
+        },
+        "solutionHTML": "<div>垂心：三條高的交點。</div>",
+        "pdfText": "9. 判斷三角形四心。",
+        "answers": [
+          "orthocenter"
+        ],
+        "displayAnswer": "垂心",
+        "steps": "<div>垂心：三條高的交點。</div>",
+        "checkType": "choiceKey",
+        "options": [
+          {
+            "key": "circumcenter",
+            "label": "外心"
+          },
+          {
+            "key": "incenter",
+            "label": "內心"
+          },
+          {
+            "key": "centroid",
+            "label": "形心"
+          },
+          {
+            "key": "orthocenter",
+            "label": "垂心"
+          }
+        ],
+        "imageSvg": "<svg width=\"250\" height=\"150\" style=\"background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"45,120 205,120 115,30\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"115\" y1=\"30\" x2=\"125\" y2=\"120\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"45\" y1=\"120\" x2=\"160\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"205\" y1=\"120\" x2=\"80\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><circle cx=\"123\" cy=\"88\" r=\"5\" fill=\"#e74c3c\"/><text x=\"132\" y=\"91\" font-size=\"12\" fill=\"#e74c3c\">P</text></svg>"
+      }
+    }
+  ],
+  "solid_sphere": [
+    {
+      "params": {
+        "solidType": "sphere",
+        "r": 3
+      },
+      "result": {
+        "questionHTML": "10. 半徑為 \\(3\\text{ cm}\\) 的球體，求體積。",
+        "correctAnswer": "113.097",
+        "paramsUsed": {
+          "solidType": "sphere",
+          "r": 3,
+          "h": 8,
+          "piCoeff": 36,
+          "decimal": "113.097"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{4}{3}\\pi r^3\\)</div><div>答案：\\(36π\\text{ cm}^3 \\approx 113.097\\text{ cm}^3\\)</div>",
+        "pdfText": "10. 半徑為 \\(3\\text{ cm}\\) 的球體，求體積。",
+        "answers": [
+          "113.097",
+          "36π"
+        ],
+        "displayAnswer": "36π cm³ ≈ 113.097 cm³",
+        "steps": "<div>公式：\\(\\frac{4}{3}\\pi r^3\\)</div><div>答案：\\(36π\\text{ cm}^3 \\approx 113.097\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": 36
+        }
+      }
+    },
+    {
+      "params": {
+        "solidType": "hemisphere",
+        "r": 6
+      },
+      "result": {
+        "questionHTML": "10. 半徑為 \\(6\\text{ cm}\\) 的半球體，求體積。",
+        "correctAnswer": "452.389",
+        "paramsUsed": {
+          "solidType": "hemisphere",
+          "r": 6,
+          "h": 8,
+          "piCoeff": 144,
+          "decimal": "452.389"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(144π\\text{ cm}^3 \\approx 452.389\\text{ cm}^3\\)</div>",
+        "pdfText": "10. 半徑為 \\(6\\text{ cm}\\) 的半球體，求體積。",
+        "answers": [
+          "452.389",
+          "144π"
+        ],
+        "displayAnswer": "144π cm³ ≈ 452.389 cm³",
+        "steps": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(144π\\text{ cm}^3 \\approx 452.389\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": 144
+        }
+      }
+    }
+  ],
+  "solid_cylinder": [
+    {
+      "params": {
+        "solidType": "cylinder",
+        "r": 3,
+        "h": 5
+      },
+      "result": {
+        "questionHTML": "11. 圓柱半徑為 \\(3\\text{ cm}\\)，高為 \\(5\\text{ cm}\\)。求體積。",
+        "correctAnswer": "141.372",
+        "paramsUsed": {
+          "solidType": "cylinder",
+          "r": 3,
+          "h": 5,
+          "piCoeff": 45,
+          "decimal": "141.372"
+        },
+        "solutionHTML": "<div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(45π\\text{ cm}^3 \\approx 141.372\\text{ cm}^3\\)</div>",
+        "pdfText": "11. 圓柱半徑為 \\(3\\text{ cm}\\)，高為 \\(5\\text{ cm}\\)。求體積。",
+        "answers": [
+          "141.372",
+          "45π"
+        ],
+        "displayAnswer": "45π cm³ ≈ 141.372 cm³",
+        "steps": "<div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(45π\\text{ cm}^3 \\approx 141.372\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": 45
+        }
+      }
+    },
+    {
+      "params": {
+        "solidType": "cylinder",
+        "r": 4,
+        "h": 7
+      },
+      "result": {
+        "questionHTML": "11. 圓柱半徑為 \\(4\\text{ cm}\\)，高為 \\(7\\text{ cm}\\)。求體積。",
+        "correctAnswer": "351.858",
+        "paramsUsed": {
+          "solidType": "cylinder",
+          "r": 4,
+          "h": 7,
+          "piCoeff": 112,
+          "decimal": "351.858"
+        },
+        "solutionHTML": "<div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(112π\\text{ cm}^3 \\approx 351.858\\text{ cm}^3\\)</div>",
+        "pdfText": "11. 圓柱半徑為 \\(4\\text{ cm}\\)，高為 \\(7\\text{ cm}\\)。求體積。",
+        "answers": [
+          "351.858",
+          "112π"
+        ],
+        "displayAnswer": "112π cm³ ≈ 351.858 cm³",
+        "steps": "<div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(112π\\text{ cm}^3 \\approx 351.858\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": 112
+        }
+      }
+    }
+  ],
+  "solid_cone": [
+    {
+      "params": {
+        "solidType": "cone",
+        "r": 3,
+        "h": 8
+      },
+      "result": {
+        "questionHTML": "12. 圓錐半徑為 \\(3\\text{ cm}\\)，高為 \\(8\\text{ cm}\\)。求體積。",
+        "correctAnswer": "75.398",
+        "paramsUsed": {
+          "solidType": "cone",
+          "r": 3,
+          "h": 8,
+          "piCoeff": 24,
+          "decimal": "75.398"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(24π\\text{ cm}^3 \\approx 75.398\\text{ cm}^3\\)</div>",
+        "pdfText": "12. 圓錐半徑為 \\(3\\text{ cm}\\)，高為 \\(8\\text{ cm}\\)。求體積。",
+        "answers": [
+          "75.398",
+          "24π"
+        ],
+        "displayAnswer": "24π cm³ ≈ 75.398 cm³",
+        "steps": "<div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(24π\\text{ cm}^3 \\approx 75.398\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": 24
+        }
+      }
+    },
+    {
+      "params": {
+        "solidType": "cone",
+        "r": 6,
+        "h": 5
+      },
+      "result": {
+        "questionHTML": "12. 圓錐半徑為 \\(6\\text{ cm}\\)，高為 \\(5\\text{ cm}\\)。求體積。",
+        "correctAnswer": "188.496",
+        "paramsUsed": {
+          "solidType": "cone",
+          "r": 6,
+          "h": 5,
+          "piCoeff": 60,
+          "decimal": "188.496"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(60π\\text{ cm}^3 \\approx 188.496\\text{ cm}^3\\)</div>",
+        "pdfText": "12. 圓錐半徑為 \\(6\\text{ cm}\\)，高為 \\(5\\text{ cm}\\)。求體積。",
+        "answers": [
+          "188.496",
+          "60π"
+        ],
+        "displayAnswer": "60π cm³ ≈ 188.496 cm³",
+        "steps": "<div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(60π\\text{ cm}^3 \\approx 188.496\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": 60
+        }
+      }
+    }
+  ],
+  "sector_measure": [
+    {
+      "params": {
+        "r": 6,
+        "angle": 60,
+        "ask": "area"
+      },
+      "result": {
+        "questionHTML": "13. 扇形半徑為 \\(6\\text{ cm}\\)，圓心角為 \\(60^\\circ\\)。求面積。",
+        "correctAnswer": "18.85",
+        "paramsUsed": {
+          "r": 6,
+          "angle": 60,
+          "ask": "area",
+          "piCoeff": 6,
+          "decimal": "18.85"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times\\pi r^2\\)</div><div>答案：\\(6π\\text{ cm^2} \\approx 18.85\\)</div>",
+        "pdfText": "13. 扇形半徑為 \\(6\\text{ cm}\\)，圓心角為 \\(60^\\circ\\)。求面積。",
+        "answers": [
+          "18.85",
+          "6π"
+        ],
+        "displayAnswer": "6π cm^2 ≈ 18.85 cm^2",
+        "steps": "<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times\\pi r^2\\)</div><div>答案：\\(6π\\text{ cm^2} \\approx 18.85\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^2",
+          "tolerance": 0.05,
+          "exactPiCoefficient": 6
+        }
+      }
+    },
+    {
+      "params": {
+        "r": 8,
+        "angle": 90,
+        "ask": "arc"
+      },
+      "result": {
+        "questionHTML": "13. 扇形半徑為 \\(8\\text{ cm}\\)，圓心角為 \\(90^\\circ\\)。求弧長。",
+        "correctAnswer": "12.566",
+        "paramsUsed": {
+          "r": 8,
+          "angle": 90,
+          "ask": "arc",
+          "piCoeff": 4,
+          "decimal": "12.566"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times2\\pi r\\)</div><div>答案：\\(4π\\text{ cm} \\approx 12.566\\)</div>",
+        "pdfText": "13. 扇形半徑為 \\(8\\text{ cm}\\)，圓心角為 \\(90^\\circ\\)。求弧長。",
+        "answers": [
+          "12.566",
+          "4π"
+        ],
+        "displayAnswer": "4π cm ≈ 12.566 cm",
+        "steps": "<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times2\\pi r\\)</div><div>答案：\\(4π\\text{ cm} \\approx 12.566\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm",
+          "tolerance": 0.05,
+          "exactPiCoefficient": 4
+        }
+      }
+    }
+  ],
+  "pyth_cone": [
+    {
+      "params": {
+        "mode": "findL",
+        "r": 5,
+        "h": 12,
+        "l": 13
+      },
+      "result": {
+        "questionHTML": "14. 圓錐的半徑為 \\(5\\text{ cm}\\)，垂直高為 \\(12\\text{ cm}\\)。求斜高。",
+        "correctAnswer": "13",
+        "paramsUsed": {
+          "mode": "findL",
+          "r": 5,
+          "h": 12,
+          "l": 13,
+          "result": "13"
+        },
+        "solutionHTML": "<div>由畢氏定理：\\(l^2 = r^2 + h^2\\)。</div><div>\\(l=\\sqrt{5^2+12^2}=13\\)</div>",
+        "pdfText": "14. 圓錐的半徑為 \\(5\\text{ cm}\\)，垂直高為 \\(12\\text{ cm}\\)。求斜高。",
+        "answers": [
+          "13"
+        ],
+        "displayAnswer": "13 cm",
+        "steps": "<div>由畢氏定理：\\(l^2 = r^2 + h^2\\)。</div><div>\\(l=\\sqrt{5^2+12^2}=13\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm",
+          "tolerance": 0.05
+        }
+      }
+    },
+    {
+      "params": {
+        "mode": "findH",
+        "r": 5,
+        "h": 12,
+        "l": 13
+      },
+      "result": {
+        "questionHTML": "14. 圓錐的半徑為 \\(5\\text{ cm}\\)，斜高為 \\(13\\text{ cm}\\)。求垂直高。",
+        "correctAnswer": "12",
+        "paramsUsed": {
+          "mode": "findH",
+          "r": 5,
+          "h": 12,
+          "l": 13,
+          "result": "12"
+        },
+        "solutionHTML": "<div>由畢氏定理：\\(h^2 + r^2 = l^2\\)。</div><div>\\(h=\\sqrt{13^2-5^2}=12\\)</div>",
+        "pdfText": "14. 圓錐的半徑為 \\(5\\text{ cm}\\)，斜高為 \\(13\\text{ cm}\\)。求垂直高。",
+        "answers": [
+          "12"
+        ],
+        "displayAnswer": "12 cm",
+        "steps": "<div>由畢氏定理：\\(h^2 + r^2 = l^2\\)。</div><div>\\(h=\\sqrt{13^2-5^2}=12\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm",
+          "tolerance": 0.05
+        }
+      }
+    }
   ]
 }

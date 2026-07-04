@@ -2,6 +2,7 @@
 test/generated_practice.json
 test/e2e_student.html
 test/e2e_s1_term2_student.html
+test/e2e_s3_term3_student.html
 test/tool_export_test.html
 test/tool_flow_export.html
 __pycache__/
