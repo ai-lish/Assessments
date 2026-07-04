@@ -21,7 +21,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "sig_fig",
-      "code": "2526-S1-T3-09-ME-1",
+      "code": "LSC-2526-S1-T3-09-ME-1",
       "source": ""
     },
     {
@@ -46,7 +46,7 @@
       "part": "part_a",
       "validator": "fracPct",
       "generator": "frac_to_pct",
-      "code": "2526-S1-T3-10-ME-2",
+      "code": "LSC-2526-S1-T3-10-ME-2",
       "source": ""
     },
     {
@@ -72,7 +72,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "poly_desc",
-      "code": "2526-S1-T3-11-NA-9",
+      "code": "LSC-2526-S1-T3-11-NA-9",
       "source": ""
     },
     {
@@ -101,6 +101,6 @@
       "part": "part_a",
       "validator": "numeric",
       "generator": "formula_sub",
-      "code": "2526-S1-T3-12-NA-10",
+      "code": "LSC-2526-S1-T3-12-NA-10",
       "source": ""
     },

@@ -23,7 +23,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "frac_arith",
-      "code": "2526-S1-T3-01-NA-1",
+      "code": "LSC-2526-S1-T3-01-NA-1",
       "source": ""
     },
     {
@@ -49,6 +49,6 @@
       "part": "part_a",
       "validator": "numeric",
       "generator": "neg_power",
-      "code": "2526-S1-T3-02-NA-2",
+      "code": "LSC-2526-S1-T3-02-NA-2",
       "source": ""
     },

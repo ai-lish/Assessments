@@ -13,7 +13,8 @@ BANK = ROOT / "question-bank.json"
 def main():
     bank = json.loads(BANK.read_text(encoding="utf-8"))
     errors = []
-    code_re = re.compile(r"^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-(\d+)$")
+    code_re = re.compile(r"^(?:LSC-\d{4}-S\d+-T\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+|DSE-\d{4}-P\d+-[A-Z]\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+)$")
+    family_re = re.compile(r"-(NA|ME|GE|DH|UC)-(\d+)$")
     required = [
         "key", "code", "grade", "term", "part", "topicKey", "topicName",
         "type", "validator", "schemaVersion", "generator", "source",
@@ -21,6 +22,8 @@ def main():
     schema_fields = bank.get("_schema_guide", {}).get("entry_fields", {})
     if "source" not in schema_fields:
         errors.append("_schema_guide.entry_fields: missing source contract")
+    if not code_re.match("DSE-2025-P1-A1-01-NA-1"):
+        errors.append("DSE reserved code example should match code regex")
     docs = (ROOT / "docs/question-codes.md").read_text(encoding="utf-8")
     codes = set()
     family_by_generator = {}
@@ -40,7 +43,13 @@ def main():
             if not match:
                 errors.append(f"{key}: invalid code format {code}")
             else:
-                family = f"{match.group(1)}-{match.group(2)}"
+                family_match = family_re.search(code)
+                if not family_match:
+                    errors.append(f"{key}: code missing topic family suffix {code}")
+                    continue
+                family = f"{family_match.group(1)}-{family_match.group(2)}"
+                if family.startswith("UC-"):
+                    errors.append(f"{key}: UC family is reserved and must have no current members")
                 generator = item.get("generator")
                 previous = family_by_generator.get(generator)
                 if previous and previous != family:
