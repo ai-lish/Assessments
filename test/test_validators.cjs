@@ -25,6 +25,12 @@ const fixtures = [
   ["textExact rejects wrong", q("textExact", { correctAnswer: "x^2", answers: ["x^2"] }), "x^3", false],
   ["numeric accepts tolerance", q("numeric", { correctAnswer: "10" }), "10.005", true],
   ["numeric rejects outside tolerance", q("numeric", { correctAnswer: "10" }), "10.5", false],
+  ["signedNumeric accepts unicode minus", q("signedNumeric", { correctAnswer: "-5" }), "−5", true],
+  ["signedNumeric rejects wrong sign", q("signedNumeric", { correctAnswer: "-5" }), "5", false],
+  ["numericOrFraction accepts equivalent fraction", q("numericOrFraction", { correctAnswer: "3/2" }), "1.5", true],
+  ["numericOrFraction rejects wrong fraction", q("numericOrFraction", { correctAnswer: "3/2" }), "5/2", false],
+  ["unitNumeric accepts optional cubic unit", q("unitNumeric", { correctAnswer: "60", answerSpec: { unit: "cm^3", allowUnit: true } }), "60 cm³", true],
+  ["unitNumeric rejects wrong value", q("unitNumeric", { correctAnswer: "60", answerSpec: { unit: "cm^3", allowUnit: true } }), "61 cm³", false],
   ["fracPct accepts no percent", q("fracPct", { correctAnswer: "75%" }), "75", true],
   ["fracPct rejects wrong percent", q("fracPct", { correctAnswer: "75%" }), "70", false],
   ["primeFactor accepts index form", q("primeFactor", { primeFactors: { 2: 2, 3: 1 } }), "2^2x3", true],
@@ -44,6 +50,10 @@ const fixtures = [
   ["congruenceReason rejects wrong reason", q("congruenceReason", { correctAnswer: "S.A.S.", answers: ["S.A.S."] }), "ASA", false],
   ["coordinatePoint accepts axis value", q("coordinatePoint", { correctAnswer: "-2" }), "-2", true],
   ["coordinatePoint rejects wrong axis value", q("coordinatePoint", { correctAnswer: "-2" }), "2", false],
+  ["polyTerms strict accepts descending order", q("polyTerms", { correctAnswer: "x^2+3x-4", answerSpec: { order: "strict" } }), "x^2+3x-4", true],
+  ["polyTerms strict rejects term reordering", q("polyTerms", { correctAnswer: "x^2+3x-4", answerSpec: { order: "strict" } }), "3x+x^2-4", false],
+  ["polyTerms loose accepts term reordering", q("polyTerms", { correctAnswer: "3x-4", answerSpec: { order: "loose" } }), "-4+3x", true],
+  ["polyTerms loose rejects wrong coefficient", q("polyTerms", { correctAnswer: "3x-4", answerSpec: { order: "loose" } }), "-4+2x", false],
 ];
 
 for (const [label, question, input, expected] of fixtures) {

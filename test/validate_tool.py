@@ -96,7 +96,7 @@ for topic in s1_t3_topics:
 # 3. 中一第三學期 16 題均可生成
 # ----------------------------------------------------------------------
 print("\n=== 3. 中一第三學期 16 題均可生成 ===")
-preset = bank["presets"][0]
+preset = next((p for p in bank["presets"] if p["key"] == "s1_term3_part_a"), {})
 check("preset 存在", preset["key"] == "s1_term3_part_a")
 check("preset 16 題", len(preset["questions"]) == 16)
 preset_keys = [q["typeKey"] for q in preset["questions"]]
@@ -172,6 +172,8 @@ def assemble_q(type_def, res):
          "solutionHTML": res.get("solutionHTML", ""), "pdfText": res.get("pdfText", ""),
          "displayAnswer": res.get("displayAnswer", res["correctAnswer"]),
          "steps": res.get("steps", "")}
+    if type_def.get("answerSpec") or res.get("answerSpec"):
+        q["answerSpec"] = res.get("answerSpec") or type_def.get("answerSpec")
     if type_def["type"] == "choice":     q["options"] = type_def.get("options") or res.get("options", [])
     if type_def["type"] == "coordinate": q["interaction"] = res.get("interaction")
     if type_def["type"] == "congruence": q["imageSvg"] = res.get("imageSvg")

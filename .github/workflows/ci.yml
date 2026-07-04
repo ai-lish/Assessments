@@ -54,6 +54,12 @@ jobs:
       - name: S1 Term 3 baseline
         run: node test/s1_term3_baseline.cjs
 
+      - name: S1 Term 2 baseline
+        run: node test/s1_term2_baseline.cjs
+
+      - name: S1 Term 2 export e2e
+        run: node test/e2e_s1_term2_export.cjs
+
       - name: HKDSE A1 tests
         run: npm --prefix hkdse run test:a1
 

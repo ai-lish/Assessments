@@ -10,7 +10,7 @@ bank = json.loads((ROOT / 'question-bank.json').read_text())
 tmpl = (ROOT / 'templates/student.html').read_text()
 
 # Find preset
-preset = bank['presets'][0]
+preset = next(p for p in bank['presets'] if p['key'] == 's1_term3_part_a')
 print(f"Preset: {preset['key']} ({preset['name']}) — {len(preset['questions'])} questions")
 
 # Run each registry generator with random params (simulate tool)
@@ -81,6 +81,8 @@ for pq in preset['questions']:
         "displayAnswer": res.get('displayAnswer', res['correctAnswer']),
         "steps": res.get('steps', ''),
     }
+    if type_def.get('answerSpec') or res.get('answerSpec'):
+        q['answerSpec'] = res.get('answerSpec') or type_def.get('answerSpec')
     if type_def['type'] == 'choice':     q['options'] = type_def.get('options') or res.get('options', [])
     if type_def['type'] == 'coordinate': q['interaction'] = res['interaction']
     if type_def['type'] == 'congruence': q['imageSvg'] = res['imageSvg']

@@ -53,21 +53,27 @@ No current question-bank entry uses a `DSE` code. The format is reserved for lat
 | --- | --- | --- | --- |
 | `NA-1` | 分數運算 | `frac_arith` | `LSC-2526-S1-T3-01-NA-1` |
 | `NA-2` | 負數的乘方 | `neg_power` | `LSC-2526-S1-T3-02-NA-2` |
-| `NA-3` | 質因數分解 | `prime_factor` | `LSC-2526-S1-T3-03-NA-3` |
-| `NA-4` | HCF / LCM | `hcf_or_lcm` | `LSC-2526-S1-T3-04-NA-4` |
+| `NA-3` | 質因數分解 | `prime_factor` | `LSC-2526-S1-T3-03-NA-3`, `LSC-2526-S1-T2-01-NA-3` |
+| `NA-4` | HCF / LCM | `hcf_or_lcm` | `LSC-2526-S1-T3-04-NA-4`, `LSC-2526-S1-T2-02-NA-4` |
 | `NA-5` | 指數律 | `exp_law` | `LSC-2526-S1-T3-05-NA-5` |
-| `NA-6` | 代數化簡 | `alg_simplify` | `LSC-2526-S1-T3-06-NA-6` |
-| `NA-7` | 解一元一次方程 | `solve_eq` | `LSC-2526-S1-T3-07-NA-7` |
-| `NA-8` | 文字轉代數式 | `word_to_alg` | `LSC-2526-S1-T3-08-NA-8` |
-| `NA-9` | 多項式降冪排列 | `poly_desc` | `LSC-2526-S1-T3-11-NA-9` |
+| `NA-6` | 代數化簡 / 合併同類項 | `alg_simplify` | `LSC-2526-S1-T3-06-NA-6`, `LSC-2526-S1-T2-11-NA-6` |
+| `NA-7` | 解一元一次方程 | `solve_eq` | `LSC-2526-S1-T3-07-NA-7`, `LSC-2526-S1-T2-06-NA-7`, `LSC-2526-S1-T2-07-NA-7` |
+| `NA-8` | 文字轉代數式 | `word_to_alg` | `LSC-2526-S1-T3-08-NA-8`, `LSC-2526-S1-T2-05-NA-8` |
+| `NA-9` | 多項式降冪排列 | `poly_desc` | `LSC-2526-S1-T3-11-NA-9`, `LSC-2526-S1-T2-09-NA-9` |
 | `NA-10` | 公式代入 | `formula_sub` | `LSC-2526-S1-T3-12-NA-10` |
 | `NA-11` | 數列通項 | `seq_nth` | `LSC-2526-S1-T3-15-NA-11` |
+| `NA-12` | 有向數加法 | `directed_add` | `LSC-2526-S1-T2-03-NA-12` |
+| `NA-13` | 有向數乘法 | `directed_mul` | `LSC-2526-S1-T2-04-NA-13` |
+| `NA-14` | 常數項 | `poly_constant` | `LSC-2526-S1-T2-10-NA-14` |
+| `NA-15` | 展開括號 | `expand_bracket` | `LSC-2526-S1-T2-12-NA-15` |
 | `ME-1` | 有效數字 | `sig_fig` | `LSC-2526-S1-T3-09-ME-1` |
 | `ME-2` | 分數化百分數 | `frac_to_pct` | `LSC-2526-S1-T3-10-ME-2` |
 | `ME-3` | 圓面積 | `area_circle` | `LSC-2526-S0-T0-01-ME-3` |
+| `ME-4` | 長方體體積 | `cuboid_volume` | `LSC-2526-S1-T2-08-ME-4` |
 | `GE-1` | 全等三角形判定 | `congruence` | `LSC-2526-S1-T3-13-GE-1` |
-| `GE-2` | 坐標輸入及點選 | `coordinate` | `LSC-2526-S1-T3-14-GE-2` |
+| `GE-2` | 坐標輸入及點選 | `coordinate` | `LSC-2526-S1-T3-14-GE-2`, `LSC-2526-S1-T2-13-GE-2` |
 | `GE-3` | 角的類型 | `angle_type` | `LSC-2526-S0-T0-02-GE-3` |
+| `GE-4` | 象限判斷 | `quadrant` | `LSC-2526-S1-T2-14-GE-4` |
 | `DH-1` | 離散／連續數據 | `data_type` | `LSC-2526-S1-T3-16-DH-1` |
 
 `UC` is retained as a topic code for unclassifiable future items only. It currently has no registered family members.

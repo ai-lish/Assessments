@@ -13,9 +13,9 @@ NODE = subprocess.run(["which", "node"], capture_output=True, text=True).stdout.
 
 SUPPORTED_TYPES = {"text", "choice", "coordinate", "congruence"}
 SUPPORTED_CHECKS = {
-    "textExact", "numeric", "fracPct",
+    "textExact", "numeric", "signedNumeric", "numericOrFraction", "unitNumeric", "fracPct",
     "primeFactor", "algebraQ8", "hcfLcm",
-    "choiceKey", "congruenceReason", "coordinatePoint"
+    "polyTerms", "choiceKey", "congruenceReason", "coordinatePoint"
 }
 CODE_RE = re.compile(r"^(?:LSC-\d{4}-S\d+-T\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+|DSE-\d{4}-P\d+-[A-Z]\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+)$")
 FAMILY_RE = re.compile(r"-(NA|ME|GE|DH|UC)-(\d+)$")
@@ -172,33 +172,44 @@ process.stdout.write(JSON.stringify(bad));
         passes += 1
 
     print("=== Preset ===")
-    expected_order = [
-        "frac_arith", "neg_power", "prime_factor", "hcf_or_lcm",
-        "exp_law", "alg_simplify", "solve_eq", "word_to_alg",
-        "sig_fig", "frac_to_pct", "poly_desc", "formula_sub",
-        "congruence", "coordinate", "seq_nth", "data_type"
-    ]
-    preset = next((p for p in bank.get("presets", []) if p["key"] == "s1_term3_part_a"), None)
-    if not preset:
-        print("  ERR: preset 's1_term3_part_a' missing")
-        failures += 1
-    else:
+    preset_orders = {
+        "s1_term3_part_a": [
+            "frac_arith", "neg_power", "prime_factor", "hcf_or_lcm",
+            "exp_law", "alg_simplify", "solve_eq", "word_to_alg",
+            "sig_fig", "frac_to_pct", "poly_desc", "formula_sub",
+            "congruence", "coordinate", "seq_nth", "data_type",
+        ],
+        "s1_term2_part_a": [
+            "s1t2_prime_factor", "s1t2_hcf", "directed_add", "directed_mul",
+            "s1t2_word_to_alg", "s1t2_solve_eq_fraction", "s1t2_solve_eq_negative",
+            "cuboid_volume", "s1t2_poly_desc", "poly_constant", "s1t2_alg_simplify",
+            "expand_bracket", "s1t2_coordinate", "quadrant",
+        ],
+    }
+    generate_keys = []
+    for preset_key, expected_order in preset_orders.items():
+        preset = next((p for p in bank.get("presets", []) if p["key"] == preset_key), None)
+        if not preset:
+            print(f"  ERR: preset '{preset_key}' missing")
+            failures += 1
+            continue
         actual = [q["typeKey"] for q in preset["questions"]]
         if actual != expected_order:
-            print(f"  ERR: order mismatch. expected={expected_order}")
+            print(f"  ERR: {preset_key} order mismatch. expected={expected_order}")
             print(f"                 actual  ={actual}")
             failures += 1
         else:
             missing = [k for k in actual if k not in keys]
             if missing:
-                print(f"  ERR: preset references missing types: {missing}")
+                print(f"  ERR: {preset_key} references missing types: {missing}")
                 failures += 1
             else:
-                print(f"  OK ({len(expected_order)} types in correct order)")
+                print(f"  OK {preset_key} ({len(expected_order)} types in correct order)")
                 passes += 1
+                generate_keys.extend(expected_order)
 
     print("=== Generate + check ===")
-    for key in expected_order:
+    for key in generate_keys:
         t = keys.get(key)
         if not t:
             print(f"  {key:18s} SKIP (type missing)")

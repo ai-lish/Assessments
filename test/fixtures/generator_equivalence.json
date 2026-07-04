@@ -1288,5 +1288,493 @@
         "checkType": "choiceKey"
       }
     }
+  ],
+  "directed_add": [
+    {
+      "params": {
+        "a": -7,
+        "b": 2
+      },
+      "result": {
+        "questionHTML": "3. 計算有向數：\\( -7 + 2 \\)。",
+        "correctAnswer": "-5",
+        "paramsUsed": {
+          "a": -7,
+          "b": 2,
+          "result": -5
+        },
+        "solutionHTML": "<div>步驟：</div><div>把加法視為在數線上移動：由 \\(-7\\) 出發，向右移動 2 格。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -7 + 2 = -5 \\)</div>",
+        "pdfText": "3. 計算有向數：\\( -7 + 2 \\)。",
+        "answers": [
+          "-5"
+        ],
+        "displayAnswer": "-5",
+        "steps": "<div>步驟：</div><div>把加法視為在數線上移動：由 \\(-7\\) 出發，向右移動 2 格。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -7 + 2 = -5 \\)</div>",
+        "checkType": "signedNumeric"
+      }
+    },
+    {
+      "params": {
+        "a": -4,
+        "b": -5
+      },
+      "result": {
+        "questionHTML": "3. 計算有向數：\\( -4 + (-5) \\)。",
+        "correctAnswer": "-9",
+        "paramsUsed": {
+          "a": -4,
+          "b": -5,
+          "result": -9
+        },
+        "solutionHTML": "<div>步驟：</div><div>把加法視為在數線上移動：由 \\(-4\\) 出發，向左移動 5 格。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -4 + (-5) = -9 \\)</div>",
+        "pdfText": "3. 計算有向數：\\( -4 + (-5) \\)。",
+        "answers": [
+          "-9"
+        ],
+        "displayAnswer": "-9",
+        "steps": "<div>步驟：</div><div>把加法視為在數線上移動：由 \\(-4\\) 出發，向左移動 5 格。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -4 + (-5) = -9 \\)</div>",
+        "checkType": "signedNumeric"
+      }
+    }
+  ],
+  "directed_mul": [
+    {
+      "params": {
+        "a": -3,
+        "b": 6
+      },
+      "result": {
+        "questionHTML": "4. 計算有向數：\\( (-3) \\times (6) \\)。",
+        "correctAnswer": "-18",
+        "paramsUsed": {
+          "a": -3,
+          "b": 6,
+          "result": -18
+        },
+        "solutionHTML": "<div>步驟：</div><div>異號相乘得負數。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (-3) \\times (6) = -18 \\)</div>",
+        "pdfText": "4. 計算有向數：\\( (-3) \\times (6) \\)。",
+        "answers": [
+          "-18"
+        ],
+        "displayAnswer": "-18",
+        "steps": "<div>步驟：</div><div>異號相乘得負數。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (-3) \\times (6) = -18 \\)</div>",
+        "checkType": "signedNumeric"
+      }
+    },
+    {
+      "params": {
+        "a": -4,
+        "b": -5
+      },
+      "result": {
+        "questionHTML": "4. 計算有向數：\\( (-4) \\times (-5) \\)。",
+        "correctAnswer": "20",
+        "paramsUsed": {
+          "a": -4,
+          "b": -5,
+          "result": 20
+        },
+        "solutionHTML": "<div>步驟：</div><div>同號相乘得正數，異號相乘得負數。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (-4) \\times (-5) = 20 \\)</div>",
+        "pdfText": "4. 計算有向數：\\( (-4) \\times (-5) \\)。",
+        "answers": [
+          "20"
+        ],
+        "displayAnswer": "20",
+        "steps": "<div>步驟：</div><div>同號相乘得正數，異號相乘得負數。</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (-4) \\times (-5) = 20 \\)</div>",
+        "checkType": "signedNumeric"
+      }
+    }
+  ],
+  "cuboid_volume": [
+    {
+      "params": {
+        "l": 3,
+        "w": 4,
+        "h": 5
+      },
+      "result": {
+        "questionHTML": "8. 一個長方體的長、闊、高分別是 \\( 3 \\text{ cm} \\)、\\( 4 \\text{ cm} \\)、\\( 5 \\text{ cm} \\)。求它的體積。",
+        "correctAnswer": "60",
+        "paramsUsed": {
+          "l": 3,
+          "w": 4,
+          "h": 5,
+          "unit": "cm^3",
+          "result": 60
+        },
+        "solutionHTML": "<div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 3 \\times 4 \\times 5 = 60 \\)</div><div>答案：\\( 60 \\text{ cm}^3 \\)</div>",
+        "pdfText": "8. 一個長方體的長、闊、高分別是 \\( 3 \\text{ cm} \\)、\\( 4 \\text{ cm} \\)、\\( 5 \\text{ cm} \\)。求它的體積。",
+        "answers": [
+          "60",
+          "60cm^3",
+          "60cm³"
+        ],
+        "displayAnswer": "60 cm³",
+        "steps": "<div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 3 \\times 4 \\times 5 = 60 \\)</div><div>答案：\\( 60 \\text{ cm}^3 \\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "unit": "cm^3",
+          "allowUnit": true
+        }
+      }
+    },
+    {
+      "params": {
+        "l": 7,
+        "w": 2,
+        "h": 6
+      },
+      "result": {
+        "questionHTML": "8. 一個長方體的長、闊、高分別是 \\( 7 \\text{ cm} \\)、\\( 2 \\text{ cm} \\)、\\( 6 \\text{ cm} \\)。求它的體積。",
+        "correctAnswer": "84",
+        "paramsUsed": {
+          "l": 7,
+          "w": 2,
+          "h": 6,
+          "unit": "cm^3",
+          "result": 84
+        },
+        "solutionHTML": "<div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 7 \\times 2 \\times 6 = 84 \\)</div><div>答案：\\( 84 \\text{ cm}^3 \\)</div>",
+        "pdfText": "8. 一個長方體的長、闊、高分別是 \\( 7 \\text{ cm} \\)、\\( 2 \\text{ cm} \\)、\\( 6 \\text{ cm} \\)。求它的體積。",
+        "answers": [
+          "84",
+          "84cm^3",
+          "84cm³"
+        ],
+        "displayAnswer": "84 cm³",
+        "steps": "<div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 7 \\times 2 \\times 6 = 84 \\)</div><div>答案：\\( 84 \\text{ cm}^3 \\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "unit": "cm^3",
+          "allowUnit": true
+        }
+      }
+    }
+  ],
+  "poly_constant": [
+    {
+      "params": {
+        "a": 2,
+        "b": 5,
+        "c": -8
+      },
+      "result": {
+        "questionHTML": "10. 寫出多項式 \\( 2x^2 + 5x - 8 \\) 的常數項。",
+        "correctAnswer": "-8",
+        "paramsUsed": {
+          "a": 2,
+          "b": 5,
+          "c": -8
+        },
+        "solutionHTML": "<div>常數項是不含變數 \\(x\\) 的項。</div><div>在 \\( 2x^2 + 5x - 8 \\) 中，常數項是 \\(-8\\)。</div>",
+        "pdfText": "10. 寫出多項式 \\( 2x^2 + 5x - 8 \\) 的常數項。",
+        "answers": [
+          "-8"
+        ],
+        "displayAnswer": "-8",
+        "steps": "<div>常數項是不含變數 \\(x\\) 的項。</div><div>在 \\( 2x^2 + 5x - 8 \\) 中，常數項是 \\(-8\\)。</div>",
+        "checkType": "signedNumeric"
+      }
+    },
+    {
+      "params": {
+        "a": 4,
+        "b": 3,
+        "c": 6
+      },
+      "result": {
+        "questionHTML": "10. 寫出多項式 \\( 4x^2 + 3x + 6 \\) 的常數項。",
+        "correctAnswer": "6",
+        "paramsUsed": {
+          "a": 4,
+          "b": 3,
+          "c": 6
+        },
+        "solutionHTML": "<div>常數項是不含變數 \\(x\\) 的項。</div><div>在 \\( 4x^2 + 3x + 6 \\) 中，常數項是 \\(6\\)。</div>",
+        "pdfText": "10. 寫出多項式 \\( 4x^2 + 3x + 6 \\) 的常數項。",
+        "answers": [
+          "6"
+        ],
+        "displayAnswer": "6",
+        "steps": "<div>常數項是不含變數 \\(x\\) 的項。</div><div>在 \\( 4x^2 + 3x + 6 \\) 中，常數項是 \\(6\\)。</div>",
+        "checkType": "signedNumeric"
+      }
+    }
+  ],
+  "expand_bracket": [
+    {
+      "params": {
+        "k": -3,
+        "a": 2,
+        "b": -4
+      },
+      "result": {
+        "questionHTML": "12. 展開並化簡 \\( -3(2x - 4) \\)。",
+        "correctAnswer": "-6x+12",
+        "paramsUsed": {
+          "k": -3,
+          "a": 2,
+          "b": -4,
+          "xCoeff": -6,
+          "constTerm": 12
+        },
+        "solutionHTML": "<div>用乘法分配律展開括號：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -3(2x - 4) = -3\\times 2x + -3\\times (-4) = -6x+12 \\)</div>",
+        "pdfText": "12. 展開並化簡 \\( -3(2x - 4) \\)。",
+        "answers": [
+          "-6x+12"
+        ],
+        "displayAnswer": "-6x+12",
+        "steps": "<div>用乘法分配律展開括號：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -3(2x - 4) = -3\\times 2x + -3\\times (-4) = -6x+12 \\)</div>",
+        "checkType": "polyTerms",
+        "answerSpec": {
+          "order": "loose"
+        }
+      }
+    },
+    {
+      "params": {
+        "k": 4,
+        "a": 3,
+        "b": 5
+      },
+      "result": {
+        "questionHTML": "12. 展開並化簡 \\( 4(3x + 5) \\)。",
+        "correctAnswer": "12x+20",
+        "paramsUsed": {
+          "k": 4,
+          "a": 3,
+          "b": 5,
+          "xCoeff": 12,
+          "constTerm": 20
+        },
+        "solutionHTML": "<div>用乘法分配律展開括號：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 4(3x + 5) = 4\\times 3x + 4\\times (5) = 12x+20 \\)</div>",
+        "pdfText": "12. 展開並化簡 \\( 4(3x + 5) \\)。",
+        "answers": [
+          "12x+20"
+        ],
+        "displayAnswer": "12x+20",
+        "steps": "<div>用乘法分配律展開括號：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 4(3x + 5) = 4\\times 3x + 4\\times (5) = 12x+20 \\)</div>",
+        "checkType": "polyTerms",
+        "answerSpec": {
+          "order": "loose"
+        }
+      }
+    }
+  ],
+  "quadrant": [
+    {
+      "params": {
+        "x": 2,
+        "y": 3
+      },
+      "result": {
+        "questionHTML": "14. 點 \\( P(2, 3) \\) 位於第幾象限？",
+        "correctAnswer": "I",
+        "paramsUsed": {
+          "x": 2,
+          "y": 3,
+          "quadrant": "I"
+        },
+        "solutionHTML": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第一象限</b>。</div>",
+        "pdfText": "14. 點 \\( P(2, 3) \\) 位於第幾象限？",
+        "answers": [
+          "I"
+        ],
+        "displayAnswer": "第一象限",
+        "steps": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第一象限</b>。</div>",
+        "checkType": "choiceKey",
+        "options": [
+          {
+            "key": "I",
+            "label": "第一象限"
+          },
+          {
+            "key": "II",
+            "label": "第二象限"
+          },
+          {
+            "key": "III",
+            "label": "第三象限"
+          },
+          {
+            "key": "IV",
+            "label": "第四象限"
+          }
+        ]
+      }
+    },
+    {
+      "params": {
+        "x": -2,
+        "y": 3
+      },
+      "result": {
+        "questionHTML": "14. 點 \\( P(-2, 3) \\) 位於第幾象限？",
+        "correctAnswer": "II",
+        "paramsUsed": {
+          "x": -2,
+          "y": 3,
+          "quadrant": "II"
+        },
+        "solutionHTML": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第二象限</b>。</div>",
+        "pdfText": "14. 點 \\( P(-2, 3) \\) 位於第幾象限？",
+        "answers": [
+          "II"
+        ],
+        "displayAnswer": "第二象限",
+        "steps": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第二象限</b>。</div>",
+        "checkType": "choiceKey",
+        "options": [
+          {
+            "key": "I",
+            "label": "第一象限"
+          },
+          {
+            "key": "II",
+            "label": "第二象限"
+          },
+          {
+            "key": "III",
+            "label": "第三象限"
+          },
+          {
+            "key": "IV",
+            "label": "第四象限"
+          }
+        ]
+      }
+    },
+    {
+      "params": {
+        "x": -2,
+        "y": -3
+      },
+      "result": {
+        "questionHTML": "14. 點 \\( P(-2, -3) \\) 位於第幾象限？",
+        "correctAnswer": "III",
+        "paramsUsed": {
+          "x": -2,
+          "y": -3,
+          "quadrant": "III"
+        },
+        "solutionHTML": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第三象限</b>。</div>",
+        "pdfText": "14. 點 \\( P(-2, -3) \\) 位於第幾象限？",
+        "answers": [
+          "III"
+        ],
+        "displayAnswer": "第三象限",
+        "steps": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第三象限</b>。</div>",
+        "checkType": "choiceKey",
+        "options": [
+          {
+            "key": "I",
+            "label": "第一象限"
+          },
+          {
+            "key": "II",
+            "label": "第二象限"
+          },
+          {
+            "key": "III",
+            "label": "第三象限"
+          },
+          {
+            "key": "IV",
+            "label": "第四象限"
+          }
+        ]
+      }
+    },
+    {
+      "params": {
+        "x": 2,
+        "y": -3
+      },
+      "result": {
+        "questionHTML": "14. 點 \\( P(2, -3) \\) 位於第幾象限？",
+        "correctAnswer": "IV",
+        "paramsUsed": {
+          "x": 2,
+          "y": -3,
+          "quadrant": "IV"
+        },
+        "solutionHTML": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第四象限</b>。</div>",
+        "pdfText": "14. 點 \\( P(2, -3) \\) 位於第幾象限？",
+        "answers": [
+          "IV"
+        ],
+        "displayAnswer": "第四象限",
+        "steps": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第四象限</b>。</div>",
+        "checkType": "choiceKey",
+        "options": [
+          {
+            "key": "I",
+            "label": "第一象限"
+          },
+          {
+            "key": "II",
+            "label": "第二象限"
+          },
+          {
+            "key": "III",
+            "label": "第三象限"
+          },
+          {
+            "key": "IV",
+            "label": "第四象限"
+          }
+        ]
+      }
+    }
+  ],
+  "s1t2_solve_eq_fraction": [
+    {
+      "params": {
+        "coeff": 4,
+        "rVal": 6
+      },
+      "result": {
+        "questionHTML": "7. 解方程 \\( 4x = 6 \\)。",
+        "correctAnswer": "3/2",
+        "paramsUsed": {
+          "coeff": 4,
+          "xVal": "3/2",
+          "rVal": 6
+        },
+        "solutionHTML": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} 4x &= 6 \\\\ x &= \\frac{6}{4} \\\\ x &= 3/2 \\end{aligned} \\)</div>",
+        "pdfText": "7. 解方程 \\( 4x = 6 \\)。",
+        "answers": [
+          "3/2"
+        ],
+        "displayAnswer": "3/2",
+        "steps": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} 4x &= 6 \\\\ x &= \\frac{6}{4} \\\\ x &= 3/2 \\end{aligned} \\)</div>",
+        "checkType": "numeric",
+        "prefix": "x = "
+      }
+    },
+    {
+      "params": {
+        "coeff": 6,
+        "rVal": 10
+      },
+      "result": {
+        "questionHTML": "7. 解方程 \\( 6x = 10 \\)。",
+        "correctAnswer": "5/3",
+        "paramsUsed": {
+          "coeff": 6,
+          "xVal": "5/3",
+          "rVal": 10
+        },
+        "solutionHTML": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} 6x &= 10 \\\\ x &= \\frac{10}{6} \\\\ x &= 5/3 \\end{aligned} \\)</div>",
+        "pdfText": "7. 解方程 \\( 6x = 10 \\)。",
+        "answers": [
+          "5/3"
+        ],
+        "displayAnswer": "5/3",
+        "steps": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} 6x &= 10 \\\\ x &= \\frac{10}{6} \\\\ x &= 5/3 \\end{aligned} \\)</div>",
+        "checkType": "numeric",
+        "prefix": "x = "
+      }
+    }
   ]
 }
