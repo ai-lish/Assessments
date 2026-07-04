@@ -1,0 +1,363 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Assessments — 免登入數學練習工具</title>
+  <meta name="description" content="免登入使用的數學練習工具：初中甲部短答練習、中學文憑試歷屆試題練習、老師選題工具。">
+  <style>
+    :root {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-soft: #eef4ff;
+      --ink: #172033;
+      --muted: #5d687b;
+      --line: #ccd5e4;
+      --primary: #2457a7;
+      --primary-dark: #173b74;
+      --primary-soft: #e1ecff;
+      --success: #146c43;
+      --warning: #8a5500;
+      --warning-bg: #fff4d6;
+      --shadow: 0 8px 24px rgb(31 52 86 / 10%);
+      --shadow-lg: 0 16px 40px rgb(31 52 86 / 12%);
+      font-family:
+        -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans HK",
+        "PingFang HK", "Microsoft JhengHei", sans-serif;
+    }
+    * { box-sizing: border-box; }
+    html { background: var(--bg); color: var(--ink); scroll-behavior: smooth; }
+    body { margin: 0; min-width: 0; overflow-wrap: anywhere; line-height: 1.55; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* --- Hero --- */
+    .hero {
+      background:
+        radial-gradient(1200px 500px at 80% -10%, #c8dbff 0%, transparent 60%),
+        radial-gradient(900px 400px at 0% 100%, #d9e6ff 0%, transparent 60%),
+        linear-gradient(180deg, #eaf1ff 0%, var(--bg) 100%);
+      padding: 56px 20px 36px;
+    }
+    .hero-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .hero h1 {
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      margin: 0 0 6px;
+      letter-spacing: -0.01em;
+    }
+    .hero p.subtitle {
+      color: var(--muted);
+      font-size: 1.05rem;
+      margin: 0 0 18px;
+      max-width: 720px;
+    }
+    .top-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      font-size: 0.95rem;
+    }
+    .top-links a { color: var(--primary-dark); font-weight: 500; }
+
+    /* --- Container --- */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 80px;
+    }
+
+    /* --- Section --- */
+    section.section { margin: 0 0 44px; }
+    .section-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin: 0 0 16px;
+    }
+    .section-head h2 {
+      font-size: 1.4rem;
+      margin: 0;
+    }
+    .section-head .section-note {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    /* --- Card grid --- */
+    .card-grid {
+      display: grid;
+      gap: 18px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    }
+    article.card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      box-shadow: var(--shadow);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+    article.card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-lg);
+    }
+    article.card .badge {
+      align-self: flex-start;
+      display: inline-block;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      border-radius: 999px;
+      padding: 2px 10px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+    }
+    article.card .badge.muted {
+      background: #f0f2f6;
+      color: var(--muted);
+    }
+    article.card .badge.warn {
+      background: var(--warning-bg);
+      color: var(--warning);
+    }
+    article.card h3 {
+      margin: 4px 0 0;
+      font-size: 1.2rem;
+    }
+    article.card p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 0.95rem;
+      flex: 1;
+    }
+    article.card .card-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px 12px;
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    article.card .card-meta b { color: var(--ink); font-weight: 600; }
+    article.card .card-cta {
+      margin-top: 8px;
+    }
+    .button-link {
+      border: 1px solid var(--primary);
+      border-radius: 0.65rem;
+      background: var(--primary);
+      color: #fff;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.35rem;
+      padding: 0.6rem 1.05rem;
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+    .button-link:hover { background: var(--primary-dark); text-decoration: none; }
+    .button-link.secondary {
+      background: #fff;
+      color: var(--primary-dark);
+    }
+    .button-link.secondary:hover {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+    }
+    .button-link[disabled],
+    .button-link.disabled {
+      background: #e2e6ee;
+      border-color: #d6dbe5;
+      color: var(--muted);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    /* --- Notice / info panel --- */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px 22px;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+    .panel h3 { margin: 0 0 6px; color: var(--ink); font-size: 1.05rem; }
+    .panel p { margin: 6px 0; }
+    .panel code {
+      background: #f0f3f8;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 0.88em;
+      color: var(--ink);
+    }
+
+    /* --- Footer --- */
+    footer {
+      border-top: 1px solid var(--line);
+      background: #eef2fa;
+      color: var(--muted);
+      font-size: 0.88rem;
+      padding: 22px 20px;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .footer-inner a { color: var(--primary-dark); }
+
+    @media (max-width: 540px) {
+      .hero { padding: 36px 18px 24px; }
+      .container { padding: 18px 16px 60px; }
+      article.card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <h1>Assessments</h1>
+      <p class="subtitle">免登入使用嘅數學練習工具。集中存放初中短答題目庫、HKDSE 歷屆試題同老師選題工具。</p>
+      <nav class="top-links" aria-label="主要連結">
+        <a href="#sec-junior">初中甲部</a>
+        <a href="#sec-hkdse">HKDSE 練習</a>
+        <a href="#sec-tool">老師選題工具</a>
+        <a href="https://github.com/ai-lish/Assessments">GitHub Repo</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <section class="section" id="sec-junior">
+      <div class="section-head">
+        <h2>初中甲部練習</h2>
+        <span class="section-note">中一至中三 · 短答題 · 即開即做</span>
+      </div>
+      <div class="card-grid">
+
+        <article class="card">
+          <span class="badge">中一</span>
+          <h3>中一甲部練習</h3>
+          <p>第三學期短答題，共 16 題；涵蓋分數、指數、質因數、HCF/LCM、簡易代數、坐標及全等三角形。</p>
+          <div class="card-meta">
+            <span>題目數：<b>16</b></span>
+            <span>學期：<b>T3</b></span>
+          </div>
+          <div class="card-cta">
+            <a class="button-link" href="s1/part-a.html">開始練習</a>
+            <a class="button-link secondary" href="s1/index.html">第二學期版（14 題）→</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="badge muted">中二</span>
+          <h3>中二甲部練習</h3>
+          <p>中二甲部題目庫正籌備中。題型待設計（暫無可練習內容）。</p>
+          <div class="card-meta">
+            <span>狀態：<b>題目庫籌備中</b></span>
+          </div>
+          <div class="card-cta">
+            <a class="button-link disabled" aria-disabled="true" tabindex="-1">尚未提供</a>
+          </div>
+        </article>
+
+        <article class="card">
+          <span class="badge">中三</span>
+          <h3>中三甲部練習</h3>
+          <p>第三學期短答題，共 14 題；涵蓋多項式、十字相乘、平方差、科學記數、不等式、立體體積及扇形面積。</p>
+          <div class="card-meta">
+            <span>題目數：<b>14</b></span>
+            <span>學期：<b>T3</b></span>
+          </div>
+          <div class="card-cta">
+            <a class="button-link" href="s3/part-a.html">開始練習</a>
+          </div>
+        </article>
+
+      </div>
+      <div class="panel" style="margin-top:18px;">
+        <h3>關於初中甲部題目</h3>
+        <p>每份練習由題目庫（<code>question-bank.json</code>）隨機參數生成，每次開新頁都會產生新題目組合；作答紀錄只儲存喺你本機瀏覽器（localStorage），不上傳。</p>
+        <p>想自訂範圍或加入其他題型？請用 <a href="#sec-tool">老師選題工具</a>。</p>
+      </div>
+    </section>
+
+    <section class="section" id="sec-hkdse">
+      <div class="section-head">
+        <h2>中學文憑試練習</h2>
+        <span class="section-note">HKDSE 數學 · 卷一長答 + 卷二選擇</span>
+      </div>
+      <div class="card-grid">
+
+        <article class="card">
+          <span class="badge">HKDSE</span>
+          <h3>HKDSE 數學卷一／卷二</h3>
+          <p>卷一 198 題（2012–2023）長答草稿 + 自評；卷二 495 題（2012–2022）選擇核對。免登入，作答只保存喺本機。</p>
+          <div class="card-meta">
+            <span>卷一：<b>198 題</b></span>
+            <span>卷二：<b>495 題</b></span>
+          </div>
+          <div class="card-cta">
+            <a class="button-link" href="hkdse/">前往 HKDSE 工具</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="section" id="sec-tool">
+      <div class="section-head">
+        <h2>HTML 製作套件</h2>
+        <span class="section-note">老師自訂練習 · 一鍵生成 standalone HTML</span>
+      </div>
+      <div class="card-grid">
+
+        <article class="card">
+          <span class="badge">老師</span>
+          <h3>初中短答題老師選題工具</h3>
+          <p>按年級 → 學期 → 課題揀題、逐題預覽、全部確認後一鍵匯出 standalone 學生版 HTML。匯出檔可離線派發，唔需要登入。</p>
+          <div class="card-meta">
+            <span>題目庫：<b>16 個核心題型</b></span>
+            <span>題目數：<b>46</b> 個動態題型</span>
+          </div>
+          <div class="card-cta">
+            <a class="button-link" href="tool/">開啟老師工具</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div>
+        由 <a href="https://github.com/ai-lish">ai-lish</a> 維護 · 公開 GitHub Pages
+      </div>
+      <div>
+        <a href="https://github.com/ai-lish/Assessments">Repo</a>
+        ·
+        <a href="README.md">README</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
