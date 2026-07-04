@@ -1321,6 +1321,7 @@ function exportStudent() {
   const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
   const questions = basket.map((b, i) => {
     const q = b.generated;
+    const typeDef = bank.data.find(t => t.key === b.typeKey);
     return {
       qid: "q" + String(i + 1).padStart(3, "0"),
       typeKey: b.typeKey,
@@ -1342,7 +1343,11 @@ function exportStudent() {
       primeFactors: q.primeFactors,
       answers: q.answers,
       q8subtype: q.q8subtype,
-      answerSpec: q.answerSpec
+      answerSpec: q.answerSpec,
+      // 新增：題型編碼（用於課堂討論同 AI handoff；唔影響判分）。
+      // 來源係 type.code，缺值時填 null 而唔省略欄位，
+      // 等 standalone HTML 入面 student.html 模板可以放心讀 q.code。
+      code: typeDef && typeDef.code ? typeDef.code : null
     };
   });
   // Validate placeholders before replace
