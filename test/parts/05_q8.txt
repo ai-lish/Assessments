@@ -22,6 +22,6 @@
       "part": "part_a",
       "validator": "algebraQ8",
       "generator": "word_to_alg",
-      "code": "2526-S1-T3-08-NA-8",
+      "code": "LSC-2526-S1-T3-08-NA-8",
       "source": ""
     },

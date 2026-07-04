@@ -17,7 +17,8 @@ SUPPORTED_CHECKS = {
     "primeFactor", "algebraQ8", "hcfLcm",
     "choiceKey", "congruenceReason", "coordinatePoint"
 }
-CODE_RE = re.compile(r"^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-(\d+)$")
+CODE_RE = re.compile(r"^(?:LSC-\d{4}-S\d+-T\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+|DSE-\d{4}-P\d+-[A-Z]\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+)$")
+FAMILY_RE = re.compile(r"-(NA|ME|GE|DH|UC)-(\d+)$")
 
 
 def run_js(code, timeout=10):
@@ -76,6 +77,9 @@ def main():
     passes = 0
 
     print("=== Schema ===")
+    if not CODE_RE.match("DSE-2025-P1-A1-01-NA-1"):
+        print("  ERR: DSE reserved code example should match CODE_RE")
+        failures += 1
     keys = {}
     codes = {}
     family_by_generator = {}
@@ -106,7 +110,16 @@ def main():
             print(f"  ERR: invalid code format '{t.get('code')}' for key {t.get('key')}")
             failures += 1
         else:
-            family = f"{code_match.group(1)}-{code_match.group(2)}"
+            family_match = FAMILY_RE.search(str(t.get("code", "")))
+            if not family_match:
+                print(f"  ERR: code missing topic family suffix '{t.get('code')}' for key {t.get('key')}")
+                failures += 1
+                family = ""
+            else:
+                family = f"{family_match.group(1)}-{family_match.group(2)}"
+            if family.startswith("UC-"):
+                print(f"  ERR: UC family must have no current members: key={t.get('key')}")
+                failures += 1
             generator = t.get("generator")
             if generator in family_by_generator and family_by_generator[generator] != family:
                 print(f"  ERR: generator family mismatch for key {t.get('key')}: {family_by_generator[generator]} vs {family}")

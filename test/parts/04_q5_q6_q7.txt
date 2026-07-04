@@ -21,7 +21,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "exp_law",
-      "code": "2526-S1-T3-05-NA-5",
+      "code": "LSC-2526-S1-T3-05-NA-5",
       "source": ""
     },
     {
@@ -49,7 +49,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "alg_simplify",
-      "code": "2526-S1-T3-06-NA-6",
+      "code": "LSC-2526-S1-T3-06-NA-6",
       "source": ""
     },
     {
@@ -76,6 +76,6 @@
       "part": "part_a",
       "validator": "numeric",
       "generator": "solve_eq",
-      "code": "2526-S1-T3-07-NA-7",
+      "code": "LSC-2526-S1-T3-07-NA-7",
       "source": ""
     },

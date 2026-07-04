@@ -22,7 +22,7 @@
       "part": "part_a",
       "validator": "coordinatePoint",
       "generator": "coordinate",
-      "code": "2526-S1-T3-14-GE-2",
+      "code": "LSC-2526-S1-T3-14-GE-2",
       "source": "",
       "answerSpec": {
         "coordinateMode": "axis-value",

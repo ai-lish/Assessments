@@ -294,7 +294,7 @@
    狀態管理
    ============================================================ */
 const STORAGE_KEY = "assess_tool_v2";
-const QUESTION_CODE_RE = /^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+$/;
+const QUESTION_CODE_RE = /^(?:LSC-\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+|DSE-\d{4}-P\d+-[A-Z]\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+)$/;
 const QUESTION_TYPE_NAMES = Object.freeze({
   area_circle: "圓面積",
   angle_type: "角的類型",

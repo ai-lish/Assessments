@@ -22,7 +22,7 @@
       "part": "part_a",
       "validator": "numeric",
       "generator": "seq_nth",
-      "code": "2526-S1-T3-15-NA-11",
+      "code": "LSC-2526-S1-T3-15-NA-11",
       "source": ""
     },
     {
@@ -57,6 +57,6 @@
       "part": "part_a",
       "validator": "choiceKey",
       "generator": "data_type",
-      "code": "2526-S1-T3-16-DH-1",
+      "code": "LSC-2526-S1-T3-16-DH-1",
       "source": ""
     }

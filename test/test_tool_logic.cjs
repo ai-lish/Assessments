@@ -9,6 +9,8 @@ const ROOT = path.resolve(__dirname, '..');
 const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'question-bank.json'), 'utf-8'));
 const tmpl = fs.readFileSync(path.join(ROOT, 'templates/student.html'), 'utf-8');
 const questionCodeDocs = fs.readFileSync(path.join(ROOT, 'docs/question-codes.md'), 'utf-8');
+const QUESTION_CODE_RE = /^(?:LSC-\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+|DSE-\d{4}-P\d+-[A-Z]\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+)$/;
+const FAMILY_RE = /-(NA|ME|GE|DH|UC)-(\d+)$/;
 
 let PASSED = 0, FAILED = 0;
 const FAILURES = [];
@@ -234,13 +236,15 @@ check('loadAll 失敗時 reset bank = null', /bank = null; tmpl = null;/.test(to
 // === 5b. PR-UI1 teacher preview UX ===
 section('5b. PR-UI1 老師工具 UX');
 check('18 題全部有 code 且唯一',
-      bank.data.every(t => /^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+$/.test(t.code || '')) &&
+      bank.data.every(t => QUESTION_CODE_RE.test(t.code || '') && String(t.code).startsWith('LSC-')) &&
       new Set(bank.data.map(t => t.code)).size === bank.data.length);
+check('DSE 保留格式 regex 可接受假想碼',
+      QUESTION_CODE_RE.test('DSE-2025-P1-A1-01-NA-1'));
 check('同一 generator 只對應同一課題家族',
       (function () {
         const seen = new Map();
         for (const t of bank.data) {
-          const m = String(t.code || '').match(/^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-(\d+)$/);
+          const m = String(t.code || '').match(FAMILY_RE);
           if (!m) return false;
           const family = `${m[1]}-${m[2]}`;
           if (seen.has(t.generator) && seen.get(t.generator) !== family) return false;
@@ -248,9 +252,13 @@ check('同一 generator 只對應同一課題家族',
         }
         return true;
       })());
+check('UC 保留但現時無題庫成員',
+      bank.data.every(t => !String(t.code || '').match(/-UC-\d+$/)) &&
+      questionCodeDocs.includes('UC') &&
+      questionCodeDocs.includes('現時無成員'));
 check('docs/question-codes.md 登記所有 generator family',
       bank.data.every(t => {
-        const m = String(t.code || '').match(/^\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-(\d+)$/);
+        const m = String(t.code || '').match(FAMILY_RE);
         if (!m) return false;
         return questionCodeDocs.includes(`| \`${m[1]}-${m[2]}\` |`) &&
           questionCodeDocs.includes(`\`${t.generator}\``);

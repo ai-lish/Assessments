@@ -29,7 +29,7 @@
       "generator": "generator registry key；對應 tool/generators.js。",
       "answerSpec": "互動題答案規格；coordinate 題需指定 coordinateMode。",
       "figure": "幾何／全等題圖形規格；可指向 generated SVG。",
-      "code": "展示用題目編碼，格式 {學年}-{年級}-{學期}-{題號}-{課題碼}-{課題家族號}，例如 2526-S1-T3-01-NA-1；指定後永不更改。",
+      "code": "展示用題目編碼；校內題格式 {來源}-{學年}-{年級}-{學期}-{題號}-{課題碼}-{家族號}，例如 LSC-2526-S1-T3-01-NA-1；DSE 保留格式 DSE-{年份}-{卷別}-{部分}-{題號}-{課題碼}-{家族號}。指定後永不更改。",
       "source": "optional string；原校內題目出處或改編來源。出處不明留空字串。"
     },
     "laTeX_escape_rule": "JSON 中 LaTeX 寫 \\( 與 \\)，JSON 解析後變 \\( \\)，MathJax 收到 1 個反斜線。",
@@ -110,7 +110,7 @@
       "part": "demo",
       "validator": "textExact",
       "generator": "area_circle",
-      "code": "2526-S0-T0-01-UC-1",
+      "code": "LSC-2526-S0-T0-01-ME-3",
       "source": ""
     },
     {
@@ -161,6 +161,6 @@
       "part": "demo",
       "validator": "choiceKey",
       "generator": "angle_type",
-      "code": "2526-S0-T0-02-UC-2",
+      "code": "LSC-2526-S0-T0-02-GE-3",
       "source": ""
     },

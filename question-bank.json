@@ -29,7 +29,7 @@
       "generator": "generator registry key；對應 tool/generators.js。",
       "answerSpec": "互動題答案規格；coordinate 題需指定 coordinateMode。",
       "figure": "幾何／全等題圖形規格；可指向 generated SVG。",
-      "code": "展示用題目編碼，格式 {學年}-{年級}-{學期}-{題號}-{課題碼}-{課題家族號}，例如 2526-S1-T3-01-NA-1；指定後永不更改。",
+      "code": "展示用題目編碼；校內題格式 {來源}-{學年}-{年級}-{學期}-{題號}-{課題碼}-{家族號}，例如 LSC-2526-S1-T3-01-NA-1；DSE 保留格式 DSE-{年份}-{卷別}-{部分}-{題號}-{課題碼}-{家族號}。指定後永不更改。",
       "source": "optional string；原校內題目出處或改編來源。出處不明留空字串。"
     },
     "laTeX_escape_rule": "JSON 中 LaTeX 寫 \\( 與 \\)，JSON 解析後變 \\( \\)，MathJax 收到 1 個反斜線。",
@@ -110,7 +110,7 @@
       "part": "demo",
       "validator": "textExact",
       "generator": "area_circle",
-      "code": "2526-S0-T0-01-UC-1",
+      "code": "LSC-2526-S0-T0-01-ME-3",
       "source": ""
     },
     {
@@ -161,7 +161,7 @@
       "part": "demo",
       "validator": "choiceKey",
       "generator": "angle_type",
-      "code": "2526-S0-T0-02-UC-2",
+      "code": "LSC-2526-S0-T0-02-GE-3",
       "source": ""
     },
     {
@@ -189,7 +189,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "frac_arith",
-      "code": "2526-S1-T3-01-NA-1",
+      "code": "LSC-2526-S1-T3-01-NA-1",
       "source": ""
     },
     {
@@ -215,7 +215,7 @@
       "part": "part_a",
       "validator": "numeric",
       "generator": "neg_power",
-      "code": "2526-S1-T3-02-NA-2",
+      "code": "LSC-2526-S1-T3-02-NA-2",
       "source": ""
     },
     {
@@ -240,7 +240,7 @@
       "part": "part_a",
       "validator": "primeFactor",
       "generator": "prime_factor",
-      "code": "2526-S1-T3-03-NA-3",
+      "code": "LSC-2526-S1-T3-03-NA-3",
       "source": ""
     },
     {
@@ -267,7 +267,7 @@
       "part": "part_a",
       "validator": "hcfLcm",
       "generator": "hcf_or_lcm",
-      "code": "2526-S1-T3-04-NA-4",
+      "code": "LSC-2526-S1-T3-04-NA-4",
       "source": ""
     },
     {
@@ -293,7 +293,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "exp_law",
-      "code": "2526-S1-T3-05-NA-5",
+      "code": "LSC-2526-S1-T3-05-NA-5",
       "source": ""
     },
     {
@@ -321,7 +321,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "alg_simplify",
-      "code": "2526-S1-T3-06-NA-6",
+      "code": "LSC-2526-S1-T3-06-NA-6",
       "source": ""
     },
     {
@@ -348,7 +348,7 @@
       "part": "part_a",
       "validator": "numeric",
       "generator": "solve_eq",
-      "code": "2526-S1-T3-07-NA-7",
+      "code": "LSC-2526-S1-T3-07-NA-7",
       "source": ""
     },
     {
@@ -375,7 +375,7 @@
       "part": "part_a",
       "validator": "algebraQ8",
       "generator": "word_to_alg",
-      "code": "2526-S1-T3-08-NA-8",
+      "code": "LSC-2526-S1-T3-08-NA-8",
       "source": ""
     },
     {
@@ -401,7 +401,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "sig_fig",
-      "code": "2526-S1-T3-09-ME-1",
+      "code": "LSC-2526-S1-T3-09-ME-1",
       "source": ""
     },
     {
@@ -426,7 +426,7 @@
       "part": "part_a",
       "validator": "fracPct",
       "generator": "frac_to_pct",
-      "code": "2526-S1-T3-10-ME-2",
+      "code": "LSC-2526-S1-T3-10-ME-2",
       "source": ""
     },
     {
@@ -452,7 +452,7 @@
       "part": "part_a",
       "validator": "textExact",
       "generator": "poly_desc",
-      "code": "2526-S1-T3-11-NA-9",
+      "code": "LSC-2526-S1-T3-11-NA-9",
       "source": ""
     },
     {
@@ -481,7 +481,7 @@
       "part": "part_a",
       "validator": "numeric",
       "generator": "formula_sub",
-      "code": "2526-S1-T3-12-NA-10",
+      "code": "LSC-2526-S1-T3-12-NA-10",
       "source": ""
     },
     {
@@ -508,7 +508,7 @@
       "part": "part_a",
       "validator": "congruenceReason",
       "generator": "congruence",
-      "code": "2526-S1-T3-13-GE-1",
+      "code": "LSC-2526-S1-T3-13-GE-1",
       "source": "",
       "figure": {
         "kind": "generated-svg-triangle-pair"
@@ -538,7 +538,7 @@
       "part": "part_a",
       "validator": "coordinatePoint",
       "generator": "coordinate",
-      "code": "2526-S1-T3-14-GE-2",
+      "code": "LSC-2526-S1-T3-14-GE-2",
       "source": "",
       "answerSpec": {
         "coordinateMode": "axis-value",
@@ -573,7 +573,7 @@
       "part": "part_a",
       "validator": "numeric",
       "generator": "seq_nth",
-      "code": "2526-S1-T3-15-NA-11",
+      "code": "LSC-2526-S1-T3-15-NA-11",
       "source": ""
     },
     {
@@ -608,7 +608,7 @@
       "part": "part_a",
       "validator": "choiceKey",
       "generator": "data_type",
-      "code": "2526-S1-T3-16-DH-1",
+      "code": "LSC-2526-S1-T3-16-DH-1",
       "source": ""
     }
   ],
