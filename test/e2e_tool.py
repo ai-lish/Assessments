@@ -112,11 +112,14 @@ html = tmpl
 # Use plain replace, not re.sub, to avoid backslash interpretation in replacement
 html = html.replace('{{TITLE}}', json.dumps(title, ensure_ascii=False))
 html = html.replace('{{QUESTIONS_DATA}}', json.dumps(questions, ensure_ascii=False))
+html = html.replace('{{QUESTION_SPECS}}', json.dumps([], ensure_ascii=False))
 html = html.replace('{{GENERATED_AT}}', json.dumps(generated_at))
 html = html.replace('{{BANK_HASH}}', json.dumps(bank_hash))
 html = html.replace('{{PRESET_KEY}}', json.dumps(preset_key))
 html = html.replace('{{GAS_URL}}', json.dumps(gas_url))
 html = html.replace('{{VALIDATORS_SCRIPT}}', (ROOT / 'tool' / 'validators.js').read_text())
+html = html.replace('{{GENERATORS_SCRIPT}}', (ROOT / 'tool' / 'generators.js').read_text())
+html = html.replace('{{RUNTIME_SEED}}', json.dumps(None))
 
 # Sanity: no placeholders left
 leftover = re.findall(r'\{\{[A-Z_]+\}\}', html)

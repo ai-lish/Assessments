@@ -219,8 +219,8 @@ if (typeof renderFn === 'function') {
 }
 
 // === 4. 模板佔位符 ===
-section('4. 模板 7 個必要佔位符');
-const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}'];
+section('4. 模板 10 個必要佔位符');
+const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{RUNTIME_SEED}}'];
 for (const ph of REQUIRED) {
   check(`模板有 ${ph}`, tmpl.includes(ph));
 }

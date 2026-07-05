@@ -9,6 +9,7 @@ const bank = JSON.parse(fs.readFileSync(path.join(ROOT, "question-bank.json"), "
 const template = fs.readFileSync(path.join(ROOT, "templates/student.html"), "utf8");
 const generators = require(path.join(ROOT, "tool/generators.js"));
 const validatorsScript = fs.readFileSync(path.join(ROOT, "tool/validators.js"), "utf8");
+const generatorsScript = generators.toStandaloneScript();
 
 let passed = 0;
 const failures = [];
@@ -215,11 +216,14 @@ function buildSandbox(questions) {
   const html = template
     .replace(/\{\{TITLE\}\}/g, JSON.stringify(preset.name))
     .replace(/\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions))
+    .replace(/\{\{QUESTION_SPECS\}\}/g, JSON.stringify([]))
     .replace(/\{\{GENERATED_AT\}\}/g, JSON.stringify("2026-07-03T00:00:00.000Z"))
     .replace(/\{\{BANK_HASH\}\}/g, JSON.stringify("baseline_hash"))
     .replace(/\{\{PRESET_KEY\}\}/g, JSON.stringify("s1_term3_part_a"))
     .replace(/\{\{GAS_URL\}\}/g, JSON.stringify("https://example.invalid/sheets"))
-    .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validatorsScript);
+    .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validatorsScript)
+    .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generatorsScript)
+    .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
   const runnableScripts = scripts.filter((script) => !script.includes("window.MathJax ="));
   if (!runnableScripts.some((script) => script.includes("function checkAnswer"))) {

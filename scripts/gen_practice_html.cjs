@@ -52,7 +52,7 @@ const AssessGenerators = require(path.join(ROOT, 'tool/generators.js'));
 const AssessValidators = require(path.join(ROOT, 'tool/validators.js'));
 
 // --- Required placeholder check (mirrors tool) ---
-const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}'];
+const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{RUNTIME_SEED}}'];
 for (const ph of REQUIRED) {
   if (!tmpl.includes(ph)) { console.error('Template missing placeholder:', ph); process.exit(1); }
 }
@@ -163,7 +163,10 @@ for (const preset of presets) {
   let html = tmpl;
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
   html = safeReplace(html, /\{\{VALIDATORS_SCRIPT\}\}/g, AssessValidators.toStandaloneScript());
+  html = safeReplace(html, /\{\{GENERATORS_SCRIPT\}\}/g, AssessGenerators.toStandaloneScript());
   html = safeReplace(html, /\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions));
+  html = safeReplace(html, /\{\{QUESTION_SPECS\}\}/g, JSON.stringify([]));
+  html = safeReplace(html, /\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
   html = safeReplace(html, /\{\{GENERATED_AT\}\}/g, JSON.stringify(generatedAt));
   html = safeReplace(html, /\{\{BANK_HASH\}\}/g, JSON.stringify(bankHash));
   html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
