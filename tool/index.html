@@ -266,6 +266,12 @@
         <ul class="gate-list" id="exportGates"></ul>
         <button class="success" style="width:100%; margin-top:8px;" onclick="exportStudent()" id="btn-export" disabled>📤 匯出學生版 HTML</button>
         <div id="exportStatus" class="status"></div>
+
+        <h2 style="margin-top:18px; font-size:1.05em; border-top:1px dashed #ddd; padding-top:12px;">⑥ 發佈指令包 <span class="sub" style="font-weight:normal;">（選用 — 俾 agent 開 PR 入 exercises/）</span></h2>
+        <button class="secondary" style="width:100%; margin-bottom:6px;" onclick="copyPubPackage()" id="btn-copy-pkg">📋 複製發佈指令包</button>
+        <textarea id="pubPackage" rows="10" readonly style="width:100%; font-family:Menlo,Consolas,monospace; font-size:0.82em; background:#f8f8f8;" placeholder="按上面按鈕以產生發佈指令包 JSON"></textarea>
+        <p class="sub" style="margin: 4px 0;">貼呢段 JSON 俾 agent,agent 即可用 <code>scripts/publish_exercise.cjs</code> 將匯出嘅 HTML 落 <code>exercises/</code> 正確位置 + 印出 <code>gh pr create</code> 指令。</p>
+        <div id="pubPackageStatus" class="status"></div>
       </div>
     </div>
 
@@ -1314,6 +1320,86 @@ function exportTypeDefSpec(typeDef) {
   // JSON clone keeps the exported spec data-only while preserving all
   // generator/defaultParams/code metadata needed by the student runtime.
   return JSON.parse(JSON.stringify(typeDef));
+}
+
+// --- Publish package (PR-EXERCISES) ---
+// Build a structured JSON package that an agent (or human) can paste into
+// scripts/publish_exercise.cjs to commit the just-exported HTML into the
+// exercises/ archive and print a gh pr create command sequence.
+//
+// Mode detection: activePresetKey === "custom" → mode="custom"; else mode="regular".
+// Year/grade/term are derived from the first basket question's bank code
+// (e.g. LSC-2526-S1-T2-01-NA-3 → year=2526, grade=s1, term=t2).
+// For regular mode, the sourcePreset is the active preset key.
+function buildPubPackage() {
+  if (!bank) return null;
+  if (!Array.isArray(basket) || basket.length === 0) return null;
+  const isCustom = activePresetKey === "custom";
+  const mode = isCustom ? "custom" : "regular";
+  // Derive year/grade/term from first basket question's bank code
+  const firstQ = basket[0];
+  const firstCode = (firstQ && firstQ.typeDef && firstQ.typeDef.code) || "";
+  const codeMatch = firstCode.match(/^LSC-(\d{4})-S(\d+)-T(\d+)-/);
+  const year = codeMatch ? codeMatch[1] : "2526";
+  const grade = codeMatch ? "s" + codeMatch[2] : "s1";
+  const term = codeMatch ? "t" + codeMatch[3] : "t1";
+  // Question codes (bank-level LSC codes) — used by the agent to build a
+  // PR description listing what was published.
+  const questionCodes = basket
+    .map(b => (b && b.typeDef && b.typeDef.code) ? b.typeDef.code : null)
+    .filter(Boolean);
+  // Bank hash: same shape as exportStudent (deterministic prefix + time suffix).
+  // Time suffix here is for unique packages; the actual bank hash in the HTML
+  // uses a fixed suffix; they intentionally differ to make package ≠ HTML.
+  const bankHash = "b" + bank.data.length + "_" + basket.length + "_" + Date.now().toString(36);
+  const generatedAt = new Date().toISOString();
+  let targetPath, fileName, sourcePreset;
+  if (mode === "regular") {
+    targetPath = `exercises/${year}/${grade}/${term}`;
+    fileName = "part-a-01.html"; // suggested slot; agent/teacher can rename for second/third
+    sourcePreset = activePresetKey;
+  } else {
+    targetPath = `exercises/${year}/${grade}/${term}/custom`;
+    fileName = "custom-01.html";
+    sourcePreset = null;
+  }
+  return {
+    targetPath,
+    fileName,
+    sourcePreset,
+    mode,
+    questionCodes,
+    generatedAt,
+    bankHash,
+  };
+}
+
+function copyPubPackage() {
+  const pkg = buildPubPackage();
+  if (!pkg) {
+    showStatus("pubPackageStatus", "err", "請先載入題目庫 + 加入至少一題（basket 空白）");
+    return;
+  }
+  const json = JSON.stringify(pkg, null, 2);
+  const ta = document.getElementById("pubPackage");
+  if (!ta) { showStatus("pubPackageStatus", "err", "UI 缺少 pubPackage textbox"); return; }
+  ta.value = json;
+  // Best-effort clipboard copy. If the browser blocks it (e.g. insecure
+  // context), the teacher can still copy from the textbox manually.
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(json)
+      .then(() => showStatus("pubPackageStatus", "ok",
+        "✓ JSON 已複製到剪貼簿。" + (pkg.mode === "regular"
+          ? " targetPath=" + pkg.targetPath + " fileName=" + pkg.fileName
+          : " (custom mode)") ))
+      .catch(() => {
+        ta.select();
+        showStatus("pubPackageStatus", "ok", "✓ JSON 已寫入 textbox，請 Cmd/Ctrl+C 手動複製。");
+      });
+  } else {
+    ta.select();
+    showStatus("pubPackageStatus", "ok", "✓ JSON 已寫入 textbox，請 Cmd/Ctrl+C 手動複製。");
+  }
 }
 
 function exportStudent() {

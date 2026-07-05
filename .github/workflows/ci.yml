@@ -69,6 +69,16 @@ jobs:
       - name: S3 Term 3 export e2e
         run: node test/e2e_s3_term3_export.cjs
 
+      - name: SVG supplement check (PR #21 follow-up)
+        run: node test/final_svg_check.cjs
+
+      - name: Exercises archive runtime-random check (PR-EXERCISES)
+        run: |
+          # 1. Generate the three baseline exercises/ files from question-bank.json
+          node scripts/gen_exercise_html.cjs
+          # 2. Verify each one runtime-randomizes across two fresh loads
+          node test/exercise_runtime_random_check.cjs
+
       - name: HKDSE A1 tests
         run: npm --prefix hkdse run test:a1
 
