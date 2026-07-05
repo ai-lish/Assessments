@@ -51,6 +51,9 @@ jobs:
       - name: Teacher tool e2e
         run: python3 test/e2e_tool.py
 
+      - name: Runtime random export regression
+        run: node test/runtime_random_export.cjs
+
       - name: S1 Term 3 baseline
         run: node test/s1_term3_baseline.cjs
 

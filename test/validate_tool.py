@@ -8,7 +8,7 @@ in Python. Tests:
   4. 每種 type 嘅預覽資料完整性
   5. 單題重新生成唔改變其他題目
   6. 未確認時禁止匯出
-  7. 全部確認後使用同一批題目匯出
+  7. 學生模板 prebuilt fallback 匯出仍可用
   8. 佔位符及 inline JavaScript 語法
 """
 import json
@@ -266,10 +266,11 @@ ok, _ = can_export(b4, False)
 check("空清單 → 禁止", not ok)
 
 # ----------------------------------------------------------------------
-# 7. 全部確認後使用同一批題目匯出
+# 7. 學生模板 prebuilt fallback 匯出仍可用
 # ----------------------------------------------------------------------
-print("\n=== 7. 全部確認後使用同一批題目匯出 ===")
-# Build a full export HTML and verify it uses the same generated content
+print("\n=== 7. 學生模板 prebuilt fallback 匯出仍可用 ===")
+# Build a full fallback HTML and verify legacy prebuilt QUESTIONS_DATA remains valid.
+# Teacher-tool interactive export is covered by test/runtime_random_export.cjs.
 questions = set1
 title = "Test Practice"
 generated_at = "2026-06-11T00:00:00Z"
@@ -281,11 +282,14 @@ gas_url = ""
 html = tmpl
 html = html.replace("{{TITLE}}", json.dumps(title, ensure_ascii=False))
 html = html.replace("{{QUESTIONS_DATA}}", json.dumps(questions, ensure_ascii=False))
+html = html.replace("{{QUESTION_SPECS}}", json.dumps([], ensure_ascii=False))
 html = html.replace("{{GENERATED_AT}}", json.dumps(generated_at))
 html = html.replace("{{BANK_HASH}}", json.dumps(bank_hash))
 html = html.replace("{{PRESET_KEY}}", json.dumps(preset_key))
 html = html.replace("{{GAS_URL}}", json.dumps(gas_url))
 html = html.replace("{{VALIDATORS_SCRIPT}}", (ROOT / "tool" / "validators.js").read_text(encoding="utf-8"))
+html = html.replace("{{GENERATORS_SCRIPT}}", (ROOT / "tool" / "generators.js").read_text(encoding="utf-8"))
+html = html.replace("{{RUNTIME_SEED}}", json.dumps(None))
 
 # Verify no placeholder residue
 leftover = re.findall(r"\{\{[A-Z_]+\}\}", html)
@@ -310,7 +314,7 @@ print(f"  (wrote {out}, {len(html)} bytes)")
 # 8. 佔位符 + JS 語法
 # ----------------------------------------------------------------------
 print("\n=== 8. 佔位符 + JS 語法 ===")
-required_placeholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}"]
+required_placeholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{RUNTIME_SEED}}"]
 for ph in required_placeholders:
     check(f"模板有 {ph}", ph in tmpl)
 

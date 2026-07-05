@@ -7,7 +7,9 @@
   const api = factory();
   if (typeof module === "object" && module.exports) module.exports = api;
   root.AssessGenerators = api;
-})(typeof globalThis !== "undefined" ? globalThis : this, function() {
+})(typeof globalThis !== "undefined" ? globalThis : this, createAssessGenerators);
+
+function createAssessGenerators() {
   const generators = Object.freeze({
   "area_circle": function area_circle(p) { var r = p.radius; var area = +(Math.PI * r * r).toFixed(2); return { questionHTML: '一個圓形嘅半徑係 <b>' + r + ' cm</b>。求圓形嘅面積。（答案取至小數點後兩個位，\u03c0 取 3.14）', correctAnswer: area.toFixed(2), paramsUsed: {radius: r}, solutionHTML: '圓面積 = \u03c0r\u00b2<br>\u03c0 \u00d7 ' + r + '\u00b2 = 3.14 \u00d7 ' + (r*r) + ' = ' + area.toFixed(2) + ' cm\u00b2', pdfText: '一個圓形嘅半徑係 ' + r + ' cm。求圓形嘅面積。', answers: [area.toFixed(2)], displayAnswer: area.toFixed(2) + ' cm²', steps: '圓面積 = \u03c0r\u00b2', checkType: 'textExact' }; },
   "angle_type": function angle_type(p) { var deg = p.degrees; var typeName, typeKey; if (deg === 0) { typeName = '不是角'; typeKey = 'zero'; } else if (deg > 0 && deg < 90) { typeName = '銳角'; typeKey = 'acute'; } else if (deg === 90) { typeName = '直角'; typeKey = 'right'; } else if (deg > 90 && deg < 180) { typeName = '鈍角'; typeKey = 'obtuse'; } else if (deg === 180) { typeName = '平角'; typeKey = 'straight'; } else if (deg > 180 && deg < 360) { typeName = '優角（反角）'; typeKey = 'reflex'; } else { typeName = '不是角'; typeKey = 'zero'; } return { questionHTML: '一個角嘅度數係 <b>' + deg + '\u00b0</b>。下列哪個係佢嘅名稱？<br><br>選項：A. 銳角　B. 直角　C. 鈍角　D. 平角　E. 優角（反角）　F. 不是角', correctAnswer: typeKey, paramsUsed: {degrees: deg}, solutionHTML: deg + '\u00b0 係「' + typeName + '」。<br>銳角 = 0\u00b0 < \u03b8 < 90\u00b0；直角 = 90\u00b0；鈍角 = 90\u00b0 < \u03b8 < 180\u00b0；平角 = 180\u00b0；優角 = 180\u00b0 < \u03b8 < 360\u00b0。', pdfText: '一個角嘅度數係 ' + deg + '°。', answers: [typeKey], displayAnswer: typeName, steps: deg + '° 係「' + typeName + '」。', checkType: 'choiceKey' }; },
@@ -61,10 +63,21 @@
     return generator(mergedParams);
   }
 
+  function toStandaloneScript() {
+    return [
+      "/* Embedded from tool/generators.js by tool/index.html. */",
+      "(function(root, factory) {",
+      "  const api = factory();",
+      "  root.AssessGenerators = api;",
+      "})(typeof globalThis !== \"undefined\" ? globalThis : this, " + createAssessGenerators.toString() + ");",
+    ].join("\n");
+  }
+
   return {
     generators,
     getGenerator,
     hasGenerator,
     generateQuestion,
+    toStandaloneScript,
   };
-});
+}

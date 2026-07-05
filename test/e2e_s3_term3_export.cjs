@@ -65,11 +65,14 @@ const questions = preset.questions.map((spec, index) => {
 let html = tmpl
   .replace(/\{\{TITLE\}\}/g, "中三第三學期甲部")
   .replace(/\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions))
+  .replace(/\{\{QUESTION_SPECS\}\}/g, JSON.stringify([]))
   .replace(/\{\{GENERATED_AT\}\}/g, "2026-07-04T00:00:00.000Z")
   .replace(/\{\{BANK_HASH\}\}/g, "test-s3-term3")
   .replace(/\{\{PRESET_KEY\}\}/g, "s3_term3_part_a")
   .replace(/\{\{GAS_URL\}\}/g, "")
-  .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validators.toStandaloneScript());
+  .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validators.toStandaloneScript())
+  .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generators.toStandaloneScript())
+  .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
 
 const leftovers = html.match(/\{\{[A-Z_]+\}\}/g) || [];
 if (leftovers.length) throw new Error(`leftover placeholders: ${leftovers.join(", ")}`);
