@@ -255,13 +255,15 @@ function withOptionalRuntimeSeed(seedValue, fn) {
 
 function createRuntimeSeed(seedValue) {
   if (seedValue !== null && seedValue !== undefined && seedValue !== "") return seedValue;
+  const entropy = [];
   if (window.crypto && crypto.getRandomValues) {
     const parts = new Uint32Array(4);
     crypto.getRandomValues(parts);
-    return Array.from(parts).join("-");
+    entropy.push(Array.from(parts).join("-"));
   }
   const perf = window.performance && performance.now ? performance.now() : 0;
-  return Date.now() + "-" + perf + "-" + Math.random();
+  entropy.push(Date.now(), perf, Math.random());
+  return entropy.join("-");
 }
 
 function assembleRuntimeQuestion(spec, typeDef, res, index) {
