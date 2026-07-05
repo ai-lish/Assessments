@@ -10,26 +10,68 @@ const template = fs.readFileSync(path.join(ROOT, "templates/student.html"), "utf
 const validators = require(path.join(ROOT, "tool/validators.js"));
 const generators = require(path.join(ROOT, "tool/generators.js"));
 
-const preset = bank.presets.find((p) => p.key === "s1_term3_part_a");
-if (!preset) throw new Error("missing preset s1_term3_part_a");
-
 const typeByKey = new Map(bank.data.map((t) => [t.key, t]));
-const questionSpecs = preset.questions.map((spec, index) => {
-  const typeDef = typeByKey.get(spec.typeKey);
-  if (!typeDef) throw new Error(`missing typeDef ${spec.typeKey}`);
-  return {
-    qid: `q${String(index + 1).padStart(3, "0")}`,
-    typeKey: spec.typeKey,
-    typeDef: JSON.parse(JSON.stringify(typeDef)),
-    params: spec.params || {},
-  };
-});
+
+function buildInteractiveQuestionSpecs(preset) {
+  return preset.questions.map((spec, index) => {
+    const typeDef = typeByKey.get(spec.typeKey);
+    if (!typeDef) throw new Error(`missing typeDef ${spec.typeKey}`);
+    return {
+      qid: `q${String(index + 1).padStart(3, "0")}`,
+      typeKey: spec.typeKey,
+      typeDef: JSON.parse(JSON.stringify(typeDef)),
+      params: {},
+    };
+  });
+}
+
+function buildPreviewLeakedQuestionSpecs(preset) {
+  return preset.questions.map((spec, index) => {
+    const typeDef = typeByKey.get(spec.typeKey);
+    if (!typeDef) throw new Error(`missing typeDef ${spec.typeKey}`);
+    const preview = generators.generateQuestion(typeDef, {});
+    return {
+      qid: `q${String(index + 1).padStart(3, "0")}`,
+      typeKey: spec.typeKey,
+      typeDef: JSON.parse(JSON.stringify(typeDef)),
+      params: preview.paramsUsed || {},
+    };
+  });
+}
+
+const presetByKey = new Map(bank.presets.map((p) => [p.key, p]));
+const runtimePresets = [
+  { key: "s1_term2_part_a", expectedCount: 14, probeTypeKey: "s1t2_prime_factor", probeKeys: ["n"] },
+  { key: "s1_term3_part_a", expectedCount: 16, probeTypeKey: "frac_arith", probeKeys: ["a", "b", "c", "d", "op"] },
+  { key: "s3_term3_part_a", expectedCount: 14, probeTypeKey: "poly_add_sub", probeKeys: ["a", "b", "c", "d", "e", "f", "op"] },
+];
+
+for (const item of runtimePresets) {
+  if (!presetByKey.has(item.key)) throw new Error(`missing preset ${item.key}`);
+}
+
+const s1Term3Preset = presetByKey.get("s1_term3_part_a");
+const questionSpecs = buildInteractiveQuestionSpecs(s1Term3Preset);
+const leakedQuestionSpecs = buildPreviewLeakedQuestionSpecs(s1Term3Preset);
 const allTypeQuestionSpecs = bank.data.map((typeDef, index) => ({
   qid: `type${String(index + 1).padStart(3, "0")}`,
   typeKey: typeDef.key,
   typeDef: JSON.parse(JSON.stringify(typeDef)),
   params: {},
 }));
+
+function makeExportQuestionSpecsFromPreviewBasket(preset) {
+  return preset.questions.map((spec, index) => {
+  const typeDef = typeByKey.get(spec.typeKey);
+  if (!typeDef) throw new Error(`missing typeDef ${spec.typeKey}`);
+  return {
+    qid: `q${String(index + 1).padStart(3, "0")}`,
+    typeKey: spec.typeKey,
+    typeDef: JSON.parse(JSON.stringify(typeDef)),
+    params: {},
+  };
+});
+}
 
 let passed = 0;
 const failures = [];
@@ -81,11 +123,11 @@ function makeMath(seed) {
   return math;
 }
 
-function buildHtml() {
+function buildHtml(preset, specs = questionSpecs) {
   return template
     .replace(/\{\{TITLE\}\}/g, JSON.stringify(preset.name))
     .replace(/\{\{QUESTIONS_DATA\}\}/g, JSON.stringify([]))
-    .replace(/\{\{QUESTION_SPECS\}\}/g, JSON.stringify(questionSpecs))
+    .replace(/\{\{QUESTION_SPECS\}\}/g, JSON.stringify(specs))
     .replace(/\{\{GENERATED_AT\}\}/g, JSON.stringify("2026-07-05T00:00:00.000Z"))
     .replace(/\{\{BANK_HASH\}\}/g, JSON.stringify("runtime_random_test"))
     .replace(/\{\{PRESET_KEY\}\}/g, JSON.stringify("s1_term3_part_a"))
@@ -95,7 +137,7 @@ function buildHtml() {
     .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
 }
 
-function buildSandbox(seed) {
+function buildSandbox(seed, preset = s1Term3Preset, specs = questionSpecs) {
   const elements = new Map();
   const listeners = {};
   const storage = new Map();
@@ -162,7 +204,7 @@ function buildSandbox(seed) {
   sandbox.window.Blob = sandbox.Blob;
   sandbox.window.Math = sandbox.Math;
 
-  const html = buildHtml();
+  const html = buildHtml(preset, specs);
   const leftover = html.match(/\{\{[A-Z_]+\}\}/g) || [];
   if (leftover.length) throw new Error(`leftover placeholders: ${leftover.join(", ")}`);
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
@@ -176,6 +218,18 @@ function buildSandbox(seed) {
 
 function paramsSignature(sandbox) {
   return vm.runInContext("JSON.stringify(QUESTIONS.map(q => ({ qid: q.qid, typeKey: q.typeKey, paramsUsed: q.paramsUsed })))", sandbox);
+}
+
+function primaryParamSignature(sandbox, probeTypeKey, keys) {
+  return vm.runInContext(`
+    (() => {
+      const q = QUESTIONS.find(item => item.typeKey === ${JSON.stringify(probeTypeKey)});
+      if (!q) return null;
+      const out = {};
+      for (const key of ${JSON.stringify(keys)}) out[key] = q.paramsUsed ? q.paramsUsed[key] : undefined;
+      return JSON.stringify(out);
+    })()
+  `, sandbox);
 }
 
 console.log("\n=== runtime random export semantics ===");
@@ -193,6 +247,28 @@ const allSpecFieldsOk = allTypeQuestionSpecs.every((spec) => {
 check("QUESTION_SPECS can cover all 46 typeDefs", allTypeQuestionSpecs.length === expectedTypeCount && bank.data.length === expectedTypeCount);
 check("QUESTION_SPECS preserves all bank type keys in order", JSON.stringify(allSpecKeys) === JSON.stringify(allBankKeys));
 check("QUESTION_SPECS preserves typeDef/defaultParams/code for all 46 types", allSpecFieldsOk);
+check("tool export source no longer writes preview b.params", !fs.readFileSync(path.join(ROOT, "tool/index.html"), "utf8").includes("params: b.params"));
+
+for (const item of runtimePresets) {
+  const preset = presetByKey.get(item.key);
+  const exportSpecs = makeExportQuestionSpecsFromPreviewBasket(preset);
+  const allParamsEmpty = exportSpecs.every((spec) => spec.params && Object.keys(spec.params).length === 0);
+  check(`${item.key} interactive export QUESTION_SPECS params are empty`, allParamsEmpty);
+
+  const a = buildSandbox(0x10000000 + item.expectedCount, preset, exportSpecs);
+  const b = buildSandbox(0x20000000 + item.expectedCount, preset, exportSpecs);
+  const len = vm.runInContext("QUESTIONS.length", a);
+  const primaryA = primaryParamSignature(a, item.probeTypeKey, item.probeKeys);
+  const primaryB = primaryParamSignature(b, item.probeTypeKey, item.probeKeys);
+  check(`${item.key} runtime export creates ${item.expectedCount} questions from specs`, len === item.expectedCount);
+  check(`${item.key} fresh loads change primary params`, primaryA !== primaryB, `${primaryA} vs ${primaryB}`);
+}
+
+const leakedFirst = buildSandbox(0x11111111, s1Term3Preset, leakedQuestionSpecs);
+const leakedSecond = buildSandbox(0x22222222, s1Term3Preset, leakedQuestionSpecs);
+const leakedPrimaryFirst = primaryParamSignature(leakedFirst, "frac_arith", ["a", "b", "c", "d", "op"]);
+const leakedPrimarySecond = primaryParamSignature(leakedSecond, "frac_arith", ["a", "b", "c", "d", "op"]);
+check("test guard detects leaked preview primary params", leakedPrimaryFirst === leakedPrimarySecond, `${leakedPrimaryFirst} vs ${leakedPrimarySecond}`);
 
 const firstLoad = buildSandbox(0x11111111);
 const secondLoad = buildSandbox(0x22222222);
