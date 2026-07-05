@@ -1331,7 +1331,9 @@ function exportStudent() {
       qid: "q" + String(i + 1).padStart(3, "0"),
       typeKey: b.typeKey,
       typeDef: exportTypeDefSpec(b.typeDef),
-      params: b.params || {}
+      // Interactive exports must not carry preview-generated params.
+      // The student runtime generates fresh params on each file load.
+      params: {}
     };
   });
   // Validate placeholders before replace
