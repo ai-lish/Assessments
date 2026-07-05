@@ -253,6 +253,17 @@ function withOptionalRuntimeSeed(seedValue, fn) {
   finally { Math.random = originalRandom; }
 }
 
+function createRuntimeSeed(seedValue) {
+  if (seedValue !== null && seedValue !== undefined && seedValue !== "") return seedValue;
+  if (window.crypto && crypto.getRandomValues) {
+    const parts = new Uint32Array(4);
+    crypto.getRandomValues(parts);
+    return Array.from(parts).join("-");
+  }
+  const perf = window.performance && performance.now ? performance.now() : 0;
+  return Date.now() + "-" + perf + "-" + Math.random();
+}
+
 function assembleRuntimeQuestion(spec, typeDef, res, index) {
   const q = {
     qid: spec.qid || ("q" + String(index + 1).padStart(3, "0")),
@@ -291,7 +302,7 @@ function buildRuntimeQuestion(spec, index) {
 
 function createQuestionPool() {
   if (Array.isArray(QUESTION_SPECS) && QUESTION_SPECS.length > 0) {
-    return withOptionalRuntimeSeed(RUNTIME_SEED, () => QUESTION_SPECS.map(buildRuntimeQuestion));
+    return withOptionalRuntimeSeed(createRuntimeSeed(RUNTIME_SEED), () => QUESTION_SPECS.map(buildRuntimeQuestion));
   }
   return Array.isArray(PREBUILT_QUESTIONS) ? PREBUILT_QUESTIONS : [];
 }
