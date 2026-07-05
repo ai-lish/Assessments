@@ -24,6 +24,12 @@ const questionSpecs = preset.questions.map((spec, index) => {
     params: spec.params || {},
   };
 });
+const allTypeQuestionSpecs = bank.data.map((typeDef, index) => ({
+  qid: `type${String(index + 1).padStart(3, "0")}`,
+  typeKey: typeDef.key,
+  typeDef: JSON.parse(JSON.stringify(typeDef)),
+  params: {},
+}));
 
 let passed = 0;
 const failures = [];
@@ -173,6 +179,21 @@ function paramsSignature(sandbox) {
 }
 
 console.log("\n=== runtime random export semantics ===");
+const expectedTypeCount = 46;
+const allSpecKeys = allTypeQuestionSpecs.map((spec) => spec.typeKey);
+const allBankKeys = bank.data.map((typeDef) => typeDef.key);
+const allSpecFieldsOk = allTypeQuestionSpecs.every((spec) => {
+  const source = typeByKey.get(spec.typeKey);
+  return spec.typeDef
+    && spec.typeDef.key === source.key
+    && spec.typeDef.generator === source.generator
+    && spec.typeDef.code === source.code
+    && JSON.stringify(spec.typeDef.defaultParams || {}) === JSON.stringify(source.defaultParams || {});
+});
+check("QUESTION_SPECS can cover all 46 typeDefs", allTypeQuestionSpecs.length === expectedTypeCount && bank.data.length === expectedTypeCount);
+check("QUESTION_SPECS preserves all bank type keys in order", JSON.stringify(allSpecKeys) === JSON.stringify(allBankKeys));
+check("QUESTION_SPECS preserves typeDef/defaultParams/code for all 46 types", allSpecFieldsOk);
+
 const firstLoad = buildSandbox(0x11111111);
 const secondLoad = buildSandbox(0x22222222);
 const firstSig = paramsSignature(firstLoad);
