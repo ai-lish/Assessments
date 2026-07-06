@@ -291,9 +291,9 @@
 </div>
 
 <!-- 共享篩選邏輯（tool/filter.js）— 頁面同 test 共用 -->
-<script src="filter.js?v=s3t3-prc"></script>
-<script src="generators.js?v=s3t3-prc"></script>
-<script src="validators.js?v=s3t3-prc"></script>
+<script src="filter.js?v=s2t3-prd"></script>
+<script src="generators.js?v=s2t3-prd"></script>
+<script src="validators.js?v=s2t3-prd"></script>
 
 <script>
 /* ============================================================
@@ -347,7 +347,17 @@ const QUESTION_TYPE_NAMES = Object.freeze({
   coordinate: "坐標輸入及點選",
   s1t2_coordinate: "坐標的 x/y 坐標",
   seq_nth: "數列通項",
-  data_type: "離散 / 連續數據"
+  data_type: "離散 / 連續數據",
+  alg_simplify_2var: "代數化簡（兩變數）",
+  s2t3_square_expand_2var: "完全平方公式（兩變數）",
+  factor_neg_common: "因式分解（負公因式）",
+  round_decimal: "捨入至指定小數位",
+  combine_fractions: "分式合併（分母含變數）",
+  coef_exp_div: "係數與指數相除",
+  ratio_three: "三項比例",
+  discount: "折扣售價",
+  profit_pct: "盈虧百分率",
+  square_root_pm: "平方根（正負兩根）"
 });
 let bank = null;
 let tmpl = null;
