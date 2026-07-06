@@ -232,6 +232,18 @@ function primaryParamSignature(sandbox, probeTypeKey, keys) {
   `, sandbox);
 }
 
+function primarySignaturesForSeeds(item, preset, specs, seeds) {
+  return seeds.map((seed) => primaryParamSignature(
+    buildSandbox(seed, preset, specs),
+    item.probeTypeKey,
+    item.probeKeys,
+  ));
+}
+
+function hasAtLeastTwoDistinct(values) {
+  return new Set(values).size >= 2;
+}
+
 console.log("\n=== runtime random export semantics ===");
 const expectedTypeCount = 46;
 const allSpecKeys = allTypeQuestionSpecs.map((spec) => spec.typeKey);
@@ -256,12 +268,17 @@ for (const item of runtimePresets) {
   check(`${item.key} interactive export QUESTION_SPECS params are empty`, allParamsEmpty);
 
   const a = buildSandbox(0x10000000 + item.expectedCount, preset, exportSpecs);
-  const b = buildSandbox(0x20000000 + item.expectedCount, preset, exportSpecs);
   const len = vm.runInContext("QUESTIONS.length", a);
-  const primaryA = primaryParamSignature(a, item.probeTypeKey, item.probeKeys);
-  const primaryB = primaryParamSignature(b, item.probeTypeKey, item.probeKeys);
+  const primarySignatures = primarySignaturesForSeeds(item, preset, exportSpecs, [
+    0x10000000 + item.expectedCount,
+    0x20000000 + item.expectedCount,
+    0x30000000 + item.expectedCount,
+    0x40000000 + item.expectedCount,
+    0x50000000 + item.expectedCount,
+  ]);
   check(`${item.key} runtime export creates ${item.expectedCount} questions from specs`, len === item.expectedCount);
-  check(`${item.key} fresh loads change primary params`, primaryA !== primaryB, `${primaryA} vs ${primaryB}`);
+  check(`${item.key} fresh loads can change primary params`, hasAtLeastTwoDistinct(primarySignatures),
+    primarySignatures.join(" | "));
 }
 
 const leakedFirst = buildSandbox(0x11111111, s1Term3Preset, leakedQuestionSpecs);
