@@ -12,11 +12,9 @@
  *   - s3_term3_part_a: triangle_center (q009, type="choice",     checkType="choiceKey")
  *
  * Verification:
- *   1. For each preset, fetch the live Pages sample HTML.
- *   2. Extract the embedded QUESTIONS array (deterministic since samples are
- *      pre-generated, but that's fine — we're verifying SVG display + scoring
- *      semantics, not randomness here. PR #21's randomness fix is covered
- *      separately by runtime_random_export.cjs.)
+ *   1. For each preset, read the local exercises/ runtime-export HTML.
+ *   2. Extract QUESTION_SPECS and generate the target runtime question from
+ *      its typeDef + params using tool/generators.js.
  *   3. Load tool/validators.js (Node-side).
  *   4. For the SVG question in each preset, assert:
  *        a. questionHTML OR imageSvg contains <svg ...> markup
@@ -28,40 +26,35 @@
 
 const fs = require("fs");
 const path = require("path");
-const https = require("https");
 
 const ROOT = path.resolve(__dirname, "..");
-const LIVE_BASE = "https://ai-lish.github.io/Assessments/samples";
+const generators = require(path.join(ROOT, "tool/generators.js"));
 const validators = require(path.join(ROOT, "tool/validators.js"));
 
 const TARGETS = [
-  { preset: "s1_term2_part_a", file: "s1-t2-part-a.html", probeQid: "q013", probeTypeKey: "s1t2_coordinate", note: "SVG coordinate plane" },
-  { preset: "s1_term3_part_a", file: "s1-t3-part-a.html", probeQid: "q013", probeTypeKey: "congruence",    note: "SVG triangle congruence" },
-  { preset: "s3_term3_part_a", file: "s3-t3-part-a.html", probeQid: "q009", probeTypeKey: "triangle_center", note: "SVG triangle center choice" },
+  { preset: "s1_term2_part_a", file: "exercises/2526/s1/t2/part-a-01.html", probeQid: "q013", probeTypeKey: "s1t2_coordinate", note: "SVG coordinate plane" },
+  { preset: "s1_term3_part_a", file: "exercises/2526/s1/t3/part-a-01.html", probeQid: "q013", probeTypeKey: "congruence",    note: "SVG triangle congruence" },
+  { preset: "s3_term3_part_a", file: "exercises/2526/s3/t3/part-a-01.html", probeQid: "q009", probeTypeKey: "triangle_center", note: "SVG triangle center choice" },
 ];
 
-function httpGet(url) {
-  return new Promise((resolve, reject) => {
-    https.get(url, (res) => {
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) return resolve(httpGet(res.headers.location));
-      if (res.statusCode !== 200) return reject(new Error(`HTTP ${res.statusCode} for ${url}`));
-      const chunks = [];
-      res.on("data", (c) => chunks.push(c));
-      res.on("end", () => resolve(Buffer.concat(chunks).toString("utf8")));
-      res.on("error", reject);
-    }).on("error", reject);
-  });
-}
-
-function extractQuestionsArray(html) {
-  // The live samples contain `const QUESTIONS = [...]` (samples are pre-generated
-  // via gen_practice_html.cjs, NOT via runtime exportStudent() — that's why PR #21
-  // explicitly excluded samples/ from its scope. The QUESTIONS array is emitted
-  // as a JSON literal via JSON.stringify, so JSON.parse round-trips cleanly.
-  const m = html.match(/const\s+QUESTIONS\s*=\s*(\[[\s\S]*?\]);/);
-  if (!m) throw new Error("could not find const QUESTIONS = [...] in HTML");
+function extractQuestionSpecs(html) {
+  const m = html.match(/const\s+QUESTION_SPECS\s*=\s*(\[[\s\S]*?\]);/);
+  if (!m) throw new Error("could not find const QUESTION_SPECS = [...] in HTML");
   // JSON.parse handles the literal safely (no eval, no Function constructor).
   return JSON.parse(m[1]);
+}
+
+function buildRuntimeQuestion(spec) {
+  const generated = generators.generateQuestion(spec.typeDef, spec.params || {});
+  return Object.assign({}, generated, {
+    qid: spec.qid,
+    typeKey: spec.typeKey,
+    type: spec.typeDef.type,
+    checkType: generated.checkType || spec.typeDef.checkType,
+    prefix: generated.prefix || spec.typeDef.prefix || "",
+    answerSpec: generated.answerSpec || spec.typeDef.answerSpec || null,
+    options: generated.options || spec.typeDef.options || [],
+  });
 }
 
 let passed = 0;
@@ -71,32 +64,34 @@ function check(label, condition, detail = "") {
   else { failures.push(`${label}${detail ? " — " + detail : ""}`); console.log(`  ✗ ${label}${detail ? " — " + detail : ""}`); }
 }
 
-(async () => {
+(() => {
   console.log("\n=== Final SVG Supplement (Post-PR #21) ===");
 
   for (const target of TARGETS) {
     console.log(`\n--- ${target.preset} :: ${target.probeTypeKey} (${target.note}) ---`);
-    const url = `${LIVE_BASE}/${target.file}`;
-    const html = await httpGet(url);
-    console.log(`  fetched ${html.length} bytes from ${url}`);
+    const fileAbs = path.join(ROOT, target.file);
+    const html = fs.readFileSync(fileAbs, "utf8");
+    console.log(`  read ${html.length} bytes from ${target.file}`);
 
-    let questions;
+    let specs;
     try {
-      questions = extractQuestionsArray(html);
+      specs = extractQuestionSpecs(html);
     } catch (e) {
-      check(`${target.preset} parsed embedded QUESTIONS array`, false, e.message);
+      check(`${target.preset} parsed QUESTION_SPECS array`, false, e.message);
       continue;
     }
-    check(`${target.preset} embedded QUESTIONS length matches preset (${target.probeQid} should be present)`, questions.length >= parseInt(target.probeQid.slice(1), 10),
-      `got length ${questions.length}`);
+    check(`${target.preset} QUESTION_SPECS length matches preset (${target.probeQid} should be present)`, specs.length >= parseInt(target.probeQid.slice(1), 10),
+      `got length ${specs.length}`);
 
-    const q = questions.find((q) => q.qid === target.probeQid);
-    if (!q) {
+    const spec = specs.find((q) => q.qid === target.probeQid);
+    if (!spec) {
       check(`${target.preset} ${target.probeQid} (${target.probeTypeKey}) found`, false);
       continue;
     }
-    check(`${target.preset} ${target.probeQid} typeKey matches`, q.typeKey === target.probeTypeKey,
-      `expected ${target.probeTypeKey}, got ${q.typeKey}`);
+    check(`${target.preset} ${target.probeQid} typeKey matches`, spec.typeKey === target.probeTypeKey,
+      `expected ${target.probeTypeKey}, got ${spec.typeKey}`);
+
+    const q = buildRuntimeQuestion(spec);
 
     // SVG display: questionHTML or imageSvg should contain <svg ...> markup
     const htmlHasSvg = typeof q.questionHTML === "string" && q.questionHTML.includes("<svg");
@@ -161,7 +156,4 @@ function check(label, condition, detail = "") {
     failures.forEach((f) => console.error("  - " + f));
     process.exit(1);
   }
-})().catch((err) => {
-  console.error("FATAL:", err);
-  process.exit(2);
-});
+})();

@@ -74,9 +74,11 @@ jobs:
 
       - name: Exercises archive runtime-random check (PR-EXERCISES)
         run: |
-          # 1. Generate the three baseline exercises/ files from question-bank.json
-          node scripts/gen_exercise_html.cjs
-          # 2. Verify each one runtime-randomizes across two fresh loads
+          # 1. Exercise the generator without creating extra part-a-02/03 files in the archive.
+          rm -rf /tmp/assess-exercises-ci
+          node scripts/gen_exercise_html.cjs --out-root=/tmp/assess-exercises-ci \
+            s1_term2_part_a s1_term3_part_a s3_term3_part_a
+          # 2. Verify the committed archive files runtime-randomize across two fresh loads.
           node test/exercise_runtime_random_check.cjs
 
       - name: HKDSE A1 tests
