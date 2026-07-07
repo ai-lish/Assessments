@@ -2722,5 +2722,719 @@
         }
       }
     }
+  ],
+  "alg_simplify_2var": [
+    {
+      "params": {
+        "a1": 3,
+        "b1": 4,
+        "a2": 2,
+        "b2": 1,
+        "op": "-"
+      },
+      "result": {
+        "questionHTML": "1. 化簡 \\( (3a+4b)-(2a+b) \\)。",
+        "correctAnswer": "a+3b",
+        "paramsUsed": {
+          "a1": 3,
+          "b1": 4,
+          "a2": 2,
+          "b2": 1,
+          "op": "-",
+          "resA": 1,
+          "resB": 3
+        },
+        "solutionHTML": "<div>先分組同類項（a 項與 b 項分開）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} &\\quad (3a+4b)-(2a+b) \\\\&=[3a-2a]+[4b-b] \\\\&=a+3b \\end{aligned} \\)</div>",
+        "pdfText": "1. 化簡 \\( (3a+4b)-(2a+b) \\)。",
+        "answers": [
+          "a+3b",
+          "3b+a"
+        ],
+        "displayAnswer": "a+3b",
+        "steps": "<div>先分組同類項（a 項與 b 項分開）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} &\\quad (3a+4b)-(2a+b) \\\\&=[3a-2a]+[4b-b] \\\\&=a+3b \\end{aligned} \\)</div>",
+        "checkType": "textExact"
+      }
+    },
+    {
+      "params": {
+        "a1": 2,
+        "b1": 5,
+        "a2": 4,
+        "b2": 3,
+        "op": "+"
+      },
+      "result": {
+        "questionHTML": "1. 化簡 \\( (2a+5b)+(4a+3b) \\)。",
+        "correctAnswer": "6a+8b",
+        "paramsUsed": {
+          "a1": 2,
+          "b1": 5,
+          "a2": 4,
+          "b2": 3,
+          "op": "+",
+          "resA": 6,
+          "resB": 8
+        },
+        "solutionHTML": "<div>先分組同類項（a 項與 b 項分開）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} &\\quad (2a+5b)+(4a+3b) \\\\&=[2a+4a]+[5b+3b] \\\\&=6a+8b \\end{aligned} \\)</div>",
+        "pdfText": "1. 化簡 \\( (2a+5b)+(4a+3b) \\)。",
+        "answers": [
+          "6a+8b",
+          "8b+6a"
+        ],
+        "displayAnswer": "6a+8b",
+        "steps": "<div>先分組同類項（a 項與 b 項分開）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} &\\quad (2a+5b)+(4a+3b) \\\\&=[2a+4a]+[5b+3b] \\\\&=6a+8b \\end{aligned} \\)</div>",
+        "checkType": "textExact"
+      }
+    }
+  ],
+  "s2t3_square_expand_2var": [
+    {
+      "params": {
+        "b": 3,
+        "twoVar": true
+      },
+      "result": {
+        "questionHTML": "2. 展開並化簡 \\( (x+3y)^2 \\)。",
+        "correctAnswer": "x^2+6xy+9y^2",
+        "paramsUsed": {
+          "b": 3,
+          "twoVar": true
+        },
+        "solutionHTML": "<div>用完全平方公式：\\( (A+B)^2=A^2+2AB+B^2 \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+3y)^2 = x^2+2(3)xy+(3)^2y^2 = x^2+6xy+9y^2 \\)</div>",
+        "pdfText": "2. 展開並化簡 \\( (x+3y)^2 \\)。",
+        "answers": [
+          "x^2+6xy+9y^2"
+        ],
+        "displayAnswer": "x^2+6xy+9y^2",
+        "steps": "<div>用完全平方公式：\\( (A+B)^2=A^2+2AB+B^2 \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+3y)^2 = x^2+2(3)xy+(3)^2y^2 = x^2+6xy+9y^2 \\)</div>",
+        "checkType": "textExact"
+      }
+    },
+    {
+      "params": {
+        "b": 5,
+        "twoVar": true
+      },
+      "result": {
+        "questionHTML": "2. 展開並化簡 \\( (x+5y)^2 \\)。",
+        "correctAnswer": "x^2+10xy+25y^2",
+        "paramsUsed": {
+          "b": 5,
+          "twoVar": true
+        },
+        "solutionHTML": "<div>用完全平方公式：\\( (A+B)^2=A^2+2AB+B^2 \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5y)^2 = x^2+2(5)xy+(5)^2y^2 = x^2+10xy+25y^2 \\)</div>",
+        "pdfText": "2. 展開並化簡 \\( (x+5y)^2 \\)。",
+        "answers": [
+          "x^2+10xy+25y^2"
+        ],
+        "displayAnswer": "x^2+10xy+25y^2",
+        "steps": "<div>用完全平方公式：\\( (A+B)^2=A^2+2AB+B^2 \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5y)^2 = x^2+2(5)xy+(5)^2y^2 = x^2+10xy+25y^2 \\)</div>",
+        "checkType": "textExact"
+      }
+    }
+  ],
+  "solve_eq_fraction": [
+    {
+      "params": {
+        "mode": "fraction",
+        "a": 2,
+        "c": 3,
+        "d": 4,
+        "xVal": 3
+      },
+      "result": {
+        "questionHTML": "3. 解方程 \\( \\frac{2x + 6}{3} = 4 \\)。",
+        "correctAnswer": "3",
+        "paramsUsed": {
+          "mode": "fraction",
+          "a": 2,
+          "b": 6,
+          "c": 3,
+          "d": 4,
+          "xVal": 3
+        },
+        "solutionHTML": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{2x + 6}{3} &= 4 \\\\ 2x + 6 &= 12 \\\\ 2x &= 6 \\\\ x &= 3 \\end{aligned} \\)</div>",
+        "pdfText": "3. 解方程 \\( \\frac{2x + 6}{3} = 4 \\)。",
+        "answers": [
+          "3"
+        ],
+        "displayAnswer": "3",
+        "steps": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{2x + 6}{3} &= 4 \\\\ 2x + 6 &= 12 \\\\ 2x &= 6 \\\\ x &= 3 \\end{aligned} \\)</div>",
+        "checkType": "numeric",
+        "prefix": "x = "
+      }
+    },
+    {
+      "params": {
+        "mode": "fraction",
+        "a": 5,
+        "c": 4,
+        "d": -2,
+        "xVal": -3
+      },
+      "result": {
+        "questionHTML": "3. 解方程 \\( \\frac{5x + 7}{4} = -2 \\)。",
+        "correctAnswer": "-3",
+        "paramsUsed": {
+          "mode": "fraction",
+          "a": 5,
+          "b": 7,
+          "c": 4,
+          "d": -2,
+          "xVal": -3
+        },
+        "solutionHTML": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{5x + 7}{4} &= -2 \\\\ 5x + 7 &= -8 \\\\ 5x &= -15 \\\\ x &= -3 \\end{aligned} \\)</div>",
+        "pdfText": "3. 解方程 \\( \\frac{5x + 7}{4} = -2 \\)。",
+        "answers": [
+          "-3"
+        ],
+        "displayAnswer": "-3",
+        "steps": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{5x + 7}{4} &= -2 \\\\ 5x + 7 &= -8 \\\\ 5x &= -15 \\\\ x &= -3 \\end{aligned} \\)</div>",
+        "checkType": "numeric",
+        "prefix": "x = "
+      }
+    }
+  ],
+  "solve_eq_bracket": [
+    {
+      "params": {
+        "mode": "bracket",
+        "k": 3,
+        "m": 2,
+        "xVal": -2
+      },
+      "result": {
+        "questionHTML": "4. 解方程 \\( 3(2 - x) = 12 \\)。",
+        "correctAnswer": "-2",
+        "paramsUsed": {
+          "mode": "bracket",
+          "k": 3,
+          "m": 2,
+          "xVal": -2,
+          "n": 12
+        },
+        "solutionHTML": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} 3(2-x) &= 12 \\\\ 6 - 3x &= 12 \\\\ -3x &= 6 \\\\ x &= -2 \\end{aligned} \\)</div>",
+        "pdfText": "4. 解方程 \\( 3(2 - x) = 12 \\)。",
+        "answers": [
+          "-2"
+        ],
+        "displayAnswer": "-2",
+        "steps": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} 3(2-x) &= 12 \\\\ 6 - 3x &= 12 \\\\ -3x &= 6 \\\\ x &= -2 \\end{aligned} \\)</div>",
+        "checkType": "numeric",
+        "prefix": "x = "
+      }
+    },
+    {
+      "params": {
+        "mode": "bracket",
+        "k": 5,
+        "m": -1,
+        "xVal": 4
+      },
+      "result": {
+        "questionHTML": "4. 解方程 \\( 5(-1 - x) = -25 \\)。",
+        "correctAnswer": "4",
+        "paramsUsed": {
+          "mode": "bracket",
+          "k": 5,
+          "m": -1,
+          "xVal": 4,
+          "n": -25
+        },
+        "solutionHTML": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} 5(-1-x) &= -25 \\\\ -5 - 5x &= -25 \\\\ -5x &= -20 \\\\ x &= 4 \\end{aligned} \\)</div>",
+        "pdfText": "4. 解方程 \\( 5(-1 - x) = -25 \\)。",
+        "answers": [
+          "4"
+        ],
+        "displayAnswer": "4",
+        "steps": "<div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} 5(-1-x) &= -25 \\\\ -5 - 5x &= -25 \\\\ -5x &= -20 \\\\ x &= 4 \\end{aligned} \\)</div>",
+        "checkType": "numeric",
+        "prefix": "x = "
+      }
+    }
+  ],
+  "factor_neg_common": [
+    {
+      "params": {
+        "k": 3,
+        "d1": 2
+      },
+      "result": {
+        "questionHTML": "5. 因式分解 \\( -3x^2 - 3x \\)。",
+        "correctAnswer": "-3x(x+1)",
+        "paramsUsed": {
+          "k": 3,
+          "d1": 2
+        },
+        "solutionHTML": "<div>先抽出負公因式 \\( -3x \\)：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -3x^2 - 3x = -3x(x+1) \\)</div>",
+        "pdfText": "5. 因式分解 \\( -3x^2 - 3x \\)。",
+        "answers": [
+          "-3x(x+1)",
+          "3x(-x-1)"
+        ],
+        "displayAnswer": "-3x(x+1)",
+        "steps": "<div>先抽出負公因式 \\( -3x \\)：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -3x^2 - 3x = -3x(x+1) \\)</div>",
+        "checkType": "textExact"
+      }
+    },
+    {
+      "params": {
+        "k": 1,
+        "d1": 3
+      },
+      "result": {
+        "questionHTML": "5. 因式分解 \\( -x^3 - x \\)。",
+        "correctAnswer": "-x(x^2+1)",
+        "paramsUsed": {
+          "k": 1,
+          "d1": 3
+        },
+        "solutionHTML": "<div>先抽出負公因式 \\( -x \\)：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -x^3 - x = -x(x^2+1) \\)</div>",
+        "pdfText": "5. 因式分解 \\( -x^3 - x \\)。",
+        "answers": [
+          "-x(x^2+1)",
+          "x(-x^2-1)"
+        ],
+        "displayAnswer": "-x(x^2+1)",
+        "steps": "<div>先抽出負公因式 \\( -x \\)：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( -x^3 - x = -x(x^2+1) \\)</div>",
+        "checkType": "textExact"
+      }
+    }
+  ],
+  "round_decimal": [
+    {
+      "params": {
+        "coeff": 0.92,
+        "decimals": 2,
+        "mode": "nearest"
+      },
+      "result": {
+        "questionHTML": "8. 把 \\( 0.92\\pi \\) 四捨五入至 2 位小數。",
+        "correctAnswer": "2.89",
+        "paramsUsed": {
+          "coeff": 0.92,
+          "decimals": 2,
+          "mode": "nearest",
+          "value": 2.8902652413026098
+        },
+        "solutionHTML": "<div>先計算 \\( 0.92\\pi \\approx 2.89027 \\)</div><div style=\"margin-top:5px;\">四捨五入至 2 位小數：\\( \\approx 2.89 \\)</div>",
+        "pdfText": "8. 把 \\( 0.92\\pi \\) 四捨五入至 2 位小數。",
+        "answers": [
+          "2.89",
+          "2.89"
+        ],
+        "displayAnswer": "2.89",
+        "steps": "<div>先計算 \\( 0.92\\pi \\approx 2.89027 \\)</div><div style=\"margin-top:5px;\">四捨五入至 2 位小數：\\( \\approx 2.89 \\)</div>",
+        "checkType": "numeric"
+      }
+    },
+    {
+      "params": {
+        "coeff": 0.77,
+        "decimals": 1,
+        "mode": "round_up"
+      },
+      "result": {
+        "questionHTML": "8. 把 \\( 0.77\\pi \\) 上捨入至 1 位小數。",
+        "correctAnswer": "2.5",
+        "paramsUsed": {
+          "coeff": 0.77,
+          "decimals": 1,
+          "mode": "round_up",
+          "value": 2.419026343264141
+        },
+        "solutionHTML": "<div>先計算 \\( 0.77\\pi \\approx 2.4190 \\)</div><div style=\"margin-top:5px;\">上捨入至 1 位小數：\\( \\approx 2.5 \\)</div>",
+        "pdfText": "8. 把 \\( 0.77\\pi \\) 上捨入至 1 位小數。",
+        "answers": [
+          "2.5",
+          "2.5"
+        ],
+        "displayAnswer": "2.5",
+        "steps": "<div>先計算 \\( 0.77\\pi \\approx 2.4190 \\)</div><div style=\"margin-top:5px;\">上捨入至 1 位小數：\\( \\approx 2.5 \\)</div>",
+        "checkType": "numeric"
+      }
+    }
+  ],
+  "combine_fractions": [
+    {
+      "params": {
+        "m": 5,
+        "c": 3
+      },
+      "result": {
+        "questionHTML": "9. 化簡 \\( \\frac{a}{k}+\\frac{3}{5k} \\)。",
+        "correctAnswer": "(5a+3)/(5k)",
+        "paramsUsed": {
+          "m": 5,
+          "c": 3
+        },
+        "solutionHTML": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,5k)=5k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{3}{5k} &=\\frac{5a}{5k}+\\frac{3}{5k} \\\\ &=\\frac{5a+3}{5k} \\end{aligned} \\)</div>",
+        "pdfText": "9. 化簡 \\( \\frac{a}{k}+\\frac{3}{5k} \\)。",
+        "answers": [
+          "(5a+3)/(5k)",
+          "(3+5a)/(5k)"
+        ],
+        "displayAnswer": "\\frac{5a+3}{5k}",
+        "steps": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,5k)=5k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{3}{5k} &=\\frac{5a}{5k}+\\frac{3}{5k} \\\\ &=\\frac{5a+3}{5k} \\end{aligned} \\)</div>",
+        "checkType": "textExact"
+      }
+    },
+    {
+      "params": {
+        "m": 7,
+        "c": 2
+      },
+      "result": {
+        "questionHTML": "9. 化簡 \\( \\frac{a}{k}+\\frac{2}{7k} \\)。",
+        "correctAnswer": "(7a+2)/(7k)",
+        "paramsUsed": {
+          "m": 7,
+          "c": 2
+        },
+        "solutionHTML": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,7k)=7k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{2}{7k} &=\\frac{7a}{7k}+\\frac{2}{7k} \\\\ &=\\frac{7a+2}{7k} \\end{aligned} \\)</div>",
+        "pdfText": "9. 化簡 \\( \\frac{a}{k}+\\frac{2}{7k} \\)。",
+        "answers": [
+          "(7a+2)/(7k)",
+          "(2+7a)/(7k)"
+        ],
+        "displayAnswer": "\\frac{7a+2}{7k}",
+        "steps": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,7k)=7k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{2}{7k} &=\\frac{7a}{7k}+\\frac{2}{7k} \\\\ &=\\frac{7a+2}{7k} \\end{aligned} \\)</div>",
+        "checkType": "textExact"
+      }
+    }
+  ],
+  "coef_exp_div": [
+    {
+      "params": {
+        "expD": 2,
+        "expN": 5,
+        "rNum": 3,
+        "rDen": 4,
+        "scale": 2
+      },
+      "result": {
+        "questionHTML": "11. 化簡 \\( \\frac{6x^5}{8x^2} \\)。",
+        "correctAnswer": "3x^3/4",
+        "paramsUsed": {
+          "coefN": 6,
+          "coefD": 8,
+          "expN": 5,
+          "expD": 2,
+          "rNum": 3,
+          "rDen": 4
+        },
+        "solutionHTML": "<div>係數相除、指數相減：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{6x^5}{8x^2} &=\\frac{6}{8}\\times x^{5-2} \\\\ &=3/4x^3 \\end{aligned} \\)</div>",
+        "pdfText": "11. 化簡 \\( \\frac{6x^5}{8x^2} \\)。",
+        "answers": [
+          "3x^3/4",
+          "(3x^3)/4"
+        ],
+        "displayAnswer": "3x^3/4",
+        "steps": "<div>係數相除、指數相減：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{6x^5}{8x^2} &=\\frac{6}{8}\\times x^{5-2} \\\\ &=3/4x^3 \\end{aligned} \\)</div>",
+        "checkType": "textExact"
+      }
+    },
+    {
+      "params": {
+        "expD": 3,
+        "expN": 4,
+        "rNum": 5,
+        "rDen": 2,
+        "scale": 3
+      },
+      "result": {
+        "questionHTML": "11. 化簡 \\( \\frac{15x^4}{6x^3} \\)。",
+        "correctAnswer": "5x/2",
+        "paramsUsed": {
+          "coefN": 15,
+          "coefD": 6,
+          "expN": 4,
+          "expD": 3,
+          "rNum": 5,
+          "rDen": 2
+        },
+        "solutionHTML": "<div>係數相除、指數相減：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{15x^4}{6x^3} &=\\frac{15}{6}\\times x^{4-3} \\\\ &=5/2x \\end{aligned} \\)</div>",
+        "pdfText": "11. 化簡 \\( \\frac{15x^4}{6x^3} \\)。",
+        "answers": [
+          "5x/2",
+          "(5x)/2"
+        ],
+        "displayAnswer": "5x/2",
+        "steps": "<div>係數相除、指數相減：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{15x^4}{6x^3} &=\\frac{15}{6}\\times x^{4-3} \\\\ &=5/2x \\end{aligned} \\)</div>",
+        "checkType": "textExact"
+      }
+    }
+  ],
+  "ratio_three": [
+    {
+      "params": {
+        "aB": 2,
+        "bB": 3,
+        "aC": 4,
+        "cC": 5
+      },
+      "result": {
+        "questionHTML": "12. 已知 \\( a:b=2:3 \\)，\\( a:c=4:5 \\)，求 \\( a:b:c \\)。",
+        "correctAnswer": "4:6:5",
+        "paramsUsed": {
+          "aB": 2,
+          "bB": 3,
+          "aC": 4,
+          "cC": 5,
+          "common": 4,
+          "bFinal": 6,
+          "cFinal": 5
+        },
+        "solutionHTML": "<div>先將兩個比例中嘅 \\(a\\) 化做相同值（取 \\(a\\) 系數嘅 L.C.M.）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\text{L.C.M.}(2,4)=4 \\)</div><div style=\"margin-top:5px;\">\\( a:b=2:3 = 4:6 \\)</div><div>\\( a:c=4:5 = 4:5 \\)</div><div style=\"margin-top:5px;font-weight:bold;\">\\( a:b:c = 4:6:5 \\)</div>",
+        "pdfText": "12. 已知 \\( a:b=2:3 \\)，\\( a:c=4:5 \\)，求 \\( a:b:c \\)。",
+        "answers": [
+          "4:6:5"
+        ],
+        "displayAnswer": "4:6:5",
+        "steps": "<div>先將兩個比例中嘅 \\(a\\) 化做相同值（取 \\(a\\) 系數嘅 L.C.M.）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\text{L.C.M.}(2,4)=4 \\)</div><div style=\"margin-top:5px;\">\\( a:b=2:3 = 4:6 \\)</div><div>\\( a:c=4:5 = 4:5 \\)</div><div style=\"margin-top:5px;font-weight:bold;\">\\( a:b:c = 4:6:5 \\)</div>",
+        "checkType": "textExact"
+      }
+    },
+    {
+      "params": {
+        "aB": 3,
+        "bB": 7,
+        "aC": 5,
+        "cC": 2
+      },
+      "result": {
+        "questionHTML": "12. 已知 \\( a:b=3:7 \\)，\\( a:c=5:2 \\)，求 \\( a:b:c \\)。",
+        "correctAnswer": "15:35:6",
+        "paramsUsed": {
+          "aB": 3,
+          "bB": 7,
+          "aC": 5,
+          "cC": 2,
+          "common": 15,
+          "bFinal": 35,
+          "cFinal": 6
+        },
+        "solutionHTML": "<div>先將兩個比例中嘅 \\(a\\) 化做相同值（取 \\(a\\) 系數嘅 L.C.M.）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\text{L.C.M.}(3,5)=15 \\)</div><div style=\"margin-top:5px;\">\\( a:b=3:7 = 15:35 \\)</div><div>\\( a:c=5:2 = 15:6 \\)</div><div style=\"margin-top:5px;font-weight:bold;\">\\( a:b:c = 15:35:6 \\)</div>",
+        "pdfText": "12. 已知 \\( a:b=3:7 \\)，\\( a:c=5:2 \\)，求 \\( a:b:c \\)。",
+        "answers": [
+          "15:35:6"
+        ],
+        "displayAnswer": "15:35:6",
+        "steps": "<div>先將兩個比例中嘅 \\(a\\) 化做相同值（取 \\(a\\) 系數嘅 L.C.M.）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\text{L.C.M.}(3,5)=15 \\)</div><div style=\"margin-top:5px;\">\\( a:b=3:7 = 15:35 \\)</div><div>\\( a:c=5:2 = 15:6 \\)</div><div style=\"margin-top:5px;font-weight:bold;\">\\( a:b:c = 15:35:6 \\)</div>",
+        "checkType": "textExact"
+      }
+    }
+  ],
+  "discount": [
+    {
+      "params": {
+        "price": 42,
+        "disTen": 9
+      },
+      "result": {
+        "questionHTML": "13. 一件貨品原價 $42，現以 9 折發售。求現售價。",
+        "correctAnswer": "37.8",
+        "paramsUsed": {
+          "price": 42,
+          "disTen": 9,
+          "result": 37.8
+        },
+        "solutionHTML": "<div>9 折 即 90\\% 原價：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 42 \\times \\frac{9}{10} = 37.8 \\)</div><div>現售價 = $37.8</div>",
+        "pdfText": "13. 一件貨品原價 $42，現以 9 折發售。求現售價。",
+        "answers": [
+          "37.8",
+          "37.80"
+        ],
+        "displayAnswer": "$37.8",
+        "steps": "<div>9 折 即 90\\% 原價：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 42 \\times \\frac{9}{10} = 37.8 \\)</div><div>現售價 = $37.8</div>",
+        "checkType": "numeric"
+      }
+    },
+    {
+      "params": {
+        "price": 80,
+        "disTen": 7
+      },
+      "result": {
+        "questionHTML": "13. 一件貨品原價 $80，現以 7 折發售。求現售價。",
+        "correctAnswer": "56",
+        "paramsUsed": {
+          "price": 80,
+          "disTen": 7,
+          "result": 56
+        },
+        "solutionHTML": "<div>7 折 即 70\\% 原價：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 80 \\times \\frac{7}{10} = 56 \\)</div><div>現售價 = $56</div>",
+        "pdfText": "13. 一件貨品原價 $80，現以 7 折發售。求現售價。",
+        "answers": [
+          "56",
+          "56.00"
+        ],
+        "displayAnswer": "$56",
+        "steps": "<div>7 折 即 70\\% 原價：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 80 \\times \\frac{7}{10} = 56 \\)</div><div>現售價 = $56</div>",
+        "checkType": "numeric"
+      }
+    }
+  ],
+  "profit_pct": [
+    {
+      "params": {
+        "cost": 1000,
+        "pct": 15,
+        "isProfit": true
+      },
+      "result": {
+        "questionHTML": "14. 某貨品以 $1000 買入，$1150 賣出。求盈虧百分率。",
+        "correctAnswer": "15",
+        "paramsUsed": {
+          "cost": 1000,
+          "sell": 1150,
+          "pct": 15,
+          "isProfit": true,
+          "result": 15
+        },
+        "solutionHTML": "<div>盈虧 = 賣出價 - 買入價 = $150</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\frac{150}{1000} \\times 100\\% = 15\\% \\)</div><div>即盈利 15\\%</div>",
+        "pdfText": "14. 某貨品以 $1000 買入，$1150 賣出。求盈虧百分率。",
+        "answers": [
+          "15",
+          "15%"
+        ],
+        "displayAnswer": "15%",
+        "steps": "<div>盈虧 = 賣出價 - 買入價 = $150</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\frac{150}{1000} \\times 100\\% = 15\\% \\)</div><div>即盈利 15\\%</div>",
+        "checkType": "numeric"
+      }
+    },
+    {
+      "params": {
+        "cost": 500,
+        "pct": 20,
+        "isProfit": false
+      },
+      "result": {
+        "questionHTML": "14. 某貨品以 $500 買入，$400 賣出。求盈虧百分率。",
+        "correctAnswer": "-20",
+        "paramsUsed": {
+          "cost": 500,
+          "sell": 400,
+          "pct": 20,
+          "isProfit": false,
+          "result": -20
+        },
+        "solutionHTML": "<div>盈虧 = 賣出價 - 買入價 = $-100</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\frac{-100}{500} \\times 100\\% = -20\\% \\)</div><div>即虧損 20\\%</div>",
+        "pdfText": "14. 某貨品以 $500 買入，$400 賣出。求盈虧百分率。",
+        "answers": [
+          "-20",
+          "-20%"
+        ],
+        "displayAnswer": "-20%",
+        "steps": "<div>盈虧 = 賣出價 - 買入價 = $-100</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\frac{-100}{500} \\times 100\\% = -20\\% \\)</div><div>即虧損 20\\%</div>",
+        "checkType": "numeric"
+      }
+    }
+  ],
+  "square_root_pm": [
+    {
+      "params": {
+        "n": 36
+      },
+      "result": {
+        "questionHTML": "15. 求 \\( \\sqrt{36} \\) 的值。",
+        "correctAnswer": "±6",
+        "paramsUsed": {
+          "n": 36,
+          "k": 6,
+          "m": 1
+        },
+        "solutionHTML": "<div>質因數分解，抽出完全平方因子：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 36 = 36 \\times 1 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{36} = \\pm 6 \\)（正負兩根）</div>",
+        "pdfText": "15. 求 \\( \\sqrt{36} \\) 的值。",
+        "answers": [
+          "±6"
+        ],
+        "displayAnswer": "±6",
+        "steps": "<div>質因數分解，抽出完全平方因子：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 36 = 36 \\times 1 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{36} = \\pm 6 \\)（正負兩根）</div>",
+        "checkType": "textExact"
+      }
+    },
+    {
+      "params": {
+        "n": 72
+      },
+      "result": {
+        "questionHTML": "15. 求 \\( \\sqrt{72} \\) 的值。",
+        "correctAnswer": "±6√2",
+        "paramsUsed": {
+          "n": 72,
+          "k": 6,
+          "m": 2
+        },
+        "solutionHTML": "<div>質因數分解，抽出完全平方因子：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 72 = 36 \\times 2 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{72} = \\pm 6\\sqrt{2} \\)（正負兩根）</div>",
+        "pdfText": "15. 求 \\( \\sqrt{72} \\) 的值。",
+        "answers": [
+          "±6√2"
+        ],
+        "displayAnswer": "±6√2",
+        "steps": "<div>質因數分解，抽出完全平方因子：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 72 = 36 \\times 2 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{72} = \\pm 6\\sqrt{2} \\)（正負兩根）</div>",
+        "checkType": "textExact"
+      }
+    }
+  ],
+  "cuboid_volume_cube": [
+    {
+      "params": {
+        "side": 5,
+        "cube": true
+      },
+      "result": {
+        "questionHTML": "16. 一個立方體的邊長是 \\( 5 \\text{ cm} \\)。求它的體積。",
+        "correctAnswer": "125",
+        "paramsUsed": {
+          "side": 5,
+          "cube": true,
+          "result": 125
+        },
+        "solutionHTML": "<div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 5^3 = 125 \\)</div><div>答案：\\( 125 \\text{ cm}^3 \\)</div>",
+        "pdfText": "16. 一個立方體的邊長是 \\( 5 \\text{ cm} \\)。求它的體積。",
+        "answers": [
+          "125",
+          "125cm^3",
+          "125cm³"
+        ],
+        "displayAnswer": "125 cm³",
+        "steps": "<div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 5^3 = 125 \\)</div><div>答案：\\( 125 \\text{ cm}^3 \\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "unit": "cm^3",
+          "allowUnit": true
+        }
+      }
+    },
+    {
+      "params": {
+        "side": 8,
+        "cube": true
+      },
+      "result": {
+        "questionHTML": "16. 一個立方體的邊長是 \\( 8 \\text{ cm} \\)。求它的體積。",
+        "correctAnswer": "512",
+        "paramsUsed": {
+          "side": 8,
+          "cube": true,
+          "result": 512
+        },
+        "solutionHTML": "<div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 8^3 = 512 \\)</div><div>答案：\\( 512 \\text{ cm}^3 \\)</div>",
+        "pdfText": "16. 一個立方體的邊長是 \\( 8 \\text{ cm} \\)。求它的體積。",
+        "answers": [
+          "512",
+          "512cm^3",
+          "512cm³"
+        ],
+        "displayAnswer": "512 cm³",
+        "steps": "<div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 8^3 = 512 \\)</div><div>答案：\\( 512 \\text{ cm}^3 \\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "unit": "cm^3",
+          "allowUnit": true
+        }
+      }
+    }
   ]
 }

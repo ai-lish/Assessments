@@ -43,6 +43,10 @@ check('s1/2/number_and_algebra → 11 題', filterBankStrict(bank.data, 's1', '2
 check('s1/2/measurement → 1 題', filterBankStrict(bank.data, 's1', '2', 'measurement').length === 1);
 check('s1/2/geometry → 2 題', filterBankStrict(bank.data, 's1', '2', 'geometry').length === 2);
 check('s1/2/data_handling → 0 題', filterBankStrict(bank.data, 's1', '2', 'data_handling').length === 0);
+check('s2/3/number_and_algebra → 11 題', filterBankStrict(bank.data, 's2', '3', 'number_and_algebra').length === 11);
+check('s2/3/measurement → 5 題', filterBankStrict(bank.data, 's2', '3', 'measurement').length === 5);
+check('s2/3/geometry → 0 題', filterBankStrict(bank.data, 's2', '3', 'geometry').length === 0);
+check('s2/3/data_handling → 0 題', filterBankStrict(bank.data, 's2', '3', 'data_handling').length === 0);
 check('s3/3/number_and_algebra → 8 題', filterBankStrict(bank.data, 's3', '3', 'number_and_algebra').length === 8);
 check('s3/3/measurement → 5 題', filterBankStrict(bank.data, 's3', '3', 'measurement').length === 5);
 check('s3/3/geometry → 1 題', filterBankStrict(bank.data, 's3', '3', 'geometry').length === 1);
@@ -52,10 +56,10 @@ check('示範題型 (no grade) → []', filterBankStrict(bank.data, '', '', 'unc
 
 // === 1b. uniqueValuesForKey 行為（含 falsy duplicate regression） ===
 section('1b. uniqueValuesForKey 行為');
-// 真實題庫：grade 唯一值必須係 ["", "s1"]，唔可以有 duplicate 空 string
+// 真實題庫：grade 唯一值唔可以有 duplicate 空 string
 const realGrades = uniqueValuesForKey(bank.data, 'grade');
-check('真實題庫 grade 唯一值 = ["", "s1", "s3"] (len 3)',
-      realGrades.length === 3 && realGrades[0] === '' && realGrades[1] === 's1' && realGrades[2] === 's3');
+check('真實題庫 grade 唯一值 = ["", "s1", "s2", "s3"] (len 4)',
+      realGrades.length === 4 && realGrades[0] === '' && realGrades[1] === 's1' && realGrades[2] === 's2' && realGrades[3] === 's3');
 const realTerms = uniqueValuesForKey(bank.data, 'term');
 check('真實題庫 term 唯一值 = ["", "2", "3"] (len 3)',
       realTerms.length === 3 && realTerms[0] === '' && realTerms[1] === '2' && realTerms[2] === '3');
@@ -271,6 +275,17 @@ check('docs/question-codes.md 登記所有 generator family',
         return questionCodeDocs.includes(`| \`${m[1]}-${m[2]}\` |`) &&
           questionCodeDocs.includes(`\`${t.generator}\``);
       }));
+const generators = require(path.join(ROOT, 'tool/generators.js'));
+const validators = require(path.join(ROOT, 'tool/validators.js'));
+const missingRegistryEntries = bank.data.flatMap(t => {
+  const missing = [];
+  if (!generators.hasGenerator(t.generator)) missing.push(`generator:${t.key}:${t.generator}`);
+  if (!validators.hasValidator(t.validator)) missing.push(`validator:${t.key}:${t.validator}`);
+  return missing;
+});
+check('題庫每個 generator / validator key 都存在於單一 registry',
+      missingRegistryEntries.length === 0,
+      missingRegistryEntries.join(', '));
 check('頁面有 QUESTION_TYPE_NAMES mapping', toolHtmlFixed.includes('const QUESTION_TYPE_NAMES'));
 check('全部 key 出現在 QUESTION_TYPE_NAMES 或題庫 code UI 支援內',
       bank.data.every(t => toolHtmlFixed.includes(`${t.key}:`) || toolHtmlFixed.includes(`"${t.key}"`)));

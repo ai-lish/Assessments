@@ -24,6 +24,8 @@ const fixtures = [
   ["textExact accepts exact", q("textExact", { correctAnswer: "x^2", answers: ["x^2", "x**2"] }), "x**2", true],
   ["textExact rejects wrong", q("textExact", { correctAnswer: "x^2", answers: ["x^2"] }), "x^3", false],
   ["numeric accepts tolerance", q("numeric", { correctAnswer: "10" }), "10.005", true],
+  ["numeric accepts unicode minus", q("numeric", { correctAnswer: "-5" }), "−5", true],
+  ["numeric accepts dollar sign", q("numeric", { correctAnswer: "37.8" }), "$37.80", true],
   ["numeric rejects outside tolerance", q("numeric", { correctAnswer: "10" }), "10.5", false],
   ["signedNumeric accepts unicode minus", q("signedNumeric", { correctAnswer: "-5" }), "−5", true],
   ["signedNumeric rejects wrong sign", q("signedNumeric", { correctAnswer: "-5" }), "5", false],

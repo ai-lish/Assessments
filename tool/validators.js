@@ -272,8 +272,9 @@ function createAssessValidators() {
       return answers.some((answer) => equalAns(userInput, answer));
     },
     numeric(q, userInput) {
-      const user = parseFloat(userInput);
-      const answer = parseFloat(q.correctAnswer);
+      const normalizeNumericInput = (value) => String(value || "").trim().replace(/−/g, "-").replace(/\$/g, "");
+      const user = parseFloat(normalizeNumericInput(userInput));
+      const answer = parseFloat(normalizeNumericInput(q.correctAnswer));
       return !Number.isNaN(user) && !Number.isNaN(answer) && Math.abs(user - answer) < 0.01;
     },
     signedNumeric(q, userInput) {

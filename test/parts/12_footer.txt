@@ -1,201 +1,272 @@
   ],
   "presets": [
-    {
-      "key": "s3_term3_part_a",
-      "name": "中三第三學期甲部",
-      "description": "2025-26 中三第三學期甲部 14 題固定組合。每題 1 條，題型與順序按 PR-C 規格。",
-      "questions": [
-        {
-          "typeKey": "poly_add_sub",
-          "count": 1
-        },
-        {
-          "typeKey": "binomial_expand",
-          "count": 1
-        },
-        {
-          "typeKey": "s3t3_square_expand",
-          "count": 1
-        },
-        {
-          "typeKey": "s3t3_zero_exp",
-          "count": 1
-        },
-        {
-          "typeKey": "factor_diff_sq",
-          "count": 1
-        },
-        {
-          "typeKey": "factor_cross",
-          "count": 1
-        },
-        {
-          "typeKey": "sci_notation",
-          "count": 1
-        },
-        {
-          "typeKey": "solve_ineq",
-          "count": 1
-        },
-        {
-          "typeKey": "triangle_center",
-          "count": 1
-        },
-        {
-          "typeKey": "solid_sphere",
-          "count": 1
-        },
-        {
-          "typeKey": "solid_cylinder",
-          "count": 1
-        },
-        {
-          "typeKey": "solid_cone",
-          "count": 1
-        },
-        {
-          "typeKey": "sector_measure",
-          "count": 1
-        },
-        {
-          "typeKey": "pyth_cone",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "key": "s1_term2_part_a",
-      "name": "中一第二學期甲部",
-      "description": "2025-26 中一第二學期甲部 14 題固定組合。每題 1 條，題型與順序按 PR-B 規格。",
-      "questions": [
-        {
-          "typeKey": "s1t2_prime_factor",
-          "count": 1
-        },
-        {
-          "typeKey": "s1t2_hcf",
-          "count": 1
-        },
-        {
-          "typeKey": "directed_add",
-          "count": 1
-        },
-        {
-          "typeKey": "directed_mul",
-          "count": 1
-        },
-        {
-          "typeKey": "s1t2_word_to_alg",
-          "count": 1
-        },
-        {
-          "typeKey": "s1t2_solve_eq_fraction",
-          "count": 1
-        },
-        {
-          "typeKey": "s1t2_solve_eq_negative",
-          "count": 1
-        },
-        {
-          "typeKey": "cuboid_volume",
-          "count": 1
-        },
-        {
-          "typeKey": "s1t2_poly_desc",
-          "count": 1
-        },
-        {
-          "typeKey": "poly_constant",
-          "count": 1
-        },
-        {
-          "typeKey": "s1t2_alg_simplify",
-          "count": 1
-        },
-        {
-          "typeKey": "expand_bracket",
-          "count": 1
-        },
-        {
-          "typeKey": "s1t2_coordinate",
-          "count": 1
-        },
-        {
-          "typeKey": "quadrant",
-          "count": 1
-        }
-      ]
-    },
-    {
-      "key": "s1_term3_part_a",
-      "name": "中一第三學期甲部",
-      "description": "原 ai-learning 2025-26-中一-第三學期-甲部.html 的 16 題固定組合。每題 1 條，題型與順序與原工具一致，數值隨機。",
-      "questions": [
-        {
-          "typeKey": "frac_arith",
-          "count": 1
-        },
-        {
-          "typeKey": "neg_power",
-          "count": 1
-        },
-        {
-          "typeKey": "prime_factor",
-          "count": 1
-        },
-        {
-          "typeKey": "hcf_or_lcm",
-          "count": 1
-        },
-        {
-          "typeKey": "exp_law",
-          "count": 1
-        },
-        {
-          "typeKey": "alg_simplify",
-          "count": 1
-        },
-        {
-          "typeKey": "solve_eq",
-          "count": 1
-        },
-        {
-          "typeKey": "word_to_alg",
-          "count": 1
-        },
-        {
-          "typeKey": "sig_fig",
-          "count": 1
-        },
-        {
-          "typeKey": "frac_to_pct",
-          "count": 1
-        },
-        {
-          "typeKey": "poly_desc",
-          "count": 1
-        },
-        {
-          "typeKey": "formula_sub",
-          "count": 1
-        },
-        {
-          "typeKey": "congruence",
-          "count": 1
-        },
-        {
-          "typeKey": "coordinate",
-          "count": 1
-        },
-        {
-          "typeKey": "seq_nth",
-          "count": 1
-        },
-        {
-          "typeKey": "data_type",
-          "count": 1
-        }
-      ]
-    }
+      {
+          "key": "s3_term3_part_a",
+          "name": "中三第三學期甲部",
+          "description": "2025-26 中三第三學期甲部 14 題固定組合。每題 1 條，題型與順序按 PR-C 規格。",
+          "questions": [
+              {
+                  "typeKey": "poly_add_sub",
+                  "count": 1
+              },
+              {
+                  "typeKey": "binomial_expand",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s3t3_square_expand",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s3t3_zero_exp",
+                  "count": 1
+              },
+              {
+                  "typeKey": "factor_diff_sq",
+                  "count": 1
+              },
+              {
+                  "typeKey": "factor_cross",
+                  "count": 1
+              },
+              {
+                  "typeKey": "sci_notation",
+                  "count": 1
+              },
+              {
+                  "typeKey": "solve_ineq",
+                  "count": 1
+              },
+              {
+                  "typeKey": "triangle_center",
+                  "count": 1
+              },
+              {
+                  "typeKey": "solid_sphere",
+                  "count": 1
+              },
+              {
+                  "typeKey": "solid_cylinder",
+                  "count": 1
+              },
+              {
+                  "typeKey": "solid_cone",
+                  "count": 1
+              },
+              {
+                  "typeKey": "sector_measure",
+                  "count": 1
+              },
+              {
+                  "typeKey": "pyth_cone",
+                  "count": 1
+              }
+          ]
+      },
+      {
+          "key": "s1_term2_part_a",
+          "name": "中一第二學期甲部",
+          "description": "2025-26 中一第二學期甲部 14 題固定組合。每題 1 條，題型與順序按 PR-B 規格。",
+          "questions": [
+              {
+                  "typeKey": "s1t2_prime_factor",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s1t2_hcf",
+                  "count": 1
+              },
+              {
+                  "typeKey": "directed_add",
+                  "count": 1
+              },
+              {
+                  "typeKey": "directed_mul",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s1t2_word_to_alg",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s1t2_solve_eq_fraction",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s1t2_solve_eq_negative",
+                  "count": 1
+              },
+              {
+                  "typeKey": "cuboid_volume",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s1t2_poly_desc",
+                  "count": 1
+              },
+              {
+                  "typeKey": "poly_constant",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s1t2_alg_simplify",
+                  "count": 1
+              },
+              {
+                  "typeKey": "expand_bracket",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s1t2_coordinate",
+                  "count": 1
+              },
+              {
+                  "typeKey": "quadrant",
+                  "count": 1
+              }
+          ]
+      },
+      {
+          "key": "s1_term3_part_a",
+          "name": "中一第三學期甲部",
+          "description": "原 ai-learning 2025-26-中一-第三學期-甲部.html 的 16 題固定組合。每題 1 條，題型與順序與原工具一致，數值隨機。",
+          "questions": [
+              {
+                  "typeKey": "frac_arith",
+                  "count": 1
+              },
+              {
+                  "typeKey": "neg_power",
+                  "count": 1
+              },
+              {
+                  "typeKey": "prime_factor",
+                  "count": 1
+              },
+              {
+                  "typeKey": "hcf_or_lcm",
+                  "count": 1
+              },
+              {
+                  "typeKey": "exp_law",
+                  "count": 1
+              },
+              {
+                  "typeKey": "alg_simplify",
+                  "count": 1
+              },
+              {
+                  "typeKey": "solve_eq",
+                  "count": 1
+              },
+              {
+                  "typeKey": "word_to_alg",
+                  "count": 1
+              },
+              {
+                  "typeKey": "sig_fig",
+                  "count": 1
+              },
+              {
+                  "typeKey": "frac_to_pct",
+                  "count": 1
+              },
+              {
+                  "typeKey": "poly_desc",
+                  "count": 1
+              },
+              {
+                  "typeKey": "formula_sub",
+                  "count": 1
+              },
+              {
+                  "typeKey": "congruence",
+                  "count": 1
+              },
+              {
+                  "typeKey": "coordinate",
+                  "count": 1
+              },
+              {
+                  "typeKey": "seq_nth",
+                  "count": 1
+              },
+              {
+                  "typeKey": "data_type",
+                  "count": 1
+              }
+          ]
+      },
+      {
+          "key": "s2_term3_part_a",
+          "name": "中二第三學期甲部",
+          "description": "中二 T3 卷一甲部短答練習 Q1-Q16（16 題 / 16 分）。每題 1 條，題型順序與 S2 T3 甲部追認版本一致。",
+          "questions": [
+              {
+                  "typeKey": "alg_simplify_2var",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s2t3_square_expand_2var",
+                  "count": 1
+              },
+              {
+                  "typeKey": "solve_eq_fraction",
+                  "count": 1
+              },
+              {
+                  "typeKey": "solve_eq_bracket",
+                  "count": 1
+              },
+              {
+                  "typeKey": "factor_neg_common",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s2t3_factor_diff_sq",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s2t3_sig_fig",
+                  "count": 1
+              },
+              {
+                  "typeKey": "round_decimal",
+                  "count": 1
+              },
+              {
+                  "typeKey": "combine_fractions",
+                  "count": 1
+              },
+              {
+                  "typeKey": "s2t3_exp_law",
+                  "count": 1
+              },
+              {
+                  "typeKey": "coef_exp_div",
+                  "count": 1
+              },
+              {
+                  "typeKey": "ratio_three",
+                  "count": 1
+              },
+              {
+                  "typeKey": "discount",
+                  "count": 1
+              },
+              {
+                  "typeKey": "profit_pct",
+                  "count": 1
+              },
+              {
+                  "typeKey": "square_root_pm",
+                  "count": 1
+              },
+              {
+                  "typeKey": "cuboid_volume_cube",
+                  "count": 1
+              }
+          ]
+      }
   ]
 }

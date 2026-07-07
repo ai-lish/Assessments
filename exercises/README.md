@@ -57,6 +57,7 @@ exercises/
 |---|---|---|---|
 | `exercises/2526/s1/t2/part-a-01.html` | `s1_term2_part_a` | 14 | regular |
 | `exercises/2526/s1/t3/part-a-01.html` | `s1_term3_part_a` | 16 | regular |
+| `exercises/2526/s2/t3/part-a-01.html` | `s2_term3_part_a` | 16 | regular |
 | `exercises/2526/s3/t3/part-a-01.html` | `s3_term3_part_a` | 14 | regular |
 
 每份檔案:
