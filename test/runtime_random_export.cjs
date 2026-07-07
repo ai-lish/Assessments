@@ -127,6 +127,7 @@ function makeMath(seed) {
 
 function buildHtml(preset, specs = questionSpecs) {
   return template
+    .replace(/\{\{TITLE_HTML\}\}/g, preset.name)
     .replace(/\{\{TITLE\}\}/g, JSON.stringify(preset.name))
     .replace(/\{\{QUESTIONS_DATA\}\}/g, JSON.stringify([]))
     .replace(/\{\{QUESTION_SPECS\}\}/g, JSON.stringify(specs))

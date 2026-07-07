@@ -64,6 +64,7 @@ const questions = preset.questions.map((spec, index) => {
 });
 
 let html = tmpl
+  .replace(/\{\{TITLE_HTML\}\}/g, "中三第三學期甲部")
   .replace(/\{\{TITLE\}\}/g, "中三第三學期甲部")
   .replace(/\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions))
   .replace(/\{\{QUESTION_SPECS\}\}/g, JSON.stringify([]))

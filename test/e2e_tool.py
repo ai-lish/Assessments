@@ -110,6 +110,7 @@ gas_url = ""
 
 html = tmpl
 # Use plain replace, not re.sub, to avoid backslash interpretation in replacement
+html = html.replace('{{TITLE_HTML}}', title)
 html = html.replace('{{TITLE}}', json.dumps(title, ensure_ascii=False))
 html = html.replace('{{QUESTIONS_DATA}}', json.dumps(questions, ensure_ascii=False))
 html = html.replace('{{QUESTION_SPECS}}', json.dumps([], ensure_ascii=False))

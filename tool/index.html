@@ -381,6 +381,36 @@ let previewDirty = true;  // 任何改動令預覽失效
 let activeSimulationId = null;
 let lastExportConfirmVersion = 0;  // 確認狀態嘅 hash，匯出門閘檢查用
 
+function displaySchoolYear(yearCode) {
+  const s = String(yearCode || "");
+  const m = s.match(/^(\d{2})(\d{2})$/);
+  return m ? ("20" + m[1] + "-" + m[2]) : s;
+}
+
+function normalizePartName(name) {
+  return String(name || "").replace(/[（(]?甲部[）)]?/g, "(甲部)");
+}
+
+function deriveYearFromCode(code) {
+  const m = String(code || "").match(/^LSC-(\d{4})-/);
+  return m ? m[1] : "";
+}
+
+function deriveYearFromBasket() {
+  const first = basket && basket[0] && basket[0].typeDef;
+  return first ? deriveYearFromCode(first.code) : "";
+}
+
+function buildPracticeTitleFromPreset(p) {
+  let year = "";
+  if (p && Array.isArray(p.questions) && p.questions[0] && bank) {
+    const t = bank.data.find(x => x.key === p.questions[0].typeKey);
+    year = deriveYearFromCode(t && t.code);
+  }
+  const yearText = year ? displaySchoolYear(year) + " 年度 " : "";
+  return yearText + normalizePartName(p && p.name) + "短答練習";
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
   if (saved.bankUrl) document.getElementById("bankUrl").value = saved.bankUrl;
@@ -476,12 +506,12 @@ async function loadAll() {
     bank = await bankRes.json();
     tmpl = await tmplRes.text();
     // Basic template sanity check
-    if (!tmpl.includes("{{TITLE}}") || !tmpl.includes("{{QUESTIONS_DATA}}") ||
+    if (!tmpl.includes("{{TITLE}}") || !tmpl.includes("{{TITLE_HTML}}") || !tmpl.includes("{{QUESTIONS_DATA}}") ||
         !tmpl.includes("{{QUESTION_SPECS}}") || !tmpl.includes("{{BANK_HASH}}") ||
         !tmpl.includes("{{PRESET_KEY}}") || !tmpl.includes("{{VALIDATORS_SCRIPT}}") ||
         !tmpl.includes("{{GENERATORS_SCRIPT}}") || !tmpl.includes("{{PDF_SCRIPT}}") ||
         !tmpl.includes("{{RUNTIME_SEED}}")) {
-      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{QUESTIONS_DATA}} / {{QUESTION_SPECS}} / {{BANK_HASH}} / {{PRESET_KEY}} / {{VALIDATORS_SCRIPT}} / {{GENERATORS_SCRIPT}} / {{PDF_SCRIPT}} / {{RUNTIME_SEED}}）");
+      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{TITLE_HTML}} / {{QUESTIONS_DATA}} / {{QUESTION_SPECS}} / {{BANK_HASH}} / {{PRESET_KEY}} / {{VALIDATORS_SCRIPT}} / {{GENERATORS_SCRIPT}} / {{PDF_SCRIPT}} / {{RUNTIME_SEED}}）");
     }
     // Bank validation（先過題目庫）
     const validation = validateBank(bank);
@@ -620,7 +650,7 @@ function validateBank(b) {
 }
 
 function validateTemplate(s) {
-  const required = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
+  const required = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
   const missing = required.filter(ph => !s.includes(ph));
   return { ok: missing.length === 0, missing };
 }
@@ -816,7 +846,7 @@ function loadPreset(presetKey) {
   }
   // 記住來源 preset key，export 時會用呢個填 PRESET_KEY
   activePresetKey = p.key;
-  document.getElementById("title").value = p.name;
+  document.getElementById("title").value = buildPracticeTitleFromPreset(p);
   syncFilenameFromPreset();
   markPreviewDirty();
   renderBasket();
@@ -1393,6 +1423,8 @@ function buildPubPackage() {
   // uses a fixed suffix; they intentionally differ to make package ≠ HTML.
   const bankHash = "b" + bank.data.length + "_" + basket.length + "_" + Date.now().toString(36);
   const generatedAt = new Date().toISOString();
+  const title = document.getElementById("title").value.trim()
+    || ((deriveYearFromBasket() ? displaySchoolYear(deriveYearFromBasket()) + " 年度 " : "") + "初中數學短答練習");
   let targetPath, fileName, sourcePreset;
   if (mode === "regular") {
     targetPath = `exercises/${year}/${grade}/${term}`;
@@ -1411,6 +1443,7 @@ function buildPubPackage() {
     questionCodes,
     generatedAt,
     bankHash,
+    title,
   };
 }
 
@@ -1454,7 +1487,7 @@ function exportStudent() {
   const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
   const questionSpecs = buildQuestionSpecsForBasket();
   // Validate placeholders before replace
-  const requiredPlaceholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
+  const requiredPlaceholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
   for (const ph of requiredPlaceholders) {
     if (!tmpl.includes(ph)) {
       showStatus("exportStatus", "err", "模板缺少必要佔位符：" + ph);
@@ -1476,6 +1509,7 @@ function exportStudent() {
 
   const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
   let html = tmpl;
+  html = safeReplace(html, /\{\{TITLE_HTML\}\}/g, escapeHtml(title));
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
   html = safeReplace(html, /\{\{VALIDATORS_SCRIPT\}\}/g, AssessValidators.toStandaloneScript());
   html = safeReplace(html, /\{\{GENERATORS_SCRIPT\}\}/g, AssessGenerators.toStandaloneScript());

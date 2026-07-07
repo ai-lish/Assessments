@@ -1,6 +1,7 @@
 <!-- ⚠️ 這是學生版模板（含佔位符），不可直接開啟使用。
      工具 (tool/index.html) 會把以下佔位符替換後生成 standalone 學生版 HTML：
        TITLE              練習標題
+       TITLE_HTML         HTML-safe 練習標題（供 <title> / 可見頁首使用）
        QUESTIONS_DATA     JSON 字串：預生成題目 fallback（samples / 舊測試用）
        QUESTION_SPECS     JSON 字串：runtime 生成用 [{qid, typeKey, typeDef}, ...]
        GENERATED_AT       生成時間 ISO
@@ -17,7 +18,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>{{TITLE}}</title>
+<title>{{TITLE_HTML}}</title>
 <script>
   window.MathJax = {
     tex: { inlineMath: [['\\(','\\)'], ['$','$']], displayMath: [['$$','$$']] },
@@ -42,6 +43,7 @@
   * { box-sizing: border-box; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif; background: var(--bg-main); margin: 0; padding: 8px; display: flex; justify-content: center; height: 98vh; box-sizing: border-box; overflow: hidden; }
   .container { width: 100%; max-width: 500px; background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; height: 100%; position: relative; }
+  .practice-title { padding: 10px 14px 8px; text-align: center; font-size: 1.02em; font-weight: 800; color: var(--primary); border-bottom: 1px solid #f0f2f5; line-height: 1.35; flex-shrink: 0; }
   .top-info { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; font-size: 0.9em; font-weight: 600; color: var(--text-muted); background: #fff; border-bottom: 1px solid #f0f2f5; flex-shrink: 0; }
   .progress-badge { background: #ecf0f1; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.85em; }
   .score-badge { color: var(--accent); font-size: 0.9em; }
@@ -113,6 +115,7 @@
 <body>
 
 <div class="container">
+  <div id="practice-title" class="practice-title">{{TITLE_HTML}}</div>
   <div class="top-info">
     <span id="p-text" class="progress-badge">載入中...</span>
     <span id="score-mini" class="score-badge">得分: 0</span>
@@ -236,6 +239,8 @@ const GENERATED_AT = {{GENERATED_AT}};
 const BANK_HASH = {{BANK_HASH}};
 const PRESET_KEY = {{PRESET_KEY}};
 const GAS_URL = {{GAS_URL}};
+
+document.getElementById("practice-title").textContent = TITLE;
 
 function makeSeededRng(seedValue) {
   let s = 0;
