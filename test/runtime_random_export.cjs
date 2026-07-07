@@ -9,6 +9,7 @@ const bank = JSON.parse(fs.readFileSync(path.join(ROOT, "question-bank.json"), "
 const template = fs.readFileSync(path.join(ROOT, "templates/student.html"), "utf8");
 const validators = require(path.join(ROOT, "tool/validators.js"));
 const generators = require(path.join(ROOT, "tool/generators.js"));
+const pdfScript = fs.readFileSync(path.join(ROOT, "tool/pdf.js"), "utf8");
 
 const typeByKey = new Map(bank.data.map((t) => [t.key, t]));
 
@@ -135,6 +136,7 @@ function buildHtml(preset, specs = questionSpecs) {
     .replace(/\{\{GAS_URL\}\}/g, JSON.stringify(""))
     .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validators.toStandaloneScript())
     .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generators.toStandaloneScript())
+    .replace(/\{\{PDF_SCRIPT\}\}/g, pdfScript)
     .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
 }
 

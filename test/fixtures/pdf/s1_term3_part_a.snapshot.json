@@ -1,0 +1,244 @@
+{
+  "snapshotId": "pdf-ce523c58",
+  "seed": "pdf-a3-fixture:s1_term3_part_a",
+  "title": "中一第三學期甲部",
+  "presetKey": "s1_term3_part_a",
+  "questionCount": 16,
+  "questions": [
+    {
+      "index": 1,
+      "qid": "q001",
+      "typeKey": "frac_arith",
+      "code": "LSC-2526-S1-T3-01-NA-1",
+      "paramsUsed": {
+        "factor": -1,
+        "bottom": -6,
+        "top": 6,
+        "a": 5,
+        "b": -1,
+        "c": 7,
+        "d": 1
+      },
+      "answerSpec": null,
+      "displayAnswer": "-1"
+    },
+    {
+      "index": 2,
+      "qid": "q002",
+      "typeKey": "neg_power",
+      "code": "LSC-2526-S1-T3-02-NA-2",
+      "paramsUsed": {
+        "base": 5,
+        "exp": 4
+      },
+      "answerSpec": null,
+      "displayAnswer": "625"
+    },
+    {
+      "index": 3,
+      "qid": "q003",
+      "typeKey": "prime_factor",
+      "code": "LSC-2526-S1-T3-03-NA-3",
+      "paramsUsed": {
+        "n": 20,
+        "primeFactors": {
+          "2": 2,
+          "5": 1
+        },
+        "factors": {
+          "2": 2,
+          "5": 1
+        }
+      },
+      "answerSpec": null,
+      "displayAnswer": "2^2 \\times 5"
+    },
+    {
+      "index": 4,
+      "qid": "q004",
+      "typeKey": "hcf_or_lcm",
+      "code": "LSC-2526-S1-T3-04-NA-4",
+      "paramsUsed": {
+        "n1": 14,
+        "n2": 21,
+        "askLCM": false,
+        "hcf": 7,
+        "lcm": 42
+      },
+      "answerSpec": null,
+      "displayAnswer": "7"
+    },
+    {
+      "index": 5,
+      "qid": "q005",
+      "typeKey": "exp_law",
+      "code": "LSC-2526-S1-T3-05-NA-5",
+      "paramsUsed": {
+        "a": 3,
+        "b": 6
+      },
+      "answerSpec": null,
+      "displayAnswer": "x^{9}"
+    },
+    {
+      "index": 6,
+      "qid": "q006",
+      "typeKey": "alg_simplify",
+      "code": "LSC-2526-S1-T3-06-NA-6",
+      "paramsUsed": {
+        "a": -5,
+        "b": -5,
+        "c": 2,
+        "d": -8,
+        "xCoeff": -3,
+        "constTerm": -13
+      },
+      "answerSpec": null,
+      "displayAnswer": "-3x-13"
+    },
+    {
+      "index": 7,
+      "qid": "q007",
+      "typeKey": "solve_eq",
+      "code": "LSC-2526-S1-T3-07-NA-7",
+      "paramsUsed": {
+        "coeff": 2,
+        "xVal": -7,
+        "rVal": -14
+      },
+      "answerSpec": null,
+      "displayAnswer": "-7"
+    },
+    {
+      "index": 8,
+      "qid": "q008",
+      "typeKey": "word_to_alg",
+      "code": "LSC-2526-S1-T3-08-NA-8",
+      "paramsUsed": {
+        "t": 5,
+        "a": 8,
+        "b": 4
+      },
+      "answerSpec": null,
+      "displayAnswer": "4(8-x)"
+    },
+    {
+      "index": 9,
+      "qid": "q009",
+      "typeKey": "sig_fig",
+      "code": "LSC-2526-S1-T3-09-ME-1",
+      "paramsUsed": {
+        "baseNum": 2.7183,
+        "sf": 2,
+        "roundedVal": 2.7
+      },
+      "answerSpec": null,
+      "displayAnswer": "2.7"
+    },
+    {
+      "index": 10,
+      "qid": "q010",
+      "typeKey": "frac_to_pct",
+      "code": "LSC-2526-S1-T3-10-ME-2",
+      "paramsUsed": {
+        "item": "1/10"
+      },
+      "answerSpec": null,
+      "displayAnswer": "10\\%"
+    },
+    {
+      "index": 11,
+      "qid": "q011",
+      "typeKey": "poly_desc",
+      "code": "LSC-2526-S1-T3-11-NA-9",
+      "paramsUsed": {
+        "b": 9,
+        "c": 4
+      },
+      "answerSpec": null,
+      "displayAnswer": "x^2+9x-4"
+    },
+    {
+      "index": 12,
+      "qid": "q012",
+      "typeKey": "formula_sub",
+      "code": "LSC-2526-S1-T3-12-NA-10",
+      "paramsUsed": {
+        "a": 7,
+        "b": 5,
+        "c": -2,
+        "isPlus": true,
+        "result": -3
+      },
+      "answerSpec": null,
+      "displayAnswer": "-3"
+    },
+    {
+      "index": 13,
+      "qid": "q013",
+      "typeKey": "congruence",
+      "code": "LSC-2526-S1-T3-13-GE-1",
+      "paramsUsed": {
+        "t1": [
+          "H",
+          "I",
+          "J"
+        ],
+        "t2": [
+          "U",
+          "V",
+          "W"
+        ],
+        "reason": "A.A.S."
+      },
+      "answerSpec": null,
+      "displayAnswer": "A.A.S."
+    },
+    {
+      "index": 14,
+      "qid": "q014",
+      "typeKey": "coordinate",
+      "code": "LSC-2526-S1-T3-14-GE-2",
+      "paramsUsed": {
+        "rx": 1,
+        "ry": 2,
+        "askAxis": "y",
+        "coordVal": 2
+      },
+      "answerSpec": {
+        "coordinateMode": "axis-value",
+        "interaction": {
+          "kind": "grid-click-and-axis-value",
+          "target": "generated",
+          "clickTolerance": 0
+        }
+      },
+      "displayAnswer": "\\( y \\) 坐標為 2，A 點位置 (1, 2)"
+    },
+    {
+      "index": 15,
+      "qid": "q015",
+      "typeKey": "seq_nth",
+      "code": "LSC-2526-S1-T3-15-NA-11",
+      "paramsUsed": {
+        "nth": 2,
+        "multiplier": 2,
+        "constant": -2,
+        "result": 2
+      },
+      "answerSpec": null,
+      "displayAnswer": "2"
+    },
+    {
+      "index": 16,
+      "qid": "q016",
+      "typeKey": "data_type",
+      "code": "LSC-2526-S1-T3-16-DH-1",
+      "paramsUsed": {
+        "scenario": "「一箱蘋果的數量」"
+      },
+      "answerSpec": null,
+      "displayAnswer": "離散數據"
+    }
+  ]
+}

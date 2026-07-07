@@ -85,6 +85,7 @@ const toolHtmlFixed = fs.readFileSync(path.join(ROOT, 'tool/index.html'), 'utf-8
 check('頁面 <script src="filter.js?...">', /<script src="filter\.js\?v=[^"]+">/.test(toolHtmlFixed));
 check('頁面 <script src="generators.js?...">', /<script src="generators\.js\?v=[^"]+">/.test(toolHtmlFixed));
 check('頁面 <script src="validators.js?...">', /<script src="validators\.js\?v=[^"]+">/.test(toolHtmlFixed));
+check('頁面 <script src="pdf.js?...">', /<script src="pdf\.js\?v=[^"]+">/.test(toolHtmlFixed));
 check('頁面 renderQuestionBrowser 內使用 AssessTool.filterBankStrict',
       /renderQuestionBrowser[\s\S]{0,300}filterBankStrict/.test(toolHtmlFixed));
 check('頁面入面冇內聯 (t.grade \|\| "") !== selectedGrade 篩選邏輯',
@@ -223,8 +224,8 @@ if (typeof renderFn === 'function') {
 }
 
 // === 4. 模板佔位符 ===
-section('4. 模板 10 個必要佔位符');
-const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{RUNTIME_SEED}}'];
+section('4. 模板 11 個必要佔位符');
+const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
 for (const ph of REQUIRED) {
   check(`模板有 ${ph}`, tmpl.includes(ph));
 }

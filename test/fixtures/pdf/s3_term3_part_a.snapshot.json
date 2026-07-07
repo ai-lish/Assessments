@@ -1,0 +1,277 @@
+{
+  "snapshotId": "pdf-b4c6de09",
+  "seed": "pdf-a3-fixture:s3_term3_part_a",
+  "title": "中三第三學期甲部",
+  "presetKey": "s3_term3_part_a",
+  "questionCount": 14,
+  "questions": [
+    {
+      "index": 1,
+      "qid": "q001",
+      "typeKey": "poly_add_sub",
+      "code": "LSC-2526-S3-T3-01-NA-16",
+      "paramsUsed": {
+        "a": 3,
+        "b": 6,
+        "c": 5,
+        "d": 2,
+        "e": -4,
+        "f": 5,
+        "op": "-"
+      },
+      "answerSpec": {
+        "order": "loose"
+      },
+      "displayAnswer": "x^2+10x"
+    },
+    {
+      "index": 2,
+      "qid": "q002",
+      "typeKey": "binomial_expand",
+      "code": "LSC-2526-S3-T3-02-NA-17",
+      "paramsUsed": {
+        "a": 4,
+        "b": -5,
+        "c": 4,
+        "d": -4,
+        "square": false,
+        "x2": 16,
+        "x1": -36,
+        "constTerm": 20
+      },
+      "answerSpec": {
+        "order": "loose"
+      },
+      "displayAnswer": "16x^2-36x+20"
+    },
+    {
+      "index": 3,
+      "qid": "q003",
+      "typeKey": "s3t3_square_expand",
+      "code": "LSC-2526-S3-T3-03-NA-17",
+      "paramsUsed": {
+        "a": 1,
+        "b": 2,
+        "c": 1,
+        "d": 2,
+        "square": true,
+        "x2": 1,
+        "x1": 4,
+        "constTerm": 4
+      },
+      "answerSpec": {
+        "order": "loose"
+      },
+      "displayAnswer": "x^2+4x+4"
+    },
+    {
+      "index": 4,
+      "qid": "q004",
+      "typeKey": "s3t3_zero_exp",
+      "code": "LSC-2526-S3-T3-04-NA-5",
+      "paramsUsed": {
+        "base": 4,
+        "zeroCase": true
+      },
+      "answerSpec": null,
+      "displayAnswer": "1"
+    },
+    {
+      "index": 5,
+      "qid": "q005",
+      "typeKey": "factor_diff_sq",
+      "code": "LSC-2526-S3-T3-05-NA-18",
+      "paramsUsed": {
+        "a": 1,
+        "b": 5
+      },
+      "answerSpec": {
+        "factors": [
+          [
+            1,
+            -5
+          ],
+          [
+            1,
+            5
+          ]
+        ]
+      },
+      "displayAnswer": "(x-5)(x+5)"
+    },
+    {
+      "index": 6,
+      "qid": "q006",
+      "typeKey": "factor_cross",
+      "code": "LSC-2526-S3-T3-06-NA-19",
+      "paramsUsed": {
+        "a": 1,
+        "b": 2,
+        "c": 1,
+        "d": 3,
+        "x2": 1,
+        "x1": 5,
+        "constTerm": 6
+      },
+      "answerSpec": {
+        "factors": [
+          [
+            1,
+            2
+          ],
+          [
+            1,
+            3
+          ]
+        ]
+      },
+      "displayAnswer": "(x+2)(x+3)"
+    },
+    {
+      "index": 7,
+      "qid": "q007",
+      "typeKey": "sci_notation",
+      "code": "LSC-2526-S3-T3-07-NA-20",
+      "paramsUsed": {
+        "mantissa": 3.2,
+        "exponent": 3,
+        "value": 3200
+      },
+      "answerSpec": {
+        "mantissa": 3.2,
+        "exponent": 3,
+        "value": 3200
+      },
+      "displayAnswer": "3.2×10^3"
+    },
+    {
+      "index": 8,
+      "qid": "q008",
+      "typeKey": "solve_ineq",
+      "code": "LSC-2526-S3-T3-08-NA-21",
+      "paramsUsed": {
+        "a": -2,
+        "b": 5,
+        "rhs": 11,
+        "boundary": -3,
+        "op": ">"
+      },
+      "answerSpec": {
+        "variable": "x",
+        "op": ">",
+        "value": -3
+      },
+      "displayAnswer": "x > -3"
+    },
+    {
+      "index": 9,
+      "qid": "q009",
+      "typeKey": "triangle_center",
+      "code": "LSC-2526-S3-T3-09-GE-5",
+      "paramsUsed": {
+        "center": "centroid"
+      },
+      "answerSpec": null,
+      "displayAnswer": "形心"
+    },
+    {
+      "index": 10,
+      "qid": "q010",
+      "typeKey": "solid_sphere",
+      "code": "LSC-2526-S3-T3-10-ME-5",
+      "paramsUsed": {
+        "solidType": "sphere",
+        "r": 3,
+        "h": 8,
+        "piCoeff": 36,
+        "decimal": "113.097"
+      },
+      "answerSpec": {
+        "allowUnit": true,
+        "unit": "cm^3",
+        "tolerance": 0.05,
+        "exactPiCoefficient": 36
+      },
+      "displayAnswer": "36π cm³ ≈ 113.097 cm³"
+    },
+    {
+      "index": 11,
+      "qid": "q011",
+      "typeKey": "solid_cylinder",
+      "code": "LSC-2526-S3-T3-11-ME-5",
+      "paramsUsed": {
+        "solidType": "cylinder",
+        "r": 3,
+        "h": 8,
+        "piCoeff": 72,
+        "decimal": "226.195"
+      },
+      "answerSpec": {
+        "allowUnit": true,
+        "unit": "cm^3",
+        "tolerance": 0.05,
+        "exactPiCoefficient": 72
+      },
+      "displayAnswer": "72π cm³ ≈ 226.195 cm³"
+    },
+    {
+      "index": 12,
+      "qid": "q012",
+      "typeKey": "solid_cone",
+      "code": "LSC-2526-S3-T3-12-ME-5",
+      "paramsUsed": {
+        "solidType": "cone",
+        "r": 3,
+        "h": 8,
+        "piCoeff": 24,
+        "decimal": "75.398"
+      },
+      "answerSpec": {
+        "allowUnit": true,
+        "unit": "cm^3",
+        "tolerance": 0.05,
+        "exactPiCoefficient": 24
+      },
+      "displayAnswer": "24π cm³ ≈ 75.398 cm³"
+    },
+    {
+      "index": 13,
+      "qid": "q013",
+      "typeKey": "sector_measure",
+      "code": "LSC-2526-S3-T3-13-ME-6",
+      "paramsUsed": {
+        "r": 6,
+        "angle": 60,
+        "ask": "area",
+        "piCoeff": 6,
+        "decimal": "18.85"
+      },
+      "answerSpec": {
+        "allowUnit": true,
+        "unit": "cm^2",
+        "tolerance": 0.05,
+        "exactPiCoefficient": 6
+      },
+      "displayAnswer": "6π cm^2 ≈ 18.85 cm^2"
+    },
+    {
+      "index": 14,
+      "qid": "q014",
+      "typeKey": "pyth_cone",
+      "code": "LSC-2526-S3-T3-14-ME-7",
+      "paramsUsed": {
+        "mode": "findL",
+        "r": 5,
+        "h": 12,
+        "l": 13,
+        "result": "13"
+      },
+      "answerSpec": {
+        "allowUnit": true,
+        "unit": "cm",
+        "tolerance": 0.05
+      },
+      "displayAnswer": "13 cm"
+    }
+  ]
+}

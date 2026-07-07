@@ -9,6 +9,7 @@ const validators = require("../tool/validators.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const tmpl = fs.readFileSync(path.join(ROOT, "templates/student.html"), "utf8");
+const pdfScript = fs.readFileSync(path.join(ROOT, "tool/pdf.js"), "utf8");
 const preset = bank.presets.find((p) => p.key === "s1_term2_part_a");
 if (!preset) throw new Error("s1_term2_part_a preset missing");
 
@@ -73,6 +74,7 @@ let html = tmpl
   .replace(/\{\{GAS_URL\}\}/g, "")
   .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validators.toStandaloneScript())
   .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generators.toStandaloneScript())
+  .replace(/\{\{PDF_SCRIPT\}\}/g, pdfScript)
   .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
 
 const leftovers = html.match(/\{\{[A-Z_]+\}\}/g) || [];
