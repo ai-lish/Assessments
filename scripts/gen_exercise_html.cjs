@@ -21,6 +21,7 @@
  * Usage:
  *   node gen_exercise_html.cjs [--mode=regular|custom|by-topic] [--name=...] \
  *                              [--year=2526] [--topic=...] [--out-root=exercises] \
+ *                              [--gas-url=https://script.google.com/macros/s/...] \
  *                              [presetKey1 presetKey2 ...]
  *
  * Default: --mode=regular, --year=2526, all presets.
@@ -40,6 +41,7 @@ const DEFAULTS = {
   mode: 'regular', // regular | custom | by-topic
   name: null,      // for custom / by-topic
   topic: null,     // for by-topic
+  gasUrl: '',
 };
 
 // --- Tiny CLI parser (no external dep) ---
@@ -53,6 +55,7 @@ function parseArgs(argv) {
     else if (a.startsWith('--name=')) opts.name = a.slice(7);
     else if (a.startsWith('--topic=')) opts.topic = a.slice(8);
     else if (a.startsWith('--out-root=')) opts.outRoot = path.resolve(a.slice(11));
+    else if (a.startsWith('--gas-url=')) opts.gasUrl = a.slice(10);
     else if (a === '--help' || a === '-h') {
       console.log(fs.readFileSync(__filename, 'utf-8').split('\n').filter(l => l.startsWith(' *') || l.startsWith('#')).join('\n'));
       process.exit(0);
@@ -181,7 +184,7 @@ function safeName(s) {
   return String(s).replace(/[^a-zA-Z0-9_\\-]/g, '_');
 }
 
-function buildHtml({ title, presetKey, grade, specs, generatedAt, bankHash }) {
+function buildHtml({ title, presetKey, grade, gasUrl, specs, generatedAt, bankHash }) {
   let html = tmpl;
   html = safeReplace(html, /\{\{TITLE_HTML\}\}/g, escapeHtml(title));
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
@@ -195,7 +198,7 @@ function buildHtml({ title, presetKey, grade, specs, generatedAt, bankHash }) {
   html = safeReplace(html, /\{\{BANK_HASH\}\}/g, JSON.stringify(bankHash));
   html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
   html = safeReplace(html, /\{\{GRADE\}\}/g, JSON.stringify(grade || "unknown"));
-  html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(''));
+  html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl || ''));
   const leftover = html.match(/\{\{[A-Z_]+\}\}/g);
   if (leftover && leftover.length) {
     console.error('  LEFTOVER PLACEHOLDERS:', leftover);
@@ -223,7 +226,7 @@ for (const preset of presets) {
   const bankHash = computeBankHash(preset.key, specs);
   const generatedAt = new Date().toISOString();
   const presetKey = preset.key;
-  const html = buildHtml({ title, presetKey, grade, specs, generatedAt, bankHash });
+  const html = buildHtml({ title, presetKey, grade, gasUrl: opts.gasUrl, specs, generatedAt, bankHash });
 
   // Question codes (for publish package)
   const questionCodes = specs.map(s => {

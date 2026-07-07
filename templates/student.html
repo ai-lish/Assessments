@@ -704,7 +704,7 @@ function showResult() {
 }
 
 function canSubmitToTeacher() {
-  return !!(lastResult && lastResult.completedAll === true);
+  return !!(lastResult && lastResult.completedAll === true && GAS_URL);
 }
 
 function updateSubmitGate() {
@@ -713,9 +713,13 @@ function updateSubmitGate() {
   if (!btn || !hint) return;
   const ok = canSubmitToTeacher();
   btn.disabled = !ok;
-  hint.textContent = ok
-    ? "已完成所有錯題，可提交學習記錄。"
-    : "完成所有錯題重做後方可提交。";
+  if (!GAS_URL) {
+    hint.textContent = "未配置提交目的地，暫時不能提交答案至老師。";
+  } else {
+    hint.textContent = ok
+      ? "已完成所有錯題，可提交學習記錄。"
+      : "完成所有錯題重做後方可提交。";
+  }
 }
 
 function renderHistory() {
@@ -825,6 +829,7 @@ function printPDF() {
 /* === Google Sheets 提交 === */
 function handleExport() {
   if (allAttempts.length === 0) { showToast("⚠️ 暫無記錄可匯出"); return; }
+  if (!GAS_URL) { showToast("⚠️ 未配置提交目的地"); updateSubmitGate(); return; }
   if (!canSubmitToTeacher()) { showToast("⚠️ 完成所有錯題重做後方可提交"); updateSubmitGate(); return; }
   // 用戶輸入學生編號
   const sid = (prompt("請輸入你的學生證編號（" + STUDENT_ID_RULE_TEXT + "）") || "").trim().toUpperCase();

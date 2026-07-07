@@ -30,4 +30,5 @@
 
 - 不要把真實 Web App URL、token 或可寫入 secret 寫死入 repo。
 - 學生 HTML 內的 `GAS_URL` 仍由生成參數配置；本 repo 只提供 endpoint 程式碼。
+- 已發佈 `exercises/` 練習不會自動取得新 URL；部署真實 GAS URL 後，需用正式發佈管道帶 `--gas-url=...` 重新生成及發佈。
 - 前端使用 `no-cors` 時無法確認伺服器是否成功寫入，老師應以 Google Sheet 內容作最終確認。
