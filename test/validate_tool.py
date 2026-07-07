@@ -280,6 +280,7 @@ gas_url = ""
 
 # Use str.replace (NOT re.sub which interprets backslashes)
 html = tmpl
+html = html.replace("{{TITLE_HTML}}", title)
 html = html.replace("{{TITLE}}", json.dumps(title, ensure_ascii=False))
 html = html.replace("{{QUESTIONS_DATA}}", json.dumps(questions, ensure_ascii=False))
 html = html.replace("{{QUESTION_SPECS}}", json.dumps([], ensure_ascii=False))
@@ -315,7 +316,7 @@ print(f"  (wrote {out}, {len(html)} bytes)")
 # 8. 佔位符 + JS 語法
 # ----------------------------------------------------------------------
 print("\n=== 8. 佔位符 + JS 語法 ===")
-required_placeholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"]
+required_placeholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"]
 for ph in required_placeholders:
     check(f"模板有 {ph}", ph in tmpl)
 

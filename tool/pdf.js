@@ -192,7 +192,8 @@ function createAssessPDF() {
   function renderPDF(snapshot, mode, options) {
     if (mode !== "student" && mode !== "teacher") throw new Error("Unknown PDF mode: " + mode);
     const showCode = !options || options.showCode !== false;
-    const title = mode === "teacher" ? "(甲部) 短答題 答案版" : "(甲部) 短答題";
+    const title = (snapshot && snapshot.title ? snapshot.title : "(甲部) 短答題")
+      + (mode === "teacher" ? " 答案版" : "");
     const modeClass = mode === "teacher" ? "teacher" : "student";
     const rows = snapshot.questions.map((q, idx) => {
       const answer = mode === "teacher"

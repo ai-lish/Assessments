@@ -81,6 +81,28 @@ function buildSpecs(preset) {
   });
 }
 
+function displaySchoolYear(yearCode) {
+  const s = String(yearCode || '');
+  const m = s.match(/^(\d{2})(\d{2})$/);
+  return m ? `20${m[1]}-${m[2]}` : s;
+}
+
+function deriveYearFromPreset(preset) {
+  const typeByKey = new Map(bank.data.map((t) => [t.key, t]));
+  const first = preset.questions && preset.questions[0] && typeByKey.get(preset.questions[0].typeKey);
+  const m = first && first.code && first.code.match(/^LSC-(\d{4})-/);
+  return m ? m[1] : '';
+}
+
+function normalizePartName(name) {
+  return String(name || '').replace(/[（(]?甲部[）)]?/g, '(甲部)');
+}
+
+function buildPracticeTitle(preset) {
+  const year = deriveYearFromPreset(preset);
+  return `${displaySchoolYear(year)} 年度 ${normalizePartName(preset.name)}短答練習`;
+}
+
 function readFixture(file) {
   return fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : null;
 }
@@ -117,8 +139,9 @@ for (const presetKey of PRESET_KEYS) {
   if (!preset) throw new Error(`missing preset ${presetKey}`);
   console.log(`\n--- ${presetKey} ---`);
   const specs = buildSpecs(preset);
+  const title = buildPracticeTitle(preset);
   const snapshot = pdf.generateSnapshotFromSpecs(specs, `pdf-a3-fixture:${presetKey}`, {
-    title: preset.name,
+    title,
     presetKey,
     generatedAt: '2026-07-07T00:00:00.000Z',
     generatorApi: generators,

@@ -53,7 +53,7 @@ const AssessValidators = require(path.join(ROOT, 'tool/validators.js'));
 const pdfScript = fs.readFileSync(path.join(ROOT, 'tool/pdf.js'), 'utf-8');
 
 // --- Required placeholder check (mirrors tool) ---
-const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
+const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
 for (const ph of REQUIRED) {
   if (!tmpl.includes(ph)) { console.error('Template missing placeholder:', ph); process.exit(1); }
 }
@@ -121,6 +121,14 @@ function genPresetQuestions(preset) {
 
 const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
 
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 let bankHashBase = 'b' + bank.data.length;
 
 // Deterministic BANK_HASH: sha1(bank content + preset key + questions).
@@ -162,6 +170,7 @@ for (const preset of presets) {
   const gasUrl = '';
 
   let html = tmpl;
+  html = safeReplace(html, /\{\{TITLE_HTML\}\}/g, escapeHtml(title));
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
   html = safeReplace(html, /\{\{VALIDATORS_SCRIPT\}\}/g, AssessValidators.toStandaloneScript());
   html = safeReplace(html, /\{\{GENERATORS_SCRIPT\}\}/g, AssessGenerators.toStandaloneScript());

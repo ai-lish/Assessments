@@ -230,6 +230,7 @@ function buildSandbox(questions) {
   sandbox.window.Blob = sandbox.Blob;
 
   const html = template
+    .replace(/\{\{TITLE_HTML\}\}/g, preset.name)
     .replace(/\{\{TITLE\}\}/g, JSON.stringify(preset.name))
     .replace(/\{\{QUESTIONS_DATA\}\}/g, JSON.stringify(questions))
     .replace(/\{\{QUESTION_SPECS\}\}/g, JSON.stringify([]))

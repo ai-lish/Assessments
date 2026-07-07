@@ -82,7 +82,7 @@ const AssessValidators = require(path.join(ROOT, 'tool/validators.js'));
 const pdfScript = fs.readFileSync(path.join(ROOT, 'tool/pdf.js'), 'utf-8');
 
 // --- Required placeholder check (mirrors tool) ---
-const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
+const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
 for (const ph of REQUIRED) {
   if (!tmpl.includes(ph)) { console.error('Template missing placeholder:', ph); process.exit(1); }
 }
@@ -132,6 +132,21 @@ function deriveYear(preset) {
   return opts.year;
 }
 
+function displaySchoolYear(yearCode) {
+  const s = String(yearCode || opts.year || '');
+  const m = s.match(/^(\d{2})(\d{2})$/);
+  if (!m) return s;
+  return `20${m[1]}-${m[2]}`;
+}
+
+function normalizePartName(name) {
+  return String(name || '').replace(/[（(]?甲部[）)]?/g, '(甲部)');
+}
+
+function buildPracticeTitle(preset, year) {
+  return `${displaySchoolYear(year)} 年度 ${normalizePartName(preset.name)}短答練習`;
+}
+
 function nextAvailableNn(dir, prefix) {
   if (!fs.existsSync(dir)) return '01';
   for (let n = 1; n <= 3; n++) {
@@ -154,12 +169,21 @@ function safeReplace(str, pattern, replacement) {
   return str.replace(pattern, () => replacement);
 }
 
+function escapeHtml(value) {
+  return String(value == null ? '' : value)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 function safeName(s) {
   return String(s).replace(/[^a-zA-Z0-9_\\-]/g, '_');
 }
 
 function buildHtml({ title, presetKey, specs, generatedAt, bankHash }) {
   let html = tmpl;
+  html = safeReplace(html, /\{\{TITLE_HTML\}\}/g, escapeHtml(title));
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
   html = safeReplace(html, /\{\{VALIDATORS_SCRIPT\}\}/g, AssessValidators.toStandaloneScript());
   html = safeReplace(html, /\{\{GENERATORS_SCRIPT\}\}/g, AssessGenerators.toStandaloneScript());
@@ -193,7 +217,7 @@ for (const preset of presets) {
   console.log(`\n=== ${preset.key} (${preset.name}) — mode=${opts.mode} ===`);
   const specs = buildQuestionSpecs(preset);
   const year = deriveYear(preset);
-  const title = `初中數學短答練習 — ${preset.name}`;
+  const title = buildPracticeTitle(preset, year);
   const bankHash = computeBankHash(preset.key, specs);
   const generatedAt = new Date().toISOString();
   const presetKey = preset.key;
