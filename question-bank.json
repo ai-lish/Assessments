@@ -31,7 +31,8 @@
       "answerSpec": "互動題答案規格；coordinate 題需指定 coordinateMode。",
       "figure": "幾何／全等題圖形規格；可指向 generated SVG。",
       "code": "展示用題目編碼；校內題格式 {來源}-{學年}-{年級}-{學期}-{題號}-{課題碼}-{家族號}，例如 LSC-2526-S1-T3-01-NA-1；DSE 保留格式 DSE-{年份}-{卷別}-{部分}-{題號}-{課題碼}-{家族號}。指定後永不更改。",
-      "source": "optional string；原校內題目出處或改編來源。出處不明留空字串。"
+      "source": "optional string；原校內題目出處或改編來源。出處不明留空字串。",
+      "referenceAnswer": "optional string；marking scheme 答案原文或原文答案格式。未知或未能取得原文時可留空字串。"
     },
     "laTeX_escape_rule": "JSON 中 LaTeX 寫 \\( 與 \\)，JSON 解析後變 \\( \\)，MathJax 收到 1 個反斜線。",
     "filter_rule": "老師工具按 grade -> term -> topicKey -> key 篩選；grade 為空嘅題型列喺『未分類』群組。",
@@ -1485,7 +1486,8 @@
       "validator": "textExact",
       "generator": "alg_simplify_2var",
       "code": "LSC-2526-S2-T3-01-NA-22",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "合併同類項後的一次式（a、b 項）"
     },
     {
       "key": "s2t3_square_expand_2var",
@@ -1513,7 +1515,8 @@
         "twoVar": true
       },
       "code": "LSC-2526-S2-T3-02-NA-17",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "x^2+2bxy+b^2y^2"
     },
     {
       "key": "solve_eq_fraction",
@@ -1545,7 +1548,8 @@
         "mode": "fraction"
       },
       "code": "LSC-2526-S2-T3-03-NA-7",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "x = <數值>"
     },
     {
       "key": "solve_eq_bracket",
@@ -1576,7 +1580,8 @@
         "mode": "bracket"
       },
       "code": "LSC-2526-S2-T3-04-NA-7",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "x = <數值>"
     },
     {
       "key": "factor_neg_common",
@@ -1602,7 +1607,8 @@
       "validator": "textExact",
       "generator": "factor_neg_common",
       "code": "LSC-2526-S2-T3-05-NA-23",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "-kx(x^n+1)"
     },
     {
       "key": "round_decimal",
@@ -1629,7 +1635,8 @@
       "validator": "numeric",
       "generator": "round_decimal",
       "code": "LSC-2526-S2-T3-08-ME-8",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "按指定方法捨入後的小數"
     },
     {
       "key": "combine_fractions",
@@ -1655,7 +1662,8 @@
       "validator": "textExact",
       "generator": "combine_fractions",
       "code": "LSC-2526-S2-T3-09-NA-24",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "(ma+c)/(mk)"
     },
     {
       "key": "coef_exp_div",
@@ -1684,7 +1692,8 @@
       "validator": "textExact",
       "generator": "coef_exp_div",
       "code": "LSC-2526-S2-T3-11-NA-25",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "約分後的係數及 x 指數"
     },
     {
       "key": "ratio_three",
@@ -1712,7 +1721,8 @@
       "validator": "textExact",
       "generator": "ratio_three",
       "code": "LSC-2526-S2-T3-12-NA-26",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "a:b:c"
     },
     {
       "key": "discount",
@@ -1738,7 +1748,8 @@
       "validator": "numeric",
       "generator": "discount",
       "code": "LSC-2526-S2-T3-13-ME-9",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "現售價"
     },
     {
       "key": "profit_pct",
@@ -1765,7 +1776,8 @@
       "validator": "numeric",
       "generator": "profit_pct",
       "code": "LSC-2526-S2-T3-14-ME-10",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "盈虧百分率"
     },
     {
       "key": "square_root_pm",
@@ -1790,7 +1802,8 @@
       "validator": "textExact",
       "generator": "square_root_pm",
       "code": "LSC-2526-S2-T3-15-NA-27",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "±√n 或化簡根式"
     },
     {
       "key": "cuboid_volume_cube",
@@ -1822,7 +1835,89 @@
         "allowUnit": true
       },
       "code": "LSC-2526-S2-T3-16-ME-4",
-      "source": "s2-t3-marking-scheme-2026-07-05"
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "體積（cm^3）"
+    },
+    {
+      "key": "s2t3_factor_diff_sq",
+      "name": "平方差因式分解（中二）",
+      "category": "數與代數",
+      "difficulty": 2,
+      "grade": "s2",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "factorPair",
+      "params_schema": {
+        "a": "ax 的 a",
+        "b": "常數 b，題目為 (ax)^2-b^2"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "factorPair",
+      "generator": "factor_diff_sq",
+      "code": "LSC-2526-S2-T3-06-NA-18",
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "(ax-b)(ax+b)"
+    },
+    {
+      "key": "s2t3_sig_fig",
+      "name": "有效數字（中二）",
+      "category": "度量",
+      "difficulty": 1,
+      "grade": "s2",
+      "term": "3",
+      "topicKey": "measurement",
+      "topicName": "度量",
+      "type": "text",
+      "checkType": "textExact",
+      "params_schema": {
+        "baseNum": "示範數 9 選 1",
+        "sf": "2..3 位有效數字"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "textExact",
+      "generator": "sig_fig",
+      "code": "LSC-2526-S2-T3-07-ME-1",
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "按指定有效數字的數值"
+    },
+    {
+      "key": "s2t3_exp_law",
+      "name": "指數律（中二）",
+      "category": "數與代數",
+      "difficulty": 1,
+      "grade": "s2",
+      "term": "3",
+      "topicKey": "number_and_algebra",
+      "topicName": "數與代數",
+      "type": "text",
+      "checkType": "textExact",
+      "params_schema": {
+        "a": "整數 2..6",
+        "b": "整數 2..6"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "textExact",
+      "generator": "exp_law",
+      "code": "LSC-2526-S2-T3-10-NA-5",
+      "source": "s2-t3-marking-scheme-2026-07-05",
+      "referenceAnswer": "x^(a+b)"
     }
   ],
   "presets": [
@@ -2026,23 +2121,72 @@
     {
       "key": "s2_term3_part_a",
       "name": "中二第三學期甲部",
-      "description": "中二 T3 卷一甲部短答練習 Q1-Q16（16 題 / 16 分）。",
+      "description": "中二 T3 卷一甲部短答練習 Q1-Q16（16 題 / 16 分）。每題 1 條，題型順序與 S2 T3 甲部追認版本一致。",
       "questions": [
-        { "typeKey": "alg_simplify_2var", "count": 1 },
-        { "typeKey": "s2t3_square_expand_2var", "count": 1 },
-        { "typeKey": "solve_eq", "count": 2 },
-        { "typeKey": "factor_neg_common", "count": 1 },
-        { "typeKey": "factor_diff_sq", "count": 1 },
-        { "typeKey": "sig_fig", "count": 1 },
-        { "typeKey": "round_decimal", "count": 1 },
-        { "typeKey": "combine_fractions", "count": 1 },
-        { "typeKey": "exp_law", "count": 1 },
-        { "typeKey": "coef_exp_div", "count": 1 },
-        { "typeKey": "ratio_three", "count": 1 },
-        { "typeKey": "discount", "count": 1 },
-        { "typeKey": "profit_pct", "count": 1 },
-        { "typeKey": "square_root_pm", "count": 1 },
-        { "typeKey": "cuboid_volume", "count": 1 }
+        {
+          "typeKey": "alg_simplify_2var",
+          "count": 1
+        },
+        {
+          "typeKey": "s2t3_square_expand_2var",
+          "count": 1
+        },
+        {
+          "typeKey": "solve_eq_fraction",
+          "count": 1
+        },
+        {
+          "typeKey": "solve_eq_bracket",
+          "count": 1
+        },
+        {
+          "typeKey": "factor_neg_common",
+          "count": 1
+        },
+        {
+          "typeKey": "s2t3_factor_diff_sq",
+          "count": 1
+        },
+        {
+          "typeKey": "s2t3_sig_fig",
+          "count": 1
+        },
+        {
+          "typeKey": "round_decimal",
+          "count": 1
+        },
+        {
+          "typeKey": "combine_fractions",
+          "count": 1
+        },
+        {
+          "typeKey": "s2t3_exp_law",
+          "count": 1
+        },
+        {
+          "typeKey": "coef_exp_div",
+          "count": 1
+        },
+        {
+          "typeKey": "ratio_three",
+          "count": 1
+        },
+        {
+          "typeKey": "discount",
+          "count": 1
+        },
+        {
+          "typeKey": "profit_pct",
+          "count": 1
+        },
+        {
+          "typeKey": "square_root_pm",
+          "count": 1
+        },
+        {
+          "typeKey": "cuboid_volume_cube",
+          "count": 1
+        }
       ]
     }
   ]

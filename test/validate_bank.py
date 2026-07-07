@@ -192,6 +192,12 @@ process.stdout.write(JSON.stringify(bad));
             "cuboid_volume", "s1t2_poly_desc", "poly_constant", "s1t2_alg_simplify",
             "expand_bracket", "s1t2_coordinate", "quadrant",
         ],
+        "s2_term3_part_a": [
+            "alg_simplify_2var", "s2t3_square_expand_2var", "solve_eq_fraction", "solve_eq_bracket",
+            "factor_neg_common", "s2t3_factor_diff_sq", "s2t3_sig_fig", "round_decimal",
+            "combine_fractions", "s2t3_exp_law", "coef_exp_div", "ratio_three",
+            "discount", "profit_pct", "square_root_pm", "cuboid_volume_cube",
+        ],
     }
     generate_keys = []
     for preset_key, expected_order in preset_orders.items():

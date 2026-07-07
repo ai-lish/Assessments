@@ -55,9 +55,9 @@ No current question-bank entry uses a `DSE` code. The format is reserved for lat
 | `NA-2` | 負數的乘方 | `neg_power` | `LSC-2526-S1-T3-02-NA-2` |
 | `NA-3` | 質因數分解 | `prime_factor` | `LSC-2526-S1-T3-03-NA-3`, `LSC-2526-S1-T2-01-NA-3` |
 | `NA-4` | HCF / LCM | `hcf_or_lcm` | `LSC-2526-S1-T3-04-NA-4`, `LSC-2526-S1-T2-02-NA-4` |
-| `NA-5` | 指數律 / 零指數定律 | `exp_law` | `LSC-2526-S1-T3-05-NA-5`, `LSC-2526-S3-T3-04-NA-5` |
+| `NA-5` | 指數律 / 零指數定律 | `exp_law` | `LSC-2526-S1-T3-05-NA-5`, `LSC-2526-S3-T3-04-NA-5`, `LSC-2526-S2-T3-10-NA-5` |
 | `NA-6` | 代數化簡 / 合併同類項 | `alg_simplify` | `LSC-2526-S1-T3-06-NA-6`, `LSC-2526-S1-T2-11-NA-6` |
-| `NA-7` | 解一元一次方程 | `solve_eq` | `LSC-2526-S1-T3-07-NA-7`, `LSC-2526-S1-T2-06-NA-7`, `LSC-2526-S1-T2-07-NA-7` |
+| `NA-7` | 解一元一次方程 | `solve_eq` | `LSC-2526-S1-T3-07-NA-7`, `LSC-2526-S1-T2-06-NA-7`, `LSC-2526-S1-T2-07-NA-7`, `LSC-2526-S2-T3-03-NA-7`, `LSC-2526-S2-T3-04-NA-7` |
 | `NA-8` | 文字轉代數式 | `word_to_alg` | `LSC-2526-S1-T3-08-NA-8`, `LSC-2526-S1-T2-05-NA-8` |
 | `NA-9` | 多項式降冪排列 | `poly_desc` | `LSC-2526-S1-T3-11-NA-9`, `LSC-2526-S1-T2-09-NA-9` |
 | `NA-10` | 公式代入 | `formula_sub` | `LSC-2526-S1-T3-12-NA-10` |
@@ -67,18 +67,27 @@ No current question-bank entry uses a `DSE` code. The format is reserved for lat
 | `NA-14` | 常數項 | `poly_constant` | `LSC-2526-S1-T2-10-NA-14` |
 | `NA-15` | 展開括號 | `expand_bracket` | `LSC-2526-S1-T2-12-NA-15` |
 | `NA-16` | 多項式加減及去括號 | `poly_add_sub` | `LSC-2526-S3-T3-01-NA-16` |
-| `NA-17` | 二項式展開 / 完全平方公式 | `binomial_expand` | `LSC-2526-S3-T3-02-NA-17`, `LSC-2526-S3-T3-03-NA-17` |
-| `NA-18` | 平方差因式分解 | `factor_diff_sq` | `LSC-2526-S3-T3-05-NA-18` |
+| `NA-17` | 二項式展開 / 完全平方公式 | `binomial_expand` | `LSC-2526-S3-T3-02-NA-17`, `LSC-2526-S3-T3-03-NA-17`, `LSC-2526-S2-T3-02-NA-17` |
+| `NA-18` | 平方差因式分解 | `factor_diff_sq` | `LSC-2526-S3-T3-05-NA-18`, `LSC-2526-S2-T3-06-NA-18` |
 | `NA-19` | 十字相乘法 | `factor_cross` | `LSC-2526-S3-T3-06-NA-19` |
 | `NA-20` | 科學記數法 | `sci_notation` | `LSC-2526-S3-T3-07-NA-20` |
 | `NA-21` | 一元一次不等式 | `solve_ineq` | `LSC-2526-S3-T3-08-NA-21` |
-| `ME-1` | 有效數字 | `sig_fig` | `LSC-2526-S1-T3-09-ME-1` |
+| `NA-22` | 代數化簡（兩變數） | `alg_simplify_2var` | `LSC-2526-S2-T3-01-NA-22` |
+| `NA-23` | 因式分解（負公因式） | `factor_neg_common` | `LSC-2526-S2-T3-05-NA-23` |
+| `NA-24` | 分式合併（分母含變數） | `combine_fractions` | `LSC-2526-S2-T3-09-NA-24` |
+| `NA-25` | 係數與指數相除 | `coef_exp_div` | `LSC-2526-S2-T3-11-NA-25` |
+| `NA-26` | 三項比例 | `ratio_three` | `LSC-2526-S2-T3-12-NA-26` |
+| `NA-27` | 平方根（正負兩根） | `square_root_pm` | `LSC-2526-S2-T3-15-NA-27` |
+| `ME-1` | 有效數字 | `sig_fig` | `LSC-2526-S1-T3-09-ME-1`, `LSC-2526-S2-T3-07-ME-1` |
 | `ME-2` | 分數化百分數 | `frac_to_pct` | `LSC-2526-S1-T3-10-ME-2` |
 | `ME-3` | 圓面積 | `area_circle` | `LSC-2526-S0-T0-01-ME-3` |
-| `ME-4` | 長方體體積 | `cuboid_volume` | `LSC-2526-S1-T2-08-ME-4` |
+| `ME-4` | 長方體體積 | `cuboid_volume` | `LSC-2526-S1-T2-08-ME-4`, `LSC-2526-S2-T3-16-ME-4` |
 | `ME-5` | 球體 / 半球體 / 圓柱 / 圓錐量度 | `solid_mensuration` | `LSC-2526-S3-T3-10-ME-5`, `LSC-2526-S3-T3-11-ME-5`, `LSC-2526-S3-T3-12-ME-5` |
 | `ME-6` | 扇形量度 | `sector_measure` | `LSC-2526-S3-T3-13-ME-6` |
 | `ME-7` | 畢氏定理配合圓錐 | `pyth_cone` | `LSC-2526-S3-T3-14-ME-7` |
+| `ME-8` | 捨入至指定小數位 | `round_decimal` | `LSC-2526-S2-T3-08-ME-8` |
+| `ME-9` | 折扣售價 | `discount` | `LSC-2526-S2-T3-13-ME-9` |
+| `ME-10` | 盈虧百分率 | `profit_pct` | `LSC-2526-S2-T3-14-ME-10` |
 | `GE-1` | 全等三角形判定 | `congruence` | `LSC-2526-S1-T3-13-GE-1` |
 | `GE-2` | 坐標輸入及點選 | `coordinate` | `LSC-2526-S1-T3-14-GE-2`, `LSC-2526-S1-T2-13-GE-2` |
 | `GE-3` | 角的類型 | `angle_type` | `LSC-2526-S0-T0-02-GE-3` |

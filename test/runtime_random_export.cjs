@@ -42,6 +42,7 @@ function buildPreviewLeakedQuestionSpecs(preset) {
 const presetByKey = new Map(bank.presets.map((p) => [p.key, p]));
 const runtimePresets = [
   { key: "s1_term2_part_a", expectedCount: 14, probeTypeKey: "s1t2_prime_factor", probeKeys: ["n"] },
+  { key: "s2_term3_part_a", expectedCount: 16, probeTypeKey: "alg_simplify_2var", probeKeys: ["a1", "b1", "a2", "b2", "op"] },
   { key: "s1_term3_part_a", expectedCount: 16, probeTypeKey: "frac_arith", probeKeys: ["a", "b", "c", "d", "op"] },
   { key: "s3_term3_part_a", expectedCount: 14, probeTypeKey: "poly_add_sub", probeKeys: ["a", "b", "c", "d", "e", "f", "op"] },
 ];
@@ -245,7 +246,7 @@ function hasAtLeastTwoDistinct(values) {
 }
 
 console.log("\n=== runtime random export semantics ===");
-const expectedTypeCount = 46;
+const expectedTypeCount = bank.data.length;
 const allSpecKeys = allTypeQuestionSpecs.map((spec) => spec.typeKey);
 const allBankKeys = bank.data.map((typeDef) => typeDef.key);
 const allSpecFieldsOk = allTypeQuestionSpecs.every((spec) => {
@@ -256,9 +257,9 @@ const allSpecFieldsOk = allTypeQuestionSpecs.every((spec) => {
     && spec.typeDef.code === source.code
     && JSON.stringify(spec.typeDef.defaultParams || {}) === JSON.stringify(source.defaultParams || {});
 });
-check("QUESTION_SPECS can cover all 46 typeDefs", allTypeQuestionSpecs.length === expectedTypeCount && bank.data.length === expectedTypeCount);
+check(`QUESTION_SPECS can cover all ${expectedTypeCount} typeDefs`, allTypeQuestionSpecs.length === expectedTypeCount && bank.data.length === expectedTypeCount);
 check("QUESTION_SPECS preserves all bank type keys in order", JSON.stringify(allSpecKeys) === JSON.stringify(allBankKeys));
-check("QUESTION_SPECS preserves typeDef/defaultParams/code for all 46 types", allSpecFieldsOk);
+check(`QUESTION_SPECS preserves typeDef/defaultParams/code for all ${expectedTypeCount} types`, allSpecFieldsOk);
 check("tool export source no longer writes preview b.params", !fs.readFileSync(path.join(ROOT, "tool/index.html"), "utf8").includes("params: b.params"));
 
 for (const item of runtimePresets) {

@@ -33,6 +33,7 @@ const CODE_RE = /^LSC-\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+$/;
 const PRESETS = [
   { key: "s1_term3_part_a", grade: "s1", term: "3", expected: 16 },
   { key: "s1_term2_part_a", grade: "s1", term: "2", expected: 14 },
+  { key: "s2_term3_part_a", grade: "s2", term: "3", expected: 16 },
   { key: "s3_term3_part_a", grade: "s3", term: "3", expected: 14 },
 ];
 
@@ -290,6 +291,31 @@ async function runPresetSimulation(page, preset) {
     return { checks: [signed, polyWrong, choiceGood, choiceWrong] };
   }
 
+  if (preset.key === "s2_term3_part_a") {
+    const s2 = await page.evaluate(() => {
+      const bracket = basket[3].generated;
+      const discount = basket[12].generated;
+      const profit = basket[13].generated;
+      const root = basket[14].generated;
+      return {
+        bracketKey: basket[3].typeKey,
+        bracketUnicodeMinus: AssessValidators.checkAnswer(bracket, String(bracket.correctAnswer).replace("-", "−")),
+        discountKey: basket[12].typeKey,
+        discountDollar: AssessValidators.checkAnswer(discount, `$${discount.correctAnswer}`),
+        profitKey: basket[13].typeKey,
+        profitPercent: AssessValidators.checkAnswer(profit, `${profit.correctAnswer}%`),
+        rootKey: basket[14].typeKey,
+        rootCorrect: AssessValidators.checkAnswer(root, root.correctAnswer),
+        rootSingleWrong: AssessValidators.checkAnswer(root, String(root.correctAnswer).replace("±", "")),
+      };
+    });
+    assert(s2.bracketUnicodeMinus, "s2 term3 equation unicode minus normalization failed");
+    assert(s2.discountDollar, "s2 term3 discount dollar sign normalization failed");
+    assert(s2.profitPercent, "s2 term3 profit percent sign normalization failed");
+    assert(s2.rootCorrect && !s2.rootSingleWrong, "s2 term3 square-root ± check failed");
+    return { checks: [s2] };
+  }
+
   if (preset.key === "s3_term3_part_a") {
     const sci = await page.evaluate(() => {
       const b = basket[6];
@@ -529,8 +555,8 @@ async function runProject(report, project) {
   await step(report, project.name, "A-load", page, async () => {
     await loadTeacher(page);
     const info = await page.evaluate(() => ({ dataCount: bank.data.length, presetCount: bank.presets.length }));
-    assert(info.dataCount === 46, `expected 46 question types, got ${info.dataCount}`);
-    assert(info.presetCount === 3, `expected 3 presets, got ${info.presetCount}`);
+    assert(info.dataCount === 62, `expected 62 question types, got ${info.dataCount}`);
+    assert(info.presetCount === 4, `expected 4 presets, got ${info.presetCount}`);
     return info;
   });
 

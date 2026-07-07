@@ -63,6 +63,9 @@ jobs:
       - name: S1 Term 2 export e2e
         run: node test/e2e_s1_term2_export.cjs
 
+      - name: S2 Term 3 baseline
+        run: node test/s2_term3_baseline.cjs
+
       - name: S3 Term 3 baseline
         run: node test/s3_term3_baseline.cjs
 
@@ -77,7 +80,7 @@ jobs:
           # 1. Exercise the generator without creating extra part-a-02/03 files in the archive.
           rm -rf /tmp/assess-exercises-ci
           node scripts/gen_exercise_html.cjs --out-root=/tmp/assess-exercises-ci \
-            s1_term2_part_a s1_term3_part_a s3_term3_part_a
+            s1_term2_part_a s1_term3_part_a s2_term3_part_a s3_term3_part_a
           # 2. Verify the committed archive files runtime-randomize across two fresh loads.
           node test/exercise_runtime_random_check.cjs
 

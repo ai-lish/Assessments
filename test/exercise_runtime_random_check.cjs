@@ -23,6 +23,7 @@ const ROOT = path.resolve(__dirname, '..');
 const TARGETS = [
   { preset: 's1_term2_part_a', file: 'exercises/2526/s1/t2/part-a-01.html', questionCount: 14, probeQid: 'q013' },
   { preset: 's1_term3_part_a', file: 'exercises/2526/s1/t3/part-a-01.html', questionCount: 16, probeQid: 'q013' },
+  { preset: 's2_term3_part_a', file: 'exercises/2526/s2/t3/part-a-01.html', questionCount: 16, probeQid: 'q001' },
   { preset: 's3_term3_part_a', file: 'exercises/2526/s3/t3/part-a-01.html', questionCount: 14, probeQid: 'q009' },
 ];
 
@@ -162,6 +163,20 @@ function questionCount(sandbox) {
   return vm.runInContext('QUESTIONS.length', sandbox);
 }
 
+function validateProbeQuestion(sandbox, qid) {
+  return vm.runInContext(`
+    (() => {
+      const q = QUESTIONS.find(item => item.qid === ${JSON.stringify(qid)}) || QUESTIONS[0];
+      return {
+        qid: q.qid,
+        typeKey: q.typeKey,
+        correct: AssessValidators.checkAnswer(q, q.correctAnswer),
+        wrong: AssessValidators.checkAnswer(q, "__definitely_wrong__"),
+      };
+    })()
+  `, sandbox);
+}
+
 let passed = 0, failed = 0;
 const failures = [];
 
@@ -207,6 +222,14 @@ for (const t of TARGETS) {
     continue;
   }
   console.log(`  ✓ FINGERPRINT differs between r1 and r2 (runtime random confirmed)`);
+  const probeValidation = validateProbeQuestion(s1, t.probeQid);
+  if (!probeValidation.correct || probeValidation.wrong) {
+    failed++;
+    failures.push(`${t.preset}: probe validation failed for ${probeValidation.qid}/${probeValidation.typeKey}`);
+    console.log(`  ✗ probe validation failed for ${probeValidation.qid} (${probeValidation.typeKey})`);
+    continue;
+  }
+  console.log(`  ✓ ${probeValidation.qid} (${probeValidation.typeKey}) accepts correct answer and rejects wrong answer`);
   // Show one probe sample
   try {
     const p1 = JSON.parse(sig1);
