@@ -82,7 +82,7 @@ const AssessValidators = require(path.join(ROOT, 'tool/validators.js'));
 const pdfScript = fs.readFileSync(path.join(ROOT, 'tool/pdf.js'), 'utf-8');
 
 // --- Required placeholder check (mirrors tool) ---
-const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
+const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GRADE}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
 for (const ph of REQUIRED) {
   if (!tmpl.includes(ph)) { console.error('Template missing placeholder:', ph); process.exit(1); }
 }
@@ -181,7 +181,7 @@ function safeName(s) {
   return String(s).replace(/[^a-zA-Z0-9_\\-]/g, '_');
 }
 
-function buildHtml({ title, presetKey, specs, generatedAt, bankHash }) {
+function buildHtml({ title, presetKey, grade, specs, generatedAt, bankHash }) {
   let html = tmpl;
   html = safeReplace(html, /\{\{TITLE_HTML\}\}/g, escapeHtml(title));
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
@@ -194,6 +194,7 @@ function buildHtml({ title, presetKey, specs, generatedAt, bankHash }) {
   html = safeReplace(html, /\{\{GENERATED_AT\}\}/g, JSON.stringify(generatedAt));
   html = safeReplace(html, /\{\{BANK_HASH\}\}/g, JSON.stringify(bankHash));
   html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
+  html = safeReplace(html, /\{\{GRADE\}\}/g, JSON.stringify(grade || "unknown"));
   html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(''));
   const leftover = html.match(/\{\{[A-Z_]+\}\}/g);
   if (leftover && leftover.length) {
@@ -217,11 +218,12 @@ for (const preset of presets) {
   console.log(`\n=== ${preset.key} (${preset.name}) — mode=${opts.mode} ===`);
   const specs = buildQuestionSpecs(preset);
   const year = deriveYear(preset);
+  const { grade } = deriveGradeTerm(preset.key);
   const title = buildPracticeTitle(preset, year);
   const bankHash = computeBankHash(preset.key, specs);
   const generatedAt = new Date().toISOString();
   const presetKey = preset.key;
-  const html = buildHtml({ title, presetKey, specs, generatedAt, bankHash });
+  const html = buildHtml({ title, presetKey, grade, specs, generatedAt, bankHash });
 
   // Question codes (for publish package)
   const questionCodes = specs.map(s => {

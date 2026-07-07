@@ -134,6 +134,7 @@ function buildHtml(preset, specs = questionSpecs) {
     .replace(/\{\{GENERATED_AT\}\}/g, JSON.stringify("2026-07-05T00:00:00.000Z"))
     .replace(/\{\{BANK_HASH\}\}/g, JSON.stringify("runtime_random_test"))
     .replace(/\{\{PRESET_KEY\}\}/g, JSON.stringify("s1_term3_part_a"))
+    .replace(/\{\{GRADE\}\}/g, JSON.stringify("s1"))
     .replace(/\{\{GAS_URL\}\}/g, JSON.stringify(""))
     .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validators.toStandaloneScript())
     .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generators.toStandaloneScript())

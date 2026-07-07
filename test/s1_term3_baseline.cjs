@@ -237,6 +237,7 @@ function buildSandbox(questions) {
     .replace(/\{\{GENERATED_AT\}\}/g, JSON.stringify("2026-07-03T00:00:00.000Z"))
     .replace(/\{\{BANK_HASH\}\}/g, JSON.stringify("baseline_hash"))
     .replace(/\{\{PRESET_KEY\}\}/g, JSON.stringify("s1_term3_part_a"))
+    .replace(/\{\{GRADE\}\}/g, JSON.stringify("s1"))
     .replace(/\{\{GAS_URL\}\}/g, JSON.stringify("https://example.invalid/sheets"))
     .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validatorsScript)
     .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generatorsScript)
@@ -340,7 +341,7 @@ evalInStudent(`
     { attemptNumber: 1, attemptType: "initial", score: 10, total: 16, remainingWrongCount: 6, completedAll: false, date: "7/3", time: "12:00", details: [] },
     { attemptNumber: 2, attemptType: "wrong_retry", score: 6, total: 6, remainingWrongCount: 0, completedAll: true, date: "7/3", time: "12:10", details: [] }
   ];
-  submitToSheets("s20271001m");
+  submitToSheets("20255001F");
 `);
 const payload = JSON.parse(sandbox.__fetchCalls[0].options.body);
 const payloadKeys = Object.keys(payload.rows[0]).sort();
@@ -350,11 +351,13 @@ check(
   "Google Sheets payload fields locked",
   JSON.stringify(payloadKeys) === JSON.stringify([
     "attemptNumber", "attemptType", "completedAll", "date", "remainingWrongCount",
-    "score", "studentId", "time", "toolId", "total",
+    "grade", "score", "studentId", "time", "toolId", "total",
   ].sort()),
 );
 check("Google Sheets attempt types stay initial/wrong_retry", payload.rows.map((r) => r.attemptType).join(",") === "initial,wrong_retry");
 check("toolId compatibility stays assess-s1_term3_part_a", payload.rows.every((r) => r.toolId === "assess-s1_term3_part_a"));
+check("Google Sheets payload grade stays s1", payload.rows.every((r) => r.grade === "s1"));
+check("Google Sheets payload studentId uses new format", payload.rows.every((r) => r.studentId === "20255001F"));
 
 section("5. print and virtual keypad baseline");
 evalInStudent("printPDF();");
