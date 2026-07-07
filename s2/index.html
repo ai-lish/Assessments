@@ -15,8 +15,8 @@
       --primary: #2457a7;
       --primary-dark: #173b74;
       --primary-soft: #e1ecff;
-      --warning: #8a5500;
-      --warning-bg: #fff4d6;
+      --accent: #2c8a4a;
+      --accent-soft: #e0f4e7;
       --shadow: 0 8px 24px rgb(31 52 86 / 10%);
       font-family:
         -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans HK",
@@ -34,15 +34,15 @@
     .panel {
       background: var(--surface);
       border: 1px solid var(--line);
-      border-left: 4px solid var(--warning);
+      border-left: 4px solid var(--accent);
       border-radius: 12px;
       padding: 22px;
       box-shadow: var(--shadow);
     }
     .panel .badge {
       display: inline-block;
-      background: var(--warning-bg);
-      color: var(--warning);
+      background: var(--accent-soft);
+      color: var(--accent);
       border-radius: 999px;
       padding: 2px 10px;
       font-size: 0.8rem;
@@ -50,6 +50,19 @@
     }
     .panel h2 { font-size: 1.15rem; margin: 8px 0 4px; }
     .panel p { color: var(--muted); margin: 6px 0; }
+    .button-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      margin-top: 14px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-weight: 700;
+    }
+    .button-link:hover { background: var(--primary-dark); text-decoration: none; }
     footer { border-top: 1px solid var(--line); background: #eef2fa; color: var(--muted); font-size: 0.85rem; padding: 16px 20px; text-align: center; margin-top: 30px; }
   </style>
 </head>
@@ -57,14 +70,14 @@
   <div class="page">
     <div class="breadcrumb"><a href="../">← 返回首頁</a></div>
     <h1>中二甲部練習</h1>
-    <p class="lead">題目庫正籌備中。</p>
+    <p class="lead">中二第三學期甲部已開放，可直接開啟練習。</p>
 
     <div class="panel">
-      <span class="badge" style="background:#fff4d6;color:#8a5500;border:1px solid #c89a2a;font-weight:700;">未開放</span>
-      <h2>暫時冇可練習內容</h2>
-      <p>中二題目庫尚未入庫（<code>question-bank.json</code> 入面暫無 <code>grade=s2</code> 嘅題型）。</p>
-      <p>如果你有題目或參考材料想加入，可以用「老師選題工具」嘅自訂模式先行測試；正式入庫後會喺度顯示。</p>
-      <p>想即刻有嘢做？試下 <a href="../s1/index.html">中一甲部</a> 或 <a href="../s3/index.html">中三甲部</a>，或者 <a href="../hkdse/">HKDSE 練習</a>。</p>
+      <span class="badge">已開放</span>
+      <h2>中二第三學期甲部</h2>
+      <p>16 題 · 代數化簡、方程、因式分解、有效數字、比例、折扣、盈虧、體積。</p>
+      <p>每次開啟會重新生成題目數值；同一次練習內重做錯題或單題重做會保留同一批題目。</p>
+      <a class="button-link" href="../exercises/2526/s2/t3/part-a-01.html">開始練習（16 題）→</a>
     </div>
   </div>
   <footer>由 ai-lish 維護 · 公開 GitHub Pages</footer>
