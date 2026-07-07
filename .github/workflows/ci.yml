@@ -87,6 +87,9 @@ jobs:
           # 2. Verify the committed archive files runtime-randomize across two fresh loads.
           node test/exercise_runtime_random_check.cjs
 
+      - name: Exercises archive PDF export check
+        run: node test/exercise_pdf_export_check.cjs
+
       - name: HKDSE A1 tests
         run: npm --prefix hkdse run test:a1
 
