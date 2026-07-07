@@ -1,15 +1,16 @@
 <!-- ⚠️ 這是學生版模板（含佔位符），不可直接開啟使用。
      工具 (tool/index.html) 會把以下佔位符替換後生成 standalone 學生版 HTML：
-       {{TITLE}}              練習標題
-       {{QUESTIONS_DATA}}     JSON 字串：預生成題目 fallback（samples / 舊測試用）
-       {{QUESTION_SPECS}}     JSON 字串：runtime 生成用 [{qid, typeKey, typeDef}, ...]
-       {{GENERATED_AT}}       生成時間 ISO
-       {{BANK_HASH}}          題目庫版本摘要
-       {{PRESET_KEY}}         使用的 preset key（'s1_term3_part_a'、'custom' 等）
-       {{GAS_URL}}            Google Sheets 提交網址（可為空字串）
-       {{VALIDATORS_SCRIPT}}  由 tool/validators.js 內嵌的共用判分 registry
-       {{GENERATORS_SCRIPT}}  由 tool/generators.js 內嵌的共用題目 generator registry
-       {{RUNTIME_SEED}}       可選 seed；互動匯出為 null，測試 / snapshot 可注入
+       TITLE              練習標題
+       QUESTIONS_DATA     JSON 字串：預生成題目 fallback（samples / 舊測試用）
+       QUESTION_SPECS     JSON 字串：runtime 生成用 [{qid, typeKey, typeDef}, ...]
+       GENERATED_AT       生成時間 ISO
+       BANK_HASH          題目庫版本摘要
+       PRESET_KEY         使用的 preset key（'s1_term3_part_a'、'custom' 等）
+       GAS_URL            Google Sheets 提交網址（可為空字串）
+       VALIDATORS_SCRIPT  由 tool/validators.js 內嵌的共用判分 registry
+       GENERATORS_SCRIPT  由 tool/generators.js 內嵌的共用題目 generator registry
+       PDF_SCRIPT         由 tool/pdf.js 內嵌的共用 snapshot + PDF renderer
+       RUNTIME_SEED       可選 seed；互動匯出為 null，測試 / snapshot 可注入
 -->
 <!DOCTYPE html>
 <html lang="zh-HK">
@@ -118,7 +119,7 @@
   </div>
 
   <div class="toolbar" id="toolbar">
-    <button onclick="printPDF()">🖨️ 列印 / PDF</button>
+    <button onclick="printPDF()">🖨️ PDF 雙版</button>
     <button onclick="exportStudentAnswers()">📤 匯出學生答案</button>
   </div>
 
@@ -219,6 +220,10 @@
 
 <script>
 {{GENERATORS_SCRIPT}}
+</script>
+
+<script>
+{{PDF_SCRIPT}}
 </script>
 
 <script>
@@ -771,7 +776,23 @@ function exportStudentAnswers() {
   URL.revokeObjectURL(url);
 }
 
-function printPDF() { window.print(); }
+function printPDF() {
+  try {
+    const snapshot = AssessPDF.generateSnapshot({
+      title: TITLE,
+      presetKey: PRESET_KEY,
+      questions: QUESTIONS,
+    }, "existing-runtime", {
+      title: TITLE,
+      presetKey: PRESET_KEY,
+      generatedAt: new Date().toISOString(),
+    });
+    AssessPDF.printSnapshot(snapshot, { showCode: true });
+    showToast("✓ 已開啟 PDF 題目＋答案雙版");
+  } catch (e) {
+    showToast("⚠️ PDF 匯出失敗：" + (e.message || e));
+  }
+}
 
 /* === Google Sheets 提交 === */
 function handleExport() {

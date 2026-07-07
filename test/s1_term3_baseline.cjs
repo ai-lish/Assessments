@@ -10,6 +10,7 @@ const template = fs.readFileSync(path.join(ROOT, "templates/student.html"), "utf
 const generators = require(path.join(ROOT, "tool/generators.js"));
 const validatorsScript = fs.readFileSync(path.join(ROOT, "tool/validators.js"), "utf8");
 const generatorsScript = generators.toStandaloneScript();
+const pdfScript = fs.readFileSync(path.join(ROOT, "tool/pdf.js"), "utf8");
 
 let passed = 0;
 const failures = [];
@@ -138,12 +139,13 @@ function buildSandbox(questions) {
   const listeners = {};
   const storage = new Map();
   const fetchCalls = [];
+  const printTargets = [];
   const ids = [
     "quiz-view", "result-view", "p-text", "q-text", "q-feedback", "btn-check",
     "btn-next", "btn-teach", "solution-box", "input-val", "prefix", "suffix",
     "q-hint", "q-options", "q-coord-hint", "input-row", "q-image", "toast",
     "final-score", "btn-retry-wrong", "history-body", "detail-modal",
-    "modal-title", "modal-body-content", "btn-export", "score-mini",
+    "modal-title", "modal-body-content", "btn-export", "score-mini", "q-code",
   ];
   for (const id of ids) elements.set(id, makeElement(id));
   elements.get("quiz-view").style.display = "flex";
@@ -153,6 +155,7 @@ function buildSandbox(questions) {
   elements.get("btn-export").innerText = "匯出";
 
   const document = {
+    body: makeElement("body"),
     getElementById(id) {
       if (!elements.has(id)) elements.set(id, makeElement(id));
       return elements.get(id);
@@ -175,6 +178,18 @@ function buildSandbox(questions) {
       MathJax: null,
       printCalled: false,
       print() { this.printCalled = true; },
+      open() {
+        const target = {
+          document: {
+            html: "",
+            open() { this.html = ""; },
+            write(chunk) { this.html += String(chunk); },
+            close() {},
+          },
+        };
+        printTargets.push(target);
+        return target;
+      },
     },
     MathJax: null,
     localStorage: {
@@ -207,6 +222,7 @@ function buildSandbox(questions) {
     __elements: elements,
     __listeners: listeners,
     __fetchCalls: fetchCalls,
+    __printTargets: printTargets,
   };
   sandbox.window.document = document;
   sandbox.window.localStorage = sandbox.localStorage;
@@ -223,6 +239,7 @@ function buildSandbox(questions) {
     .replace(/\{\{GAS_URL\}\}/g, JSON.stringify("https://example.invalid/sheets"))
     .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validatorsScript)
     .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generatorsScript)
+    .replace(/\{\{PDF_SCRIPT\}\}/g, pdfScript)
     .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
   const runnableScripts = scripts.filter((script) => !script.includes("window.MathJax ="));
@@ -340,7 +357,10 @@ check("toolId compatibility stays assess-s1_term3_part_a", payload.rows.every((r
 
 section("5. print and virtual keypad baseline");
 evalInStudent("printPDF();");
-check("printPDF delegates to window.print", sandbox.window.printCalled === true);
+const printedHtml = sandbox.__printTargets[0] && sandbox.__printTargets[0].document.html;
+check("printPDF opens shared PDF print view", sandbox.__printTargets.length === 1);
+check("printPDF renders student and teacher sections", /data-mode=\"student\"/.test(printedHtml || "") && /data-mode=\"teacher\"/.test(printedHtml || ""));
+check("printPDF uses shared snapshot id", /data-snapshot-id=\"pdf-[0-9a-f]+\"/.test(printedHtml || ""));
 evalInStudent("answered = false; currInput = ''; kp('1'); kp('×'); kp('x'); del();");
 check("virtual keypad writes display text", sandbox.__elements.get("input-val").textContent === "1×");
 evalInStudent("clearInput();");

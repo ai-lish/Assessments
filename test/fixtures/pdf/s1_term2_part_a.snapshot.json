@@ -1,0 +1,220 @@
+{
+  "snapshotId": "pdf-fa5629b5",
+  "seed": "pdf-a3-fixture:s1_term2_part_a",
+  "title": "中一第二學期甲部",
+  "presetKey": "s1_term2_part_a",
+  "questionCount": 14,
+  "questions": [
+    {
+      "index": 1,
+      "qid": "q001",
+      "typeKey": "s1t2_prime_factor",
+      "code": "LSC-2526-S1-T2-01-NA-3",
+      "paramsUsed": {
+        "n": 12,
+        "primeFactors": {
+          "2": 2,
+          "3": 1
+        },
+        "factors": {
+          "2": 2,
+          "3": 1
+        }
+      },
+      "answerSpec": null,
+      "displayAnswer": "2^2 \\times 3"
+    },
+    {
+      "index": 2,
+      "qid": "q002",
+      "typeKey": "s1t2_hcf",
+      "code": "LSC-2526-S1-T2-02-NA-4",
+      "paramsUsed": {
+        "n1": 14,
+        "n2": 33,
+        "askLCM": false,
+        "hcf": 1,
+        "lcm": 462
+      },
+      "answerSpec": null,
+      "displayAnswer": "1"
+    },
+    {
+      "index": 3,
+      "qid": "q003",
+      "typeKey": "directed_add",
+      "code": "LSC-2526-S1-T2-03-NA-12",
+      "paramsUsed": {
+        "a": 4,
+        "b": -8,
+        "result": -4
+      },
+      "answerSpec": null,
+      "displayAnswer": "-4"
+    },
+    {
+      "index": 4,
+      "qid": "q004",
+      "typeKey": "directed_mul",
+      "code": "LSC-2526-S1-T2-04-NA-13",
+      "paramsUsed": {
+        "a": 7,
+        "b": 2,
+        "result": 14
+      },
+      "answerSpec": null,
+      "displayAnswer": "14"
+    },
+    {
+      "index": 5,
+      "qid": "q005",
+      "typeKey": "s1t2_word_to_alg",
+      "code": "LSC-2526-S1-T2-05-NA-8",
+      "paramsUsed": {
+        "t": 3,
+        "a": 9,
+        "b": 5
+      },
+      "answerSpec": null,
+      "displayAnswer": "5(x+9)"
+    },
+    {
+      "index": 6,
+      "qid": "q006",
+      "typeKey": "s1t2_solve_eq_fraction",
+      "code": "LSC-2526-S1-T2-06-NA-7",
+      "paramsUsed": {
+        "coeff": 4,
+        "xVal": "3/2",
+        "rVal": 6
+      },
+      "answerSpec": null,
+      "displayAnswer": "3/2"
+    },
+    {
+      "index": 7,
+      "qid": "q007",
+      "typeKey": "s1t2_solve_eq_negative",
+      "code": "LSC-2526-S1-T2-07-NA-7",
+      "paramsUsed": {
+        "coeff": 3,
+        "xVal": -3,
+        "rVal": -9
+      },
+      "answerSpec": null,
+      "displayAnswer": "-3"
+    },
+    {
+      "index": 8,
+      "qid": "q008",
+      "typeKey": "cuboid_volume",
+      "code": "LSC-2526-S1-T2-08-ME-4",
+      "paramsUsed": {
+        "l": 11,
+        "w": 8,
+        "h": 2,
+        "unit": "cm^3",
+        "result": 176
+      },
+      "answerSpec": {
+        "unit": "cm^3",
+        "allowUnit": true
+      },
+      "displayAnswer": "176 cm³"
+    },
+    {
+      "index": 9,
+      "qid": "q009",
+      "typeKey": "s1t2_poly_desc",
+      "code": "LSC-2526-S1-T2-09-NA-9",
+      "paramsUsed": {
+        "b": 7,
+        "c": 7
+      },
+      "answerSpec": {
+        "order": "strict"
+      },
+      "displayAnswer": "x^2+7x-7"
+    },
+    {
+      "index": 10,
+      "qid": "q010",
+      "typeKey": "poly_constant",
+      "code": "LSC-2526-S1-T2-10-NA-14",
+      "paramsUsed": {
+        "a": 2,
+        "b": 3,
+        "c": -8
+      },
+      "answerSpec": null,
+      "displayAnswer": "-8"
+    },
+    {
+      "index": 11,
+      "qid": "q011",
+      "typeKey": "s1t2_alg_simplify",
+      "code": "LSC-2526-S1-T2-11-NA-6",
+      "paramsUsed": {
+        "a": -6,
+        "b": -2,
+        "c": 4,
+        "d": -7,
+        "xCoeff": -2,
+        "constTerm": -9
+      },
+      "answerSpec": {
+        "order": "loose"
+      },
+      "displayAnswer": "-2x-9"
+    },
+    {
+      "index": 12,
+      "qid": "q012",
+      "typeKey": "expand_bracket",
+      "code": "LSC-2526-S1-T2-12-NA-15",
+      "paramsUsed": {
+        "k": -1,
+        "a": 1,
+        "b": -5,
+        "xCoeff": -1,
+        "constTerm": 5
+      },
+      "answerSpec": {
+        "order": "loose"
+      },
+      "displayAnswer": "-x+5"
+    },
+    {
+      "index": 13,
+      "qid": "q013",
+      "typeKey": "s1t2_coordinate",
+      "code": "LSC-2526-S1-T2-13-GE-2",
+      "paramsUsed": {
+        "rx": 2,
+        "ry": 2,
+        "askAxis": "x",
+        "coordVal": 2
+      },
+      "answerSpec": {
+        "coordinateMode": "axis-value",
+        "interaction": {
+          "clickTolerance": 0
+        }
+      },
+      "displayAnswer": "\\( x \\) 坐標為 2，A 點位置 (2, 2)"
+    },
+    {
+      "index": 14,
+      "qid": "q014",
+      "typeKey": "quadrant",
+      "code": "LSC-2526-S1-T2-14-GE-4",
+      "paramsUsed": {
+        "x": -4,
+        "y": -1,
+        "quadrant": "III"
+      },
+      "answerSpec": null,
+      "displayAnswer": "第三象限"
+    }
+  ]
+}

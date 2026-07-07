@@ -119,6 +119,7 @@ html = html.replace('{{PRESET_KEY}}', json.dumps(preset_key))
 html = html.replace('{{GAS_URL}}', json.dumps(gas_url))
 html = html.replace('{{VALIDATORS_SCRIPT}}', (ROOT / 'tool' / 'validators.js').read_text())
 html = html.replace('{{GENERATORS_SCRIPT}}', (ROOT / 'tool' / 'generators.js').read_text())
+html = html.replace('{{PDF_SCRIPT}}', (ROOT / 'tool' / 'pdf.js').read_text())
 html = html.replace('{{RUNTIME_SEED}}', json.dumps(None))
 
 # Sanity: no placeholders left

@@ -262,9 +262,10 @@
               title="檔名根據 activePresetKey 自動產生，PRESET_KEY 會填返同一個 key 入 HTML">
           </div>
         </div>
-        <p class="sub" style="margin-top:8px;">匯出只包含已確認嘅題目，使用預覽時生成嘅實際內容（唔會再重新隨機）。</p>
+        <p class="sub" style="margin-top:8px;">學生 HTML 匯出會於學生每次開檔時重新隨機；PDF 雙版會喺撳掣一刻凍結同一批題目，學生版及答案版共用同一 snapshot。</p>
         <ul class="gate-list" id="exportGates"></ul>
         <button class="success" style="width:100%; margin-top:8px;" onclick="exportStudent()" id="btn-export" disabled>📤 匯出學生版 HTML</button>
+        <button class="secondary" style="width:100%; margin-top:8px;" onclick="exportPdfBundle()" id="btn-export-pdf" disabled>🖨️ 匯出 PDF 雙版（題目＋答案）</button>
         <div id="exportStatus" class="status"></div>
 
         <h2 style="margin-top:18px; font-size:1.05em; border-top:1px dashed #ddd; padding-top:12px;">⑥ 發佈指令包 <span class="sub" style="font-weight:normal;">（選用 — 俾 agent 開 PR 入 exercises/）</span></h2>
@@ -294,6 +295,7 @@
 <script src="filter.js?v=s2t3-prd"></script>
 <script src="generators.js?v=s2t3-prd"></script>
 <script src="validators.js?v=s2t3-prd"></script>
+<script src="pdf.js?v=pr-a3"></script>
 
 <script>
 /* ============================================================
@@ -477,8 +479,9 @@ async function loadAll() {
     if (!tmpl.includes("{{TITLE}}") || !tmpl.includes("{{QUESTIONS_DATA}}") ||
         !tmpl.includes("{{QUESTION_SPECS}}") || !tmpl.includes("{{BANK_HASH}}") ||
         !tmpl.includes("{{PRESET_KEY}}") || !tmpl.includes("{{VALIDATORS_SCRIPT}}") ||
-        !tmpl.includes("{{GENERATORS_SCRIPT}}") || !tmpl.includes("{{RUNTIME_SEED}}")) {
-      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{QUESTIONS_DATA}} / {{QUESTION_SPECS}} / {{BANK_HASH}} / {{PRESET_KEY}} / {{VALIDATORS_SCRIPT}} / {{GENERATORS_SCRIPT}} / {{RUNTIME_SEED}}）");
+        !tmpl.includes("{{GENERATORS_SCRIPT}}") || !tmpl.includes("{{PDF_SCRIPT}}") ||
+        !tmpl.includes("{{RUNTIME_SEED}}")) {
+      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{QUESTIONS_DATA}} / {{QUESTION_SPECS}} / {{BANK_HASH}} / {{PRESET_KEY}} / {{VALIDATORS_SCRIPT}} / {{GENERATORS_SCRIPT}} / {{PDF_SCRIPT}} / {{RUNTIME_SEED}}）");
     }
     // Bank validation（先過題目庫）
     const validation = validateBank(bank);
@@ -617,7 +620,7 @@ function validateBank(b) {
 }
 
 function validateTemplate(s) {
-  const required = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{RUNTIME_SEED}}"];
+  const required = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
   const missing = required.filter(ph => !s.includes(ph));
   return { ok: missing.length === 0, missing };
 }
@@ -1327,6 +1330,8 @@ function updateExportGates() {
   const ul = document.getElementById("exportGates");
   ul.innerHTML = gates.map(g => `<li class="${g.ok ? "pass" : "fail"}">${g.text}</li>`).join("");
   document.getElementById("btn-export").disabled = !canExport;
+  const pdfBtn = document.getElementById("btn-export-pdf");
+  if (pdfBtn) pdfBtn.disabled = !canExport;
 }
 
 /* ============================================================
@@ -1336,6 +1341,25 @@ function exportTypeDefSpec(typeDef) {
   // JSON clone keeps the exported spec data-only while preserving all
   // generator/defaultParams/code metadata needed by the student runtime.
   return JSON.parse(JSON.stringify(typeDef));
+}
+
+function AssessPDFStandaloneScript() {
+  return [
+    "/* Embedded from tool/pdf.js by tool/index.html. */",
+    "(function(root, factory) {",
+    "  const api = factory();",
+    "  root.AssessPDF = api;",
+    "})(typeof globalThis !== \"undefined\" ? globalThis : this, " + createAssessPDF.toString() + ");",
+  ].join("\n");
+}
+
+function buildQuestionSpecsForBasket() {
+  return basket.map((b, i) => ({
+    qid: "q" + String(i + 1).padStart(3, "0"),
+    typeKey: b.typeKey,
+    typeDef: exportTypeDefSpec(b.typeDef),
+    params: {}
+  }));
 }
 
 // --- Publish package (PR-EXERCISES) ---
@@ -1428,18 +1452,9 @@ function exportStudent() {
   const baseName = (document.getElementById("filename").value.trim() || ("student-practice-" + activePresetKey))
                      .replace(/[^a-zA-Z0-9_\\-]/g, "_");
   const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
-  const questionSpecs = basket.map((b, i) => {
-    return {
-      qid: "q" + String(i + 1).padStart(3, "0"),
-      typeKey: b.typeKey,
-      typeDef: exportTypeDefSpec(b.typeDef),
-      // Interactive exports must not carry preview-generated params.
-      // The student runtime generates fresh params on each file load.
-      params: {}
-    };
-  });
+  const questionSpecs = buildQuestionSpecsForBasket();
   // Validate placeholders before replace
-  const requiredPlaceholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{RUNTIME_SEED}}"];
+  const requiredPlaceholders = ["{{TITLE}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
   for (const ph of requiredPlaceholders) {
     if (!tmpl.includes(ph)) {
       showStatus("exportStatus", "err", "模板缺少必要佔位符：" + ph);
@@ -1464,6 +1479,7 @@ function exportStudent() {
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
   html = safeReplace(html, /\{\{VALIDATORS_SCRIPT\}\}/g, AssessValidators.toStandaloneScript());
   html = safeReplace(html, /\{\{GENERATORS_SCRIPT\}\}/g, AssessGenerators.toStandaloneScript());
+  html = safeReplace(html, /\{\{PDF_SCRIPT\}\}/g, AssessPDFStandaloneScript());
   html = safeReplace(html, /\{\{QUESTIONS_DATA\}\}/g, JSON.stringify([]));
   html = safeReplace(html, /\{\{QUESTION_SPECS\}\}/g, JSON.stringify(questionSpecs));
   html = safeReplace(html, /\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
@@ -1509,6 +1525,32 @@ function exportStudent() {
     a.remove();
     URL.revokeObjectURL(url);
   }, isIOSLike ? 300000 : 30000);
+}
+
+function exportPdfBundle() {
+  if (!bank || basket.length === 0 || basket.some(b => b.hasError) || basket.some(b => !b.confirmed) || previewDirty) {
+    showStatus("exportStatus", "err", "PDF 匯出閘門未通過");
+    return;
+  }
+  if (!window.AssessPDF) {
+    showStatus("exportStatus", "err", "PDF 模組未載入，請重新整理頁面");
+    return;
+  }
+  const title = document.getElementById("title").value.trim() || "數學短答練習";
+  const questionSpecs = buildQuestionSpecsForBasket();
+  try {
+    const seed = AssessPDF.createSnapshotSeed();
+    const snapshot = AssessPDF.generateSnapshotFromSpecs(questionSpecs, seed, {
+      title,
+      presetKey: activePresetKey,
+      generatedAt: new Date().toISOString(),
+      generatorApi: AssessGenerators,
+    });
+    AssessPDF.printSnapshot(snapshot, { showCode: true });
+    showStatus("exportStatus", "ok", `✓ 已開啟 PDF 雙版列印視圖：<code>${snapshot.snapshotId}</code>（${snapshot.questions.length} 題）`);
+  } catch (e) {
+    showStatus("exportStatus", "err", "PDF 匯出失敗：" + escapeHtml(e.message || e));
+  }
 }
 </script>
 </body>

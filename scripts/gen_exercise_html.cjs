@@ -79,9 +79,10 @@ const bank = JSON.parse(fs.readFileSync(opts.bankPath, 'utf-8'));
 const tmpl = fs.readFileSync(opts.templatePath, 'utf-8');
 const AssessGenerators = require(path.join(ROOT, 'tool/generators.js'));
 const AssessValidators = require(path.join(ROOT, 'tool/validators.js'));
+const pdfScript = fs.readFileSync(path.join(ROOT, 'tool/pdf.js'), 'utf-8');
 
 // --- Required placeholder check (mirrors tool) ---
-const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{RUNTIME_SEED}}'];
+const REQUIRED = ['{{TITLE}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
 for (const ph of REQUIRED) {
   if (!tmpl.includes(ph)) { console.error('Template missing placeholder:', ph); process.exit(1); }
 }
@@ -162,6 +163,7 @@ function buildHtml({ title, presetKey, specs, generatedAt, bankHash }) {
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
   html = safeReplace(html, /\{\{VALIDATORS_SCRIPT\}\}/g, AssessValidators.toStandaloneScript());
   html = safeReplace(html, /\{\{GENERATORS_SCRIPT\}\}/g, AssessGenerators.toStandaloneScript());
+  html = safeReplace(html, /\{\{PDF_SCRIPT\}\}/g, pdfScript);
   html = safeReplace(html, /\{\{QUESTIONS_DATA\}\}/g, JSON.stringify([]));
   html = safeReplace(html, /\{\{QUESTION_SPECS\}\}/g, JSON.stringify(specs));
   html = safeReplace(html, /\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
