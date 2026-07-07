@@ -8,7 +8,7 @@
  * Input:  question-bank.json + templates/student.html + tool/generators.js + tool/validators.js
  * Output: <outDir>/<fileBase>.html for each preset
  *
- * Usage: node gen_practice_html.js <bankPath> <templatePath> <outDir>
+ * Usage: node gen_practice_html.js <bankPath> <templatePath> <outDir> [titlePrefix] [--gas-url=...] [presetKey...]
  */
 const fs = require('fs');
 const path = require('path');
@@ -44,6 +44,9 @@ const bankPath = process.argv[2] || path.join(ROOT, 'question-bank.json');
 const templatePath = process.argv[3] || path.join(ROOT, 'templates/student.html');
 const outDir = process.argv[4] || path.join(ROOT, 's1');
 const titlePrefix = process.argv[5] || '初中數學短答練習';
+const extraArgs = process.argv.slice(6);
+const gasUrlArg = extraArgs.find(a => a.startsWith('--gas-url='));
+const gasUrl = gasUrlArg ? gasUrlArg.slice(10) : '';
 
 const bank = JSON.parse(fs.readFileSync(bankPath, 'utf-8'));
 const tmpl = fs.readFileSync(templatePath, 'utf-8');
@@ -152,7 +155,7 @@ function deriveGrade(presetKey) {
 }
 
 const outFiles = [];
-const argPresets = process.argv.slice(6); // optional list of preset keys
+const argPresets = extraArgs.filter(a => !a.startsWith('--gas-url=')); // optional list of preset keys
 
 const presets = argPresets.length
   ? bank.presets.filter(p => argPresets.includes(p.key))
@@ -172,7 +175,6 @@ for (const preset of presets) {
   const bankHash = computeBankHash(preset.key, questions);
   const generatedAt = new Date().toISOString();
   const presetKey = preset.key;
-  const gasUrl = '';
 
   let html = tmpl;
   html = safeReplace(html, /\{\{TITLE_HTML\}\}/g, escapeHtml(title));

@@ -118,9 +118,11 @@ function makeMockEl() {
     querySelector: () => makeMockEl(), querySelectorAll: () => [],
     getElementsByTagName: () => [],
     dispatchEvent: () => {},
+    click: () => {},
   };
 }
 const mockDoc = {
+  body: makeMockEl(),
   getElementById: (id) => {
     if (!docStore[id]) docStore[id] = makeMockEl();
     return docStore[id];
@@ -133,6 +135,10 @@ const mockDoc = {
 
 // 運行主程式（會設定 window / document mock）
 const vm = require('vm');
+const URLShim = URL;
+URLShim.createObjectURL = () => 'blob:tool-export';
+URLShim.revokeObjectURL = () => {};
+let lastBlobText = '';
 const winMock = { addEventListener: () => {}, dispatchEvent: () => {}, document: mockDoc, localStorage: { getItem: () => null, setItem: () => {} } };
 const sandbox = {
   document: mockDoc,
@@ -144,21 +150,29 @@ const sandbox = {
   JSON,
   Object,
   Set, Map, Array, String, Number, Boolean, Error, Promise,
-  URL: { createObjectURL: () => '', revokeObjectURL: () => {} },
-  Blob: function() {},
+  URL: URLShim,
+  Blob: function(parts) { lastBlobText = (parts || []).join(''); },
+  navigator: { userAgent: 'node', platform: 'MacIntel', maxTouchPoints: 0, clipboard: null },
+  __getLastBlobText: () => lastBlobText,
   MathJax: null,
   localStorage: { getItem: () => null, setItem: () => {} },
 };
 // Make window properties visible to the script (AssessTool = window.AssessTool etc.)
 for (const k of Object.keys(sandbox)) sandbox[k === 'window' ? '__skip__' : k] = sandbox[k];
 
-// 先載 filter.js（建立 AssessTool 全局變量）
+// 先載外部共用模組（建立 AssessTool / AssessGenerators / AssessValidators / AssessPDF globals）
 const filterScript = fs.readFileSync(path.join(ROOT, 'tool/filter.js'), 'utf-8');
+const generatorsScript = fs.readFileSync(path.join(ROOT, 'tool/generators.js'), 'utf-8');
+const validatorsScript = fs.readFileSync(path.join(ROOT, 'tool/validators.js'), 'utf-8');
+const pdfScript = fs.readFileSync(path.join(ROOT, 'tool/pdf.js'), 'utf-8');
 try {
   vm.createContext(sandbox);
   vm.runInContext(filterScript, sandbox, { filename: 'tool/filter.js' });
+  vm.runInContext(generatorsScript, sandbox, { filename: 'tool/generators.js' });
+  vm.runInContext(validatorsScript, sandbox, { filename: 'tool/validators.js' });
+  vm.runInContext(pdfScript, sandbox, { filename: 'tool/pdf.js' });
 } catch (e) {
-  FAILURES.push('filter.js 載入失敗: ' + e.message);
+  FAILURES.push('共用模組載入失敗: ' + e.message);
   process.exit(1);
 }
 try {
@@ -245,6 +259,55 @@ check('PRESET_KEY 用 activePresetKey (唔係 hard-coded "custom")',
       /const presetKey = activePresetKey/.test(toolHtmlFixed));
 check('filename 輸入框係 readonly', /id="filename"[^>]*readonly/.test(toolHtmlFixed));
 check('loadAll 失敗時 reset bank = null', /bank = null; tmpl = null;/.test(toolHtmlFixed));
+
+// === 5a. PR-GASURL teacher tool config ===
+section('5a. PR-GASURL Google Sheets 目的地欄');
+check('UI 有第三欄 gasUrl input', /id="gasUrl"/.test(toolHtmlFixed));
+check('UI 有公開投遞信箱提醒', toolHtmlFixed.includes('等同公開投遞信箱'));
+check('saveUrls 會保存 gasUrl', /gasUrl:\s*document\.getElementById\("gasUrl"\)\.value\.trim\(\)/.test(toolHtmlFixed));
+check('DOMContentLoaded 會回填 saved.gasUrl', /saved\.gasUrl[\s\S]{0,80}getElementById\("gasUrl"\)\.value/.test(toolHtmlFixed));
+check('exportStudent 使用 getGasUrlForExport("exportStatus")',
+      /const gasUrl = getGasUrlForExport\("exportStatus"\)/.test(toolHtmlFixed));
+check('發佈指令包包含 gasUrl 欄位', /questionCodes,[\s\S]{0,80}gasUrl,/.test(toolHtmlFixed));
+
+if (typeof sandbox.validateGasUrl === 'function') {
+  check('validateGasUrl 接受 script.google.com',
+        sandbox.validateGasUrl('https://script.google.com/macros/s/abc/exec').ok === true);
+  check('validateGasUrl 接受 script.googleusercontent.com',
+        sandbox.validateGasUrl('https://script.googleusercontent.com/macros/echo?user_content_key=abc').ok === true);
+  check('validateGasUrl 拒絕 http script.google.com',
+        sandbox.validateGasUrl('http://script.google.com/macros/s/abc/exec').ok === false);
+  check('validateGasUrl 拒絕非 Google Script 網域',
+        sandbox.validateGasUrl('https://example.com/post').ok === false);
+  check('validateGasUrl 留空有效且標記 empty',
+        sandbox.validateGasUrl('').ok === true && sandbox.validateGasUrl('').empty === true);
+} else {
+  check('validateGasUrl 函式存在', false, 'sandbox 內不可訪問');
+}
+
+try {
+  const typeDef = bank.data.find(t => t.grade === 's1' && t.term === '3');
+  mockDoc.getElementById('title').value = 'Gas URL Export Test';
+  mockDoc.getElementById('filename').value = 'student-practice-s1_term3_part_a';
+  mockDoc.getElementById('gasUrl').value = 'https://script.google.com/macros/s/abc/exec';
+  vm.runInContext(`
+    bank = ${JSON.stringify(bank)};
+    tmpl = ${JSON.stringify(tmpl)};
+    activePresetKey = "s1_term3_part_a";
+    basket = [{
+      typeKey: ${JSON.stringify(typeDef.key)},
+      typeDef: ${JSON.stringify(typeDef)},
+      hasError: false,
+      confirmed: true
+    }];
+    exportStudent();
+  `, sandbox);
+  const exported = sandbox.__getLastBlobText();
+  check('exportStudent 會把合法 GAS URL 注入學生 HTML',
+        exported.includes('const GAS_URL = "https://script.google.com/macros/s/abc/exec";'));
+} catch (e) {
+  check('exportStudent GAS URL 注入測試可執行', false, e.message);
+}
 
 // === 5b. PR-UI1 teacher preview UX ===
 section('5b. PR-UI1 老師工具 UX');

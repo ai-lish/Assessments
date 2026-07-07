@@ -65,7 +65,7 @@ function buildHtml({ grade = 's1', gasUrl = 'https://example.invalid/sheets' } =
     .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
 }
 
-function buildSandbox(promptValues) {
+function buildSandbox(promptValues, htmlOptions = {}) {
   const elements = new Map();
   const fetchCalls = [];
   const prompts = promptValues.slice();
@@ -130,7 +130,7 @@ function buildSandbox(promptValues) {
   sandbox.window.URL = sandbox.URL;
   sandbox.window.Blob = sandbox.Blob;
 
-  const html = buildHtml();
+  const html = buildHtml(htmlOptions);
   const leftover = html.match(/\{\{[A-Z_]+\}\}/g);
   if (leftover) throw new Error('leftover placeholders: ' + leftover.join(', '));
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)]
@@ -196,6 +196,19 @@ for (const badId of ['2025500', '20255001X']) {
   `, sandbox);
   check(`invalid student ID ${badId} is rejected before fetch`, sandbox.__fetchCalls.length === 0);
 }
+
+sandbox = buildSandbox(['20255001F'], { gasUrl: '' });
+run(`
+  allAttempts = [
+    { attemptNumber: 1, attemptType: "initial", score: 16, total: 16, remainingWrongCount: 0, completedAll: true, date: "7/7", time: "10:00", details: [] }
+  ];
+  lastResult = allAttempts[0];
+  showResult();
+  handleExport();
+`, sandbox);
+check('empty GAS_URL disables submit even when completedAll', sandbox.__elements.get('btn-export').disabled === true);
+check('empty GAS_URL shows unconfigured destination hint', /未配置提交目的地/.test(sandbox.__elements.get('submit-hint').textContent));
+check('empty GAS_URL does not send request', sandbox.__fetchCalls.length === 0);
 
 console.log(`\n=== Summary: ${passed} passed, ${failures.length} failed ===`);
 if (failures.length) {
