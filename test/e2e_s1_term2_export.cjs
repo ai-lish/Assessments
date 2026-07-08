@@ -72,6 +72,7 @@ let html = tmpl
   .replace(/\{\{GENERATED_AT\}\}/g, "2026-07-04T00:00:00.000Z")
   .replace(/\{\{BANK_HASH\}\}/g, "test-s1-term2")
   .replace(/\{\{PRESET_KEY\}\}/g, "s1_term2_part_a")
+  .replace(/\{\{GRADE\}\}/g, "s1")
   .replace(/\{\{GAS_URL\}\}/g, "")
   .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validators.toStandaloneScript())
   .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generators.toStandaloneScript())

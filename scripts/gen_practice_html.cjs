@@ -53,7 +53,7 @@ const AssessValidators = require(path.join(ROOT, 'tool/validators.js'));
 const pdfScript = fs.readFileSync(path.join(ROOT, 'tool/pdf.js'), 'utf-8');
 
 // --- Required placeholder check (mirrors tool) ---
-const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
+const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GRADE}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
 for (const ph of REQUIRED) {
   if (!tmpl.includes(ph)) { console.error('Template missing placeholder:', ph); process.exit(1); }
 }
@@ -146,6 +146,11 @@ function computeBankHash(presetKey, questions) {
   return `${bankHashBase}_${questions.length}_${crypto.createHash('sha1').update(payload).digest('hex').slice(0, 8)}`;
 }
 
+function deriveGrade(presetKey) {
+  const m = String(presetKey || '').match(/^s(\d+)[_-]?t(?:erm)?\d+/i);
+  return m ? 's' + m[1] : 'unknown';
+}
+
 const outFiles = [];
 const argPresets = process.argv.slice(6); // optional list of preset keys
 
@@ -181,6 +186,7 @@ for (const preset of presets) {
   html = safeReplace(html, /\{\{GENERATED_AT\}\}/g, JSON.stringify(generatedAt));
   html = safeReplace(html, /\{\{BANK_HASH\}\}/g, JSON.stringify(bankHash));
   html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
+  html = safeReplace(html, /\{\{GRADE\}\}/g, JSON.stringify(deriveGrade(presetKey)));
   html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl));
 
   const leftover = html.match(/\{\{[A-Z_]+\}\}/g);

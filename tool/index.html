@@ -401,6 +401,16 @@ function deriveYearFromBasket() {
   return first ? deriveYearFromCode(first.code) : "";
 }
 
+function deriveGradeFromCode(code) {
+  const m = String(code || "").match(/^LSC-\d{4}-S(\d+)-/);
+  return m ? ("s" + m[1]) : "";
+}
+
+function deriveGradeFromBasket() {
+  const first = basket && basket[0] && basket[0].typeDef;
+  return first ? deriveGradeFromCode(first.code) : "";
+}
+
 function buildPracticeTitleFromPreset(p) {
   let year = "";
   if (p && Array.isArray(p.questions) && p.questions[0] && bank) {
@@ -508,10 +518,10 @@ async function loadAll() {
     // Basic template sanity check
     if (!tmpl.includes("{{TITLE}}") || !tmpl.includes("{{TITLE_HTML}}") || !tmpl.includes("{{QUESTIONS_DATA}}") ||
         !tmpl.includes("{{QUESTION_SPECS}}") || !tmpl.includes("{{BANK_HASH}}") ||
-        !tmpl.includes("{{PRESET_KEY}}") || !tmpl.includes("{{VALIDATORS_SCRIPT}}") ||
+        !tmpl.includes("{{PRESET_KEY}}") || !tmpl.includes("{{GRADE}}") || !tmpl.includes("{{VALIDATORS_SCRIPT}}") ||
         !tmpl.includes("{{GENERATORS_SCRIPT}}") || !tmpl.includes("{{PDF_SCRIPT}}") ||
         !tmpl.includes("{{RUNTIME_SEED}}")) {
-      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{TITLE_HTML}} / {{QUESTIONS_DATA}} / {{QUESTION_SPECS}} / {{BANK_HASH}} / {{PRESET_KEY}} / {{VALIDATORS_SCRIPT}} / {{GENERATORS_SCRIPT}} / {{PDF_SCRIPT}} / {{RUNTIME_SEED}}）");
+      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{TITLE_HTML}} / {{QUESTIONS_DATA}} / {{QUESTION_SPECS}} / {{BANK_HASH}} / {{PRESET_KEY}} / {{GRADE}} / {{VALIDATORS_SCRIPT}} / {{GENERATORS_SCRIPT}} / {{PDF_SCRIPT}} / {{RUNTIME_SEED}}）");
     }
     // Bank validation（先過題目庫）
     const validation = validateBank(bank);
@@ -650,7 +660,7 @@ function validateBank(b) {
 }
 
 function validateTemplate(s) {
-  const required = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
+  const required = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GRADE}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
   const missing = required.filter(ph => !s.includes(ph));
   return { ok: missing.length === 0, missing };
 }
@@ -1440,6 +1450,7 @@ function buildPubPackage() {
     fileName,
     sourcePreset,
     mode,
+    grade,
     questionCodes,
     generatedAt,
     bankHash,
@@ -1487,7 +1498,7 @@ function exportStudent() {
   const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
   const questionSpecs = buildQuestionSpecsForBasket();
   // Validate placeholders before replace
-  const requiredPlaceholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
+  const requiredPlaceholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GRADE}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
   for (const ph of requiredPlaceholders) {
     if (!tmpl.includes(ph)) {
       showStatus("exportStatus", "err", "模板缺少必要佔位符：" + ph);
@@ -1505,6 +1516,7 @@ function exportStudent() {
   }
   // PRESET_KEY 一律用 activePresetKey，唔可以寫死做 "custom"
   const presetKey = activePresetKey;
+  const grade = deriveGradeFromBasket() || "unknown";
   const gasUrl = "";
 
   const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
@@ -1520,6 +1532,7 @@ function exportStudent() {
   html = safeReplace(html, /\{\{GENERATED_AT\}\}/g, JSON.stringify(generatedAt));
   html = safeReplace(html, /\{\{BANK_HASH\}\}/g, JSON.stringify(bankHash));
   html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
+  html = safeReplace(html, /\{\{GRADE\}\}/g, JSON.stringify(grade));
   html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl));
 
   // Verify no placeholder residue

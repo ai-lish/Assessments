@@ -287,6 +287,7 @@ html = html.replace("{{QUESTION_SPECS}}", json.dumps([], ensure_ascii=False))
 html = html.replace("{{GENERATED_AT}}", json.dumps(generated_at))
 html = html.replace("{{BANK_HASH}}", json.dumps(bank_hash))
 html = html.replace("{{PRESET_KEY}}", json.dumps(preset_key))
+html = html.replace("{{GRADE}}", json.dumps("s1"))
 html = html.replace("{{GAS_URL}}", json.dumps(gas_url))
 html = html.replace("{{VALIDATORS_SCRIPT}}", (ROOT / "tool" / "validators.js").read_text(encoding="utf-8"))
 html = html.replace("{{GENERATORS_SCRIPT}}", (ROOT / "tool" / "generators.js").read_text(encoding="utf-8"))
@@ -316,7 +317,7 @@ print(f"  (wrote {out}, {len(html)} bytes)")
 # 8. 佔位符 + JS 語法
 # ----------------------------------------------------------------------
 print("\n=== 8. 佔位符 + JS 語法 ===")
-required_placeholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"]
+required_placeholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GRADE}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"]
 for ph in required_placeholders:
     check(f"模板有 {ph}", ph in tmpl)
 

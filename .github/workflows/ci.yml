@@ -54,6 +54,9 @@ jobs:
       - name: Runtime random export regression
         run: node test/runtime_random_export.cjs
 
+      - name: Submit gate and payload regression
+        run: node test/submit_gate.cjs
+
       - name: PDF snapshot fixture regression
         run: node test/pdf_snapshot.cjs
 
