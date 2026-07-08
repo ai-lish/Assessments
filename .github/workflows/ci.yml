@@ -57,6 +57,9 @@ jobs:
       - name: Submit gate and payload regression
         run: node test/submit_gate.cjs
 
+      - name: UX1 keyboard and collapse regression
+        run: node test/ux1_layout.cjs
+
       - name: PDF snapshot fixture regression
         run: node test/pdf_snapshot.cjs
 

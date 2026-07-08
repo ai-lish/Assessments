@@ -72,9 +72,9 @@
   .btn-teach { display: none; background-color: #f39c12; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.95em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-top: 5px; }
   .solution-box { width: 100%; background: #fffcf5; border: 1px solid #fce8b2; border-radius: 8px; padding: 12px; margin-top: 10px; display: none; text-align: left; color: #444; font-size: 0.95em; line-height: 1.6; overflow-x: auto; }
   .solution-box h4 { margin: 0 0 8px 0; color: #d35400; border-bottom: 1px dashed #fce8b2; padding-bottom: 5px; font-size: 0.95em; }
-  .keypad-area { background: #f1f3f5; padding: 10px; border-top: 1px solid #ddd; flex-shrink: 0; }
-  .key-grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
-  .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 42px; display: flex; align-items: center; justify-content: center; font-size: 1.1em; font-weight: 600; cursor: pointer; user-select: none; }
+  .keypad-area { background: #f1f3f5; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
+  .key-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+  .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
   .key:active { background: #eee; transform: translateY(2px); }
   .main-btn { width: 100%; padding: 11px; border: none; border-radius: 8px; font-size: 1.05em; font-weight: 600; color: white; cursor: pointer; margin-bottom: 6px; }
   .btn-check { background-color: var(--accent); }
@@ -150,7 +150,7 @@
       </div>
       <div id="solution-box" class="solution-box"></div>
     </div>
-    <div class="keypad-area">
+    <div class="keypad-area" id="keypad-area">
       <div class="btn-row">
         <button class="main-btn btn-check" id="btn-check" onclick="checkAns()">核對答案</button>
         <button class="main-btn btn-next" id="btn-next" onclick="nextQ()">下一題</button>
@@ -417,6 +417,17 @@ function clickDot(x, y) {
   renderCoordinateGrid(x, y);
 }
 
+function setKeypadVisible(visible) {
+  const area = document.getElementById("keypad-area");
+  if (area) area.style.display = visible ? "block" : "none";
+}
+
+function collapseAnswerControlsAfterCheck() {
+  setKeypadVisible(false);
+  document.getElementById("input-row").style.display = "none";
+  document.getElementById("q-options").style.display = "none";
+}
+
 /* === 顯示提示 === */
 function showToast(msg) {
   const t = document.getElementById("toast");
@@ -477,6 +488,7 @@ function showQ() {
   document.getElementById("btn-check").style.display = "block";
   document.getElementById("btn-next").style.display = "none";
   document.getElementById("btn-teach").style.display = "none";
+  setKeypadVisible(true);
   document.getElementById("solution-box").style.display = "none";
   document.getElementById("solution-box").innerHTML = "";
   document.getElementById("input-val").textContent = "";
@@ -604,6 +616,7 @@ function checkAns() {
   document.getElementById("btn-check").style.display = "none";
   document.getElementById("btn-next").style.display = "block";
   document.getElementById("btn-teach").style.display = "inline-block";
+  collapseAnswerControlsAfterCheck();
   const solBox = document.getElementById("solution-box");
   solBox.innerHTML = "<h4>教學步驟</h4>" + (q.solutionHTML || q.steps || "");
   if (window.MathJax && MathJax.typesetPromise) {
@@ -725,8 +738,8 @@ function updateSubmitGate() {
 function renderHistory() {
   const tbody = document.getElementById("history-body");
   tbody.innerHTML = "";
-  // 由新到舊
-  for (let i = allAttempts.length - 1; i >= 0; i--) {
+  // 按 attemptNumber 由小到大穩定顯示，避免舊記錄因排序反轉被誤判消失。
+  for (let i = 0; i < allAttempts.length; i++) {
     const h = allAttempts[i];
     const typeLabel = h.attemptType === "initial" ? "初次" : "重做";
     const tr = document.createElement("tr");
@@ -810,11 +823,11 @@ function exportStudentAnswers() {
 
 function printPDF() {
   try {
-    const snapshot = AssessPDF.generateSnapshot({
-      title: TITLE,
-      presetKey: PRESET_KEY,
-      questions: QUESTIONS,
-    }, "existing-runtime", {
+    const seed = AssessPDF.createSnapshotSeed();
+    const source = (Array.isArray(QUESTION_SPECS) && QUESTION_SPECS.length > 0)
+      ? { title: TITLE, presetKey: PRESET_KEY, questionSpecs: QUESTION_SPECS }
+      : { title: TITLE, presetKey: PRESET_KEY, questions: QUESTIONS };
+    const snapshot = AssessPDF.generateSnapshot(source, seed, {
       title: TITLE,
       presetKey: PRESET_KEY,
       generatedAt: new Date().toISOString(),
