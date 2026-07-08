@@ -185,9 +185,14 @@
         <label>題目庫 raw URL</label>
         <input type="text" id="bankUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/question-bank.json">
       </div>
-      <div style="grid-column: span 2;">
+      <div>
         <label>學生版模板 raw URL</label>
         <input type="text" id="tmplUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/templates/student.html">
+      </div>
+      <div>
+        <label>Google Sheets 提交網址（GAS Web App URL）</label>
+        <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/..." oninput="validateGasUrlField()">
+        <small class="hint" id="gasUrlHint">此網址會嵌入學生練習檔（等同公開投遞信箱），請勿使用含敏感 token 嘅 URL。</small>
       </div>
     </div>
     <div class="btn-row">
@@ -302,6 +307,7 @@
    狀態管理
    ============================================================ */
 const STORAGE_KEY = "assess_tool_v2";
+const ALLOWED_GAS_HOSTS = new Set(["script.google.com", "script.googleusercontent.com"]);
 const QUESTION_CODE_RE = /^(?:LSC-\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+|DSE-\d{4}-P\d+-[A-Z]\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+)$/;
 const QUESTION_TYPE_NAMES = Object.freeze({
   area_circle: "圓面積",
@@ -421,11 +427,65 @@ function buildPracticeTitleFromPreset(p) {
   return yearText + normalizePartName(p && p.name) + "短答練習";
 }
 
+function validateGasUrl(value) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) return { ok: true, empty: true, value: "" };
+  let parsed;
+  try {
+    parsed = new URL(trimmed);
+  } catch (err) {
+    return {
+      ok: false,
+      empty: false,
+      value: trimmed,
+      error: "Google Sheets 提交網址格式錯誤，必須係 https://script.google.com 或 https://script.googleusercontent.com 開頭。"
+    };
+  }
+  if (parsed.protocol !== "https:" || !ALLOWED_GAS_HOSTS.has(parsed.hostname)) {
+    return {
+      ok: false,
+      empty: false,
+      value: trimmed,
+      error: "Google Sheets 提交網址必須使用 https://script.google.com 或 https://script.googleusercontent.com。"
+    };
+  }
+  return { ok: true, empty: false, value: trimmed };
+}
+
+function validateGasUrlField() {
+  const input = document.getElementById("gasUrl");
+  const hint = document.getElementById("gasUrlHint");
+  if (!input || !hint) return { ok: true, empty: true, value: "" };
+  const result = validateGasUrl(input.value);
+  if (!input.value.trim()) {
+    hint.textContent = "此網址會嵌入學生練習檔（等同公開投遞信箱），請勿使用含敏感 token 嘅 URL。留空時學生檔不可提交。";
+    hint.style.color = "";
+  } else if (result.ok) {
+    hint.textContent = "✓ URL 格式有效，會嵌入匯出的學生練習檔。";
+    hint.style.color = "var(--success)";
+  } else {
+    hint.textContent = "⚠️ " + result.error;
+    hint.style.color = "var(--danger)";
+  }
+  return result;
+}
+
+function getGasUrlForExport(statusId) {
+  const result = validateGasUrlField();
+  if (!result.ok) {
+    showStatus(statusId, "err", result.error);
+    return null;
+  }
+  return result.value;
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
   if (saved.bankUrl) document.getElementById("bankUrl").value = saved.bankUrl;
   if (saved.tmplUrl) document.getElementById("tmplUrl").value = saved.tmplUrl;
+  if (saved.gasUrl) document.getElementById("gasUrl").value = saved.gasUrl;
   if (saved.activeMode) activeMode = saved.activeMode;
+  validateGasUrlField();
   // MathJax lifecycle
   window.addEventListener("mathjax-ready", () => {
     mathjaxStatus = "ready";
@@ -458,15 +518,19 @@ function saveUrls() {
   const data = {
     bankUrl: document.getElementById("bankUrl").value.trim(),
     tmplUrl: document.getElementById("tmplUrl").value.trim(),
+    gasUrl: document.getElementById("gasUrl").value.trim(),
     activeMode: activeMode
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
   showStatus("loadStatus", "ok", "✓ 網址已儲存喺 localStorage。");
+  validateGasUrlField();
 }
 function clearUrls() {
   localStorage.removeItem(STORAGE_KEY);
   document.getElementById("bankUrl").value = "";
   document.getElementById("tmplUrl").value = "";
+  document.getElementById("gasUrl").value = "";
+  validateGasUrlField();
 }
 function showStatus(id, type, msg) {
   const el = document.getElementById(id);
@@ -1414,6 +1478,8 @@ function buildQuestionSpecsForBasket() {
 function buildPubPackage() {
   if (!bank) return null;
   if (!Array.isArray(basket) || basket.length === 0) return null;
+  const gasUrl = getGasUrlForExport("pubPackageStatus");
+  if (gasUrl === null) return null;
   const isCustom = activePresetKey === "custom";
   const mode = isCustom ? "custom" : "regular";
   // Derive year/grade/term from first basket question's bank code
@@ -1452,6 +1518,7 @@ function buildPubPackage() {
     mode,
     grade,
     questionCodes,
+    gasUrl,
     generatedAt,
     bankHash,
     title,
@@ -1461,6 +1528,8 @@ function buildPubPackage() {
 function copyPubPackage() {
   const pkg = buildPubPackage();
   if (!pkg) {
+    const status = document.getElementById("pubPackageStatus");
+    if (status && status.className.includes("err") && status.innerHTML) return;
     showStatus("pubPackageStatus", "err", "請先載入題目庫 + 加入至少一題（basket 空白）");
     return;
   }
@@ -1517,7 +1586,8 @@ function exportStudent() {
   // PRESET_KEY 一律用 activePresetKey，唔可以寫死做 "custom"
   const presetKey = activePresetKey;
   const grade = deriveGradeFromBasket() || "unknown";
-  const gasUrl = "";
+  const gasUrl = getGasUrlForExport("exportStatus");
+  if (gasUrl === null) return;
 
   const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
   let html = tmpl;
