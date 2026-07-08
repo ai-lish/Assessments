@@ -146,6 +146,7 @@ function buildSandbox(questions) {
     "q-hint", "q-options", "q-coord-hint", "input-row", "q-image", "toast",
     "final-score", "btn-retry-wrong", "history-body", "detail-modal",
     "modal-title", "modal-body-content", "btn-export", "score-mini", "q-code",
+    "keypad-area",
   ];
   for (const id of ids) elements.set(id, makeElement(id));
   elements.get("quiz-view").style.display = "flex";
@@ -335,6 +336,39 @@ check("single retry restores original qList", singleRetryState.qids.length === 1
 check("single retry restores wrong ids", JSON.stringify(singleRetryState.origWrongIds) === JSON.stringify(["q001"]));
 check("single retry clears single retry flag", singleRetryState.isSingleRetry === false);
 
+const appendOnlyState = evalInStudent(`
+  allAttempts = [];
+  lastResult = null;
+  qList = QUESTIONS.slice();
+  currentAttemptType = "initial";
+  sessionLog = qList.map((q, i) => ({ qid: q.qid, user: i < 5 ? String(q.correctAnswer || q.displayAnswer || "ok") : "wrong", correct: i < 5 }));
+  sessionAnswers = sessionLog.map(s => s.user);
+  finishGame();
+  const wrongIds = allAttempts[0].details.filter(d => !d.correct).map(d => d.qid);
+  qList = QUESTIONS.filter(q => wrongIds.includes(q.qid));
+  currentAttemptType = "wrong_retry";
+  sessionLog = qList.map(q => ({ qid: q.qid, user: String(q.correctAnswer || q.displayAnswer || "ok"), correct: true }));
+  sessionAnswers = sessionLog.map(s => s.user);
+  finishGame();
+  qList = QUESTIONS.slice();
+  currentAttemptType = "initial";
+  sessionLog = qList.map(q => ({ qid: q.qid, user: String(q.correctAnswer || q.displayAnswer || "ok"), correct: true }));
+  sessionAnswers = sessionLog.map(s => s.user);
+  finishGame();
+  document.getElementById("history-body").children = [];
+  renderHistory();
+  ({
+    len: allAttempts.length,
+    numbers: allAttempts.map(a => a.attemptNumber),
+    types: allAttempts.map(a => a.attemptType),
+    table: Array.from(document.getElementById("history-body").children).map(tr => tr.innerHTML)
+  });
+`);
+check("attempt logs append-only full→wrong_retry→full", appendOnlyState.len === 3);
+check("attemptNumber stays monotonic 1/2/3", JSON.stringify(appendOnlyState.numbers) === JSON.stringify([1, 2, 3]));
+check("attempt types stay initial/wrong_retry/initial", JSON.stringify(appendOnlyState.types) === JSON.stringify(["initial", "wrong_retry", "initial"]));
+check("history table displays all three stable records", appendOnlyState.table.length === 3 && appendOnlyState.table[0].includes("<td>1</td>") && appendOnlyState.table[2].includes("<td>3</td>"));
+
 section("4. Google Sheets payload baseline");
 evalInStudent(`
   allAttempts = [
@@ -359,12 +393,51 @@ check("toolId compatibility stays assess-s1_term3_part_a", payload.rows.every((r
 check("Google Sheets payload grade stays s1", payload.rows.every((r) => r.grade === "s1"));
 check("Google Sheets payload studentId uses new format", payload.rows.every((r) => r.studentId === "20255001F"));
 
-section("5. print and virtual keypad baseline");
+section("5. answer controls collapse and restore");
+const collapseState = evalInStudent(`
+  qList = QUESTIONS.slice(0, 2);
+  currIdx = 0;
+  showQ();
+  currInput = String(qList[0].correctAnswer || qList[0].displayAnswer || "1");
+  checkAns();
+  const afterCheck = {
+    keypad: document.getElementById("keypad-area").style.display,
+    input: document.getElementById("input-row").style.display,
+    next: document.getElementById("btn-next").style.display
+  };
+  nextQ();
+  const afterNext = {
+    keypad: document.getElementById("keypad-area").style.display,
+    input: document.getElementById("input-row").style.display,
+    inputText: document.getElementById("input-val").textContent
+  };
+  const choiceQ = QUESTIONS.find(q => q.type === "choice");
+  qList = [choiceQ];
+  currIdx = 0;
+  showQ();
+  currSelectedChoice = choiceQ.correctAnswer;
+  checkAns();
+  const choiceOptions = document.getElementById("q-options").style.display;
+  ({ afterCheck, afterNext, choiceOptions });
+`);
+check("checkAns hides keypad after answer", collapseState.afterCheck.keypad === "none");
+check("checkAns hides text input row after answer", collapseState.afterCheck.input === "none");
+check("checkAns shows next button after answer", collapseState.afterCheck.next === "block");
+check("nextQ restores keypad", collapseState.afterNext.keypad === "block");
+check("nextQ clears input display", collapseState.afterNext.inputText === "");
+check("choice answer hides options after answer", collapseState.choiceOptions === "none");
+
+section("6. print and virtual keypad baseline");
 evalInStudent("printPDF();");
 const printedHtml = sandbox.__printTargets[0] && sandbox.__printTargets[0].document.html;
 check("printPDF opens shared PDF print view", sandbox.__printTargets.length === 1);
 check("printPDF renders student and teacher sections", /data-mode=\"student\"/.test(printedHtml || "") && /data-mode=\"teacher\"/.test(printedHtml || ""));
 check("printPDF uses shared snapshot id", /data-snapshot-id=\"pdf-[0-9a-f]+\"/.test(printedHtml || ""));
+evalInStudent("printPDF();");
+const firstSnapshotId = (sandbox.__printTargets[0].document.html.match(/data-snapshot-id=\"([^\"]+)\"/) || [])[1];
+const secondSnapshotId = (sandbox.__printTargets[1].document.html.match(/data-snapshot-id=\"([^\"]+)\"/) || [])[1];
+check("two PDF clicks create different snapshot ids", firstSnapshotId && secondSnapshotId && firstSnapshotId !== secondSnapshotId);
+check("each PDF document keeps student/teacher on same snapshot", (sandbox.__printTargets[1].document.html.match(new RegExp(secondSnapshotId, "g")) || []).length >= 2);
 evalInStudent("answered = false; currInput = ''; kp('1'); kp('×'); kp('x'); del();");
 check("virtual keypad writes display text", sandbox.__elements.get("input-val").textContent === "1×");
 evalInStudent("clearInput();");

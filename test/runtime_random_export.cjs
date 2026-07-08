@@ -146,6 +146,7 @@ function buildSandbox(seed, preset = s1Term3Preset, specs = questionSpecs) {
   const elements = new Map();
   const listeners = {};
   const storage = new Map();
+  const printTargets = [];
   const ids = [
     "quiz-view", "result-view", "p-text", "q-text", "q-feedback", "btn-check",
     "btn-next", "btn-teach", "solution-box", "input-val", "prefix", "suffix",
@@ -178,7 +179,22 @@ function buildSandbox(seed, preset = s1Term3Preset, specs = questionSpecs) {
   const sandbox = {
     console,
     document,
-    window: { MathJax: null, print() {} },
+    window: {
+      MathJax: null,
+      print() {},
+      open() {
+        const target = {
+          document: {
+            html: "",
+            open() { this.html = ""; },
+            write(chunk) { this.html += String(chunk); },
+            close() {},
+          },
+        };
+        printTargets.push(target);
+        return target;
+      },
+    },
     MathJax: null,
     localStorage: {
       getItem(key) { return storage.has(key) ? storage.get(key) : null; },
@@ -202,6 +218,7 @@ function buildSandbox(seed, preset = s1Term3Preset, specs = questionSpecs) {
     prompt: () => "s20271001m",
     fetch: () => Promise.resolve({ ok: true }),
     __elements: elements,
+    __printTargets: printTargets,
   };
   sandbox.window.document = document;
   sandbox.window.localStorage = sandbox.localStorage;
@@ -300,6 +317,30 @@ const secondSig = paramsSignature(secondLoad);
 check("runtime export creates 16 questions from specs", vm.runInContext("QUESTIONS.length", firstLoad) === 16);
 check("opening exported HTML twice can produce different params", firstSig !== secondSig);
 check("exported runtime path does not embed prebuilt QUESTIONS_DATA", vm.runInContext("PREBUILT_QUESTIONS.length", firstLoad) === 0);
+
+const pdfClickState = vm.runInContext(`
+  const captured = [];
+  const originalPrintSnapshot = AssessPDF.printSnapshot;
+  AssessPDF.printSnapshot = function(snapshot, options) {
+    captured.push(snapshot);
+    return { snapshot, html: AssessPDF.renderPrintDocument(snapshot, options || {}), target: null };
+  };
+  printPDF();
+  printPDF();
+  AssessPDF.printSnapshot = originalPrintSnapshot;
+  ({
+    count: captured.length,
+    id1: captured[0].snapshotId,
+    id2: captured[1].snapshotId,
+    sig1: JSON.stringify(captured[0].questions.map(q => ({ qid: q.qid, typeKey: q.typeKey, paramsUsed: q.paramsUsed }))),
+    sig2: JSON.stringify(captured[1].questions.map(q => ({ qid: q.qid, typeKey: q.typeKey, paramsUsed: q.paramsUsed }))),
+    qCount1: captured[0].questions.length,
+    qCount2: captured[1].questions.length
+  });
+`, firstLoad);
+check("two PDF clicks create two snapshots from QUESTION_SPECS", pdfClickState.count === 2 && pdfClickState.qCount1 === 16 && pdfClickState.qCount2 === 16);
+check("two PDF clicks produce different snapshot params", pdfClickState.sig1 !== pdfClickState.sig2, `${pdfClickState.sig1} vs ${pdfClickState.sig2}`);
+check("two PDF clicks produce different snapshot ids", pdfClickState.id1 !== pdfClickState.id2);
 
 const retryState = vm.runInContext(`
   const before = JSON.stringify(QUESTIONS.find(q => q.qid === "q001").paramsUsed);
