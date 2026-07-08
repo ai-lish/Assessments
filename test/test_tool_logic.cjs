@@ -269,6 +269,16 @@ check('DOMContentLoaded 會回填 saved.gasUrl', /saved\.gasUrl[\s\S]{0,80}getEl
 check('exportStudent 使用 getGasUrlForExport("exportStatus")',
       /const gasUrl = getGasUrlForExport\("exportStatus"\)/.test(toolHtmlFixed));
 check('發佈指令包包含 gasUrl 欄位', /questionCodes,[\s\S]{0,80}gasUrl,/.test(toolHtmlFixed));
+check('三個資源欄位均有一鍵套用 Preset 按鈕',
+      (toolHtmlFixed.match(/applyResourcePreset\('/g) || []).length >= 3 &&
+      toolHtmlFixed.includes("applyResourcePreset('question')") &&
+      toolHtmlFixed.includes("applyResourcePreset('template')") &&
+      toolHtmlFixed.includes("applyResourcePreset('gas')"));
+check('Preset 載入共用 DEFAULT_RESOURCE_PRESETS 與 applyResourcePreset',
+      toolHtmlFixed.includes('const DEFAULT_RESOURCE_PRESETS = Object.freeze') &&
+      /async function applyResourcePreset\(kind\)/.test(toolHtmlFixed));
+check('GAS Preset 不寫死真實提交 URL',
+      /gas:\s*\{[\s\S]{0,160}value:\s*""/.test(toolHtmlFixed));
 
 if (typeof sandbox.validateGasUrl === 'function') {
   check('validateGasUrl 接受 script.google.com',
@@ -361,6 +371,33 @@ check('模擬判分調用 AssessValidators.checkAnswer',
       /submitSimulation[\s\S]{0,500}AssessValidators\.checkAnswer/.test(toolHtmlFixed));
 check('模擬測試沒有 Google Sheets / fetch 寫入',
       !/function submitSimulation[\s\S]{0,900}(fetch|GAS|Sheets|attemptLog)/.test(toolHtmlFixed));
+
+// === 5c. PR-UX3 preset metadata + collapsible sections ===
+section('5c. PR-UX3 Preset metadata / collapsible sections');
+const requiredPresetKeys = ['s1_term2_part_a', 's1_term3_part_a', 's2_term3_part_a', 's3_term3_part_a'];
+const presetMetaOk = requiredPresetKeys.every((key) => {
+  const p = bank.presets.find((item) => item.key === key);
+  return p && p.schoolYear === '2526' && p.schoolYearLabel === '2025-26';
+});
+check('四個現有 preset 有 2025-26 schoolYear metadata', presetMetaOk);
+check('題目 code 沒因 schoolYear metadata 改格式',
+      bank.data.every(t => QUESTION_CODE_RE.test(t.code || '')));
+check('Preset UI 以學年分組呈現',
+      toolHtmlFixed.includes('function getPresetSchoolYearLabel') &&
+      toolHtmlFixed.includes('preset-year-group') &&
+      /renderPresetArea[\s\S]{0,900}getPresetSchoolYearLabel/.test(toolHtmlFixed));
+check('①至⑥均使用同一 collapsible-section 標記',
+      ['section-resources','section-pick-mode','section-basket','section-preview-controls','section-export','section-publish-package']
+        .every(id => toolHtmlFixed.includes(`id="${id}"`) && toolHtmlFixed.includes('data-collapsible')));
+check('collapsible header 使用 button + aria-expanded',
+      (toolHtmlFixed.match(/class="collapsible-toggle" aria-expanded="true"/g) || []).length >= 6);
+check('collapsible 初始化不使用 storage 記憶狀態',
+      /function initCollapsibles\(\)[\s\S]{0,700}aria-expanded/.test(toolHtmlFixed) &&
+      !/function initCollapsibles\(\)[\s\S]{0,900}(localStorage|sessionStorage)/.test(toolHtmlFixed));
+check('collapsible 收合不用 display:none/hidden，保留 DOM offsetParent',
+      /\.collapsible-section\.is-collapsed \.collapsible-body\s*\{[^}]*max-height:\s*0/.test(toolHtmlFixed) &&
+      !/\.collapsible-section\.is-collapsed \.collapsible-body\s*\{[^}]*display\s*:\s*none/.test(toolHtmlFixed) &&
+      !/\.collapsible-section\.is-collapsed \.collapsible-body\s*\{[^}]*visibility\s*:\s*hidden/.test(toolHtmlFixed));
 
 // === 6. JS 語法檢查 ===
 section('6. JS 語法檢查');

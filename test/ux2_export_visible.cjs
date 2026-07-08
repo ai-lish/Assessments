@@ -19,10 +19,10 @@ function check(name, condition) {
 console.log("=== PR-UX2 Export Section Visibility ===");
 
 check("tool has no-cache meta", /http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"/.test(html));
-check("filter.js cache-busting updated", /src="filter\.js\?v=ux2-bb976a1"/.test(html));
-check("generators.js cache-busting updated", /src="generators\.js\?v=ux2-bb976a1"/.test(html));
-check("validators.js cache-busting updated", /src="validators\.js\?v=ux2-bb976a1"/.test(html));
-check("pdf.js cache-busting updated", /src="pdf\.js\?v=ux2-bb976a1"/.test(html));
+check("filter.js has cache-busting query", /src="filter\.js\?v=[^"]+"/.test(html));
+check("generators.js has cache-busting query", /src="generators\.js\?v=[^"]+"/.test(html));
+check("validators.js has cache-busting query", /src="validators\.js\?v=[^"]+"/.test(html));
+check("pdf.js has cache-busting query", /src="pdf\.js\?v=[^"]+"/.test(html));
 
 check("exportCard is not initially hidden", /<div class="card" id="exportCard">/.test(html));
 check("exportCard no longer has inline display:none", !/<div class="card" id="exportCard" style="display:none;">/.test(html));

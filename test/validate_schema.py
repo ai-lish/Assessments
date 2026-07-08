@@ -24,6 +24,13 @@ def main():
         errors.append("_schema_guide.entry_fields: missing source contract")
     if not code_re.match("DSE-2025-P1-A1-01-NA-1"):
         errors.append("DSE reserved code example should match code regex")
+    required_presets = {"s1_term2_part_a", "s1_term3_part_a", "s2_term3_part_a", "s3_term3_part_a"}
+    for preset in bank.get("presets", []):
+        if preset.get("key") in required_presets:
+            if preset.get("schoolYear") != "2526":
+                errors.append(f"{preset.get('key')}: schoolYear must be 2526")
+            if preset.get("schoolYearLabel") != "2025-26":
+                errors.append(f"{preset.get('key')}: schoolYearLabel must be 2025-26")
     docs = (ROOT / "docs/question-codes.md").read_text(encoding="utf-8")
     codes = set()
     family_by_generator = {}
