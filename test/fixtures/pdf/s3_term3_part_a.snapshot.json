@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-f7eba73d",
+  "snapshotId": "pdf-e532473d",
   "seed": "pdf-a3-fixture:s3_term3_part_a",
   "title": "2025-26 年度 中三第三學期(甲部)短答練習",
   "presetKey": "s3_term3_part_a",
@@ -183,16 +183,19 @@
         "solidType": "sphere",
         "r": 5,
         "h": 7,
-        "piCoeff": 166.66666666666666,
+        "piCoeff": "500/3",
         "decimal": "523.599"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
-        "exactPiCoefficient": 166.66666666666666
+        "exactPiCoefficient": {
+          "numerator": 500,
+          "denominator": 3
+        }
       },
-      "displayAnswer": "166.66666666666666π cm³ ≈ 523.599 cm³"
+      "displayAnswer": "\\frac{500}{3}\\pi cm³ ≈ 523.599 cm³"
     },
     {
       "index": 11,
@@ -223,16 +226,19 @@
         "solidType": "cone",
         "r": 2,
         "h": 10,
-        "piCoeff": 13.333333333333334,
+        "piCoeff": "40/3",
         "decimal": "41.888"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
-        "exactPiCoefficient": 13.333333333333334
+        "exactPiCoefficient": {
+          "numerator": 40,
+          "denominator": 3
+        }
       },
-      "displayAnswer": "13.333333333333334π cm³ ≈ 41.888 cm³"
+      "displayAnswer": "\\frac{40}{3}\\pi cm³ ≈ 41.888 cm³"
     },
     {
       "index": 13,
