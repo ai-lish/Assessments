@@ -51,6 +51,9 @@ jobs:
       - name: Factor difference square random parameter regression
         run: node test/factor_diff_sq_random.cjs
 
+      - name: Factor cross random parameter regression
+        run: node test/factor_cross_random.cjs
+
       - name: Validator fixture test
         run: node test/test_validators.cjs
 
