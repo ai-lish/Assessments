@@ -86,6 +86,22 @@
   .status.ok { background: var(--success-bg); color: #155724; display: block; }
   .status.err { background: var(--danger-bg); color: #721c24; display: block; }
   .status.warn { background: var(--warning-bg); color: #856404; display: block; }
+  .preset-source-btn { width: 100%; margin-top: 6px; padding: 7px 10px; font-size: 0.85em; }
+  .collapsible-heading { margin: 0 0 10px 0; padding: 0; border-bottom: 0; }
+  .collapsible-toggle {
+    width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    background: transparent; color: var(--primary); border: 0; border-bottom: 2px solid var(--accent);
+    border-radius: 0; padding: 0 0 6px 0; font-size: 1em; font-weight: 700; text-align: left;
+  }
+  .collapsible-toggle:hover, .collapsible-toggle:focus { background: transparent; color: var(--accent-hover); outline: 2px solid transparent; }
+  .collapsible-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+  .collapsible-toggle .chevron { font-size: 0.9em; line-height: 1; transform: rotate(0deg); transition: transform 0.15s ease; }
+  .collapsible-section.is-collapsed .collapsible-toggle .chevron { transform: rotate(-90deg); }
+  .collapsible-body { max-height: 6000px; overflow: hidden; transition: max-height 0.18s ease, opacity 0.18s ease; opacity: 1; }
+  .collapsible-section.is-collapsed .collapsible-body { max-height: 0; opacity: 0; }
+  .collapsible-section + .collapsible-section { margin-top: 18px; padding-top: 12px; border-top: 1px dashed var(--border); }
+  .preset-year-group { margin-bottom: 12px; }
+  .preset-year-title { font-size: 0.92em; font-weight: 700; color: var(--muted); margin: 8px 0; }
   /* Question list (browser) */
   .qlist { list-style: none; padding: 0; margin: 8px 0 0 0; max-height: 320px; overflow-y: auto; }
   .qlist li { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid #f1f3f5; font-size: 0.9em; }
@@ -181,107 +197,157 @@
   <p class="sub">載入題目庫後，按 <b>年級 → 學期 → 課題 → 題目</b> 逐層篩選並加入清單；逐題預覽、確認後匯出學生 HTML。</p>
 
   <!-- 載入 -->
-  <div class="card">
-    <h2>① 載入資源</h2>
-    <div class="row">
-      <div>
-        <label>題目庫 raw URL</label>
-        <input type="text" id="bankUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/question-bank.json">
+  <div class="card collapsible-section" id="section-resources" data-collapsible>
+    <h2 class="collapsible-heading">
+      <button type="button" class="collapsible-toggle" aria-expanded="true" aria-controls="section-resources-body">
+        <span>① 載入資源</span><span class="chevron" aria-hidden="true">▾</span>
+      </button>
+    </h2>
+    <div class="collapsible-body" id="section-resources-body">
+      <div class="row">
+        <div>
+          <label>題目庫 raw URL</label>
+          <input type="text" id="bankUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/question-bank.json">
+          <button type="button" class="secondary preset-source-btn" onclick="applyResourcePreset('question')">一鍵套用 Preset</button>
+        </div>
+        <div>
+          <label>學生版模板 raw URL</label>
+          <input type="text" id="tmplUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/templates/student.html">
+          <button type="button" class="secondary preset-source-btn" onclick="applyResourcePreset('template')">一鍵套用 Preset</button>
+        </div>
+        <div>
+          <label>Google Sheets 提交網址（GAS Web App URL）</label>
+          <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/..." oninput="validateGasUrlField()">
+          <button type="button" class="secondary preset-source-btn" onclick="applyResourcePreset('gas')">一鍵套用 Preset</button>
+          <small class="hint" id="gasUrlHint">此網址會嵌入學生練習檔（等同公開投遞信箱），請勿使用含敏感 token 嘅 URL。</small>
+        </div>
       </div>
-      <div>
-        <label>學生版模板 raw URL</label>
-        <input type="text" id="tmplUrl" placeholder="https://raw.githubusercontent.com/ai-lish/Assessments/main/templates/student.html">
+      <div class="btn-row">
+        <button onclick="loadAll()">📥 載入題目庫 + 模板</button>
+        <button class="secondary" onclick="saveUrls()">💾 儲存網址</button>
+        <button class="secondary" onclick="clearUrls()">🗑️ 清除</button>
       </div>
-      <div>
-        <label>Google Sheets 提交網址（GAS Web App URL）</label>
-        <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/..." oninput="validateGasUrlField()">
-        <small class="hint" id="gasUrlHint">此網址會嵌入學生練習檔（等同公開投遞信箱），請勿使用含敏感 token 嘅 URL。</small>
-      </div>
+      <div id="loadStatus" class="status"></div>
+      <div id="mathjaxStatus" class="status" style="display:none;"></div>
     </div>
-    <div class="btn-row">
-      <button onclick="loadAll()">📥 載入題目庫 + 模板</button>
-      <button class="secondary" onclick="saveUrls()">💾 儲存網址</button>
-      <button class="secondary" onclick="clearUrls()">🗑️ 清除</button>
-    </div>
-    <div id="loadStatus" class="status"></div>
-    <div id="mathjaxStatus" class="status" style="display:none;"></div>
   </div>
 
   <div class="layout">
     <!-- 左欄：分層選擇 + 出題清單 + 匯出 -->
     <div>
       <div class="card sticky" id="selectionCard">
-        <h2>② 揀題模式</h2>
-        <div class="mode-switch">
-          <button id="btn-mode-custom" onclick="switchMode('custom')">🧭 分層自訂</button>
-          <button id="btn-mode-preset" class="secondary" onclick="switchMode('preset')">📚 Preset</button>
-        </div>
+        <div class="collapsible-section" id="section-pick-mode" data-collapsible>
+          <h2 class="collapsible-heading">
+            <button type="button" class="collapsible-toggle" aria-expanded="true" aria-controls="section-pick-mode-body">
+              <span>② 揀題模式</span><span class="chevron" aria-hidden="true">▾</span>
+            </button>
+          </h2>
+          <div class="collapsible-body" id="section-pick-mode-body">
+            <div class="mode-switch">
+              <button id="btn-mode-custom" onclick="switchMode('custom')">🧭 分層自訂</button>
+              <button id="btn-mode-preset" class="secondary" onclick="switchMode('preset')">📚 Preset</button>
+            </div>
 
-        <!-- 自訂模式：分層選擇 -->
-        <div id="mode-custom" class="mode-section">
-          <div class="row" style="grid-template-columns: 1fr 1fr 1fr;">
-            <div>
-              <label>年級</label>
-              <select id="sel-grade" onchange="onGradeChange()"><option value="">—</option></select>
+            <!-- 自訂模式：分層選擇 -->
+            <div id="mode-custom" class="mode-section">
+              <div class="row" style="grid-template-columns: 1fr 1fr 1fr;">
+                <div>
+                  <label>年級</label>
+                  <select id="sel-grade" onchange="onGradeChange()"><option value="">—</option></select>
+                </div>
+                <div>
+                  <label>學期</label>
+                  <select id="sel-term" onchange="onTermChange()" disabled><option value="">—</option></select>
+                </div>
+                <div>
+                  <label>課題</label>
+                  <select id="sel-topic" onchange="onTopicChange()" disabled><option value="">—</option></select>
+                </div>
+              </div>
+              <div style="margin-top: 10px;">
+                <label>題目（點一下加入清單）</label>
+                <ul class="qlist" id="qlist-browser">
+                  <li class="empty">請先載入題目庫，並選擇 年級 / 學期 / 課題</li>
+                </ul>
+              </div>
             </div>
-            <div>
-              <label>學期</label>
-              <select id="sel-term" onchange="onTermChange()" disabled><option value="">—</option></select>
-            </div>
-            <div>
-              <label>課題</label>
-              <select id="sel-topic" onchange="onTopicChange()" disabled><option value="">—</option></select>
+
+            <!-- Preset 模式 -->
+            <div id="mode-preset" class="mode-section" style="display:none;">
+              <p class="sub">選擇預載練習，全部題型同順序會自動加入清單。</p>
+              <div id="presetArea"><div class="empty">請先載入題目庫。</div></div>
             </div>
           </div>
-          <div style="margin-top: 10px;">
-            <label>題目（點一下加入清單）</label>
-            <ul class="qlist" id="qlist-browser">
-              <li class="empty">請先載入題目庫，並選擇 年級 / 學期 / 課題</li>
-            </ul>
+        </div>
+
+        <div class="collapsible-section" id="section-basket" data-collapsible>
+          <h2 class="collapsible-heading">
+            <button type="button" class="collapsible-toggle" aria-expanded="true" aria-controls="section-basket-body">
+              <span>③ 出題清單</span><span class="chevron" aria-hidden="true">▾</span>
+            </button>
+          </h2>
+          <div class="collapsible-body" id="section-basket-body">
+            <p class="sub" id="basketCount" style="margin: 0 0 6px 0;">清單空白</p>
+            <ul class="basket-list" id="basket-list"></ul>
           </div>
         </div>
 
-        <!-- Preset 模式 -->
-        <div id="mode-preset" class="mode-section" style="display:none;">
-          <p class="sub">選擇預載練習，全部題型同順序會自動加入清單。</p>
-          <div id="presetArea"><div class="empty">請先載入題目庫。</div></div>
+        <div class="collapsible-section" id="section-preview-controls" data-collapsible>
+          <h2 class="collapsible-heading">
+            <button type="button" class="collapsible-toggle" aria-expanded="true" aria-controls="section-preview-controls-body">
+              <span>④ 預覽與確認</span><span class="chevron" aria-hidden="true">▾</span>
+            </button>
+          </h2>
+          <div class="collapsible-body" id="section-preview-controls-body">
+            <button class="success" style="width:100%;" onclick="generatePreview()" id="btn-preview" disabled>👁️ 生成預覽</button>
+            <button class="secondary" style="width:100%; margin-top:6px;" onclick="backToSelection()" id="btn-back" style="display:none;">↩️ 返回選題</button>
+            <div id="previewSummary" class="status" style="display:none;"></div>
+          </div>
         </div>
-
-        <h2 style="margin-top: 18px;">③ 出題清單</h2>
-        <p class="sub" id="basketCount" style="margin: 0 0 6px 0;">清單空白</p>
-        <ul class="basket-list" id="basket-list"></ul>
-
-        <h2 style="margin-top: 18px;">④ 預覽與確認</h2>
-        <button class="success" style="width:100%;" onclick="generatePreview()" id="btn-preview" disabled>👁️ 生成預覽</button>
-        <button class="secondary" style="width:100%; margin-top:6px;" onclick="backToSelection()" id="btn-back" style="display:none;">↩️ 返回選題</button>
-        <div id="previewSummary" class="status" style="display:none;"></div>
       </div>
 
       <div class="card" id="exportCard">
-        <h2>⑤ 匯出</h2>
-        <div class="row-2">
-          <div>
-            <label>練習標題</label>
-            <input type="text" id="title" value="初中數學短答練習">
-          </div>
-          <div>
-            <label>檔名（不含 .html）</label>
-            <input type="text" id="filename" value="student-practice-custom" readonly
-              title="檔名根據 activePresetKey 自動產生，PRESET_KEY 會填返同一個 key 入 HTML">
+        <div class="collapsible-section" id="section-export" data-collapsible>
+          <h2 class="collapsible-heading">
+            <button type="button" class="collapsible-toggle" aria-expanded="true" aria-controls="section-export-body">
+              <span>⑤ 匯出</span><span class="chevron" aria-hidden="true">▾</span>
+            </button>
+          </h2>
+          <div class="collapsible-body" id="section-export-body">
+            <div class="row-2">
+              <div>
+                <label>練習標題</label>
+                <input type="text" id="title" value="初中數學短答練習">
+              </div>
+              <div>
+                <label>檔名（不含 .html）</label>
+                <input type="text" id="filename" value="student-practice-custom" readonly
+                  title="檔名根據 activePresetKey 自動產生，PRESET_KEY 會填返同一個 key 入 HTML">
+              </div>
+            </div>
+            <p class="sub" style="margin-top:8px;">學生 HTML 匯出會於學生每次開檔時重新隨機；PDF 雙版會喺撳掣一刻凍結同一批題目，學生版及答案版共用同一 snapshot。</p>
+            <p class="sub" id="exportHint" style="margin-top:4px;">請先於④生成預覽並確認全部題目。</p>
+            <ul class="gate-list" id="exportGates"></ul>
+            <button class="success" style="width:100%; margin-top:8px;" onclick="exportStudent()" id="btn-export" disabled>📤 匯出學生版 HTML</button>
+            <button class="secondary" style="width:100%; margin-top:8px;" onclick="exportPdfBundle()" id="btn-export-pdf" disabled>🖨️ 匯出 PDF 雙版（題目＋答案）</button>
+            <div id="exportStatus" class="status"></div>
           </div>
         </div>
-        <p class="sub" style="margin-top:8px;">學生 HTML 匯出會於學生每次開檔時重新隨機；PDF 雙版會喺撳掣一刻凍結同一批題目，學生版及答案版共用同一 snapshot。</p>
-        <p class="sub" id="exportHint" style="margin-top:4px;">請先於④生成預覽並確認全部題目。</p>
-        <ul class="gate-list" id="exportGates"></ul>
-        <button class="success" style="width:100%; margin-top:8px;" onclick="exportStudent()" id="btn-export" disabled>📤 匯出學生版 HTML</button>
-        <button class="secondary" style="width:100%; margin-top:8px;" onclick="exportPdfBundle()" id="btn-export-pdf" disabled>🖨️ 匯出 PDF 雙版（題目＋答案）</button>
-        <div id="exportStatus" class="status"></div>
 
-        <h2 style="margin-top:18px; font-size:1.05em; border-top:1px dashed #ddd; padding-top:12px;">⑥ 發佈指令包 <span class="sub" style="font-weight:normal;">（選用 — 俾 agent 開 PR 入 exercises/）</span></h2>
-        <button class="secondary" style="width:100%; margin-bottom:6px;" onclick="copyPubPackage()" id="btn-copy-pkg" disabled>📋 複製發佈指令包</button>
-        <textarea id="pubPackage" rows="10" readonly style="width:100%; font-family:Menlo,Consolas,monospace; font-size:0.82em; background:#f8f8f8;" placeholder="按上面按鈕以產生發佈指令包 JSON"></textarea>
-        <p class="sub" style="margin: 4px 0;">貼呢段 JSON 俾 agent,agent 即可用 <code>scripts/publish_exercise.cjs</code> 將匯出嘅 HTML 落 <code>exercises/</code> 正確位置 + 印出 <code>gh pr create</code> 指令。</p>
-        <div id="pubPackageStatus" class="status"></div>
+        <div class="collapsible-section" id="section-publish-package" data-collapsible>
+          <h2 class="collapsible-heading">
+            <button type="button" class="collapsible-toggle" aria-expanded="true" aria-controls="section-publish-package-body">
+              <span>⑥ 發佈指令包 <span class="sub" style="font-weight:normal;">（選用 — 俾 agent 開 PR 入 exercises/）</span></span>
+              <span class="chevron" aria-hidden="true">▾</span>
+            </button>
+          </h2>
+          <div class="collapsible-body" id="section-publish-package-body">
+            <button class="secondary" style="width:100%; margin-bottom:6px;" onclick="copyPubPackage()" id="btn-copy-pkg" disabled>📋 複製發佈指令包</button>
+            <textarea id="pubPackage" rows="10" readonly style="width:100%; font-family:Menlo,Consolas,monospace; font-size:0.82em; background:#f8f8f8;" placeholder="按上面按鈕以產生發佈指令包 JSON"></textarea>
+            <p class="sub" style="margin: 4px 0;">貼呢段 JSON 俾 agent,agent 即可用 <code>scripts/publish_exercise.cjs</code> 將匯出嘅 HTML 落 <code>exercises/</code> 正確位置 + 印出 <code>gh pr create</code> 指令。</p>
+            <div id="pubPackageStatus" class="status"></div>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -301,10 +367,10 @@
 </div>
 
 <!-- 共享篩選邏輯（tool/filter.js）— 頁面同 test 共用 -->
-<script src="filter.js?v=ux2-bb976a1"></script>
-<script src="generators.js?v=ux2-bb976a1"></script>
-<script src="validators.js?v=ux2-bb976a1"></script>
-<script src="pdf.js?v=ux2-bb976a1"></script>
+<script src="filter.js?v=ux3-preset-collapse"></script>
+<script src="generators.js?v=ux3-preset-collapse"></script>
+<script src="validators.js?v=ux3-preset-collapse"></script>
+<script src="pdf.js?v=ux3-preset-collapse"></script>
 
 <script>
 /* ============================================================
@@ -312,6 +378,23 @@
    ============================================================ */
 const STORAGE_KEY = "assess_tool_v2";
 const ALLOWED_GAS_HOSTS = new Set(["script.google.com", "script.googleusercontent.com"]);
+const DEFAULT_RESOURCE_PRESETS = Object.freeze({
+  question: {
+    label: "題目庫",
+    inputId: "bankUrl",
+    value: "https://raw.githubusercontent.com/ai-lish/Assessments/main/question-bank.json"
+  },
+  template: {
+    label: "學生版模板",
+    inputId: "tmplUrl",
+    value: "https://raw.githubusercontent.com/ai-lish/Assessments/main/templates/student.html"
+  },
+  gas: {
+    label: "Google Sheets 提交網址",
+    inputId: "gasUrl",
+    value: ""
+  }
+});
 const QUESTION_CODE_RE = /^(?:LSC-\d{4}-S\d+-T\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+|DSE-\d{4}-P\d+-[A-Z]\d+-\d{2}-(NA|ME|GE|DH|UC)-\d+)$/;
 const QUESTION_TYPE_NAMES = Object.freeze({
   area_circle: "圓面積",
@@ -474,6 +557,26 @@ function validateGasUrlField() {
   return result;
 }
 
+function initCollapsibles() {
+  document.querySelectorAll("[data-collapsible]").forEach(section => {
+    const button = section.querySelector(":scope > .collapsible-heading .collapsible-toggle");
+    if (!button) return;
+    button.setAttribute("aria-expanded", "true");
+    section.classList.remove("is-collapsed");
+    button.addEventListener("click", () => {
+      const expanded = button.getAttribute("aria-expanded") === "true";
+      setCollapsibleExpanded(section, !expanded);
+    });
+  });
+}
+
+function setCollapsibleExpanded(section, expanded) {
+  const button = section.querySelector(":scope > .collapsible-heading .collapsible-toggle");
+  if (!button) return;
+  section.classList.toggle("is-collapsed", !expanded);
+  button.setAttribute("aria-expanded", expanded ? "true" : "false");
+}
+
 function getGasUrlForExport(statusId) {
   const result = validateGasUrlField();
   if (!result.ok) {
@@ -484,6 +587,7 @@ function getGasUrlForExport(statusId) {
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  initCollapsibles();
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
   if (saved.bankUrl) document.getElementById("bankUrl").value = saved.bankUrl;
   if (saved.tmplUrl) document.getElementById("tmplUrl").value = saved.tmplUrl;
@@ -519,7 +623,7 @@ function showMathjaxStatus(type, msg) {
   el.innerHTML = msg;
 }
 
-function saveUrls() {
+function saveUrls(options = {}) {
   const data = {
     bankUrl: document.getElementById("bankUrl").value.trim(),
     tmplUrl: document.getElementById("tmplUrl").value.trim(),
@@ -527,7 +631,7 @@ function saveUrls() {
     activeMode: activeMode
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-  showStatus("loadStatus", "ok", "✓ 網址已儲存喺 localStorage。");
+  if (!options.quiet) showStatus("loadStatus", "ok", "✓ 網址已儲存喺 localStorage。");
   validateGasUrlField();
 }
 function clearUrls() {
@@ -537,6 +641,49 @@ function clearUrls() {
   document.getElementById("gasUrl").value = "";
   validateGasUrlField();
 }
+
+async function applyResourcePreset(kind) {
+  const preset = DEFAULT_RESOURCE_PRESETS[kind];
+  if (!preset) {
+    showStatus("loadStatus", "err", "未知 preset 類型：" + kind);
+    return;
+  }
+  const input = document.getElementById(preset.inputId);
+  if (!input) return;
+
+  const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+  let value = preset.value;
+  let note = "";
+  if (kind === "gas") {
+    const savedGas = validateGasUrl(saved.gasUrl || "");
+    if (savedGas.ok && !savedGas.empty) {
+      value = savedGas.value;
+      note = "已套用已儲存嘅 Google Sheets URL。";
+    } else {
+      value = "";
+      note = "未有有效已儲存 Google Sheets URL；保持留空，匯出檔會停用提交。";
+    }
+  }
+
+  input.value = value;
+  validateGasUrlField();
+  saveUrls({ quiet: true });
+
+  const messages = [`${preset.label}：已套用 Preset${note ? "（" + note + "）" : ""}`];
+  const canAutoLoad = (kind === "question" || kind === "template") &&
+    document.getElementById("bankUrl").value.trim() &&
+    document.getElementById("tmplUrl").value.trim();
+  if (canAutoLoad) {
+    messages.push("題目庫及模板已齊備，開始沿用現有流程載入。");
+    showStatus("loadStatus", "warn", messages.join("<br>"));
+    await loadAll();
+  } else {
+    if (kind !== "gas") messages.push("另一個必要 URL 未齊，暫未自動載入。");
+    showStatus("loadStatus", "warn", messages.join("<br>"));
+  }
+  updateExportGates();
+}
+
 function showStatus(id, type, msg) {
   const el = document.getElementById(id);
   el.className = "status " + type;
@@ -898,11 +1045,22 @@ function renderPresetArea() {
     area.innerHTML = '<div class="empty">此題目庫冇 preset。</div>';
     return;
   }
-  area.innerHTML = bank.presets.map(p => `
-    <div class="card" style="background:#f0f7fc; border-color:var(--accent); margin: 0 0 8px 0; padding: 10px;">
-      <h3 style="margin: 0 0 4px 0;">📚 ${p.name}</h3>
-      <div class="sub" style="margin: 0 0 6px 0;">${p.questions.length} 題 · ${p.questions.map(q => q.typeKey).join(" → ")}</div>
-      <button onclick="loadPreset('${p.key}')">✓ 載入此 preset</button>
+  const groups = new Map();
+  for (const p of bank.presets) {
+    const label = getPresetSchoolYearLabel(p);
+    if (!groups.has(label)) groups.set(label, []);
+    groups.get(label).push(p);
+  }
+  area.innerHTML = Array.from(groups.entries()).map(([label, presets]) => `
+    <div class="preset-year-group" data-school-year="${escapeAttr(label)}">
+      <div class="preset-year-title">${escapeHtml(label)}</div>
+      ${presets.map(p => `
+        <div class="card" style="background:#f0f7fc; border-color:var(--accent); margin: 0 0 8px 0; padding: 10px;">
+          <h3 style="margin: 0 0 4px 0;">📚 ${p.name}</h3>
+          <div class="sub" style="margin: 0 0 6px 0;">${p.questions.length} 題 · ${p.questions.map(q => q.typeKey).join(" → ")}</div>
+          <button onclick="loadPreset('${p.key}')">✓ 載入此 preset</button>
+        </div>
+      `).join("")}
     </div>
   `).join("");
 }
@@ -1216,6 +1374,11 @@ function escapeHtml(s) {
 function getTypeChineseName(typeDef) {
   if (!typeDef) return "—";
   return QUESTION_TYPE_NAMES[typeDef.key] || typeDef.type || typeDef.key || "—";
+}
+
+function getPresetSchoolYearLabel(preset) {
+  if (!preset) return "未分類學年";
+  return preset.schoolYearLabel || displaySchoolYear(preset.schoolYear) || "未分類學年";
 }
 
 function renderCodeBadge(typeDef) {

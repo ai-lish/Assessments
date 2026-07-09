@@ -4,6 +4,8 @@
           "key": "s3_term3_part_a",
           "name": "中三第三學期甲部",
           "description": "2025-26 中三第三學期甲部 14 題固定組合。每題 1 條，題型與順序按 PR-C 規格。",
+          "schoolYear": "2526",
+          "schoolYearLabel": "2025-26",
           "questions": [
               {
                   "typeKey": "poly_add_sub",
@@ -67,6 +69,8 @@
           "key": "s1_term2_part_a",
           "name": "中一第二學期甲部",
           "description": "2025-26 中一第二學期甲部 14 題固定組合。每題 1 條，題型與順序按 PR-B 規格。",
+          "schoolYear": "2526",
+          "schoolYearLabel": "2025-26",
           "questions": [
               {
                   "typeKey": "s1t2_prime_factor",
@@ -130,6 +134,8 @@
           "key": "s1_term3_part_a",
           "name": "中一第三學期甲部",
           "description": "原 ai-learning 2025-26-中一-第三學期-甲部.html 的 16 題固定組合。每題 1 條，題型與順序與原工具一致，數值隨機。",
+          "schoolYear": "2526",
+          "schoolYearLabel": "2025-26",
           "questions": [
               {
                   "typeKey": "frac_arith",
@@ -201,6 +207,8 @@
           "key": "s2_term3_part_a",
           "name": "中二第三學期甲部",
           "description": "中二 T3 卷一甲部短答練習 Q1-Q16（16 題 / 16 分）。每題 1 條，題型順序與 S2 T3 甲部追認版本一致。",
+          "schoolYear": "2526",
+          "schoolYearLabel": "2025-26",
           "questions": [
               {
                   "typeKey": "alg_simplify_2var",
