@@ -29,7 +29,7 @@ const TARGETS = [
     file: 'exercises/2526/s3/t3/part-a-01.html',
     questionCount: 14,
     probeQid: 'q009',
-    uniqueParamQids: ['q010', 'q011', 'q012'],
+    uniqueParamQids: ['q010', 'q011', 'q012', 'q013'],
   },
 ];
 
@@ -190,7 +190,9 @@ function paramsForQid(sandbox, qid) {
       return q && q.paramsUsed ? JSON.stringify({
         solidType: q.paramsUsed.solidType,
         r: q.paramsUsed.r,
-        h: q.paramsUsed.h
+        h: q.paramsUsed.h,
+        angle: q.paramsUsed.angle,
+        ask: q.paramsUsed.ask
       }) : null;
     })()
   `, sandbox);

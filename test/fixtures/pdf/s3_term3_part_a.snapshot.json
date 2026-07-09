@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-fc380524",
+  "snapshotId": "pdf-3bb34e35",
   "seed": "pdf-a3-fixture:s3_term3_part_a",
   "title": "2025-26 年度 中三第三學期(甲部)短答練習",
   "presetKey": "s3_term3_part_a",
@@ -240,19 +240,19 @@
       "typeKey": "sector_measure",
       "code": "LSC-2526-S3-T3-13-ME-6",
       "paramsUsed": {
-        "r": 6,
-        "angle": 60,
-        "ask": "area",
-        "piCoeff": 6,
-        "decimal": "18.85"
+        "r": 8,
+        "angle": 30,
+        "ask": "arc",
+        "piCoeff": 1.3333333333333333,
+        "decimal": "4.189"
       },
       "answerSpec": {
         "allowUnit": true,
-        "unit": "cm^2",
+        "unit": "cm",
         "tolerance": 0.05,
-        "exactPiCoefficient": 6
+        "exactPiCoefficient": 1.3333333333333333
       },
-      "displayAnswer": "6π cm^2 ≈ 18.85 cm^2"
+      "displayAnswer": "1.3333333333333333π cm ≈ 4.189 cm"
     },
     {
       "index": 14,
