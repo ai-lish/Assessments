@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-ca37e8cb",
+  "snapshotId": "pdf-f7eba73d",
   "seed": "pdf-a3-fixture:s3_term3_part_a",
   "title": "2025-26 年度 中三第三學期(甲部)短答練習",
   "presetKey": "s3_term3_part_a",
@@ -105,27 +105,27 @@
       "typeKey": "factor_cross",
       "code": "LSC-2526-S3-T3-06-NA-19",
       "paramsUsed": {
-        "a": 1,
-        "b": 2,
-        "c": 1,
-        "d": 3,
-        "x2": 1,
-        "x1": 5,
-        "constTerm": 6
+        "a": 2,
+        "b": -5,
+        "c": 3,
+        "d": 5,
+        "x2": 6,
+        "x1": -5,
+        "constTerm": -25
       },
       "answerSpec": {
         "factors": [
           [
-            1,
-            2
+            2,
+            -5
           ],
           [
-            1,
-            3
+            3,
+            5
           ]
         ]
       },
-      "displayAnswer": "(x+2)(x+3)"
+      "displayAnswer": "(2x-5)(3x+5)"
     },
     {
       "index": 7,
@@ -134,15 +134,15 @@
       "code": "LSC-2526-S3-T3-07-NA-20",
       "paramsUsed": {
         "mantissa": 3.2,
-        "exponent": 5,
-        "value": 320000
+        "exponent": 4,
+        "value": 32000
       },
       "answerSpec": {
         "mantissa": 3.2,
-        "exponent": 5,
-        "value": 320000
+        "exponent": 4,
+        "value": 32000
       },
-      "displayAnswer": "3.2×10^5"
+      "displayAnswer": "3.2×10^4"
     },
     {
       "index": 8,
@@ -181,18 +181,18 @@
       "code": "LSC-2526-S3-T3-10-ME-5",
       "paramsUsed": {
         "solidType": "sphere",
-        "r": 3,
-        "h": 9,
-        "piCoeff": 36,
-        "decimal": "113.097"
+        "r": 5,
+        "h": 7,
+        "piCoeff": 166.66666666666666,
+        "decimal": "523.599"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
-        "exactPiCoefficient": 36
+        "exactPiCoefficient": 166.66666666666666
       },
-      "displayAnswer": "36π cm³ ≈ 113.097 cm³"
+      "displayAnswer": "166.66666666666666π cm³ ≈ 523.599 cm³"
     },
     {
       "index": 11,
@@ -201,18 +201,18 @@
       "code": "LSC-2526-S3-T3-11-ME-5",
       "paramsUsed": {
         "solidType": "cylinder",
-        "r": 4,
-        "h": 12,
-        "piCoeff": 192,
-        "decimal": "603.186"
+        "r": 6,
+        "h": 8,
+        "piCoeff": 288,
+        "decimal": "904.779"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
-        "exactPiCoefficient": 192
+        "exactPiCoefficient": 288
       },
-      "displayAnswer": "192π cm³ ≈ 603.186 cm³"
+      "displayAnswer": "288π cm³ ≈ 904.779 cm³"
     },
     {
       "index": 12,
@@ -221,18 +221,18 @@
       "code": "LSC-2526-S3-T3-12-ME-5",
       "paramsUsed": {
         "solidType": "cone",
-        "r": 4,
-        "h": 4,
-        "piCoeff": 21.333333333333332,
-        "decimal": "67.021"
+        "r": 2,
+        "h": 10,
+        "piCoeff": 13.333333333333334,
+        "decimal": "41.888"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
-        "exactPiCoefficient": 21.333333333333332
+        "exactPiCoefficient": 13.333333333333334
       },
-      "displayAnswer": "21.333333333333332π cm³ ≈ 67.021 cm³"
+      "displayAnswer": "13.333333333333334π cm³ ≈ 41.888 cm³"
     },
     {
       "index": 13,
@@ -240,19 +240,19 @@
       "typeKey": "sector_measure",
       "code": "LSC-2526-S3-T3-13-ME-6",
       "paramsUsed": {
-        "r": 10,
-        "angle": 45,
-        "ask": "area",
-        "piCoeff": 12.5,
-        "decimal": "39.27"
+        "r": 4,
+        "angle": 90,
+        "ask": "arc",
+        "piCoeff": 2,
+        "decimal": "6.283"
       },
       "answerSpec": {
         "allowUnit": true,
-        "unit": "cm^2",
+        "unit": "cm",
         "tolerance": 0.05,
-        "exactPiCoefficient": 12.5
+        "exactPiCoefficient": 2
       },
-      "displayAnswer": "12.5π cm^2 ≈ 39.27 cm^2"
+      "displayAnswer": "2π cm ≈ 6.283 cm"
     },
     {
       "index": 14,
