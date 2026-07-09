@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-b4c6de09",
+  "snapshotId": "pdf-fc380524",
   "seed": "pdf-a3-fixture:s3_term3_part_a",
   "title": "2025-26 年度 中三第三學期(甲部)短答練習",
   "presetKey": "s3_term3_part_a",
@@ -181,18 +181,18 @@
       "code": "LSC-2526-S3-T3-10-ME-5",
       "paramsUsed": {
         "solidType": "sphere",
-        "r": 3,
+        "r": 5,
         "h": 8,
-        "piCoeff": 36,
-        "decimal": "113.097"
+        "piCoeff": 166.66666666666666,
+        "decimal": "523.599"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
-        "exactPiCoefficient": 36
+        "exactPiCoefficient": 166.66666666666666
       },
-      "displayAnswer": "36π cm³ ≈ 113.097 cm³"
+      "displayAnswer": "166.66666666666666π cm³ ≈ 523.599 cm³"
     },
     {
       "index": 11,
@@ -202,17 +202,17 @@
       "paramsUsed": {
         "solidType": "cylinder",
         "r": 3,
-        "h": 8,
-        "piCoeff": 72,
-        "decimal": "226.195"
+        "h": 9,
+        "piCoeff": 81,
+        "decimal": "254.469"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
-        "exactPiCoefficient": 72
+        "exactPiCoefficient": 81
       },
-      "displayAnswer": "72π cm³ ≈ 226.195 cm³"
+      "displayAnswer": "81π cm³ ≈ 254.469 cm³"
     },
     {
       "index": 12,
@@ -221,18 +221,18 @@
       "code": "LSC-2526-S3-T3-12-ME-5",
       "paramsUsed": {
         "solidType": "cone",
-        "r": 3,
-        "h": 8,
-        "piCoeff": 24,
-        "decimal": "75.398"
+        "r": 4,
+        "h": 12,
+        "piCoeff": 64,
+        "decimal": "201.062"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
-        "exactPiCoefficient": 24
+        "exactPiCoefficient": 64
       },
-      "displayAnswer": "24π cm³ ≈ 75.398 cm³"
+      "displayAnswer": "64π cm³ ≈ 201.062 cm³"
     },
     {
       "index": 13,

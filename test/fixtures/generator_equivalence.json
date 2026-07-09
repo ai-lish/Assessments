@@ -2391,7 +2391,8 @@
     {
       "params": {
         "solidType": "sphere",
-        "r": 3
+        "r": 3,
+        "h": 8
       },
       "result": {
         "questionHTML": "10. 半徑為 \\(3\\text{ cm}\\) 的球體，求體積。",
@@ -2423,7 +2424,8 @@
     {
       "params": {
         "solidType": "hemisphere",
-        "r": 6
+        "r": 6,
+        "h": 8
       },
       "result": {
         "questionHTML": "10. 半徑為 \\(6\\text{ cm}\\) 的半球體，求體積。",

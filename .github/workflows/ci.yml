@@ -42,6 +42,9 @@ jobs:
       - name: Generator equivalence validator
         run: node test/test_generators_equivalence.cjs
 
+      - name: Solid mensuration random parameter regression
+        run: node test/solid_mensuration_random.cjs
+
       - name: Validator fixture test
         run: node test/test_validators.cjs
 
