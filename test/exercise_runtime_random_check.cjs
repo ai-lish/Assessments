@@ -24,7 +24,13 @@ const TARGETS = [
   { preset: 's1_term2_part_a', file: 'exercises/2526/s1/t2/part-a-01.html', questionCount: 14, probeQid: 'q013' },
   { preset: 's1_term3_part_a', file: 'exercises/2526/s1/t3/part-a-01.html', questionCount: 16, probeQid: 'q013' },
   { preset: 's2_term3_part_a', file: 'exercises/2526/s2/t3/part-a-01.html', questionCount: 16, probeQid: 'q001' },
-  { preset: 's3_term3_part_a', file: 'exercises/2526/s3/t3/part-a-01.html', questionCount: 14, probeQid: 'q009' },
+  {
+    preset: 's3_term3_part_a',
+    file: 'exercises/2526/s3/t3/part-a-01.html',
+    questionCount: 14,
+    probeQid: 'q009',
+    uniqueParamQids: ['q010', 'q011', 'q012'],
+  },
 ];
 
 // --- DOM mock (mirrors runtime_random_export.cjs) ---
@@ -177,6 +183,19 @@ function validateProbeQuestion(sandbox, qid) {
   `, sandbox);
 }
 
+function paramsForQid(sandbox, qid) {
+  return vm.runInContext(`
+    (() => {
+      const q = QUESTIONS.find(item => item.qid === ${JSON.stringify(qid)});
+      return q && q.paramsUsed ? JSON.stringify({
+        solidType: q.paramsUsed.solidType,
+        r: q.paramsUsed.r,
+        h: q.paramsUsed.h
+      }) : null;
+    })()
+  `, sandbox);
+}
+
 let passed = 0, failed = 0;
 const failures = [];
 
@@ -230,6 +249,25 @@ for (const t of TARGETS) {
     continue;
   }
   console.log(`  ✓ ${probeValidation.qid} (${probeValidation.typeKey}) accepts correct answer and rejects wrong answer`);
+  let targetFailed = false;
+  if (Array.isArray(t.uniqueParamQids)) {
+    for (const qid of t.uniqueParamQids) {
+      const seen = new Set();
+      for (let i = 0; i < 30; i += 1) {
+        const sandbox = buildSandbox(0x515100 + i, html);
+        seen.add(paramsForQid(sandbox, qid));
+      }
+      if (seen.size < 5) {
+        failed++;
+        failures.push(`${t.preset}: ${qid} expected >=5 distinct params in 30 runs, got ${seen.size}`);
+        console.log(`  ✗ ${qid} got only ${seen.size} distinct params in 30 runs`);
+        targetFailed = true;
+        continue;
+      }
+      console.log(`  ✓ ${qid} gets ${seen.size} distinct params in 30 runs`);
+    }
+  }
+  if (targetFailed) continue;
   // Show one probe sample
   try {
     const p1 = JSON.parse(sig1);
