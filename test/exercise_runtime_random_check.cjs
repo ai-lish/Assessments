@@ -35,7 +35,7 @@ const TARGETS = [
     file: 'exercises/2526/s3/t3/part-a-01.html',
     questionCount: 14,
     probeQid: 'q009',
-    uniqueParamQids: ['q005', 'q006', 'q010', 'q011', 'q012', 'q013'],
+    uniqueParamQids: ['q005', 'q006', 'q008', 'q010', 'q011', 'q012', 'q013'],
   },
 ];
 
@@ -199,10 +199,13 @@ function paramsForQid(sandbox, qid) {
         b: q.paramsUsed.b,
         c: q.paramsUsed.c,
         d: q.paramsUsed.d,
+        boundary: q.paramsUsed.boundary,
+        rhs: q.paramsUsed.rhs,
         r: q.paramsUsed.r,
         h: q.paramsUsed.h,
         angle: q.paramsUsed.angle,
-        ask: q.paramsUsed.ask
+        ask: q.paramsUsed.ask,
+        op: q.paramsUsed.op
       }) : null;
     })()
   `, sandbox);
