@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-ed746197",
+  "snapshotId": "pdf-19d56130",
   "seed": "pdf-a3-fixture:s2_term3_part_a",
   "title": "2025-26 年度 中二第三學期(甲部)短答練習",
   "presetKey": "s2_term3_part_a",
@@ -83,22 +83,22 @@
       "typeKey": "s2t3_factor_diff_sq",
       "code": "LSC-2526-S2-T3-06-NA-18",
       "paramsUsed": {
-        "a": 1,
-        "b": 5
+        "a": 3,
+        "b": 4
       },
       "answerSpec": {
         "factors": [
           [
-            1,
-            -5
+            3,
+            -4
           ],
           [
-            1,
-            5
+            3,
+            4
           ]
         ]
       },
-      "displayAnswer": "(x-5)(x+5)"
+      "displayAnswer": "(3x-4)(3x+4)"
     },
     {
       "index": 7,
@@ -106,12 +106,12 @@
       "typeKey": "s2t3_sig_fig",
       "code": "LSC-2526-S2-T3-07-ME-1",
       "paramsUsed": {
-        "baseNum": 5.0483,
+        "baseNum": 12.345,
         "sf": 2,
-        "roundedVal": 5
+        "roundedVal": 12
       },
       "answerSpec": null,
-      "displayAnswer": "5.0"
+      "displayAnswer": "12"
     },
     {
       "index": 8,
@@ -119,13 +119,13 @@
       "typeKey": "round_decimal",
       "code": "LSC-2526-S2-T3-08-ME-8",
       "paramsUsed": {
-        "coeff": 0.77,
-        "decimals": 1,
-        "mode": "round_up",
-        "value": 2.419026343264141
+        "coeff": 0.8,
+        "decimals": 2,
+        "mode": "round_down",
+        "value": 2.5132741228718345
       },
       "answerSpec": null,
-      "displayAnswer": "2.5"
+      "displayAnswer": "2.51"
     },
     {
       "index": 9,
@@ -133,11 +133,11 @@
       "typeKey": "combine_fractions",
       "code": "LSC-2526-S2-T3-09-NA-24",
       "paramsUsed": {
-        "m": 4,
-        "c": 7
+        "m": 9,
+        "c": 8
       },
       "answerSpec": null,
-      "displayAnswer": "\\frac{4a+7}{4k}"
+      "displayAnswer": "\\frac{9a+8}{9k}"
     },
     {
       "index": 10,
@@ -145,11 +145,11 @@
       "typeKey": "s2t3_exp_law",
       "code": "LSC-2526-S2-T3-10-NA-5",
       "paramsUsed": {
-        "a": 6,
-        "b": 6
+        "a": 4,
+        "b": 2
       },
       "answerSpec": null,
-      "displayAnswer": "x^{12}"
+      "displayAnswer": "x^{6}"
     },
     {
       "index": 11,
@@ -157,15 +157,15 @@
       "typeKey": "coef_exp_div",
       "code": "LSC-2526-S2-T3-11-NA-25",
       "paramsUsed": {
-        "coefN": 2,
-        "coefD": 4,
+        "coefN": 5,
+        "coefD": 15,
         "expN": 4,
-        "expD": 3,
+        "expD": 2,
         "rNum": 1,
-        "rDen": 2
+        "rDen": 3
       },
       "answerSpec": null,
-      "displayAnswer": "x/2"
+      "displayAnswer": "x^2/3"
     },
     {
       "index": 12,
@@ -173,16 +173,16 @@
       "typeKey": "ratio_three",
       "code": "LSC-2526-S2-T3-12-NA-26",
       "paramsUsed": {
-        "aB": 6,
-        "bB": 9,
-        "aC": 5,
-        "cC": 6,
-        "common": 30,
-        "bFinal": 45,
-        "cFinal": 36
+        "aB": 5,
+        "bB": 6,
+        "aC": 3,
+        "cC": 8,
+        "common": 15,
+        "bFinal": 18,
+        "cFinal": 40
       },
       "answerSpec": null,
-      "displayAnswer": "30:45:36"
+      "displayAnswer": "15:18:40"
     },
     {
       "index": 13,
@@ -190,12 +190,12 @@
       "typeKey": "discount",
       "code": "LSC-2526-S2-T3-13-ME-9",
       "paramsUsed": {
-        "price": 26,
-        "disTen": 9,
-        "result": 23.4
+        "price": 56,
+        "disTen": 6,
+        "result": 33.6
       },
       "answerSpec": null,
-      "displayAnswer": "$23.4"
+      "displayAnswer": "$33.6"
     },
     {
       "index": 14,
@@ -203,14 +203,14 @@
       "typeKey": "profit_pct",
       "code": "LSC-2526-S2-T3-14-ME-10",
       "paramsUsed": {
-        "cost": 5400,
-        "sell": 6210,
-        "pct": 15,
+        "cost": 2600,
+        "sell": 3770,
+        "pct": 45,
         "isProfit": true,
-        "result": 15
+        "result": 45
       },
       "answerSpec": null,
-      "displayAnswer": "15%"
+      "displayAnswer": "45%"
     },
     {
       "index": 15,
@@ -218,12 +218,12 @@
       "typeKey": "square_root_pm",
       "code": "LSC-2526-S2-T3-15-NA-27",
       "paramsUsed": {
-        "n": 200,
-        "k": 10,
+        "n": 18,
+        "k": 3,
         "m": 2
       },
       "answerSpec": null,
-      "displayAnswer": "±10√2"
+      "displayAnswer": "±3√2"
     },
     {
       "index": 16,
@@ -231,15 +231,15 @@
       "typeKey": "cuboid_volume_cube",
       "code": "LSC-2526-S2-T3-16-ME-4",
       "paramsUsed": {
-        "side": 4,
+        "side": 8,
         "cube": true,
-        "result": 64
+        "result": 512
       },
       "answerSpec": {
         "unit": "cm^3",
         "allowUnit": true
       },
-      "displayAnswer": "64 cm³"
+      "displayAnswer": "512 cm³"
     }
   ]
 }

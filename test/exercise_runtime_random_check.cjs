@@ -23,13 +23,19 @@ const ROOT = path.resolve(__dirname, '..');
 const TARGETS = [
   { preset: 's1_term2_part_a', file: 'exercises/2526/s1/t2/part-a-01.html', questionCount: 14, probeQid: 'q013' },
   { preset: 's1_term3_part_a', file: 'exercises/2526/s1/t3/part-a-01.html', questionCount: 16, probeQid: 'q013' },
-  { preset: 's2_term3_part_a', file: 'exercises/2526/s2/t3/part-a-01.html', questionCount: 16, probeQid: 'q001' },
+  {
+    preset: 's2_term3_part_a',
+    file: 'exercises/2526/s2/t3/part-a-01.html',
+    questionCount: 16,
+    probeQid: 'q001',
+    uniqueParamQids: ['q006'],
+  },
   {
     preset: 's3_term3_part_a',
     file: 'exercises/2526/s3/t3/part-a-01.html',
     questionCount: 14,
     probeQid: 'q009',
-    uniqueParamQids: ['q010', 'q011', 'q012', 'q013'],
+    uniqueParamQids: ['q005', 'q010', 'q011', 'q012', 'q013'],
   },
 ];
 
@@ -189,6 +195,8 @@ function paramsForQid(sandbox, qid) {
       const q = QUESTIONS.find(item => item.qid === ${JSON.stringify(qid)});
       return q && q.paramsUsed ? JSON.stringify({
         solidType: q.paramsUsed.solidType,
+        a: q.paramsUsed.a,
+        b: q.paramsUsed.b,
         r: q.paramsUsed.r,
         h: q.paramsUsed.h,
         angle: q.paramsUsed.angle,
