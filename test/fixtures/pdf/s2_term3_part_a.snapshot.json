@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-19d56130",
+  "snapshotId": "pdf-fed0fd49",
   "seed": "pdf-a3-fixture:s2_term3_part_a",
   "title": "2025-26 年度 中二第三學期(甲部)短答練習",
   "presetKey": "s2_term3_part_a",
@@ -84,7 +84,8 @@
       "code": "LSC-2526-S2-T3-06-NA-18",
       "paramsUsed": {
         "a": 3,
-        "b": 4
+        "b": 4,
+        "commonFactor": 1
       },
       "answerSpec": {
         "factors": [
@@ -134,7 +135,8 @@
       "code": "LSC-2526-S2-T3-09-NA-24",
       "paramsUsed": {
         "m": 9,
-        "c": 8
+        "c": 8,
+        "simplifyGcd": 1
       },
       "answerSpec": null,
       "displayAnswer": "\\frac{9a+8}{9k}"
@@ -179,7 +181,8 @@
         "cC": 8,
         "common": 15,
         "bFinal": 18,
-        "cFinal": 40
+        "cFinal": 40,
+        "simplifyGcd": 1
       },
       "answerSpec": null,
       "displayAnswer": "15:18:40"

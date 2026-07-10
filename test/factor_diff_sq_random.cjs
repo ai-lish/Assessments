@@ -63,6 +63,27 @@ function lin(a, b) {
   return `${left}${b >= 0 ? '+' : ''}${b}`;
 }
 
+function gcd(x, y) {
+  x = Math.abs(x);
+  y = Math.abs(y);
+  while (y) {
+    const t = y;
+    y = x % y;
+    x = t;
+  }
+  return x || 1;
+}
+
+function expectedSpec(a, b) {
+  const g = gcd(a, b);
+  return { coefficient: g * g, factors: [[a / g, -b / g], [a / g, b / g]] };
+}
+
+function answerFromSpec(spec) {
+  const prefix = spec.coefficient === 1 ? '' : String(spec.coefficient);
+  return `${prefix}(${lin(spec.factors[0][0], spec.factors[0][1])})(${lin(spec.factors[1][0], spec.factors[1][1])})`;
+}
+
 console.log('=== factor_diff_sq random parameter contract ===');
 
 for (const key of TYPE_KEYS) {
@@ -77,12 +98,12 @@ const explicit = generators.generateQuestion(explicitDef, { a: 1, b: 5 });
 const expectedExplicit = {
   questionHTML: '5. 因式分解 \\( x^2 - 25 \\)。',
   correctAnswer: '(x-5)(x+5)',
-  paramsUsed: { a: 1, b: 5 },
-  solutionHTML: '<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=x\\)，\\(B=5\\)，所以答案是 \\((x-5)(x+5)\\)。</div>',
+  paramsUsed: { a: 1, b: 5, commonFactor: 1 },
+  solutionHTML: '<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>完全因式分解：\\( (x-5)(x+5) \\)。</div>',
   pdfText: '5. 因式分解 \\( x^2 - 25 \\)。',
   answers: ['(x-5)(x+5)'],
   displayAnswer: '(x-5)(x+5)',
-  steps: '<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=x\\)，\\(B=5\\)，所以答案是 \\((x-5)(x+5)\\)。</div>',
+  steps: '<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>完全因式分解：\\( (x-5)(x+5) \\)。</div>',
   checkType: 'factorPair',
   answerSpec: { factors: [[1, -5], [1, 5]] },
 };
@@ -103,23 +124,30 @@ for (const a of A_VALUES) {
       const def = typeDef(key);
       const result = generators.generateQuestion(def, { a, b });
       const q = assemble(def, result);
+      const spec = expectedSpec(a, b);
+      const canonical = answerFromSpec(spec);
+      const swapped = `${spec.coefficient === 1 ? '' : String(spec.coefficient)}(${lin(spec.factors[1][0], spec.factors[1][1])})(${lin(spec.factors[0][0], spec.factors[0][1])})`;
       const answerOk = validators.checkAnswer(q, result.correctAnswer);
-      const swappedOk = validators.checkAnswer(q, `(${lin(a, b)})(${lin(a, -b)})`);
-      const signErrorOk = validators.checkAnswer(q, `(${lin(a, b)})(${lin(a, b)})`);
+      const canonicalOk = validators.checkAnswer(q, canonical);
+      const swappedOk = validators.checkAnswer(q, swapped);
+      const incompleteOk = spec.coefficient > 1
+        ? validators.checkAnswer(q, `(${lin(a, -b)})(${lin(a, b)})`)
+        : false;
+      const signErrorOk = validators.checkAnswer(q, `${spec.coefficient === 1 ? '' : String(spec.coefficient)}(${lin(spec.factors[0][0], spec.factors[0][1] * -1)})(${lin(spec.factors[1][0], spec.factors[1][1])})`);
       const paramsOk = result.paramsUsed.a === a && result.paramsUsed.b === b;
       const shapeOk = result.questionHTML.includes(`${a * a === 1 ? 'x^2' : `${a * a}x^2`} - ${b * b}`)
-        && result.answerSpec.factors[0][0] === a
-        && result.answerSpec.factors[0][1] === -b
-        && result.answerSpec.factors[1][0] === a
-        && result.answerSpec.factors[1][1] === b;
+        && result.correctAnswer === canonical
+        && JSON.stringify(result.answerSpec) === JSON.stringify(spec.coefficient === 1 ? { factors: spec.factors } : spec);
       check(`${key} a=${a},b=${b} preserves params`, paramsOk, JSON.stringify(result.paramsUsed));
       check(`${key} a=${a},b=${b} accepts canonical answer`, answerOk, result.correctAnswer);
+      check(`${key} a=${a},b=${b} accepts independently-built canonical answer`, canonicalOk, canonical);
       check(`${key} a=${a},b=${b} accepts factor order swap`, swappedOk);
+      check(`${key} a=${a},b=${b} rejects incomplete factorization`, !incompleteOk);
       check(`${key} a=${a},b=${b} rejects sign error`, !signErrorOk);
       check(`${key} a=${a},b=${b} emits expected question/answerSpec shape`, shapeOk, JSON.stringify(result));
-      if (!paramsOk || !answerOk || !swappedOk || signErrorOk || !shapeOk) {
+      if (!paramsOk || !answerOk || !canonicalOk || !swappedOk || incompleteOk || signErrorOk || !shapeOk) {
         comboOk = false;
-        comboFailures.push({ key, a, b, paramsOk, answerOk, swappedOk, signErrorOk, shapeOk, result });
+        comboFailures.push({ key, a, b, paramsOk, answerOk, canonicalOk, swappedOk, incompleteOk, signErrorOk, shapeOk, result });
       }
     }
     if (comboOk) acceptedCombos += 1;

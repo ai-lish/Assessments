@@ -2040,15 +2040,16 @@
         "correctAnswer": "(x-5)(x+5)",
         "paramsUsed": {
           "a": 1,
-          "b": 5
+          "b": 5,
+          "commonFactor": 1
         },
-        "solutionHTML": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=x\\)，\\(B=5\\)，所以答案是 \\((x-5)(x+5)\\)。</div>",
+        "solutionHTML": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>完全因式分解：\\( (x-5)(x+5) \\)。</div>",
         "pdfText": "5. 因式分解 \\( x^2 - 25 \\)。",
         "answers": [
           "(x-5)(x+5)"
         ],
         "displayAnswer": "(x-5)(x+5)",
-        "steps": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=x\\)，\\(B=5\\)，所以答案是 \\((x-5)(x+5)\\)。</div>",
+        "steps": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>完全因式分解：\\( (x-5)(x+5) \\)。</div>",
         "checkType": "factorPair",
         "answerSpec": {
           "factors": [
@@ -2074,15 +2075,16 @@
         "correctAnswer": "(2x-3)(2x+3)",
         "paramsUsed": {
           "a": 2,
-          "b": 3
+          "b": 3,
+          "commonFactor": 1
         },
-        "solutionHTML": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=2x\\)，\\(B=3\\)，所以答案是 \\((2x-3)(2x+3)\\)。</div>",
+        "solutionHTML": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>完全因式分解：\\( (2x-3)(2x+3) \\)。</div>",
         "pdfText": "5. 因式分解 \\( 4x^2 - 9 \\)。",
         "answers": [
           "(2x-3)(2x+3)"
         ],
         "displayAnswer": "(2x-3)(2x+3)",
-        "steps": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>這裡 \\(A=2x\\)，\\(B=3\\)，所以答案是 \\((2x-3)(2x+3)\\)。</div>",
+        "steps": "<div>平方差公式：\\( A^2-B^2=(A-B)(A+B) \\)。</div><div>完全因式分解：\\( (2x-3)(2x+3) \\)。</div>",
         "checkType": "factorPair",
         "answerSpec": {
           "factors": [
@@ -2117,15 +2119,16 @@
           "d": -4,
           "x2": 2,
           "x1": -5,
-          "constTerm": -12
+          "constTerm": -12,
+          "commonFactor": 1
         },
-        "solutionHTML": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-5x\\)。</div><div>\\( 2x^2-5x-12 = (2x+3)(x-4) \\)</div>",
+        "solutionHTML": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-5x\\)。</div><div>完全因式分解：\\( 2x^2-5x-12 = (2x+3)(x-4) \\)</div>",
         "pdfText": "6. 因式分解 \\( 2x^2-5x-12 \\)。",
         "answers": [
           "(2x+3)(x-4)"
         ],
         "displayAnswer": "(2x+3)(x-4)",
-        "steps": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-5x\\)。</div><div>\\( 2x^2-5x-12 = (2x+3)(x-4) \\)</div>",
+        "steps": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-5x\\)。</div><div>完全因式分解：\\( 2x^2-5x-12 = (2x+3)(x-4) \\)</div>",
         "checkType": "factorPair",
         "answerSpec": {
           "factors": [
@@ -2158,15 +2161,16 @@
           "d": -2,
           "x2": 1,
           "x1": -7,
-          "constTerm": 10
+          "constTerm": 10,
+          "commonFactor": 1
         },
-        "solutionHTML": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-7x\\)。</div><div>\\( x^2-7x+10 = (x-5)(x-2) \\)</div>",
+        "solutionHTML": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-7x\\)。</div><div>完全因式分解：\\( x^2-7x+10 = (x-5)(x-2) \\)</div>",
         "pdfText": "6. 因式分解 \\( x^2-7x+10 \\)。",
         "answers": [
           "(x-5)(x-2)"
         ],
         "displayAnswer": "(x-5)(x-2)",
-        "steps": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-7x\\)。</div><div>\\( x^2-7x+10 = (x-5)(x-2) \\)</div>",
+        "steps": "<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(-7x\\)。</div><div>完全因式分解：\\( x^2-7x+10 = (x-5)(x-2) \\)</div>",
         "checkType": "factorPair",
         "answerSpec": {
           "factors": [
@@ -3068,16 +3072,17 @@
         "correctAnswer": "(5a+3)/(5k)",
         "paramsUsed": {
           "m": 5,
-          "c": 3
+          "c": 3,
+          "simplifyGcd": 1
         },
-        "solutionHTML": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,5k)=5k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{3}{5k} &=\\frac{5a}{5k}+\\frac{3}{5k} \\\\ &=\\frac{5a+3}{5k} \\end{aligned} \\)</div>",
+        "solutionHTML": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,5k)=5k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{3}{5k} &=\\frac{5a}{5k}+\\frac{3}{5k} \\\\ &= \\frac{5a+3}{5k} \\end{aligned} \\)</div>",
         "pdfText": "9. 化簡 \\( \\frac{a}{k}+\\frac{3}{5k} \\)。",
         "answers": [
           "(5a+3)/(5k)",
           "(3+5a)/(5k)"
         ],
         "displayAnswer": "\\frac{5a+3}{5k}",
-        "steps": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,5k)=5k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{3}{5k} &=\\frac{5a}{5k}+\\frac{3}{5k} \\\\ &=\\frac{5a+3}{5k} \\end{aligned} \\)</div>",
+        "steps": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,5k)=5k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{3}{5k} &=\\frac{5a}{5k}+\\frac{3}{5k} \\\\ &= \\frac{5a+3}{5k} \\end{aligned} \\)</div>",
         "checkType": "textExact"
       }
     },
@@ -3091,16 +3096,17 @@
         "correctAnswer": "(7a+2)/(7k)",
         "paramsUsed": {
           "m": 7,
-          "c": 2
+          "c": 2,
+          "simplifyGcd": 1
         },
-        "solutionHTML": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,7k)=7k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{2}{7k} &=\\frac{7a}{7k}+\\frac{2}{7k} \\\\ &=\\frac{7a+2}{7k} \\end{aligned} \\)</div>",
+        "solutionHTML": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,7k)=7k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{2}{7k} &=\\frac{7a}{7k}+\\frac{2}{7k} \\\\ &= \\frac{7a+2}{7k} \\end{aligned} \\)</div>",
         "pdfText": "9. 化簡 \\( \\frac{a}{k}+\\frac{2}{7k} \\)。",
         "answers": [
           "(7a+2)/(7k)",
           "(2+7a)/(7k)"
         ],
         "displayAnswer": "\\frac{7a+2}{7k}",
-        "steps": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,7k)=7k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{2}{7k} &=\\frac{7a}{7k}+\\frac{2}{7k} \\\\ &=\\frac{7a+2}{7k} \\end{aligned} \\)</div>",
+        "steps": "<div>先求分母嘅最小公倍數：\\( \\text{L.C.M.}(k,7k)=7k \\)</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\begin{aligned} \\frac{a}{k}+\\frac{2}{7k} &=\\frac{7a}{7k}+\\frac{2}{7k} \\\\ &= \\frac{7a+2}{7k} \\end{aligned} \\)</div>",
         "checkType": "textExact"
       }
     }
@@ -3185,7 +3191,8 @@
           "cC": 5,
           "common": 4,
           "bFinal": 6,
-          "cFinal": 5
+          "cFinal": 5,
+          "simplifyGcd": 1
         },
         "solutionHTML": "<div>先將兩個比例中嘅 \\(a\\) 化做相同值（取 \\(a\\) 系數嘅 L.C.M.）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\text{L.C.M.}(2,4)=4 \\)</div><div style=\"margin-top:5px;\">\\( a:b=2:3 = 4:6 \\)</div><div>\\( a:c=4:5 = 4:5 \\)</div><div style=\"margin-top:5px;font-weight:bold;\">\\( a:b:c = 4:6:5 \\)</div>",
         "pdfText": "12. 已知 \\( a:b=2:3 \\)，\\( a:c=4:5 \\)，求 \\( a:b:c \\)。",
@@ -3214,7 +3221,8 @@
           "cC": 2,
           "common": 15,
           "bFinal": 35,
-          "cFinal": 6
+          "cFinal": 6,
+          "simplifyGcd": 1
         },
         "solutionHTML": "<div>先將兩個比例中嘅 \\(a\\) 化做相同值（取 \\(a\\) 系數嘅 L.C.M.）：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\text{L.C.M.}(3,5)=15 \\)</div><div style=\"margin-top:5px;\">\\( a:b=3:7 = 15:35 \\)</div><div>\\( a:c=5:2 = 15:6 \\)</div><div style=\"margin-top:5px;font-weight:bold;\">\\( a:b:c = 15:35:6 \\)</div>",
         "pdfText": "12. 已知 \\( a:b=3:7 \\)，\\( a:c=5:2 \\)，求 \\( a:b:c \\)。",

@@ -63,6 +63,9 @@ jobs:
       - name: Validator fixture test
         run: node test/test_validators.cjs
 
+      - name: Math correctness contract regression
+        run: node test/mathfix_contract.cjs
+
       - name: Dynamic code scan
         run: node test/no_dynamic_code.cjs
 
