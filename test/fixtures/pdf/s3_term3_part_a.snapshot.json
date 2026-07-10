@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-e532473d",
+  "snapshotId": "pdf-8192e729",
   "seed": "pdf-a3-fixture:s3_term3_part_a",
   "title": "2025-26 年度 中三第三學期(甲部)短答練習",
   "presetKey": "s3_term3_part_a",
@@ -150,18 +150,18 @@
       "typeKey": "solve_ineq",
       "code": "LSC-2526-S3-T3-08-NA-21",
       "paramsUsed": {
-        "a": -2,
-        "b": 5,
-        "rhs": 11,
-        "boundary": -3,
-        "op": ">"
+        "a": 3,
+        "b": -4,
+        "rhs": 2,
+        "boundary": 2,
+        "op": "<"
       },
       "answerSpec": {
         "variable": "x",
-        "op": ">",
-        "value": -3
+        "op": "<",
+        "value": 2
       },
-      "displayAnswer": "x > -3"
+      "displayAnswer": "x < 2"
     },
     {
       "index": 9,
@@ -181,21 +181,21 @@
       "code": "LSC-2526-S3-T3-10-ME-5",
       "paramsUsed": {
         "solidType": "sphere",
-        "r": 5,
-        "h": 7,
-        "piCoeff": "500/3",
-        "decimal": "523.599"
+        "r": 4,
+        "h": 12,
+        "piCoeff": "256/3",
+        "decimal": "268.083"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
         "exactPiCoefficient": {
-          "numerator": 500,
+          "numerator": 256,
           "denominator": 3
         }
       },
-      "displayAnswer": "\\frac{500}{3}\\pi cm³ ≈ 523.599 cm³"
+      "displayAnswer": "\\frac{256}{3}\\pi cm³ ≈ 268.083 cm³"
     },
     {
       "index": 11,
@@ -204,18 +204,18 @@
       "code": "LSC-2526-S3-T3-11-ME-5",
       "paramsUsed": {
         "solidType": "cylinder",
-        "r": 6,
-        "h": 8,
-        "piCoeff": 288,
-        "decimal": "904.779"
+        "r": 4,
+        "h": 4,
+        "piCoeff": 64,
+        "decimal": "201.062"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
-        "exactPiCoefficient": 288
+        "exactPiCoefficient": 64
       },
-      "displayAnswer": "288π cm³ ≈ 904.779 cm³"
+      "displayAnswer": "64π cm³ ≈ 201.062 cm³"
     },
     {
       "index": 12,
@@ -224,21 +224,21 @@
       "code": "LSC-2526-S3-T3-12-ME-5",
       "paramsUsed": {
         "solidType": "cone",
-        "r": 2,
-        "h": 10,
-        "piCoeff": "40/3",
-        "decimal": "41.888"
+        "r": 5,
+        "h": 5,
+        "piCoeff": "125/3",
+        "decimal": "130.9"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm^3",
         "tolerance": 0.05,
         "exactPiCoefficient": {
-          "numerator": 40,
+          "numerator": 125,
           "denominator": 3
         }
       },
-      "displayAnswer": "\\frac{40}{3}\\pi cm³ ≈ 41.888 cm³"
+      "displayAnswer": "\\frac{125}{3}\\pi cm³ ≈ 130.9 cm³"
     },
     {
       "index": 13,
@@ -246,19 +246,22 @@
       "typeKey": "sector_measure",
       "code": "LSC-2526-S3-T3-13-ME-6",
       "paramsUsed": {
-        "r": 4,
-        "angle": 90,
+        "r": 6,
+        "angle": 135,
         "ask": "arc",
-        "piCoeff": 2,
-        "decimal": "6.283"
+        "piCoeff": "9/2",
+        "decimal": "14.137"
       },
       "answerSpec": {
         "allowUnit": true,
         "unit": "cm",
         "tolerance": 0.05,
-        "exactPiCoefficient": 2
+        "exactPiCoefficient": {
+          "numerator": 9,
+          "denominator": 2
+        }
       },
-      "displayAnswer": "2π cm ≈ 6.283 cm"
+      "displayAnswer": "\\frac{9}{2}\\pi cm ≈ 14.137 cm"
     },
     {
       "index": 14,

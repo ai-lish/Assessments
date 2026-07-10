@@ -57,6 +57,9 @@ jobs:
       - name: Factor cross random parameter regression
         run: node test/factor_cross_random.cjs
 
+      - name: Solve inequality random parameter regression
+        run: node test/solve_ineq_random.cjs
+
       - name: Validator fixture test
         run: node test/test_validators.cjs
 
