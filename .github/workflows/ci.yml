@@ -84,6 +84,9 @@ jobs:
       - name: UX1 keyboard and collapse regression
         run: node test/ux1_layout.cjs
 
+      - name: Student question code top bar regression
+        run: node test/codepos_top_info.cjs
+
       - name: PDF snapshot fixture regression
         run: node test/pdf_snapshot.cjs
 

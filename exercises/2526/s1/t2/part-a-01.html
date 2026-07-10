@@ -45,16 +45,19 @@
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif; background: var(--bg-main); margin: 0; padding: 8px; display: flex; justify-content: center; height: 98vh; box-sizing: border-box; overflow: hidden; }
   .container { width: 100%; max-width: 500px; background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; height: 100%; position: relative; }
   .practice-title { padding: 10px 14px 8px; text-align: center; font-size: 1.02em; font-weight: 800; color: var(--primary); border-bottom: 1px solid #f0f2f5; line-height: 1.35; flex-shrink: 0; }
-  .top-info { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; font-size: 0.9em; font-weight: 600; color: var(--text-muted); background: #fff; border-bottom: 1px solid #f0f2f5; flex-shrink: 0; }
+  .top-info { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 10px 15px; font-size: 0.9em; font-weight: 600; color: var(--text-muted); background: #fff; border-bottom: 1px solid #f0f2f5; flex-shrink: 0; white-space: nowrap; }
   .progress-badge { background: #ecf0f1; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.85em; }
   .score-badge { color: var(--accent); font-size: 0.9em; }
+  .top-code-wrap { min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 5px; color: var(--text-muted); overflow: hidden; }
+  .top-code-label { flex: 0 0 auto; }
+  .top-question-code { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.01em; color: var(--primary); }
+  .copy-code-btn { flex: 0 0 auto; border: 1px solid #d5dbdb; background: #fff; color: var(--primary); border-radius: 999px; padding: 2px 7px; font-size: 0.78em; font-weight: 700; cursor: pointer; }
+  .copy-code-btn:active { transform: translateY(1px); }
   #quiz-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
   .quiz-content { padding: 10px 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
   .question-text { font-size: 1.1em; color: var(--text-main); margin: 0; text-align: left; width: 100%; line-height: 1.6; }
   .question-text b { color: var(--accent); }
-  .question-code { font-size: 0.78rem; color: var(--text-muted); margin: 6px 0 0; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.02em; }
-  .question-code::before { content: "題型編碼："; font-family: inherit; opacity: 0.7; }
   .geo-image { margin-bottom: 15px; text-align: center; display: flex; justify-content: center; width: 100%; }
   .hint-text { color: var(--text-muted); font-size: 0.9em; margin-bottom: 10px; font-weight: 600; }
   .opt-btn-large { background: #fff; border: 2px solid var(--accent); color: var(--accent); padding: 10px 16px; border-radius: 10px; font-weight: bold; font-size: 1.0em; cursor: pointer; transition: all 0.2s; outline: none; min-width: 90px; }
@@ -107,6 +110,12 @@
   .toolbar { display: flex; gap: 6px; padding: 8px 12px; background: #ecf0f1; border-bottom: 1px solid #ddd; flex-shrink: 0; }
   .toolbar button { background: #fff; border: 1px solid #bdc3c7; border-radius: 6px; padding: 6px 10px; font-size: 0.85em; cursor: pointer; }
   .toolbar button:hover { background: #d5dbdb; }
+  @media (max-width: 430px) {
+    .top-info { padding: 8px 10px; gap: 5px; font-size: 0.82em; }
+    .progress-badge { padding: 3px 7px; }
+    .copy-code-btn { padding: 2px 6px; font-size: 0.76em; }
+    .top-code-wrap { gap: 3px; }
+  }
   @media print {
     body { background: #fff; padding: 0; height: auto; overflow: visible; display: block; }
     .container { box-shadow: none; max-width: 100%; height: auto; }
@@ -123,6 +132,11 @@
   <div id="practice-title" class="practice-title">2025-26 年度 中一第二學期(甲部)短答練習</div>
   <div class="top-info">
     <span id="p-text" class="progress-badge">載入中...</span>
+    <span id="top-code-wrap" class="top-code-wrap" style="display:none;">
+      <span class="top-code-label">題目編碼:</span>
+      <span id="q-code" class="top-question-code" title=""></span>
+      <button type="button" id="btn-copy-code" class="copy-code-btn" onclick="copyCurrentQuestionCode()">複製</button>
+    </span>
     <span id="score-mini" class="score-badge">得分: 0</span>
   </div>
 
@@ -135,7 +149,6 @@
     <div class="quiz-content">
       <div class="question-card">
         <div id="q-text" class="question-text">題目載入中...</div>
-        <div id="q-code" class="question-code" style="display:none;"></div>
       </div>
       <div id="q-image" class="geo-image" style="display:none;"></div>
       <div id="q-hint" class="hint-text" style="display:none;"></div>
@@ -1156,13 +1169,14 @@ const TITLE = "2025-26 年度 中一第二學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"s1t2_prime_factor","typeDef":{"key":"s1t2_prime_factor","name":"質因數連乘式及指數記數法","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"primeFactor","params_schema":{"n":"可分解為質因數指數式的正整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"primeFactor","generator":"prime_factor","code":"LSC-2526-S1-T2-01-NA-3","source":""},"params":{}},{"qid":"q002","typeKey":"s1t2_hcf","typeDef":{"key":"s1t2_hcf","name":"H.C.F.","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"hcfLcm","params_schema":{"n1":"正整數","n2":"正整數","askLCM":"固定 false，只問 H.C.F."},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"hcfLcm","generator":"hcf_or_lcm","defaultParams":{"askLCM":false},"code":"LSC-2526-S1-T2-02-NA-4","source":""},"params":{}},{"qid":"q003","typeKey":"directed_add","typeDef":{"key":"directed_add","name":"有向數加法","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"signedNumeric","params_schema":{"a":"整數 -9..9，不取 0","b":"整數 -9..9，不取 0"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"signedNumeric","generator":"directed_add","code":"LSC-2526-S1-T2-03-NA-12","source":""},"params":{}},{"qid":"q004","typeKey":"directed_mul","typeDef":{"key":"directed_mul","name":"有向數乘法","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"signedNumeric","params_schema":{"a":"整數 -8..8，不取 0","b":"整數 -8..8，不取 0"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"signedNumeric","generator":"directed_mul","code":"LSC-2526-S1-T2-04-NA-13","source":""},"params":{}},{"qid":"q005","typeKey":"s1t2_word_to_alg","typeDef":{"key":"s1t2_word_to_alg","name":"文字轉代數式","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"algebraQ8","params_schema":{"t":"現有 5 種語句模板","a":"整數 2..9","b":"整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"algebraQ8","generator":"word_to_alg","code":"LSC-2526-S1-T2-05-NA-8","source":""},"params":{}},{"qid":"q006","typeKey":"s1t2_solve_eq_fraction","typeDef":{"key":"s1t2_solve_eq_fraction","name":"一元一次方程","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numericOrFraction","params_schema":{"coeff":"方程 ax=b 的 a","rVal":"方程 ax=b 的 b，可令答案為分數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numericOrFraction","generator":"solve_eq","defaultParams":{"coeff":4,"rVal":6},"prefix":"x = ","code":"LSC-2526-S1-T2-06-NA-7","source":""},"params":{}},{"qid":"q007","typeKey":"s1t2_solve_eq_negative","typeDef":{"key":"s1t2_solve_eq_negative","name":"含負數解一元一次方程","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numericOrFraction","params_schema":{"coeff":"方程 ax=b 的 a","xVal":"固定生成負數解"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numericOrFraction","generator":"solve_eq","defaultParams":{"xVal":-3},"prefix":"x = ","code":"LSC-2526-S1-T2-07-NA-7","source":""},"params":{}},{"qid":"q008","typeKey":"cuboid_volume","typeDef":{"key":"cuboid_volume","name":"長方體體積","category":"度量","difficulty":1,"grade":"s1","term":"2","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"l":"長 cm","w":"闊 cm","h":"高 cm"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"cuboid_volume","answerSpec":{"unit":"cm^3","allowUnit":true},"code":"LSC-2526-S1-T2-08-ME-4","source":""},"params":{}},{"qid":"q009","typeKey":"s1t2_poly_desc","typeDef":{"key":"s1t2_poly_desc","name":"多項式降冪排列","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"b":"x 項係數","c":"常數項絕對值"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"poly_desc","answerSpec":{"order":"strict"},"code":"LSC-2526-S1-T2-09-NA-9","source":""},"params":{}},{"qid":"q010","typeKey":"poly_constant","typeDef":{"key":"poly_constant","name":"常數項","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"signedNumeric","params_schema":{"a":"二次項係數","b":"一次項係數","c":"常數項，可為負"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"signedNumeric","generator":"poly_constant","code":"LSC-2526-S1-T2-10-NA-14","source":""},"params":{}},{"qid":"q011","typeKey":"s1t2_alg_simplify","typeDef":{"key":"s1t2_alg_simplify","name":"合併同類項","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"第一個 x 項係數","b":"第一個常數項","c":"第二個 x 項係數","d":"第二個常數項"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"alg_simplify","answerSpec":{"order":"loose"},"code":"LSC-2526-S1-T2-11-NA-6","source":""},"params":{}},{"qid":"q012","typeKey":"expand_bracket","typeDef":{"key":"expand_bracket","name":"展開括號","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"k":"括號外係數，可為負","a":"括號內 x 項係數","b":"括號內常數項，可為負"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"expand_bracket","answerSpec":{"order":"loose"},"code":"LSC-2526-S1-T2-12-NA-15","source":""},"params":{}},{"qid":"q013","typeKey":"s1t2_coordinate","typeDef":{"key":"s1t2_coordinate","name":"坐標的 x/y 坐標","category":"幾何","difficulty":1,"grade":"s1","term":"2","topicKey":"geometry","topicName":"幾何","type":"coordinate","checkType":"coordinatePoint","params_schema":{"rx":"A 點 x 坐標","ry":"A 點 y 坐標","askAxis":"x 或 y"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"coordinatePoint","generator":"coordinate","answerSpec":{"coordinateMode":"axis-value","interaction":{"clickTolerance":0}},"code":"LSC-2526-S1-T2-13-GE-2","source":""},"params":{}},{"qid":"q014","typeKey":"quadrant","typeDef":{"key":"quadrant","name":"象限判斷","category":"幾何","difficulty":1,"grade":"s1","term":"2","topicKey":"geometry","topicName":"幾何","type":"choice","checkType":"choiceKey","options":[{"key":"I","label":"A. 第一象限"},{"key":"II","label":"B. 第二象限"},{"key":"III","label":"C. 第三象限"},{"key":"IV","label":"D. 第四象限"}],"params_schema":{"x":"非零整數","y":"非零整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"quadrant","code":"LSC-2526-S1-T2-14-GE-4","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-10T10:13:21.467Z";
+const GENERATED_AT = "2026-07-10T10:15:54.183Z";
 const BANK_HASH = "b62_14_b4cc398a";
 const PRESET_KEY = "s1_term2_part_a";
 const GRADE = "s1";
 const GAS_URL = "";
 const STUDENT_ID_PATTERN = /^\d{8}[FM]$/;
 const STUDENT_ID_RULE_TEXT = "8 位數字 + 大寫 F 或 M，例如 20255001F";
+const SHOW_QUESTION_CODE = true;
 
 document.getElementById("practice-title").textContent = TITLE;
 
@@ -1261,6 +1275,84 @@ let backup = null;             // 單題重做備份
 let currentAttemptType = "initial";  // 'initial' or 'wrong_retry'
 let allAttempts = [];           // 全部正式嘗試紀錄
 let lastResult = null;          // 上次完成嘅嘗試結果（供 UI 展示）
+
+function compactQuestionCode(code) {
+  const s = String(code || "");
+  if (s.length <= 18) return s;
+  if (!window.matchMedia || !window.matchMedia("(max-width: 430px)").matches) return s;
+  const parts = s.split("-");
+  if (parts.length >= 7) return parts[0] + "-…-" + parts.slice(-3).join("-");
+  return s.slice(0, 6) + "…" + s.slice(-10);
+}
+
+function updateQuestionCodeDisplay(q) {
+  const wrap = document.getElementById("top-code-wrap");
+  const codeEl = document.getElementById("q-code");
+  const btn = document.getElementById("btn-copy-code");
+  if (!wrap || !codeEl || !btn) return;
+  const code = q && q.code ? String(q.code) : "";
+  if (!SHOW_QUESTION_CODE || !code) {
+    wrap.style.display = "none";
+    codeEl.textContent = "";
+    codeEl.title = "";
+    if (btn.dataset) delete btn.dataset.code;
+    else if (btn.removeAttribute) btn.removeAttribute("data-code");
+    return;
+  }
+  wrap.style.display = "inline-flex";
+  codeEl.textContent = compactQuestionCode(code);
+  codeEl.title = code;
+  if (btn.dataset) btn.dataset.code = code;
+  else if (btn.setAttribute) btn.setAttribute("data-code", code);
+  btn.textContent = "複製";
+  btn.disabled = false;
+}
+
+function fallbackCopyText(text) {
+  const ta = document.createElement("textarea");
+  ta.value = text;
+  if (ta.setAttribute) ta.setAttribute("readonly", "");
+  ta.style.position = "fixed";
+  ta.style.left = "-9999px";
+  document.body.appendChild(ta);
+  if (ta.select) ta.select();
+  let ok = false;
+  try { ok = document.execCommand("copy"); } catch (e) { ok = false; }
+  document.body.removeChild(ta);
+  return ok;
+}
+
+function showCopyFeedback(ok) {
+  const btn = document.getElementById("btn-copy-code");
+  if (ok && btn) {
+    btn.textContent = "✓";
+    setTimeout(() => { btn.textContent = "複製"; }, 1000);
+  }
+  showToast(ok ? "已複製題目編碼" : "複製失敗，請長按題目編碼手動複製");
+}
+
+async function copyCurrentQuestionCode() {
+  const q = qList[currIdx];
+  const code = q && q.code ? String(q.code) : "";
+  if (!code) { showCopyFeedback(false); return; }
+  let ok = false;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    try {
+      await navigator.clipboard.writeText(code);
+      ok = true;
+    } catch (e) {
+      ok = false;
+    }
+  }
+  if (!ok) ok = fallbackCopyText(code);
+  showCopyFeedback(ok);
+}
+
+if (window.addEventListener) {
+  window.addEventListener("resize", () => {
+    if (qList[currIdx]) updateQuestionCodeDisplay(qList[currIdx]);
+  });
+}
 
 /* === 工具：localStorage 載入 / 儲存 === */
 function storageKey() { return "assess_attempts_" + BANK_HASH; }
@@ -1390,16 +1482,9 @@ function showQ() {
   currSelectedChoice = null;
   currSelectedPoint = null;
   answered = false;
-  document.getElementById("p-text").textContent = "Q " + (currIdx + 1) + " / " + qList.length;
+  document.getElementById("p-text").textContent = "Q" + (currIdx + 1) + "/" + qList.length;
   document.getElementById("q-text").innerHTML = q.questionHTML;
-  // 顯示題型編碼（純 metadata，唔影響判分）。冇 code 就隱藏。
-  const codeEl = document.getElementById("q-code");
-  if (q.code) {
-    codeEl.textContent = q.code;
-    codeEl.style.display = "block";
-  } else {
-    codeEl.style.display = "none";
-  }
+  updateQuestionCodeDisplay(q);
   document.getElementById("q-feedback").style.display = "none";
   document.getElementById("q-feedback").textContent = "";
   document.getElementById("btn-check").style.display = "block";
