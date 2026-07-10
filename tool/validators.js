@@ -36,25 +36,49 @@ function createAssessValidators() {
     return parseFloat(s);
   }
 
+  function stripOuterParens(value) {
+    let s = String(value || "");
+    while (s.length >= 2 && s[0] === "(" && s[s.length - 1] === ")") {
+      let depth = 0;
+      let wraps = true;
+      for (let i = 0; i < s.length; i += 1) {
+        if (s[i] === "(") depth += 1;
+        else if (s[i] === ")") depth -= 1;
+        if (depth === 0 && i < s.length - 1) {
+          wraps = false;
+          break;
+        }
+      }
+      if (!wraps) break;
+      s = s.slice(1, -1);
+    }
+    return s;
+  }
+
   function parsePiNumber(value) {
     let s = String(value || "").trim()
       .replace(/−/g, "-")
       .replace(/\s+/g, "")
+      .replace(/\\pi/gi, "pi")
       .replace(/π/gi, "pi")
       .replace(/×/g, "*");
     if (s === "") return NaN;
+    s = s.replace(/\\frac\{(-?\d+(?:\.\d+)?)\}\{(-?\d+(?:\.\d+)?)\}/gi, "($1/$2)");
     if (!s.toLowerCase().includes("pi")) return parseSignedNumber(s);
     s = s.replace(/x(?=pi)/gi, "*").replace(/\*/g, "");
-    const match = s.match(/^(-?(?:\d+(?:\.\d+)?|\.\d+)?)pi(?:\/(-?\d+(?:\.\d+)?))?$/i);
-    if (!match) return NaN;
-    let coeffRaw = match[1];
-    let coeff;
-    if (coeffRaw === "" || coeffRaw === "+") coeff = 1;
-    else if (coeffRaw === "-") coeff = -1;
-    else coeff = parseFloat(coeffRaw);
-    const den = match[2] ? parseFloat(match[2]) : 1;
-    if (Number.isNaN(coeff) || Number.isNaN(den) || den === 0) return NaN;
-    return coeff * Math.PI / den;
+    const parts = s.split(/pi/i);
+    if (parts.length !== 2) return NaN;
+    let coeffRaw = stripOuterParens(parts[0]);
+    if (coeffRaw === "" || coeffRaw === "+") coeffRaw = "1";
+    else if (coeffRaw === "-") coeffRaw = "-1";
+    const coeff = parseSignedNumber(coeffRaw);
+    let denominator = 1;
+    if (parts[1] !== "") {
+      if (!parts[1].startsWith("/")) return NaN;
+      denominator = parseSignedNumber(stripOuterParens(parts[1].slice(1)));
+    }
+    if (Number.isNaN(coeff) || Number.isNaN(denominator) || denominator === 0) return NaN;
+    return coeff * Math.PI / denominator;
   }
 
   function normalizePolynomialInput(value) {
@@ -137,23 +161,55 @@ function createAssessValidators() {
   }
 
   function parseFactorPairInput(value) {
-    const s = String(value || "").trim().replace(/\s+/g, "").replace(/−/g, "-");
-    const match = s.match(/^\(([^()]+)\)\*?\(([^()]+)\)$/);
-    if (!match) return null;
-    const f1 = parseLinearFactor(match[1]);
-    const f2 = parseLinearFactor(match[2]);
-    if (!f1 || !f2) return null;
-    return [f1, f2];
+    const s = String(value || "").trim()
+      .replace(/\s+/g, "")
+      .replace(/−/g, "-")
+      .replace(/[×·]/g, "*");
+    if (s === "") return null;
+    let i = 0;
+    let coefficient = 1;
+    const factors = [];
+    while (i < s.length) {
+      if (s[i] === "*") {
+        i += 1;
+        continue;
+      }
+      if (s[i] === "(") {
+        const end = s.indexOf(")", i + 1);
+        if (end < 0) return null;
+        const factor = parseLinearFactor(s.slice(i + 1, end));
+        if (!factor) return null;
+        factors.push(factor);
+        i = end + 1;
+        continue;
+      }
+      const match = s.slice(i).match(/^[+-]?\d+/);
+      if (!match) return null;
+      coefficient *= parseInt(match[0], 10);
+      i += match[0].length;
+    }
+    if (factors.length !== 2) return null;
+    return { coefficient, factors };
   }
 
   function sameLinearFactor(a, b) {
     return Array.isArray(a) && Array.isArray(b) && a[0] === b[0] && a[1] === b[1];
   }
 
+  function normalizeFactorSpec(value) {
+    if (Array.isArray(value)) return { coefficient: 1, factors: value };
+    if (value && Array.isArray(value.factors)) {
+      return { coefficient: value.coefficient === undefined ? 1 : Number(value.coefficient), factors: value.factors };
+    }
+    return null;
+  }
+
   function sameFactorPair(user, expected) {
-    if (!Array.isArray(user) || !Array.isArray(expected) || user.length !== 2 || expected.length !== 2) return false;
-    return (sameLinearFactor(user[0], expected[0]) && sameLinearFactor(user[1], expected[1])) ||
-           (sameLinearFactor(user[0], expected[1]) && sameLinearFactor(user[1], expected[0]));
+    const u = normalizeFactorSpec(user);
+    const e = normalizeFactorSpec(expected);
+    if (!u || !e || u.coefficient !== e.coefficient || u.factors.length !== 2 || e.factors.length !== 2) return false;
+    return (sameLinearFactor(u.factors[0], e.factors[0]) && sameLinearFactor(u.factors[1], e.factors[1])) ||
+           (sameLinearFactor(u.factors[0], e.factors[1]) && sameLinearFactor(u.factors[1], e.factors[0]));
   }
 
   function parseScientificNotation(value) {
@@ -337,7 +393,7 @@ function createAssessValidators() {
       return true;
     },
     factorPair(q, userInput) {
-      const expected = q.answerSpec && q.answerSpec.factors;
+      const expected = q.answerSpec;
       return sameFactorPair(parseFactorPairInput(userInput), expected);
     },
     scientificNotation(q, userInput) {

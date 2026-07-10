@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-8192e729",
+  "snapshotId": "pdf-b52f7549",
   "seed": "pdf-a3-fixture:s3_term3_part_a",
   "title": "2025-26 年度 中三第三學期(甲部)短答練習",
   "presetKey": "s3_term3_part_a",
@@ -83,7 +83,8 @@
       "code": "LSC-2526-S3-T3-05-NA-18",
       "paramsUsed": {
         "a": 1,
-        "b": 7
+        "b": 7,
+        "commonFactor": 1
       },
       "answerSpec": {
         "factors": [
@@ -111,7 +112,8 @@
         "d": 5,
         "x2": 6,
         "x1": -5,
-        "constTerm": -25
+        "constTerm": -25,
+        "commonFactor": 1
       },
       "answerSpec": {
         "factors": [

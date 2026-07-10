@@ -95,6 +95,17 @@ function lin(a, b) {
   return `${a === 1 ? 'x' : `${a}x`}${b >= 0 ? '+' : ''}${b}`;
 }
 
+function expectedSpec(a, b, c, d) {
+  const g1 = gcd(a, b);
+  const g2 = gcd(c, d);
+  return { coefficient: g1 * g2, factors: [[a / g1, b / g1], [c / g2, d / g2]] };
+}
+
+function answerFromSpec(spec) {
+  const prefix = spec.coefficient === 1 ? '' : String(spec.coefficient);
+  return `${prefix}(${lin(spec.factors[0][0], spec.factors[0][1])})(${lin(spec.factors[1][0], spec.factors[1][1])})`;
+}
+
 console.log('=== factor_cross random parameter contract ===');
 
 const def = typeDef();
@@ -117,12 +128,12 @@ const explicit = generators.generateQuestion(def, { a: 1, b: 2, c: 1, d: 3 });
 const expectedExplicit = {
   questionHTML: '6. 因式分解 \\( x^2+5x+6 \\)。',
   correctAnswer: '(x+2)(x+3)',
-  paramsUsed: { a: 1, b: 2, c: 1, d: 3, x2: 1, x1: 5, constTerm: 6 },
-  solutionHTML: '<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(5x\\)。</div><div>\\( x^2+5x+6 = (x+2)(x+3) \\)</div>',
+  paramsUsed: { a: 1, b: 2, c: 1, d: 3, x2: 1, x1: 5, constTerm: 6, commonFactor: 1 },
+  solutionHTML: '<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(5x\\)。</div><div>完全因式分解：\\( x^2+5x+6 = (x+2)(x+3) \\)</div>',
   pdfText: '6. 因式分解 \\( x^2+5x+6 \\)。',
   answers: ['(x+2)(x+3)'],
   displayAnswer: '(x+2)(x+3)',
-  steps: '<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(5x\\)。</div><div>\\( x^2+5x+6 = (x+2)(x+3) \\)</div>',
+  steps: '<div>用十字相乘法：</div><div>尋找兩個一次因式，使乘開後中間項為 \\(5x\\)。</div><div>完全因式分解：\\( x^2+5x+6 = (x+2)(x+3) \\)</div>',
   checkType: 'factorPair',
   answerSpec: { factors: [[1, 2], [1, 3]] },
 };
@@ -137,9 +148,11 @@ for (const combo of combos) {
   const { a, b, c, d } = combo;
   const result = generators.generateQuestion(def, combo);
   const q = assemble(def, result);
-  const canonical = `(${lin(a, b)})(${lin(c, d)})`;
-  const swapped = `(${lin(c, d)})(${lin(a, b)})`;
-  const signError = `(${lin(a, -b)})(${lin(c, -d)})`;
+  const spec = expectedSpec(a, b, c, d);
+  const canonical = answerFromSpec(spec);
+  const swapped = `${spec.coefficient === 1 ? '' : String(spec.coefficient)}(${lin(spec.factors[1][0], spec.factors[1][1])})(${lin(spec.factors[0][0], spec.factors[0][1])})`;
+  const incomplete = `(${lin(a, b)})(${lin(c, d)})`;
+  const signError = `${spec.coefficient === 1 ? '' : String(spec.coefficient)}(${lin(spec.factors[0][0], -spec.factors[0][1])})(${lin(spec.factors[1][0], -spec.factors[1][1])})`;
   const wrongPair = '(x+99)(x+99)';
   const paramsOk = result.paramsUsed.a === a
     && result.paramsUsed.b === b
@@ -150,15 +163,17 @@ for (const combo of combos) {
     && result.paramsUsed.constTerm === b * d;
   const canonicalOk = validators.checkAnswer(q, canonical);
   const swappedOk = validators.checkAnswer(q, swapped);
+  const incompleteOk = spec.coefficient > 1 ? validators.checkAnswer(q, incomplete) : false;
   const signErrorOk = validators.checkAnswer(q, signError);
   const wrongPairOk = validators.checkAnswer(q, wrongPair);
   check(`a=${a},b=${b},c=${c},d=${d} preserves params`, paramsOk, JSON.stringify(result.paramsUsed));
   check(`a=${a},b=${b},c=${c},d=${d} accepts canonical answer`, canonicalOk, canonical);
   check(`a=${a},b=${b},c=${c},d=${d} accepts factor order swap`, swappedOk, swapped);
+  check(`a=${a},b=${b},c=${c},d=${d} rejects incomplete factorization`, !incompleteOk, incomplete);
   check(`a=${a},b=${b},c=${c},d=${d} rejects sign error`, !signErrorOk, signError);
   check(`a=${a},b=${b},c=${c},d=${d} rejects wrong factor pair`, !wrongPairOk, wrongPair);
-  if (!paramsOk || !canonicalOk || !swappedOk || signErrorOk || wrongPairOk) {
-    comboFailures.push({ combo, paramsOk, canonicalOk, swappedOk, signErrorOk, wrongPairOk, result });
+  if (!paramsOk || !canonicalOk || !swappedOk || incompleteOk || signErrorOk || wrongPairOk) {
+    comboFailures.push({ combo, paramsOk, canonicalOk, swappedOk, incompleteOk, signErrorOk, wrongPairOk, result });
   }
 }
 check('factor_cross all 748 legal combos pass validator checks',

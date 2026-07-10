@@ -496,7 +496,7 @@ function showQ() {
   setKeypadVisible(true);
   document.getElementById("solution-box").style.display = "none";
   document.getElementById("solution-box").innerHTML = "";
-  document.getElementById("input-val").textContent = "";
+  renderInputDisplay();
   document.getElementById("prefix").style.display = "none";
   document.getElementById("suffix").style.display = "none";
   document.getElementById("q-hint").style.display = "none";
@@ -551,6 +551,10 @@ function showQ() {
   } else {
     // text（含 primeFactor、algebraQ8 等）
     document.getElementById("input-row").style.display = "flex";
+    if ((q.validator || q.checkType) === "unitNumeric") {
+      document.getElementById("q-hint").innerHTML = "提示：可輸入 <b>128π/3</b>、<b>\\frac{128}{3}π</b> 或小數；有需要可加單位。";
+      document.getElementById("q-hint").style.display = "block";
+    }
   }
 
   if (window.MathJax && MathJax.typesetPromise) {
@@ -559,20 +563,58 @@ function showQ() {
 }
 
 /* === 按鍵輸入 === */
+function escapeInputHtml(s) {
+  return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
+
+function inputToLatex(raw) {
+  let s = String(raw || "").trim();
+  if (!s) return "";
+  s = s.replace(/−/g, "-");
+  const fracPi = s.match(/^\\frac\{([^{}]+)\}\{([^{}]+)\}(π|\\pi)$/);
+  if (fracPi) return "\\frac{" + fracPi[1] + "}{" + fracPi[2] + "}\\pi";
+  const piOver = s.match(/^(.+)(π|pi)\/(.+)$/i);
+  if (piOver) return "\\frac{" + piOver[1] + "}{" + piOver[3] + "}\\pi";
+  const overPi = s.match(/^\(?(.+?)\/(.+?)\)?(π|pi)$/i);
+  if (overPi) return "\\frac{" + overPi[1] + "}{" + overPi[2] + "}\\pi";
+  const plainFrac = s.match(/^\(?([^()/]+)\/([^()/]+)\)?$/);
+  if (plainFrac) return "\\frac{" + plainFrac[1] + "}{" + plainFrac[2] + "}";
+  return s.replace(/π/g, "\\pi ").replace(/√\(?([^()]+)\)?/g, "\\sqrt{$1}").replace(/\^(-?\d+)/g, "^{$1}");
+}
+
+function renderInputDisplay() {
+  const el = document.getElementById("input-val");
+  if (!el) return;
+  if (!currInput) {
+    el.textContent = "";
+    return;
+  }
+  const raw = currInput;
+  const latex = inputToLatex(raw);
+  el.innerHTML = "\\(" + escapeInputHtml(latex) + "\\)";
+  if (window.MathJax && MathJax.typesetPromise) {
+    MathJax.typesetPromise([el]).catch(() => {
+      if (currInput === raw) el.textContent = raw;
+    });
+  } else {
+    el.textContent = raw;
+  }
+}
+
 function kp(c) {
   if (answered) return;
   currInput += c;
-  document.getElementById("input-val").textContent = currInput;
+  renderInputDisplay();
 }
 function del() {
   if (answered) return;
   currInput = currInput.slice(0, -1);
-  document.getElementById("input-val").textContent = currInput;
+  renderInputDisplay();
 }
 function clearInput() {
   if (answered) return;
   currInput = "";
-  document.getElementById("input-val").textContent = "";
+  renderInputDisplay();
 }
 
 /* === 核對 === */
