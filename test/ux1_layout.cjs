@@ -62,12 +62,21 @@ check('next button lives outside keypad-area',
 check('template has collapseAnswerControlsAfterCheck()', /function collapseAnswerControlsAfterCheck\(\)/.test(template));
 check('checkAns collapses controls after answer', /checkAns\(\)[\s\S]*collapseAnswerControlsAfterCheck\(\)/.test(template));
 check('showQ restores keypad for next question', /showQ\(\)[\s\S]*setKeypadVisible\(true\)/.test(template));
+check('template has a context keypad row without changing the three-row base layout',
+  /id="keypad-context"/.test(template) && /key-grid-context:empty/.test(template));
+check('template renders context keys when a new question is shown', /showQ\(\)[\s\S]*renderContextKeys\(q\)/.test(template));
+check('template context configuration includes fraction, ratio, root, and congruence inputs',
+  /"numericOrFraction": \["\/"\]/.test(template) && /"ratio_three": \[":"\]/.test(template) &&
+  /"square_root_pm": \["±", "√", ","\]/.test(template) && /"congruence": \["S", "A", "R", "H"\]/.test(template) &&
+  /"inequality": \[">", "<", "="\]/.test(template));
 
 for (const rel of exercisePaths) {
   const html = fs.readFileSync(path.join(ROOT, rel), 'utf8');
   check(`${rel} includes 9-column keypad CSS`, /grid-template-columns:\s*repeat\(9,/.test(html));
   check(`${rel} includes keypad spacer`, /class="key-spacer"/.test(html));
   check(`${rel} includes keypad-area id`, /id="keypad-area"/.test(html));
+  check(`${rel} includes the context keypad row`, /id="keypad-context"/.test(html));
+  check(`${rel} includes input context key configuration`, /const INPUT_CONTEXT_KEY_CONFIG = \{/.test(html));
   check(`${rel} includes independent action-area id`, /id="action-area"/.test(html));
   check(`${rel} keeps next button outside keypad-area`,
     /id="action-area"[\s\S]{0,500}id="btn-next"/.test(html) &&
