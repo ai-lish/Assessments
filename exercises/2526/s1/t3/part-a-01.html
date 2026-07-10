@@ -78,6 +78,8 @@
   .action-area { background: #fff; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
   .keypad-area { background: #f1f3f5; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
   .key-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+  .key-grid-context { margin-top: 3px; }
+  .key-grid-context:empty { display: none; }
   .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
   .key-spacer { height: 34px; visibility: hidden; pointer-events: none; }
   .key:active { background: #eee; transform: translateY(2px); }
@@ -201,6 +203,7 @@
         <div class="key" style="background:#eef" onclick="kp('≤')">≤</div>
         <div class="key" style="background:#fee; color:red" onclick="clearInput()">C</div>
       </div>
+      <div class="key-grid key-grid-context" id="keypad-context" aria-label="題型專用按鍵"></div>
     </div>
   </div>
 
@@ -1169,7 +1172,7 @@ const TITLE = "2025-26 年度 中一第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"frac_arith","typeDef":{"key":"frac_arith","name":"分數運算（含負數）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"factor":"整數 ±1..±3（最終結果）","bottom":"整數 -8..-2（分母，不含 0）","a":"分子第一項 a（隨機 2..8）","c":"分母第一項絕對值加 1..5"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"frac_arith","code":"LSC-2526-S1-T3-01-NA-1","source":""},"params":{}},{"qid":"q002","typeKey":"neg_power","typeDef":{"key":"neg_power","name":"負數的乘方","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"base":"整數 2..5","exp":"整數 2..4"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"neg_power","code":"LSC-2526-S1-T3-02-NA-2","source":""},"params":{}},{"qid":"q003","typeKey":"prime_factor","typeDef":{"key":"prime_factor","name":"質因數分解（指數記數法）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"primeFactor","params_schema":{"n":"整數（必須含 ≥2 個質因數），預設從 9 個示範數中選"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"primeFactor","generator":"prime_factor","code":"LSC-2526-S1-T3-03-NA-3","source":""},"params":{}},{"qid":"q004","typeKey":"hcf_or_lcm","typeDef":{"key":"hcf_or_lcm","name":"HCF／LCM 隨機","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"hcfLcm","params_schema":{"n1":"12..24 偶數倍數","n2":"18..36 三的倍數（≠ n1）","askLCM":"bool：true=問 LCM，false=問 HCF"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"hcfLcm","generator":"hcf_or_lcm","code":"LSC-2526-S1-T3-04-NA-4","source":""},"params":{}},{"qid":"q005","typeKey":"exp_law","typeDef":{"key":"exp_law","name":"指數律（同底相乘）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"a":"整數 2..6","b":"整數 2..6"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"exp_law","code":"LSC-2526-S1-T3-05-NA-5","source":""},"params":{}},{"qid":"q006","typeKey":"alg_simplify","typeDef":{"key":"alg_simplify","name":"代數化簡（合併同類項）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"a":"整數 -6..-2（x 係數）","b":"整數 -8..-2（常數項）","c":"整數 2..6（x 係數）","d":"整數 -9..-2（常數項）"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"alg_simplify","code":"LSC-2526-S1-T3-06-NA-6","source":""},"params":{}},{"qid":"q007","typeKey":"solve_eq","typeDef":{"key":"solve_eq","name":"解一元一次方程","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"coeff":"整數 2..7","xVal":"整數 -9..-2"},"prefix":"x = ","answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"solve_eq","code":"LSC-2526-S1-T3-07-NA-7","source":""},"params":{}},{"qid":"q008","typeKey":"word_to_alg","typeDef":{"key":"word_to_alg","name":"文字轉代數式（5 個子類型）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"algebraQ8","params_schema":{"t":"子類型 1..5（見原工具）","a":"整數 2..9","b":"整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"algebraQ8","generator":"word_to_alg","code":"LSC-2526-S1-T3-08-NA-8","source":""},"params":{}},{"qid":"q009","typeKey":"sig_fig","typeDef":{"key":"sig_fig","name":"有效數字","category":"度量","difficulty":1,"grade":"s1","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"textExact","params_schema":{"baseNum":"示範數 9 選 1","sf":"2..3 位有效數字"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"sig_fig","code":"LSC-2526-S1-T3-09-ME-1","source":""},"params":{}},{"qid":"q010","typeKey":"frac_to_pct","typeDef":{"key":"frac_to_pct","name":"分數化百分數","category":"度量","difficulty":1,"grade":"s1","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"fracPct","params_schema":{"item":"從 9 個示範分數中選"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"fracPct","generator":"frac_to_pct","code":"LSC-2526-S1-T3-10-ME-2","source":""},"params":{}},{"qid":"q011","typeKey":"poly_desc","typeDef":{"key":"poly_desc","name":"多項式降冪排列","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"b":"整數 2..9","c":"整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"poly_desc","code":"LSC-2526-S1-T3-11-NA-9","source":""},"params":{}},{"qid":"q012","typeKey":"formula_sub","typeDef":{"key":"formula_sub","name":"公式代入","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"a":"整數 3..8","b":"整數 2..5","c":"整數 -5..-2","isPlus":"bool：true=加法、false=減法"},"prefix":"y = ","answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"formula_sub","code":"LSC-2526-S1-T3-12-NA-10","source":""},"params":{}},{"qid":"q013","typeKey":"congruence","typeDef":{"key":"congruence","name":"全等三角形（S.S.S./S.A.S./A.S.A./A.A.S./R.H.S.）","category":"幾何","difficulty":2,"grade":"s1","term":"3","topicKey":"geometry","topicName":"幾何","type":"congruence","checkType":"congruenceReason","params_schema":{"t1":"三角形 1 的頂點字母（3 個）","t2":"三角形 2 的頂點字母（3 個）","reason":"5 種全等理由之一"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"congruenceReason","generator":"congruence","code":"LSC-2526-S1-T3-13-GE-1","source":"","figure":{"kind":"generated-svg-triangle-pair"}},"params":{}},{"qid":"q014","typeKey":"coordinate","typeDef":{"key":"coordinate","name":"坐標輸入及點選","category":"幾何","difficulty":1,"grade":"s1","term":"3","topicKey":"geometry","topicName":"幾何","type":"coordinate","checkType":"coordinatePoint","params_schema":{"rx":"整數 ±1..±2（x 坐標）","ry":"整數 ±1..±2（y 坐標）","askAxis":"'x' 或 'y'（問邊條軸）"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"coordinatePoint","generator":"coordinate","code":"LSC-2526-S1-T3-14-GE-2","source":"","answerSpec":{"coordinateMode":"axis-value","interaction":{"kind":"grid-click-and-axis-value","target":"generated","clickTolerance":0}}},"params":{}},{"qid":"q015","typeKey":"seq_nth","typeDef":{"key":"seq_nth","name":"數列通項","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"nth":"1..5（項數）","multiplier":"整數 2..5","constant":"整數 -5..5"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"seq_nth","code":"LSC-2526-S1-T3-15-NA-11","source":""},"params":{}},{"qid":"q016","typeKey":"data_type","typeDef":{"key":"data_type","name":"離散／連續數據","category":"數據處理","difficulty":1,"grade":"s1","term":"3","topicKey":"data_handling","topicName":"數據處理","type":"choice","checkType":"choiceKey","options":[{"key":"離散數據","label":"A. 離散數據"},{"key":"連續數據","label":"B. 連續數據"}],"params_schema":{"scenario":"6 個示範情境中選 1"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"data_type","code":"LSC-2526-S1-T3-16-DH-1","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-10T11:52:43.572Z";
+const GENERATED_AT = "2026-07-10T16:13:51.630Z";
 const BANK_HASH = "b62_16_ef161f3c";
 const PRESET_KEY = "s1_term3_part_a";
 const GRADE = "s1";
@@ -1177,6 +1180,24 @@ const GAS_URL = "https://script.google.com/macros/s/AKfycbzxgJ2SvMO0FeHqdjwiYc2A
 const STUDENT_ID_PATTERN = /^\d{8}[FM]$/;
 const STUDENT_ID_RULE_TEXT = "8 位數字 + 大寫 F 或 M，例如 20255001F";
 const SHOW_QUESTION_CODE = true;
+const INPUT_CONTEXT_KEY_CONFIG = {
+  "validator": {
+    "algebraQ8": ["/"],
+    "numericOrFraction": ["/"],
+    "unitNumeric": ["/"],
+    "fracPct": ["%"],
+    "inequality": [">", "<", "="]
+  },
+  "typeKey": {
+    "congruence": ["S", "A", "R", "H"],
+    "alg_simplify_2var": ["a", "b"],
+    "s2t3_square_expand_2var": ["a", "b"],
+    "combine_fractions": ["a", "k", "/"],
+    "coef_exp_div": ["/"],
+    "ratio_three": [":"],
+    "square_root_pm": ["±", "√", ","]
+  }
+};
 
 document.getElementById("practice-title").textContent = TITLE;
 
@@ -1431,6 +1452,29 @@ function setKeypadVisible(visible) {
   if (area) area.style.display = visible ? "block" : "none";
 }
 
+function contextKeysForQuestion(q) {
+  if (!q || q.type === "choice" || q.type === "coordinate") return [];
+  const config = INPUT_CONTEXT_KEY_CONFIG || {};
+  const validatorKeys = (config.validator && config.validator[q.validator || q.checkType]) || [];
+  const typeKeys = (config.typeKey && config.typeKey[q.typeKey]) || [];
+  return Array.from(new Set(validatorKeys.concat(typeKeys)));
+}
+
+function renderContextKeys(q) {
+  const area = document.getElementById("keypad-context");
+  if (!area) return;
+  area.textContent = "";
+  contextKeysForQuestion(q).forEach((keyValue) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "key";
+    button.textContent = keyValue;
+    button.setAttribute("aria-label", "輸入 " + keyValue);
+    button.onclick = () => kp(keyValue);
+    area.appendChild(button);
+  });
+}
+
 function collapseAnswerControlsAfterCheck() {
   setKeypadVisible(false);
   document.getElementById("input-row").style.display = "none";
@@ -1494,6 +1538,7 @@ function showQ() {
   document.getElementById("solution-box").style.display = "none";
   document.getElementById("solution-box").innerHTML = "";
   renderInputDisplay();
+  renderContextKeys(q);
   document.getElementById("prefix").style.display = "none";
   document.getElementById("suffix").style.display = "none";
   document.getElementById("q-hint").style.display = "none";
@@ -1564,19 +1609,132 @@ function escapeInputHtml(s) {
   return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function hasBalancedGroups(s) {
+  let depth = 0;
+  for (const char of s) {
+    if (char === "(") depth += 1;
+    if (char === ")") {
+      depth -= 1;
+      if (depth < 0) return false;
+    }
+  }
+  return depth === 0;
+}
+
+function stripWrappingGroup(s) {
+  const value = String(s || "").trim();
+  if (value.length < 2 || value[0] !== "(" || value[value.length - 1] !== ")") return value;
+  let depth = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    if (value[i] === "(") depth += 1;
+    if (value[i] === ")") depth -= 1;
+    if (depth === 0 && i < value.length - 1) return value;
+  }
+  return value.slice(1, -1);
+}
+
+function topLevelSlashIndex(s) {
+  let depth = 0;
+  let index = -1;
+  for (let i = 0; i < s.length; i += 1) {
+    if (s[i] === "(") depth += 1;
+    else if (s[i] === ")") depth -= 1;
+    else if (s[i] === "/" && depth === 0) {
+      if (index !== -1) return -2;
+      index = i;
+    }
+  }
+  return index;
+}
+
+function renderRadicals(s) {
+  let out = "";
+  for (let i = 0; i < s.length; i += 1) {
+    if (s[i] !== "√") {
+      out += s[i];
+      continue;
+    }
+    if (i + 1 >= s.length) return null;
+    if (s[i + 1] === "(") {
+      let depth = 0;
+      let end = -1;
+      for (let j = i + 1; j < s.length; j += 1) {
+        if (s[j] === "(") depth += 1;
+        else if (s[j] === ")") depth -= 1;
+        if (depth === 0) { end = j; break; }
+      }
+      if (end === -1) return null;
+      const inner = expressionToLatex(s.slice(i + 2, end));
+      if (inner === null) return null;
+      out += "\\sqrt{" + inner + "}";
+      i = end;
+      continue;
+    }
+    const token = s.slice(i + 1).match(/^[A-Za-z0-9.]+/);
+    if (!token) return null;
+    out += "\\sqrt{" + token[0] + "}";
+    i += token[0].length;
+  }
+  return out;
+}
+
+function simpleLatex(s) {
+  const radical = renderRadicals(s);
+  if (radical === null) return null;
+  return radical
+    .replace(/\\pi/gi, "\\pi")
+    .replace(/π/g, "\\pi")
+    .replace(/\bpi\b/gi, "\\pi")
+    .replace(/\^\((-?\d+)\)/g, "^{$1}")
+    .replace(/\^(-?\d+)/g, "^{$1}");
+}
+
+function fractionLatex(numerator, denominator) {
+  const top = expressionToLatex(stripWrappingGroup(numerator));
+  const bottom = expressionToLatex(stripWrappingGroup(denominator));
+  if (top === null || bottom === null || top === "" || bottom === "") return null;
+  return "\\frac{" + top + "}{" + bottom + "}";
+}
+
+function expressionToLatex(raw) {
+  const s = String(raw || "").trim();
+  if (!s || !hasBalancedGroups(s)) return null;
+
+  const literalFracPi = s.match(/^\\frac\{([^{}]+)\}\{([^{}]+)\}(π|\\pi)$/i);
+  if (literalFracPi) return "\\frac{" + literalFracPi[1] + "}{" + literalFracPi[2] + "}\\pi";
+
+  const piOver = s.match(/^(.+?)(π|pi)\/(.+)$/i);
+  if (piOver) {
+    const fraction = fractionLatex(piOver[1], piOver[3]);
+    return fraction === null ? null : fraction + "\\pi";
+  }
+
+  const trailingPi = s.match(/^(.*?)(π|pi)$/i);
+  if (trailingPi) {
+    const coefficient = stripWrappingGroup(trailingPi[1]);
+    if (!coefficient) return "\\pi";
+    const slash = topLevelSlashIndex(coefficient);
+    if (slash >= 0) {
+      const fraction = fractionLatex(coefficient.slice(0, slash), coefficient.slice(slash + 1));
+      return fraction === null ? null : fraction + "\\pi";
+    }
+    if (slash === -2) return null;
+    const renderedCoefficient = simpleLatex(coefficient);
+    return renderedCoefficient === null ? null : renderedCoefficient + "\\pi";
+  }
+
+  const slash = topLevelSlashIndex(s);
+  if (slash >= 0) return fractionLatex(s.slice(0, slash), s.slice(slash + 1));
+  if (slash === -2) return null;
+  return simpleLatex(s);
+}
+
 function inputToLatex(raw) {
   let s = String(raw || "").trim();
   if (!s) return "";
   s = s.replace(/−/g, "-");
-  const fracPi = s.match(/^\\frac\{([^{}]+)\}\{([^{}]+)\}(π|\\pi)$/);
-  if (fracPi) return "\\frac{" + fracPi[1] + "}{" + fracPi[2] + "}\\pi";
-  const piOver = s.match(/^(.+)(π|pi)\/(.+)$/i);
-  if (piOver) return "\\frac{" + piOver[1] + "}{" + piOver[3] + "}\\pi";
-  const overPi = s.match(/^\(?(.+?)\/(.+?)\)?(π|pi)$/i);
-  if (overPi) return "\\frac{" + overPi[1] + "}{" + overPi[2] + "}\\pi";
-  const plainFrac = s.match(/^\(?([^()/]+)\/([^()/]+)\)?$/);
-  if (plainFrac) return "\\frac{" + plainFrac[1] + "}{" + plainFrac[2] + "}";
-  return s.replace(/π/g, "\\pi ").replace(/√\(?([^()]+)\)?/g, "\\sqrt{$1}").replace(/\^(-?\d+)/g, "^{$1}");
+  if (/[+\-*/^:]$/.test(s) || s === "√" || !hasBalancedGroups(s)) return null;
+  return expressionToLatex(s);
 }
 
 function renderInputDisplay() {
@@ -1588,6 +1746,10 @@ function renderInputDisplay() {
   }
   const raw = currInput;
   const latex = inputToLatex(raw);
+  if (latex === null) {
+    el.textContent = raw;
+    return;
+  }
   el.innerHTML = "\\(" + escapeInputHtml(latex) + "\\)";
   if (window.MathJax && MathJax.typesetPromise) {
     MathJax.typesetPromise([el]).catch(() => {
@@ -1935,13 +2097,13 @@ function submitToSheets(studentId) {
 document.addEventListener("keydown", function(e) {
   if (document.getElementById("quiz-view").style.display === "none") return;
   const k = e.key;
-  if (/^[0-9a-zA-Z().%]$/.test(k)) { kp(k); e.preventDefault(); }
+  if (/^[0-9a-zA-Z().%:,]$/.test(k)) { kp(k); e.preventDefault(); }
   else if (k === "+") { kp("+"); e.preventDefault(); }
-  else if (k === "-") { kp("-"); e.preventDefault(); }
+  else if (k === "-" || k === "−") { kp("-"); e.preventDefault(); }
   else if (k === "*" || k === "x" || k === "X") { kp("×"); e.preventDefault(); }
-  else if (k === "/") { kp("÷"); e.preventDefault(); }
+  else if (k === "/") { kp("/"); e.preventDefault(); }
   else if (k === "^") { kp("^"); e.preventDefault(); }
-  else if (k === ">" || k === "<" || k === "=") { kp(k); e.preventDefault(); }
+  else if (k === ">" || k === "<" || k === "=" || k === "≥" || k === "≤" || k === "π" || k === "√" || k === "±") { kp(k); e.preventDefault(); }
   else if (k === "Backspace") { del(); e.preventDefault(); }
   else if (k === "Enter") {
     if (document.getElementById("btn-check").style.display !== "none") { checkAns(); }

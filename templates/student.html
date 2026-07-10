@@ -78,6 +78,8 @@
   .action-area { background: #fff; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
   .keypad-area { background: #f1f3f5; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
   .key-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+  .key-grid-context { margin-top: 3px; }
+  .key-grid-context:empty { display: none; }
   .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
   .key-spacer { height: 34px; visibility: hidden; pointer-events: none; }
   .key:active { background: #eee; transform: translateY(2px); }
@@ -201,6 +203,7 @@
         <div class="key" style="background:#eef" onclick="kp('≤')">≤</div>
         <div class="key" style="background:#fee; color:red" onclick="clearInput()">C</div>
       </div>
+      <div class="key-grid key-grid-context" id="keypad-context" aria-label="題型專用按鍵"></div>
     </div>
   </div>
 
@@ -265,6 +268,24 @@ const GAS_URL = {{GAS_URL}};
 const STUDENT_ID_PATTERN = /^\d{8}[FM]$/;
 const STUDENT_ID_RULE_TEXT = "8 位數字 + 大寫 F 或 M，例如 20255001F";
 const SHOW_QUESTION_CODE = true;
+const INPUT_CONTEXT_KEY_CONFIG = {
+  "validator": {
+    "algebraQ8": ["/"],
+    "numericOrFraction": ["/"],
+    "unitNumeric": ["/"],
+    "fracPct": ["%"],
+    "inequality": [">", "<", "="]
+  },
+  "typeKey": {
+    "congruence": ["S", "A", "R", "H"],
+    "alg_simplify_2var": ["a", "b"],
+    "s2t3_square_expand_2var": ["a", "b"],
+    "combine_fractions": ["a", "k", "/"],
+    "coef_exp_div": ["/"],
+    "ratio_three": [":"],
+    "square_root_pm": ["±", "√", ","]
+  }
+};
 
 document.getElementById("practice-title").textContent = TITLE;
 
@@ -519,6 +540,29 @@ function setKeypadVisible(visible) {
   if (area) area.style.display = visible ? "block" : "none";
 }
 
+function contextKeysForQuestion(q) {
+  if (!q || q.type === "choice" || q.type === "coordinate") return [];
+  const config = INPUT_CONTEXT_KEY_CONFIG || {};
+  const validatorKeys = (config.validator && config.validator[q.validator || q.checkType]) || [];
+  const typeKeys = (config.typeKey && config.typeKey[q.typeKey]) || [];
+  return Array.from(new Set(validatorKeys.concat(typeKeys)));
+}
+
+function renderContextKeys(q) {
+  const area = document.getElementById("keypad-context");
+  if (!area) return;
+  area.textContent = "";
+  contextKeysForQuestion(q).forEach((keyValue) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "key";
+    button.textContent = keyValue;
+    button.setAttribute("aria-label", "輸入 " + keyValue);
+    button.onclick = () => kp(keyValue);
+    area.appendChild(button);
+  });
+}
+
 function collapseAnswerControlsAfterCheck() {
   setKeypadVisible(false);
   document.getElementById("input-row").style.display = "none";
@@ -582,6 +626,7 @@ function showQ() {
   document.getElementById("solution-box").style.display = "none";
   document.getElementById("solution-box").innerHTML = "";
   renderInputDisplay();
+  renderContextKeys(q);
   document.getElementById("prefix").style.display = "none";
   document.getElementById("suffix").style.display = "none";
   document.getElementById("q-hint").style.display = "none";
@@ -652,19 +697,132 @@ function escapeInputHtml(s) {
   return String(s || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
 }
 
+function hasBalancedGroups(s) {
+  let depth = 0;
+  for (const char of s) {
+    if (char === "(") depth += 1;
+    if (char === ")") {
+      depth -= 1;
+      if (depth < 0) return false;
+    }
+  }
+  return depth === 0;
+}
+
+function stripWrappingGroup(s) {
+  const value = String(s || "").trim();
+  if (value.length < 2 || value[0] !== "(" || value[value.length - 1] !== ")") return value;
+  let depth = 0;
+  for (let i = 0; i < value.length; i += 1) {
+    if (value[i] === "(") depth += 1;
+    if (value[i] === ")") depth -= 1;
+    if (depth === 0 && i < value.length - 1) return value;
+  }
+  return value.slice(1, -1);
+}
+
+function topLevelSlashIndex(s) {
+  let depth = 0;
+  let index = -1;
+  for (let i = 0; i < s.length; i += 1) {
+    if (s[i] === "(") depth += 1;
+    else if (s[i] === ")") depth -= 1;
+    else if (s[i] === "/" && depth === 0) {
+      if (index !== -1) return -2;
+      index = i;
+    }
+  }
+  return index;
+}
+
+function renderRadicals(s) {
+  let out = "";
+  for (let i = 0; i < s.length; i += 1) {
+    if (s[i] !== "√") {
+      out += s[i];
+      continue;
+    }
+    if (i + 1 >= s.length) return null;
+    if (s[i + 1] === "(") {
+      let depth = 0;
+      let end = -1;
+      for (let j = i + 1; j < s.length; j += 1) {
+        if (s[j] === "(") depth += 1;
+        else if (s[j] === ")") depth -= 1;
+        if (depth === 0) { end = j; break; }
+      }
+      if (end === -1) return null;
+      const inner = expressionToLatex(s.slice(i + 2, end));
+      if (inner === null) return null;
+      out += "\\sqrt{" + inner + "}";
+      i = end;
+      continue;
+    }
+    const token = s.slice(i + 1).match(/^[A-Za-z0-9.]+/);
+    if (!token) return null;
+    out += "\\sqrt{" + token[0] + "}";
+    i += token[0].length;
+  }
+  return out;
+}
+
+function simpleLatex(s) {
+  const radical = renderRadicals(s);
+  if (radical === null) return null;
+  return radical
+    .replace(/\\pi/gi, "\\pi")
+    .replace(/π/g, "\\pi")
+    .replace(/\bpi\b/gi, "\\pi")
+    .replace(/\^\((-?\d+)\)/g, "^{$1}")
+    .replace(/\^(-?\d+)/g, "^{$1}");
+}
+
+function fractionLatex(numerator, denominator) {
+  const top = expressionToLatex(stripWrappingGroup(numerator));
+  const bottom = expressionToLatex(stripWrappingGroup(denominator));
+  if (top === null || bottom === null || top === "" || bottom === "") return null;
+  return "\\frac{" + top + "}{" + bottom + "}";
+}
+
+function expressionToLatex(raw) {
+  const s = String(raw || "").trim();
+  if (!s || !hasBalancedGroups(s)) return null;
+
+  const literalFracPi = s.match(/^\\frac\{([^{}]+)\}\{([^{}]+)\}(π|\\pi)$/i);
+  if (literalFracPi) return "\\frac{" + literalFracPi[1] + "}{" + literalFracPi[2] + "}\\pi";
+
+  const piOver = s.match(/^(.+?)(π|pi)\/(.+)$/i);
+  if (piOver) {
+    const fraction = fractionLatex(piOver[1], piOver[3]);
+    return fraction === null ? null : fraction + "\\pi";
+  }
+
+  const trailingPi = s.match(/^(.*?)(π|pi)$/i);
+  if (trailingPi) {
+    const coefficient = stripWrappingGroup(trailingPi[1]);
+    if (!coefficient) return "\\pi";
+    const slash = topLevelSlashIndex(coefficient);
+    if (slash >= 0) {
+      const fraction = fractionLatex(coefficient.slice(0, slash), coefficient.slice(slash + 1));
+      return fraction === null ? null : fraction + "\\pi";
+    }
+    if (slash === -2) return null;
+    const renderedCoefficient = simpleLatex(coefficient);
+    return renderedCoefficient === null ? null : renderedCoefficient + "\\pi";
+  }
+
+  const slash = topLevelSlashIndex(s);
+  if (slash >= 0) return fractionLatex(s.slice(0, slash), s.slice(slash + 1));
+  if (slash === -2) return null;
+  return simpleLatex(s);
+}
+
 function inputToLatex(raw) {
   let s = String(raw || "").trim();
   if (!s) return "";
   s = s.replace(/−/g, "-");
-  const fracPi = s.match(/^\\frac\{([^{}]+)\}\{([^{}]+)\}(π|\\pi)$/);
-  if (fracPi) return "\\frac{" + fracPi[1] + "}{" + fracPi[2] + "}\\pi";
-  const piOver = s.match(/^(.+)(π|pi)\/(.+)$/i);
-  if (piOver) return "\\frac{" + piOver[1] + "}{" + piOver[3] + "}\\pi";
-  const overPi = s.match(/^\(?(.+?)\/(.+?)\)?(π|pi)$/i);
-  if (overPi) return "\\frac{" + overPi[1] + "}{" + overPi[2] + "}\\pi";
-  const plainFrac = s.match(/^\(?([^()/]+)\/([^()/]+)\)?$/);
-  if (plainFrac) return "\\frac{" + plainFrac[1] + "}{" + plainFrac[2] + "}";
-  return s.replace(/π/g, "\\pi ").replace(/√\(?([^()]+)\)?/g, "\\sqrt{$1}").replace(/\^(-?\d+)/g, "^{$1}");
+  if (/[+\-*/^:]$/.test(s) || s === "√" || !hasBalancedGroups(s)) return null;
+  return expressionToLatex(s);
 }
 
 function renderInputDisplay() {
@@ -676,6 +834,10 @@ function renderInputDisplay() {
   }
   const raw = currInput;
   const latex = inputToLatex(raw);
+  if (latex === null) {
+    el.textContent = raw;
+    return;
+  }
   el.innerHTML = "\\(" + escapeInputHtml(latex) + "\\)";
   if (window.MathJax && MathJax.typesetPromise) {
     MathJax.typesetPromise([el]).catch(() => {
@@ -1023,13 +1185,13 @@ function submitToSheets(studentId) {
 document.addEventListener("keydown", function(e) {
   if (document.getElementById("quiz-view").style.display === "none") return;
   const k = e.key;
-  if (/^[0-9a-zA-Z().%]$/.test(k)) { kp(k); e.preventDefault(); }
+  if (/^[0-9a-zA-Z().%:,]$/.test(k)) { kp(k); e.preventDefault(); }
   else if (k === "+") { kp("+"); e.preventDefault(); }
-  else if (k === "-") { kp("-"); e.preventDefault(); }
+  else if (k === "-" || k === "−") { kp("-"); e.preventDefault(); }
   else if (k === "*" || k === "x" || k === "X") { kp("×"); e.preventDefault(); }
-  else if (k === "/") { kp("÷"); e.preventDefault(); }
+  else if (k === "/") { kp("/"); e.preventDefault(); }
   else if (k === "^") { kp("^"); e.preventDefault(); }
-  else if (k === ">" || k === "<" || k === "=") { kp(k); e.preventDefault(); }
+  else if (k === ">" || k === "<" || k === "=" || k === "≥" || k === "≤" || k === "π" || k === "√" || k === "±") { kp(k); e.preventDefault(); }
   else if (k === "Backspace") { del(); e.preventDefault(); }
   else if (k === "Enter") {
     if (document.getElementById("btn-check").style.display !== "none") { checkAns(); }

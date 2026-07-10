@@ -87,6 +87,12 @@ jobs:
       - name: UX1 keyboard and collapse regression
         run: node test/ux1_layout.cjs
 
+      - name: Input answerability regression
+        run: node test/input_answerability.cjs
+
+      - name: Input LaTeX preview regression
+        run: node test/input_preview_contract.cjs
+
       - name: Student question code top bar regression
         run: node test/codepos_top_info.cjs
 
