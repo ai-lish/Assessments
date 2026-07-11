@@ -22,6 +22,7 @@ const fs = require("fs");
 const path = require("path");
 const { pathToFileURL } = require("url");
 const { chromium, webkit } = require("playwright");
+const { formatExactPiAnswer } = require("./pi-answer.cjs");
 
 const PAGE_URL = process.env.PAGE_URL || "https://ai-lish.github.io/Assessments/tool/index.html";
 const BANK_URL = process.env.BANK_URL || "https://raw.githubusercontent.com/ai-lish/Assessments/main/question-bank.json";
@@ -346,20 +347,26 @@ async function runPresetSimulation(page, preset) {
       };
     });
     const center = await simChoice(page, 9, await page.evaluate(() => basket[8].generated.correctAnswer));
-    const measure = await page.evaluate(() => {
+    const measureMeta = await page.evaluate(() => {
       const b = basket[9];
       const q = b.generated;
-      const piAnswer = q.answerSpec && q.answerSpec.exactPiCoefficient !== undefined
-        ? `${q.answerSpec.exactPiCoefficient}π`
-        : String(q.displayAnswer || "").split(" ")[0];
+      return {
+        exactPiCoefficient: q.answerSpec && q.answerSpec.exactPiCoefficient,
+        displayAnswer: q.displayAnswer,
+      };
+    });
+    const piAnswer = formatExactPiAnswer(measureMeta.exactPiCoefficient, measureMeta.displayAnswer);
+    const measure = await page.evaluate((answer) => {
+      const b = basket[9];
+      const q = b.generated;
       return {
         key: b.typeKey,
         code: b.typeDef.code,
         decimal: AssessValidators.checkAnswer(q, q.correctAnswer),
-        pi: AssessValidators.checkAnswer(q, piAnswer),
-        piAnswer,
+        pi: AssessValidators.checkAnswer(q, answer),
+        piAnswer: answer,
       };
-    });
+    }, piAnswer);
     assert(sci.times && sci.x && sci.star && !sci.badMantissa, "s3 term3 Q07 scientific notation failed");
     assert(ineq.goodOk && !ineq.badOk, "s3 term3 Q08 inequality direction failed");
     assert(center.ok, "s3 term3 Q09 triangle center choice failed");

@@ -51,6 +51,9 @@ jobs:
       - name: Rational pi coefficient regression
         run: node test/pi_coeff_rational.cjs
 
+      - name: Smoke pi answer assembly regression
+        run: node test/smoke_pi_assembly.cjs
+
       - name: Factor difference square random parameter regression
         run: node test/factor_diff_sq_random.cjs
 
