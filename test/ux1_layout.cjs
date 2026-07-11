@@ -28,32 +28,22 @@ function check(label, condition, detail = '') {
 
 console.log('=== PR-UX1 Layout / Keyboard Regression ===');
 
-const keyCount = (template.match(/class="key"/g) || []).length;
-const spacerCount = (template.match(/class="key-spacer"/g) || []).length;
 const colMatch = template.match(/\.key-grid\s*\{[^}]*grid-template-columns:\s*repeat\((\d+),/);
 const cols = colMatch ? Number(colMatch[1]) : 0;
-const rows = cols ? Math.ceil((keyCount + spacerCount) / cols) : Infinity;
-const keyItems = Array.from(template.matchAll(/<div class="(key|key-spacer)"[^>]*>(.*?)<\/div>/g)).map(m => ({
-  kind: m[1],
-  label: m[1] === 'key-spacer' ? 'SPACER' : m[2].replace(/<[^>]+>/g, '').trim(),
-}));
-const leftLabels = new Set(['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.']);
-const operatorLabels = new Set(['+', '-', '×', '÷', '⌫', '(', ')', '^', 'x', 'y', 'π', '°', '≥', '≤', 'C']);
-const labelPositions = new Map();
-keyItems.forEach((item, index) => {
-  if (item.kind === 'key') labelPositions.set(item.label, { row: Math.floor(index / cols) + 1, col: (index % cols) + 1 });
-});
+const configMatch = template.match(/const INPUT_KEYPAD_CONFIG = (\{[\s\S]*?\n\});/);
+const keypadConfig = configMatch ? JSON.parse(configMatch[1]) : null;
 
-check('template has 26 virtual keys', keyCount === 26, `got ${keyCount}`);
-check('template has one keypad spacer', spacerCount === 1, `got ${spacerCount}`);
 check('template keypad uses 9 columns', cols === 9, `got ${cols}`);
-check('template keypad fits within three rows', rows <= 3, `rows=${rows}`);
-check('template numeric keypad items all sit in left four columns',
-  Array.from(leftLabels).every(label => labelPositions.has(label) && labelPositions.get(label).col <= 4),
-  JSON.stringify(Object.fromEntries(Array.from(leftLabels).map(label => [label, labelPositions.get(label)]))));
-check('template operator keys sit outside left numeric area',
-  Array.from(operatorLabels).every(label => labelPositions.has(label) && labelPositions.get(label).col >= 5),
-  JSON.stringify(Object.fromEntries(Array.from(operatorLabels).map(label => [label, labelPositions.get(label)]))));
+check('template has one dynamic keypad grid',
+  /id="keypad" aria-label="題型專用按鍵"/.test(template) && !/id="keypad-context"/.test(template));
+check('template keypad has exactly three configured rows',
+  keypadConfig && keypadConfig.baseRows.length === 3);
+check('template numeric keypad items occupy the left four columns',
+  keypadConfig && keypadConfig.baseRows.every((row) => row.length === 4) &&
+  '0123456789.'.split('').every((label) => keypadConfig.baseRows.flat().includes(label)),
+  keypadConfig ? JSON.stringify(keypadConfig.baseRows) : 'missing config');
+check('template base controls include minus, delete, and clear',
+  keypadConfig && ['-', '⌫', 'C'].every((label) => keypadConfig.controlKeys.includes(label)));
 check('template has keypad-area id for collapse control', /id="keypad-area"/.test(template));
 check('template has independent action-area id', /id="action-area"/.test(template));
 check('next button lives outside keypad-area',
@@ -62,21 +52,24 @@ check('next button lives outside keypad-area',
 check('template has collapseAnswerControlsAfterCheck()', /function collapseAnswerControlsAfterCheck\(\)/.test(template));
 check('checkAns collapses controls after answer', /checkAns\(\)[\s\S]*collapseAnswerControlsAfterCheck\(\)/.test(template));
 check('showQ restores keypad for next question', /showQ\(\)[\s\S]*setKeypadVisible\(true\)/.test(template));
-check('template has a context keypad row without changing the three-row base layout',
-  /id="keypad-context"/.test(template) && /key-grid-context:empty/.test(template));
-check('template renders context keys when a new question is shown', /showQ\(\)[\s\S]*renderContextKeys\(q\)/.test(template));
-check('template context configuration includes fraction, ratio, root, and congruence inputs',
-  /"numericOrFraction": \["\/"\]/.test(template) && /"ratio_three": \[":"\]/.test(template) &&
-  /"square_root_pm": \["±", "√", ","\]/.test(template) && /"congruence": \["S", "A", "R", "H"\]/.test(template) &&
-  /"inequality": \[">", "<", "="\]/.test(template));
+check('template renders one per-question keypad when a new question is shown',
+  /showQ\(\)[\s\S]*renderQuestionKeypad\(q\)/.test(template));
+check('template keypad configuration includes fraction, ratio, root, congruence, and inequality inputs',
+  keypadConfig && keypadConfig.validator.numericOrFraction.includes('/') &&
+  keypadConfig.typeKey.ratio_three.includes(':') &&
+  ['±', '√', ','].every((key) => keypadConfig.typeKey.square_root_pm.includes(key)) &&
+  ['S', 'A', 'R', 'H'].every((key) => keypadConfig.validator.congruenceReason.includes(key)) &&
+  ['>', '<', '=', '≥', '≤'].every((key) => keypadConfig.validator.inequality.includes(key)));
+check('template computes variable keys from the current answer instead of a global variable row',
+  /String\(q\.correctAnswer \|\| ""\)\.split\(""\)/.test(template) &&
+  !/"alg_simplify_2var": \["a", "b"\]/.test(template));
 
 for (const rel of exercisePaths) {
   const html = fs.readFileSync(path.join(ROOT, rel), 'utf8');
   check(`${rel} includes 9-column keypad CSS`, /grid-template-columns:\s*repeat\(9,/.test(html));
-  check(`${rel} includes keypad spacer`, /class="key-spacer"/.test(html));
   check(`${rel} includes keypad-area id`, /id="keypad-area"/.test(html));
-  check(`${rel} includes the context keypad row`, /id="keypad-context"/.test(html));
-  check(`${rel} includes input context key configuration`, /const INPUT_CONTEXT_KEY_CONFIG = \{/.test(html));
+  check(`${rel} includes one dynamic keypad`, /id="keypad" aria-label="題型專用按鍵"/.test(html) && !/id="keypad-context"/.test(html));
+  check(`${rel} includes per-question keypad configuration`, /const INPUT_KEYPAD_CONFIG = \{/.test(html));
   check(`${rel} includes independent action-area id`, /id="action-area"/.test(html));
   check(`${rel} keeps next button outside keypad-area`,
     /id="action-area"[\s\S]{0,500}id="btn-next"/.test(html) &&
