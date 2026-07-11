@@ -51,6 +51,9 @@ jobs:
       - name: Rational pi coefficient regression
         run: node test/pi_coeff_rational.cjs
 
+      - name: Smoke pi answer assembly regression
+        run: node test/smoke_pi_assembly.cjs
+
       - name: Factor difference square random parameter regression
         run: node test/factor_diff_sq_random.cjs
 
@@ -65,6 +68,21 @@ jobs:
 
       - name: Math correctness contract regression
         run: node test/mathfix_contract.cjs
+
+      - name: Profit percentage-change wording regression
+        run: node test/profit_pct_wording.cjs
+
+      - name: Cuboid mode regression
+        run: node test/cuboid_modes.cjs
+
+      - name: Pythagorean cone random regression
+        run: node test/pyth_cone_random.cjs
+
+      - name: Hemisphere type definition regression
+        run: node test/hemisphere_type.cjs
+
+      - name: Generator unit coefficient scan
+        run: node test/generator_unit_coefficient_scan.cjs
 
       - name: Dynamic code scan
         run: node test/no_dynamic_code.cjs
@@ -128,6 +146,9 @@ jobs:
             s1_term2_part_a s1_term3_part_a s2_term3_part_a s3_term3_part_a
           # 2. Verify the committed archive files runtime-randomize across two fresh loads.
           node test/exercise_runtime_random_check.cjs
+
+      - name: Exercise generator overwrite regression
+        run: node test/gen_exercise_overwrite.cjs
 
       - name: Exercises archive PDF export check
         run: node test/exercise_pdf_export_check.cjs

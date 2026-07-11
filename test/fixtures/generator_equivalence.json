@@ -1388,6 +1388,7 @@
   "cuboid_volume": [
     {
       "params": {
+        "cube": false,
         "l": 3,
         "w": 4,
         "h": 5
@@ -1399,6 +1400,7 @@
           "l": 3,
           "w": 4,
           "h": 5,
+          "cube": false,
           "unit": "cm^3",
           "result": 60
         },
@@ -1420,6 +1422,7 @@
     },
     {
       "params": {
+        "cube": false,
         "l": 7,
         "w": 2,
         "h": 6
@@ -1431,6 +1434,7 @@
           "l": 7,
           "w": 2,
           "h": 6,
+          "cube": false,
           "unit": "cm^3",
           "result": 84
         },
@@ -1858,7 +1862,7 @@
         "d": -4
       },
       "result": {
-        "questionHTML": "2. 展開並化簡 \\( (2x+3)(1x-4) \\)。",
+      "questionHTML": "2. 展開並化簡 \\( (2x+3)(x-4) \\)。",
         "correctAnswer": "2x^2-5x-12",
         "paramsUsed": {
           "a": 2,
@@ -1870,13 +1874,13 @@
           "x1": -5,
           "constTerm": -12
         },
-        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(1x-4) = 2x^2-5x-12 \\)</div>",
-        "pdfText": "2. 展開並化簡 \\( (2x+3)(1x-4) \\)。",
+      "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(x-4) = 2x^2-5x-12 \\)</div>",
+      "pdfText": "2. 展開並化簡 \\( (2x+3)(x-4) \\)。",
         "answers": [
           "2x^2-5x-12"
         ],
         "displayAnswer": "2x^2-5x-12",
-        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(1x-4) = 2x^2-5x-12 \\)</div>",
+      "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(x-4) = 2x^2-5x-12 \\)</div>",
         "checkType": "polyTerms",
         "answerSpec": {
           "order": "loose"
@@ -1957,7 +1961,7 @@
         "square": true
       },
       "result": {
-        "questionHTML": "3. 展開並化簡 \\( (1x+5)^2 \\)。",
+      "questionHTML": "3. 展開並化簡 \\( (x+5)^2 \\)。",
         "correctAnswer": "x^2+10x+25",
         "paramsUsed": {
           "a": 1,
@@ -1969,13 +1973,13 @@
           "x1": 10,
           "constTerm": 25
         },
-        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (1x+5)^2 = x^2+10x+25 \\)</div>",
-        "pdfText": "3. 展開並化簡 \\( (1x+5)^2 \\)。",
+      "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5)^2 = x^2+10x+25 \\)</div>",
+      "pdfText": "3. 展開並化簡 \\( (x+5)^2 \\)。",
         "answers": [
           "x^2+10x+25"
         ],
         "displayAnswer": "x^2+10x+25",
-        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (1x+5)^2 = x^2+10x+25 \\)</div>",
+      "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5)^2 = x^2+10x+25 \\)</div>",
         "checkType": "polyTerms",
         "answerSpec": {
           "order": "loose"
@@ -2455,6 +2459,80 @@
           "unit": "cm^3",
           "tolerance": 0.05,
           "exactPiCoefficient": 144
+        }
+      }
+    }
+  ],
+  "solid_hemisphere": [
+    {
+      "params": {
+        "solidType": "hemisphere",
+        "r": 2,
+        "h": 8
+      },
+      "result": {
+        "questionHTML": "10. 半徑為 \\(2\\text{ cm}\\) 的半球體，求體積。",
+        "correctAnswer": "16.755",
+        "paramsUsed": {
+          "solidType": "hemisphere",
+          "r": 2,
+          "h": 8,
+          "piCoeff": "16/3",
+          "decimal": "16.755"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{16}{3}\\pi\\text{ cm}^3 \\approx 16.755\\text{ cm}^3\\)</div>",
+        "pdfText": "10. 半徑為 \\(2\\text{ cm}\\) 的半球體，求體積。",
+        "answers": [
+          "16.755",
+          "16π/3"
+        ],
+        "displayAnswer": "\\frac{16}{3}\\pi cm³ ≈ 16.755 cm³",
+        "steps": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{16}{3}\\pi\\text{ cm}^3 \\approx 16.755\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": {
+            "numerator": 16,
+            "denominator": 3
+          }
+        }
+      }
+    },
+    {
+      "params": {
+        "solidType": "hemisphere",
+        "r": 5,
+        "h": 8
+      },
+      "result": {
+        "questionHTML": "10. 半徑為 \\(5\\text{ cm}\\) 的半球體，求體積。",
+        "correctAnswer": "261.799",
+        "paramsUsed": {
+          "solidType": "hemisphere",
+          "r": 5,
+          "h": 8,
+          "piCoeff": "250/3",
+          "decimal": "261.799"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{250}{3}\\pi\\text{ cm}^3 \\approx 261.799\\text{ cm}^3\\)</div>",
+        "pdfText": "10. 半徑為 \\(5\\text{ cm}\\) 的半球體，求體積。",
+        "answers": [
+          "261.799",
+          "250π/3"
+        ],
+        "displayAnswer": "\\frac{250}{3}\\pi cm³ ≈ 261.799 cm³",
+        "steps": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{250}{3}\\pi\\text{ cm}^3 \\approx 261.799\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": {
+            "numerator": 250,
+            "denominator": 3
+          }
         }
       }
     }
@@ -3293,7 +3371,7 @@
         "isProfit": true
       },
       "result": {
-        "questionHTML": "14. 某貨品以 $1000 買入，$1150 賣出。求盈虧百分率。",
+        "questionHTML": "14. 某貨品以 $1000 買入，$1150 賣出。求百分變化。",
         "correctAnswer": "15",
         "paramsUsed": {
           "cost": 1000,
@@ -3303,7 +3381,7 @@
           "result": 15
         },
         "solutionHTML": "<div>盈虧 = 賣出價 - 買入價 = $150</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\frac{150}{1000} \\times 100\\% = 15\\% \\)</div><div>即盈利 15\\%</div>",
-        "pdfText": "14. 某貨品以 $1000 買入，$1150 賣出。求盈虧百分率。",
+        "pdfText": "14. 某貨品以 $1000 買入，$1150 賣出。求百分變化。",
         "answers": [
           "15",
           "15%"
@@ -3320,7 +3398,7 @@
         "isProfit": false
       },
       "result": {
-        "questionHTML": "14. 某貨品以 $500 買入，$400 賣出。求盈虧百分率。",
+        "questionHTML": "14. 某貨品以 $500 買入，$400 賣出。求百分變化。",
         "correctAnswer": "-20",
         "paramsUsed": {
           "cost": 500,
@@ -3330,7 +3408,7 @@
           "result": -20
         },
         "solutionHTML": "<div>盈虧 = 賣出價 - 買入價 = $-100</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\frac{-100}{500} \\times 100\\% = -20\\% \\)</div><div>即虧損 20\\%</div>",
-        "pdfText": "14. 某貨品以 $500 買入，$400 賣出。求盈虧百分率。",
+        "pdfText": "14. 某貨品以 $500 買入，$400 賣出。求百分變化。",
         "answers": [
           "-20",
           "-20%"

@@ -206,6 +206,7 @@
       "type": "text",
       "checkType": "unitNumeric",
       "params_schema": {
+        "cube": "false=長方體模式",
         "l": "長 cm",
         "w": "闊 cm",
         "h": "高 cm"
@@ -218,6 +219,9 @@
       "part": "part_a",
       "validator": "unitNumeric",
       "generator": "cuboid_volume",
+      "defaultParams": {
+        "cube": false
+      },
       "answerSpec": {
         "unit": "cm^3",
         "allowUnit": true

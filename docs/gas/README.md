@@ -11,6 +11,8 @@
 
 年級分頁不存在時會自動建立並寫入 header。舊格式不會改動原本活躍分頁的欄位或名稱。
 
+`attemptType` 的完整字彙為 `initial | wrong_retry | single_retry`；其中 `single_retry` 只用於本機單題操作記錄，不會作為 attemptLog 提交。詳細契約見 [作答類型文件](../attempt-types.md)。
+
 ## 已知舊契約差異
 
 查證時發現目前 ai-learning 的 `2025-26-中一-第三學期-甲部.html` 送出的是沒有 `grade` 的 attempt-summary rows；而既有部署 GAS 的九欄 mapping 是逐題資料欄位。為避免改壞既有工具，本 endpoint 對所有沒有 `grade` 的 `rows` 一律保留原本活躍分頁與九欄 mapping，不自行轉換舊資料。部署時必須實測舊工具一筆資料，確認現有 Sheet 的實際結果符合老師預期。
