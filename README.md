@@ -16,6 +16,7 @@
 | `question-bank.json` | 外部題目庫：18 個題型 + 1 個 preset。每個題型有 `grade` / `term` / `topicKey` / `topicName` 供分層篩選。 |
 | `templates/student.html` | 學生版模板（含佔位符，**不可直接開啟使用**） |
 | `tool/index.html` | 老師選題工具：年級 → 學期 → 課題 → 題目，逐題預覽及確認後匯出 |
+| `docs/attempt-types.md` | 學生作答記錄的 `initial` / `wrong_retry` / `single_retry` 契約 |
 | `test/` | 測試腳本 |
 
 學生收到的是由工具產生嘅 `student-practice-{presetKey}-YYYYMMDD.html`（或自訂模式：`student-practice-YYYYMMDD.html`），已內嵌全部題目。
