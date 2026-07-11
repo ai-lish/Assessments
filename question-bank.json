@@ -1521,7 +1521,7 @@
       "generator": "alg_simplify_2var",
       "code": "LSC-2526-S2-T3-01-NA-22",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "合併同類項後的一次式（a、b 項）"
+      "referenceAnswer": "-2a-4b"
     },
     {
       "key": "s2t3_square_expand_2var",
@@ -1550,7 +1550,7 @@
       },
       "code": "LSC-2526-S2-T3-02-NA-17",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "x^2+2bxy+b^2y^2"
+      "referenceAnswer": "x^2+4xy+4y^2"
     },
     {
       "key": "solve_eq_fraction",
@@ -1583,7 +1583,7 @@
       },
       "code": "LSC-2526-S2-T3-03-NA-7",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "x = <數值>"
+      "referenceAnswer": "x=3"
     },
     {
       "key": "solve_eq_bracket",
@@ -1615,7 +1615,7 @@
       },
       "code": "LSC-2526-S2-T3-04-NA-7",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "x = <數值>"
+      "referenceAnswer": "x=-3"
     },
     {
       "key": "factor_neg_common",
@@ -1642,7 +1642,7 @@
       "generator": "factor_neg_common",
       "code": "LSC-2526-S2-T3-05-NA-23",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "-kx(x^n+1)"
+      "referenceAnswer": "-x(x^2+1)"
     },
     {
       "key": "round_decimal",
@@ -1670,7 +1670,7 @@
       "generator": "round_decimal",
       "code": "LSC-2526-S2-T3-08-ME-8",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "按指定方法捨入後的小數"
+      "referenceAnswer": "3.0"
     },
     {
       "key": "combine_fractions",
@@ -1697,7 +1697,7 @@
       "generator": "combine_fractions",
       "code": "LSC-2526-S2-T3-09-NA-24",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "(ma+c)/(mk)"
+      "referenceAnswer": "(6a+5)/(6k)"
     },
     {
       "key": "coef_exp_div",
@@ -1727,7 +1727,7 @@
       "generator": "coef_exp_div",
       "code": "LSC-2526-S2-T3-11-NA-25",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "約分後的係數及 x 指數"
+      "referenceAnswer": "3x^2/2"
     },
     {
       "key": "ratio_three",
@@ -1756,7 +1756,7 @@
       "generator": "ratio_three",
       "code": "LSC-2526-S2-T3-12-NA-26",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "a:b:c"
+      "referenceAnswer": "9:21:4"
     },
     {
       "key": "discount",
@@ -1783,7 +1783,7 @@
       "generator": "discount",
       "code": "LSC-2526-S2-T3-13-ME-9",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "現售價"
+      "referenceAnswer": "$5.4"
     },
     {
       "key": "profit_pct",
@@ -1811,7 +1811,7 @@
       "generator": "profit_pct",
       "code": "LSC-2526-S2-T3-14-ME-10",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "盈虧百分率"
+      "referenceAnswer": "20%"
     },
     {
       "key": "square_root_pm",
@@ -1837,7 +1837,7 @@
       "generator": "square_root_pm",
       "code": "LSC-2526-S2-T3-15-NA-27",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "±√n 或化簡根式"
+      "referenceAnswer": "±10"
     },
     {
       "key": "cuboid_volume_cube",
@@ -1870,7 +1870,7 @@
       },
       "code": "LSC-2526-S2-T3-16-ME-4",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "體積（cm^3）"
+      "referenceAnswer": "125 cm^3 或 125"
     },
     {
       "key": "s2t3_factor_diff_sq",
@@ -1897,7 +1897,7 @@
       "generator": "factor_diff_sq",
       "code": "LSC-2526-S2-T3-06-NA-18",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "(ax-b)(ax+b)"
+      "referenceAnswer": "(2x+3)(2x-3)"
     },
     {
       "key": "s2t3_sig_fig",
@@ -1924,7 +1924,7 @@
       "generator": "sig_fig",
       "code": "LSC-2526-S2-T3-07-ME-1",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "按指定有效數字的數值"
+      "referenceAnswer": "3"
     },
     {
       "key": "s2t3_exp_law",
@@ -1951,7 +1951,7 @@
       "generator": "exp_law",
       "code": "LSC-2526-S2-T3-10-NA-5",
       "source": "s2-t3-marking-scheme-2026-07-05",
-      "referenceAnswer": "x^(a+b)"
+      "referenceAnswer": "x^12"
     }
   ],
   "presets": [
