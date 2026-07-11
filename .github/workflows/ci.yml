@@ -72,6 +72,9 @@ jobs:
       - name: Cuboid mode regression
         run: node test/cuboid_modes.cjs
 
+      - name: Pythagorean cone random regression
+        run: node test/pyth_cone_random.cjs
+
       - name: Dynamic code scan
         run: node test/no_dynamic_code.cjs
 
