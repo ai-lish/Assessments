@@ -78,6 +78,9 @@ jobs:
       - name: Hemisphere type definition regression
         run: node test/hemisphere_type.cjs
 
+      - name: Generator unit coefficient scan
+        run: node test/generator_unit_coefficient_scan.cjs
+
       - name: Dynamic code scan
         run: node test/no_dynamic_code.cjs
 

@@ -1862,7 +1862,7 @@
         "d": -4
       },
       "result": {
-        "questionHTML": "2. 展開並化簡 \\( (2x+3)(1x-4) \\)。",
+      "questionHTML": "2. 展開並化簡 \\( (2x+3)(x-4) \\)。",
         "correctAnswer": "2x^2-5x-12",
         "paramsUsed": {
           "a": 2,
@@ -1874,13 +1874,13 @@
           "x1": -5,
           "constTerm": -12
         },
-        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(1x-4) = 2x^2-5x-12 \\)</div>",
-        "pdfText": "2. 展開並化簡 \\( (2x+3)(1x-4) \\)。",
+      "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(x-4) = 2x^2-5x-12 \\)</div>",
+      "pdfText": "2. 展開並化簡 \\( (2x+3)(x-4) \\)。",
         "answers": [
           "2x^2-5x-12"
         ],
         "displayAnswer": "2x^2-5x-12",
-        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(1x-4) = 2x^2-5x-12 \\)</div>",
+      "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(x-4) = 2x^2-5x-12 \\)</div>",
         "checkType": "polyTerms",
         "answerSpec": {
           "order": "loose"
@@ -1961,7 +1961,7 @@
         "square": true
       },
       "result": {
-        "questionHTML": "3. 展開並化簡 \\( (1x+5)^2 \\)。",
+      "questionHTML": "3. 展開並化簡 \\( (x+5)^2 \\)。",
         "correctAnswer": "x^2+10x+25",
         "paramsUsed": {
           "a": 1,
@@ -1973,13 +1973,13 @@
           "x1": 10,
           "constTerm": 25
         },
-        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (1x+5)^2 = x^2+10x+25 \\)</div>",
-        "pdfText": "3. 展開並化簡 \\( (1x+5)^2 \\)。",
+      "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5)^2 = x^2+10x+25 \\)</div>",
+      "pdfText": "3. 展開並化簡 \\( (x+5)^2 \\)。",
         "answers": [
           "x^2+10x+25"
         ],
         "displayAnswer": "x^2+10x+25",
-        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (1x+5)^2 = x^2+10x+25 \\)</div>",
+      "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5)^2 = x^2+10x+25 \\)</div>",
         "checkType": "polyTerms",
         "answerSpec": {
           "order": "loose"
