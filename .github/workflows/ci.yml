@@ -81,6 +81,9 @@ jobs:
       - name: Hemisphere type definition regression
         run: node test/hemisphere_type.cjs
 
+      - name: Triangle center shape variants
+        run: node test/triangle_center_variants.cjs
+
       - name: Generator unit coefficient scan
         run: node test/generator_unit_coefficient_scan.cjs
 
@@ -116,6 +119,9 @@ jobs:
 
       - name: PDF snapshot fixture regression
         run: node test/pdf_snapshot.cjs
+
+      - name: Similar-question PDF regression
+        run: node test/similar_pdf.cjs
 
       - name: S1 Term 3 baseline
         run: node test/s1_term3_baseline.cjs

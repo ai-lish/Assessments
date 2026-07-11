@@ -342,6 +342,61 @@ check("two PDF clicks create two snapshots from QUESTION_SPECS", pdfClickState.c
 check("two PDF clicks produce different snapshot params", pdfClickState.sig1 !== pdfClickState.sig2, `${pdfClickState.sig1} vs ${pdfClickState.sig2}`);
 check("two PDF clicks produce different snapshot ids", pdfClickState.id1 !== pdfClickState.id2);
 
+const similarPdfState = vm.runInContext(`
+  const similarCaptured = [];
+  const originalSimilarPrint = AssessPDF.printSnapshot;
+  AssessPDF.printSnapshot = function(snapshot, options) {
+    similarCaptured.push({ snapshot, options });
+    return { snapshot, html: AssessPDF.renderPrintDocument(snapshot, options || {}), target: null };
+  };
+  currIdx = 0;
+  answered = false;
+  const currentFirst = JSON.stringify(qList[currIdx].paramsUsed);
+  printSimilarPDF();
+  currInput = String(qList[currIdx].correctAnswer);
+  checkAns();
+  const correctFeedback = document.getElementById("q-feedback").className;
+  printSimilarPDF();
+  showQ();
+  currInput = "__definitely_wrong__";
+  checkAns();
+  const wrongFeedback = document.getElementById("q-feedback").className;
+  printSimilarPDF();
+  currIdx = 1;
+  showQ();
+  const switchedType = qList[currIdx].typeKey;
+  printSimilarPDF();
+  AssessPDF.printSnapshot = originalSimilarPrint;
+  ({
+    count: similarCaptured.length,
+    unansweredCount: similarCaptured[0].snapshot.questions.length,
+    correctCount: similarCaptured[1].snapshot.questions.length,
+    wrongCount: similarCaptured[2].snapshot.questions.length,
+    correctFeedback,
+    wrongFeedback,
+    firstType: similarCaptured[0].snapshot.sourceTypeKey,
+    switchedType,
+    switchedPdfType: similarCaptured[3].snapshot.sourceTypeKey,
+    firstSignatures: similarCaptured[0].snapshot.questions.map(q => JSON.stringify(q.paramsUsed)),
+    currentFirst,
+    allSimilarScope: similarCaptured.every(item => item.options.scope === "similar")
+  });
+`, firstLoad);
+check("similar PDF works before answering", similarPdfState.count === 4 && similarPdfState.unansweredCount === 5);
+check("similar PDF remains available after correct answer", similarPdfState.correctCount === 5 && /correct/.test(similarPdfState.correctFeedback));
+check("similar PDF remains available after wrong answer", similarPdfState.wrongCount === 5 && /incorrect/.test(similarPdfState.wrongFeedback));
+check("similar PDF follows current type after switching question", similarPdfState.switchedPdfType === similarPdfState.switchedType && similarPdfState.switchedPdfType !== similarPdfState.firstType);
+check("similar PDF variants are mutually unique", new Set(similarPdfState.firstSignatures).size === similarPdfState.unansweredCount);
+check("similar PDF excludes current instance", !similarPdfState.firstSignatures.includes(similarPdfState.currentFirst));
+check("student caller uses shared similar PDF scope", similarPdfState.allSimilarScope);
+
+check("in-progress toolbar whole-PDF button removed", !/<div class="toolbar"[\s\S]*?onclick="printPDF\(\)"/.test(template));
+check("in-progress local export button removed", !/<button[^>]+onclick="exportStudentAnswers\(\)"/.test(template));
+check("legacy Sheets-export button label absent", !/匯出記錄至(?: Google )?Sheets/.test(template));
+check("completed result keeps sole teacher-submit button", /id="btn-export"[^>]+onclick="handleExport\(\)"[^>]*>📤 提交答案至老師/.test(template));
+check("result page keeps whole-paper PDF button", /id="btn-result-pdf"[^>]+onclick="printPDF\(\)"/.test(template));
+check("whole-paper PDF function remains available", /function printPDF\(\)/.test(template));
+
 const retryState = vm.runInContext(`
   const before = JSON.stringify(QUESTIONS.find(q => q.qid === "q001").paramsUsed);
   origWrongIds = ["q001"];

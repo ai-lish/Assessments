@@ -1862,7 +1862,7 @@
         "d": -4
       },
       "result": {
-      "questionHTML": "2. 展開並化簡 \\( (2x+3)(x-4) \\)。",
+        "questionHTML": "2. 展開並化簡 \\( (2x+3)(x-4) \\)。",
         "correctAnswer": "2x^2-5x-12",
         "paramsUsed": {
           "a": 2,
@@ -1874,13 +1874,13 @@
           "x1": -5,
           "constTerm": -12
         },
-      "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(x-4) = 2x^2-5x-12 \\)</div>",
-      "pdfText": "2. 展開並化簡 \\( (2x+3)(x-4) \\)。",
+        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(x-4) = 2x^2-5x-12 \\)</div>",
+        "pdfText": "2. 展開並化簡 \\( (2x+3)(x-4) \\)。",
         "answers": [
           "2x^2-5x-12"
         ],
         "displayAnswer": "2x^2-5x-12",
-      "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(x-4) = 2x^2-5x-12 \\)</div>",
+        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (2x+3)(x-4) = 2x^2-5x-12 \\)</div>",
         "checkType": "polyTerms",
         "answerSpec": {
           "order": "loose"
@@ -1961,7 +1961,7 @@
         "square": true
       },
       "result": {
-      "questionHTML": "3. 展開並化簡 \\( (x+5)^2 \\)。",
+        "questionHTML": "3. 展開並化簡 \\( (x+5)^2 \\)。",
         "correctAnswer": "x^2+10x+25",
         "paramsUsed": {
           "a": 1,
@@ -1973,13 +1973,13 @@
           "x1": 10,
           "constTerm": 25
         },
-      "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5)^2 = x^2+10x+25 \\)</div>",
-      "pdfText": "3. 展開並化簡 \\( (x+5)^2 \\)。",
+        "solutionHTML": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5)^2 = x^2+10x+25 \\)</div>",
+        "pdfText": "3. 展開並化簡 \\( (x+5)^2 \\)。",
         "answers": [
           "x^2+10x+25"
         ],
         "displayAnswer": "x^2+10x+25",
-      "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5)^2 = x^2+10x+25 \\)</div>",
+        "steps": "<div>用分配律展開：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( (x+5)^2 = x^2+10x+25 \\)</div>",
         "checkType": "polyTerms",
         "answerSpec": {
           "order": "loose"
@@ -2318,16 +2318,32 @@
   "triangle_center": [
     {
       "params": {
-        "center": "centroid"
+        "center": "centroid",
+        "shapeKey": "acute-wide"
       },
       "result": {
-        "questionHTML": "9. 下圖顯示三角形內三條線段交於點 \\(P\\)。若這三條線段是三條中線的交點，點 \\(P\\) 是三角形的哪一個心？<br><svg width=\"250\" height=\"150\" style=\"background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"45,120 205,120 115,30\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"115\" y1=\"30\" x2=\"125\" y2=\"120\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"45\" y1=\"120\" x2=\"160\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"205\" y1=\"120\" x2=\"80\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><circle cx=\"123\" cy=\"88\" r=\"5\" fill=\"#e74c3c\"/><text x=\"132\" y=\"91\" font-size=\"12\" fill=\"#e74c3c\">P</text></svg>",
+        "questionHTML": "9. 下圖顯示一個闊身三角形內三條線交於點 \\(P\\)。若這三條線是三條中線的交點，點 \\(P\\) 是三角形的哪一個心？<br><svg viewBox=\"0 0 250 160\" width=\"250\" height=\"160\" style=\"max-width:100%;background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"32,132 218,132 118,24\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"32.00\" y1=\"132.00\" x2=\"168.00\" y2=\"78.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"218.00\" y1=\"132.00\" x2=\"75.00\" y2=\"78.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"118.00\" y1=\"24.00\" x2=\"125.00\" y2=\"132.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><circle cx=\"122.67\" cy=\"96.00\" r=\"5\" fill=\"#e74c3c\"/><text x=\"130.67\" y=\"100.00\" font-size=\"12\" fill=\"#e74c3c\">P</text><text x=\"20\" y=\"137\" font-size=\"12\">A</text><text x=\"223\" y=\"137\" font-size=\"12\">B</text><text x=\"115\" y=\"17\" font-size=\"12\">C</text></svg>",
         "correctAnswer": "centroid",
         "paramsUsed": {
-          "center": "centroid"
+          "center": "centroid",
+          "shapeKey": "acute-wide",
+          "vertices": {
+            "a": [
+              32,
+              132
+            ],
+            "b": [
+              218,
+              132
+            ],
+            "c": [
+              118,
+              24
+            ]
+          }
         },
         "solutionHTML": "<div>形心：三條中線的交點。</div>",
-        "pdfText": "9. 判斷三角形四心。",
+        "pdfText": "9. 判斷三角形四心（闊身三角形）。",
         "answers": [
           "centroid"
         ],
@@ -2352,21 +2368,37 @@
             "label": "垂心"
           }
         ],
-        "imageSvg": "<svg width=\"250\" height=\"150\" style=\"background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"45,120 205,120 115,30\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"115\" y1=\"30\" x2=\"125\" y2=\"120\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"45\" y1=\"120\" x2=\"160\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"205\" y1=\"120\" x2=\"80\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><circle cx=\"123\" cy=\"88\" r=\"5\" fill=\"#e74c3c\"/><text x=\"132\" y=\"91\" font-size=\"12\" fill=\"#e74c3c\">P</text></svg>"
+        "imageSvg": "<svg viewBox=\"0 0 250 160\" width=\"250\" height=\"160\" style=\"max-width:100%;background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"32,132 218,132 118,24\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"32.00\" y1=\"132.00\" x2=\"168.00\" y2=\"78.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"218.00\" y1=\"132.00\" x2=\"75.00\" y2=\"78.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"118.00\" y1=\"24.00\" x2=\"125.00\" y2=\"132.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><circle cx=\"122.67\" cy=\"96.00\" r=\"5\" fill=\"#e74c3c\"/><text x=\"130.67\" y=\"100.00\" font-size=\"12\" fill=\"#e74c3c\">P</text><text x=\"20\" y=\"137\" font-size=\"12\">A</text><text x=\"223\" y=\"137\" font-size=\"12\">B</text><text x=\"115\" y=\"17\" font-size=\"12\">C</text></svg>"
       }
     },
     {
       "params": {
-        "center": "orthocenter"
+        "center": "orthocenter",
+        "shapeKey": "acute-right"
       },
       "result": {
-        "questionHTML": "9. 下圖顯示三角形內三條線段交於點 \\(P\\)。若這三條線段是三條高的交點，點 \\(P\\) 是三角形的哪一個心？<br><svg width=\"250\" height=\"150\" style=\"background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"45,120 205,120 115,30\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"115\" y1=\"30\" x2=\"125\" y2=\"120\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"45\" y1=\"120\" x2=\"160\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"205\" y1=\"120\" x2=\"80\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><circle cx=\"123\" cy=\"88\" r=\"5\" fill=\"#e74c3c\"/><text x=\"132\" y=\"91\" font-size=\"12\" fill=\"#e74c3c\">P</text></svg>",
+        "questionHTML": "9. 下圖顯示一個右傾三角形內三條線交於點 \\(P\\)。若這三條線是三條高的交點，點 \\(P\\) 是三角形的哪一個心？<br><svg viewBox=\"0 0 250 160\" width=\"250\" height=\"160\" style=\"max-width:100%;background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"28,122 220,132 148,28\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"28.00\" y1=\"122.00\" x2=\"153.11\" y2=\"35.38\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"220.00\" y1=\"132.00\" x2=\"142.13\" y2=\"32.60\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"148.00\" y1=\"28.00\" x2=\"142.79\" y2=\"127.98\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><circle cx=\"147.41\" cy=\"39.33\" r=\"5\" fill=\"#e74c3c\"/><text x=\"155.41\" y=\"43.33\" font-size=\"12\" fill=\"#e74c3c\">P</text><text x=\"16\" y=\"127\" font-size=\"12\">A</text><text x=\"225\" y=\"137\" font-size=\"12\">B</text><text x=\"145\" y=\"21\" font-size=\"12\">C</text></svg>",
         "correctAnswer": "orthocenter",
         "paramsUsed": {
-          "center": "orthocenter"
+          "center": "orthocenter",
+          "shapeKey": "acute-right",
+          "vertices": {
+            "a": [
+              28,
+              122
+            ],
+            "b": [
+              220,
+              132
+            ],
+            "c": [
+              148,
+              28
+            ]
+          }
         },
         "solutionHTML": "<div>垂心：三條高的交點。</div>",
-        "pdfText": "9. 判斷三角形四心。",
+        "pdfText": "9. 判斷三角形四心（右傾三角形）。",
         "answers": [
           "orthocenter"
         ],
@@ -2391,7 +2423,7 @@
             "label": "垂心"
           }
         ],
-        "imageSvg": "<svg width=\"250\" height=\"150\" style=\"background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"45,120 205,120 115,30\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"115\" y1=\"30\" x2=\"125\" y2=\"120\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"45\" y1=\"120\" x2=\"160\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><line x1=\"205\" y1=\"120\" x2=\"80\" y2=\"75\" stroke=\"#3498db\" stroke-dasharray=\"4,3\"/><circle cx=\"123\" cy=\"88\" r=\"5\" fill=\"#e74c3c\"/><text x=\"132\" y=\"91\" font-size=\"12\" fill=\"#e74c3c\">P</text></svg>"
+        "imageSvg": "<svg viewBox=\"0 0 250 160\" width=\"250\" height=\"160\" style=\"max-width:100%;background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"28,122 220,132 148,28\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"28.00\" y1=\"122.00\" x2=\"153.11\" y2=\"35.38\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"220.00\" y1=\"132.00\" x2=\"142.13\" y2=\"32.60\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"148.00\" y1=\"28.00\" x2=\"142.79\" y2=\"127.98\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><circle cx=\"147.41\" cy=\"39.33\" r=\"5\" fill=\"#e74c3c\"/><text x=\"155.41\" y=\"43.33\" font-size=\"12\" fill=\"#e74c3c\">P</text><text x=\"16\" y=\"127\" font-size=\"12\">A</text><text x=\"225\" y=\"137\" font-size=\"12\">B</text><text x=\"145\" y=\"21\" font-size=\"12\">C</text></svg>"
       }
     }
   ],

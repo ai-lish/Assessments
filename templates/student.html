@@ -56,6 +56,9 @@
   #quiz-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
   .quiz-content { padding: 10px 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
+  .similar-pdf-row { display: flex; justify-content: flex-end; width: 100%; margin: -5px 0 8px; }
+  .similar-pdf-btn { max-width: 100%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 10px; font-size: 0.78em; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .similar-pdf-btn:disabled { opacity: 0.55; cursor: not-allowed; }
   .question-text { font-size: 1.1em; color: var(--text-main); margin: 0; text-align: left; width: 100%; line-height: 1.6; }
   .question-text b { color: var(--accent); }
   .geo-image { margin-bottom: 15px; text-align: center; display: flex; justify-content: center; width: 100%; }
@@ -142,14 +145,10 @@
     <span id="score-mini" class="score-badge">得分: 0</span>
   </div>
 
-  <div class="toolbar" id="toolbar">
-    <button onclick="printPDF()">🖨️ PDF 雙版</button>
-    <button onclick="exportStudentAnswers()">📤 匯出學生答案</button>
-  </div>
-
   <div id="quiz-view">
     <div class="quiz-content">
       <div class="question-card">
+        <div class="similar-pdf-row"><button type="button" id="btn-similar-pdf" class="similar-pdf-btn" onclick="printSimilarPDF()">🖨️ 同類練習 PDF</button></div>
         <div id="q-text" class="question-text">題目載入中...</div>
       </div>
       <div id="q-image" class="geo-image" style="display:none;"></div>
@@ -215,6 +214,7 @@
         <button class="main-btn" id="btn-retry-all" style="background:#95a5a6;" onclick="initGame('all')">全部重做</button>
         <button class="main-btn" id="btn-retry-wrong" style="background: var(--danger);" onclick="initGame('wrong')">重做錯題</button>
       </div>
+      <button class="main-btn" id="btn-result-pdf" style="background:#7f8c8d;" onclick="printPDF()">🖨️ 整卷 PDF 雙版</button>
       <button class="main-btn" id="btn-export" style="background: #27ae60;" onclick="handleExport()" disabled>📤 提交答案至老師</button>
       <div id="submit-hint" class="submit-hint">完成所有錯題重做後方可提交</div>
       <button class="main-btn" id="btn-back-practice" style="background: var(--primary); display:none;" onclick="initGame('all')">返回練習</button>
@@ -617,6 +617,7 @@ function showQ() {
   document.getElementById("p-text").textContent = "Q" + (currIdx + 1) + "/" + qList.length;
   document.getElementById("q-text").innerHTML = q.questionHTML;
   updateQuestionCodeDisplay(q);
+  updateSimilarPdfButton(q);
   document.getElementById("q-feedback").style.display = "none";
   document.getElementById("q-feedback").textContent = "";
   document.getElementById("btn-check").style.display = "block";
@@ -1130,6 +1131,45 @@ function printPDF() {
     showToast("✓ 已開啟 PDF 題目＋答案雙版");
   } catch (e) {
     showToast("⚠️ PDF 匯出失敗：" + (e.message || e));
+  }
+}
+
+function findQuestionSpec(q) {
+  if (!q || !Array.isArray(QUESTION_SPECS)) return null;
+  return QUESTION_SPECS.find(spec => spec.qid === q.qid)
+    || QUESTION_SPECS.find(spec => spec.typeKey === q.typeKey)
+    || null;
+}
+
+function updateSimilarPdfButton(q) {
+  const btn = document.getElementById("btn-similar-pdf");
+  if (!btn) return;
+  const spec = findQuestionSpec(q);
+  btn.disabled = !spec;
+  const typeKey = q && q.typeKey ? q.typeKey : "";
+  if (btn.dataset) btn.dataset.typeKey = typeKey;
+  else if (btn.setAttribute) btn.setAttribute("data-type-key", typeKey);
+  btn.title = spec ? "產生當前題型的同類練習" : "此舊版練習未包含題型生成規格";
+}
+
+function printSimilarPDF() {
+  try {
+    const current = qList[currIdx];
+    const spec = findQuestionSpec(current);
+    if (!current || !spec) {
+      showToast("⚠️ 此題型暫未能產生同類練習");
+      return;
+    }
+    const seed = AssessPDF.createSnapshotSeed();
+    const snapshot = AssessPDF.generateVariantSnapshot(spec, current, 5, seed, {
+      baseTitle: "同類練習",
+      presetKey: PRESET_KEY,
+      generatedAt: new Date().toISOString(),
+    });
+    AssessPDF.printSnapshot(snapshot, { showCode: true, scope: "similar" });
+    showToast("✓ 已開啟 " + snapshot.actualCount + " 題同類練習 PDF");
+  } catch (e) {
+    showToast("⚠️ 同類練習 PDF 失敗：" + (e.message || e));
   }
 }
 
