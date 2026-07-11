@@ -21,6 +21,7 @@
  * Usage:
  *   node gen_exercise_html.cjs [--mode=regular|custom|by-topic] [--name=...] \
  *                              [--year=2526] [--topic=...] [--out-root=exercises] \
+ *                              [--overwrite] \
  *                              [--gas-url=https://script.google.com/macros/s/...] \
  *                              [presetKey1 presetKey2 ...]
  *
@@ -42,6 +43,7 @@ const DEFAULTS = {
   name: null,      // for custom / by-topic
   topic: null,     // for by-topic
   gasUrl: '',
+  overwrite: false,
 };
 
 // --- Tiny CLI parser (no external dep) ---
@@ -56,6 +58,7 @@ function parseArgs(argv) {
     else if (a.startsWith('--topic=')) opts.topic = a.slice(8);
     else if (a.startsWith('--out-root=')) opts.outRoot = path.resolve(a.slice(11));
     else if (a.startsWith('--gas-url=')) opts.gasUrl = a.slice(10);
+    else if (a === '--overwrite') opts.overwrite = true;
     else if (a === '--help' || a === '-h') {
       console.log(fs.readFileSync(__filename, 'utf-8').split('\n').filter(l => l.startsWith(' *') || l.startsWith('#')).join('\n'));
       process.exit(0);
@@ -240,7 +243,7 @@ for (const preset of presets) {
     const { grade, term } = deriveGradeTerm(preset.key);
     const dir = path.join(opts.outRoot, year, grade, term);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
-    const nn = nextAvailableNn(dir, 'part-a');
+    const nn = opts.overwrite ? '01' : nextAvailableNn(dir, 'part-a');
     if (!nn) {
       console.error(`  ERROR: All 01-03 taken in ${dir}. Refuse to overwrite (upper bound is 3).`);
       process.exit(3);
