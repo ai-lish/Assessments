@@ -1388,6 +1388,7 @@
   "cuboid_volume": [
     {
       "params": {
+        "cube": false,
         "l": 3,
         "w": 4,
         "h": 5
@@ -1399,6 +1400,7 @@
           "l": 3,
           "w": 4,
           "h": 5,
+          "cube": false,
           "unit": "cm^3",
           "result": 60
         },
@@ -1420,6 +1422,7 @@
     },
     {
       "params": {
+        "cube": false,
         "l": 7,
         "w": 2,
         "h": 6
@@ -1431,6 +1434,7 @@
           "l": 7,
           "w": 2,
           "h": 6,
+          "cube": false,
           "unit": "cm^3",
           "result": 84
         },

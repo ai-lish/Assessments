@@ -69,6 +69,9 @@ jobs:
       - name: Profit percentage-change wording regression
         run: node test/profit_pct_wording.cjs
 
+      - name: Cuboid mode regression
+        run: node test/cuboid_modes.cjs
+
       - name: Dynamic code scan
         run: node test/no_dynamic_code.cjs
 
