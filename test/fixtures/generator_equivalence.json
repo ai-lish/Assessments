@@ -3293,7 +3293,7 @@
         "isProfit": true
       },
       "result": {
-        "questionHTML": "14. 某貨品以 $1000 買入，$1150 賣出。求盈虧百分率。",
+        "questionHTML": "14. 某貨品以 $1000 買入，$1150 賣出。求百分變化。",
         "correctAnswer": "15",
         "paramsUsed": {
           "cost": 1000,
@@ -3303,7 +3303,7 @@
           "result": 15
         },
         "solutionHTML": "<div>盈虧 = 賣出價 - 買入價 = $150</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\frac{150}{1000} \\times 100\\% = 15\\% \\)</div><div>即盈利 15\\%</div>",
-        "pdfText": "14. 某貨品以 $1000 買入，$1150 賣出。求盈虧百分率。",
+        "pdfText": "14. 某貨品以 $1000 買入，$1150 賣出。求百分變化。",
         "answers": [
           "15",
           "15%"
@@ -3320,7 +3320,7 @@
         "isProfit": false
       },
       "result": {
-        "questionHTML": "14. 某貨品以 $500 買入，$400 賣出。求盈虧百分率。",
+        "questionHTML": "14. 某貨品以 $500 買入，$400 賣出。求百分變化。",
         "correctAnswer": "-20",
         "paramsUsed": {
           "cost": 500,
@@ -3330,7 +3330,7 @@
           "result": -20
         },
         "solutionHTML": "<div>盈虧 = 賣出價 - 買入價 = $-100</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( \\frac{-100}{500} \\times 100\\% = -20\\% \\)</div><div>即虧損 20\\%</div>",
-        "pdfText": "14. 某貨品以 $500 買入，$400 賣出。求盈虧百分率。",
+        "pdfText": "14. 某貨品以 $500 買入，$400 賣出。求百分變化。",
         "answers": [
           "-20",
           "-20%"

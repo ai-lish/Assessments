@@ -66,6 +66,9 @@ jobs:
       - name: Math correctness contract regression
         run: node test/mathfix_contract.cjs
 
+      - name: Profit percentage-change wording regression
+        run: node test/profit_pct_wording.cjs
+
       - name: Dynamic code scan
         run: node test/no_dynamic_code.cjs
 
