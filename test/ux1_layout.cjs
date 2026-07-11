@@ -46,6 +46,14 @@ check('template base controls include minus, delete, and clear',
   keypadConfig && ['-', '⌫', 'C'].every((label) => keypadConfig.controlKeys.includes(label)));
 check('template has keypad-area id for collapse control', /id="keypad-area"/.test(template));
 check('template has independent action-area id', /id="action-area"/.test(template));
+check('template places both PDF controls between answer actions and keypad',
+  /id="action-area"[\s\S]*id="pdf-action-area"[\s\S]*id="btn-similar-pdf"[\s\S]*id="btn-whole-pdf"[\s\S]*id="keypad-area"/.test(template));
+check('template keeps result-page whole PDF control', /id="btn-result-pdf"[^>]+onclick="printPDF\(\)"/.test(template));
+check('template applies dynamic viewport and safe-area bottom padding',
+  /height:\s*100dvh/.test(template) && /env\(safe-area-inset-bottom\)/.test(template));
+check('template has session keypad position toggle',
+  /id="btn-shift-keypad"/.test(template) && /let keypadRaised = false/.test(template) &&
+  /function toggleKeypadPosition\(\)/.test(template) && /classList\.toggle\("keypad-raised", keypadRaised\)/.test(template));
 check('next button lives outside keypad-area',
   /id="action-area"[\s\S]{0,500}id="btn-next"/.test(template) &&
   !/id="keypad-area"[\s\S]{0,500}id="btn-next"/.test(template));
@@ -71,6 +79,10 @@ for (const rel of exercisePaths) {
   check(`${rel} includes one dynamic keypad`, /id="keypad" aria-label="題型專用按鍵"/.test(html) && !/id="keypad-context"/.test(html));
   check(`${rel} includes per-question keypad configuration`, /const INPUT_KEYPAD_CONFIG = \{/.test(html));
   check(`${rel} includes independent action-area id`, /id="action-area"/.test(html));
+  check(`${rel} includes adjacent in-progress PDF controls`,
+    /id="pdf-action-area"[\s\S]*id="btn-similar-pdf"[\s\S]*id="btn-whole-pdf"/.test(html));
+  check(`${rel} includes keypad safe-area and position toggle`,
+    /env\(safe-area-inset-bottom\)/.test(html) && /id="btn-shift-keypad"/.test(html));
   check(`${rel} keeps next button outside keypad-area`,
     /id="action-area"[\s\S]{0,500}id="btn-next"/.test(html) &&
     !/id="keypad-area"[\s\S]{0,500}id="btn-next"/.test(html));
