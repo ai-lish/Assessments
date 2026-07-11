@@ -1285,7 +1285,8 @@
       "type": "choice",
       "checkType": "choiceKey",
       "params_schema": {
-        "center": "circumcenter / incenter / centroid / orthocenter"
+        "center": "circumcenter / incenter / centroid / orthocenter",
+        "shapeKey": "acute-wide / acute-left / acute-right / acute-tall / acute-low-left / acute-low-right"
       },
       "options": [
         {

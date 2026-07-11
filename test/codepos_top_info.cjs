@@ -28,7 +28,7 @@ function check(label, condition, detail = '') {
 
 function topInfoBlock(html) {
   const start = html.indexOf('<div class="top-info">');
-  const end = html.indexOf('<div class="toolbar"', start);
+  const end = html.indexOf('<div id="quiz-view">', start);
   return start >= 0 && end > start ? html.slice(start, end) : '';
 }
 

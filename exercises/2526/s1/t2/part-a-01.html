@@ -56,6 +56,10 @@
   #quiz-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
   .quiz-content { padding: 10px 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
+  .similar-pdf-row { display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 6px; width: 100%; margin: -5px 0 8px; }
+  .similar-pdf-btn { max-width: 100%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 10px; font-size: 0.78em; font-weight: 700; cursor: pointer; white-space: nowrap; }
+  .similar-pdf-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .similar-pdf-hint { display: none; color: var(--text-muted); font-size: 0.76em; }
   .question-text { font-size: 1.1em; color: var(--text-main); margin: 0; text-align: left; width: 100%; line-height: 1.6; }
   .question-text b { color: var(--accent); }
   .geo-image { margin-bottom: 15px; text-align: center; display: flex; justify-content: center; width: 100%; }
@@ -142,14 +146,10 @@
     <span id="score-mini" class="score-badge">得分: 0</span>
   </div>
 
-  <div class="toolbar" id="toolbar">
-    <button onclick="printPDF()">🖨️ PDF 雙版</button>
-    <button onclick="exportStudentAnswers()">📤 匯出學生答案</button>
-  </div>
-
   <div id="quiz-view">
     <div class="quiz-content">
       <div class="question-card">
+        <div class="similar-pdf-row"><button type="button" id="btn-similar-pdf" class="similar-pdf-btn" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">🖨️ 同類練習 PDF</button><span id="similar-pdf-hint" class="similar-pdf-hint" role="status"></span></div>
         <div id="q-text" class="question-text">題目載入中...</div>
       </div>
       <div id="q-image" class="geo-image" style="display:none;"></div>
@@ -215,6 +215,7 @@
         <button class="main-btn" id="btn-retry-all" style="background:#95a5a6;" onclick="initGame('all')">全部重做</button>
         <button class="main-btn" id="btn-retry-wrong" style="background: var(--danger);" onclick="initGame('wrong')">重做錯題</button>
       </div>
+      <button class="main-btn" id="btn-result-pdf" style="background:#7f8c8d;" onclick="printPDF()">🖨️ 整卷 PDF 雙版</button>
       <button class="main-btn" id="btn-export" style="background: #27ae60;" onclick="handleExport()" disabled>📤 提交答案至老師</button>
       <div id="submit-hint" class="submit-hint">完成所有錯題重做後方可提交</div>
       <button class="main-btn" id="btn-back-practice" style="background: var(--primary); display:none;" onclick="initGame('all')">返回練習</button>
@@ -794,7 +795,46 @@
   "factor_cross": (function(){ var aPool=[1,2,3], cPool=[1,2,3], bdPool=[-6,-5,-4,-3,-2,2,3,4,5,6], combos=[]; function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){var t=y;y=x%y;x=t;}return x||0;} function legal(a,b,c,d){return !(a===c&&b===d)&&!(gcd(a,b)>1&&gcd(c,d)>1)&&(a*d+b*c)!==0&&b!==0&&d!==0;} for(var ai=0;ai<aPool.length;ai++){for(var ci=0;ci<cPool.length;ci++){for(var bi=0;bi<bdPool.length;bi++){for(var di=0;di<bdPool.length;di++){var aa=aPool[ai], cc=cPool[ci], bb=bdPool[bi], dd=bdPool[di]; if(legal(aa,bb,cc,dd)) combos.push({a:aa,b:bb,c:cc,d:dd});}}}} function rand(pool){return pool[Math.floor(Math.random()*pool.length)];} return function factor_cross(p) { var hasA=p.a!==undefined, hasB=p.b!==undefined, hasC=p.c!==undefined, hasD=p.d!==undefined; var pool=combos.filter(function(o){return (!hasA||o.a===p.a)&&(!hasB||o.b===p.b)&&(!hasC||o.c===p.c)&&(!hasD||o.d===p.d);}); var choice=rand(pool.length?pool:combos); var a=hasA?p.a:choice.a, b=hasB?p.b:choice.b, c=hasC?p.c:choice.c, d=hasD?p.d:choice.d; var x2=a*c, x1=a*d+b*c, ct=b*d; function poly(A,B,C){ function t(coef,deg,first){ if(coef===0)return ''; var sign=coef<0?'-':(first?'':'+'); var abs=Math.abs(coef); var v=deg===2?'x^2':(deg===1?'x':''); return sign+(abs===1&&v?'':abs)+v; } return t(A,2,true)+t(B,1,A===0)+t(C,0,A===0&&B===0); } var expr=poly(x2,x1,ct), g1=gcdInt(a,b), g2=gcdInt(c,d), coefficient=g1*g2, factors=[[a/g1,b/g1],[c/g2,d/g2]], ans=fmtFactorAnswer(coefficient,factors); var text='6. 因式分解 \\( '+expr+' \\)。'; var commonStep=coefficient===1?'':'<div>先抽出公因數 \\('+coefficient+'\\)，再分解餘下二次式。</div>'; var steps='<div>用十字相乘法：</div>'+commonStep+'<div>尋找兩個一次因式，使乘開後中間項為 \\('+x1+'x\\)。</div><div>完全因式分解：\\( '+expr+' = '+ans+' \\)</div>'; return {questionHTML:text, correctAnswer:ans, paramsUsed:{a:a,b:b,c:c,d:d,x2:x2,x1:x1,constTerm:ct,commonFactor:coefficient}, solutionHTML:steps, pdfText:text, answers:[ans], displayAnswer:ans, steps:steps, checkType:'factorPair', answerSpec:factorSpec(coefficient,factors)}; }; })(),
   "sci_notation": function sci_notation(p) { var r=function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var mantissa=p.mantissa||3.2, exponent=p.exponent!==undefined?p.exponent:r(3,6); var value=mantissa*Math.pow(10,exponent); var text='7. 把 \\( '+value+' \\) 寫成科學記數法。'; var ans=mantissa+'×10^'+exponent; var steps='<div>科學記數法形如 \\(a\\times10^n\\)，其中 \\(1\\leq a<10\\)。</div><div>\\( '+value+' = '+ans+' \\)</div>'; return {questionHTML:text, correctAnswer:ans, paramsUsed:{mantissa:mantissa,exponent:exponent,value:value}, solutionHTML:steps, pdfText:text, answers:[ans], displayAnswer:ans, steps:steps, checkType:'scientificNotation', answerSpec:{mantissa:mantissa, exponent:exponent, value:value}}; },
   "solve_ineq": (function(){ var aPool=[-5,-4,-3,-2,2,3,4,5], boundaryPool=[-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6], bPool=[-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8], opPool=['>','<','>=','<='], combos=[]; function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){var t=y;y=x%y;x=t;}return x||1;} function simpleDenominator(a,b,boundary){var rhs=a*boundary+b;var num=rhs-b;var den=a;var g=gcd(num,den);return Math.abs(den/g);} function legal(a,b,boundary){return a!==0&&simpleDenominator(a,b,boundary)<=4;} for(var ai=0;ai<aPool.length;ai++){for(var bi=0;bi<bPool.length;bi++){for(var qi=0;qi<boundaryPool.length;qi++){for(var oi=0;oi<opPool.length;oi++){var aa=aPool[ai], bb=bPool[bi], bd=boundaryPool[qi], op=opPool[oi]; if(legal(aa,bb,bd)) combos.push({a:aa,b:bb,boundary:bd,op:op});}}}} function rand(pool){return pool[Math.floor(Math.random()*pool.length)];} return function solve_ineq(p) { var hasA=p.a!==undefined, hasB=p.b!==undefined, hasBoundary=p.boundary!==undefined, hasOp=p.op!==undefined; var pool=combos.filter(function(o){return (!hasA||o.a===p.a)&&(!hasB||o.b===p.b)&&(!hasBoundary||o.boundary===p.boundary)&&(!hasOp||o.op===p.op);}); var choice=rand(pool.length?pool:combos); var a=hasA?p.a:choice.a, b=hasB?p.b:choice.b, boundary=hasBoundary?p.boundary:choice.boundary, op0=hasOp?p.op:choice.op; var rhs=a*boundary+b; var invert={'>':'<','<':'>','>=':'<=','<=':'>='}; var finalOp=a<0?invert[op0]:op0; var text='8. 解不等式 \\( '+a+'x '+(b>=0?'+ '+b:'- '+Math.abs(b))+' '+op0+' '+rhs+' \\)。'; var steps='<div>先移項，再除以 \\('+a+'\\)。</div><div>因為除以負數時，不等號方向要相反。</div><div style="font-size:1.05em;margin-top:5px;">\\( x '+finalOp+' '+boundary+' \\)</div>'; return {questionHTML:text, correctAnswer:'x'+finalOp+boundary, paramsUsed:{a:a,b:b,rhs:rhs,boundary:boundary,op:finalOp}, solutionHTML:steps, pdfText:text, answers:['x'+finalOp+boundary], displayAnswer:'x '+finalOp+' '+boundary, steps:steps, checkType:'inequality', answerSpec:{variable:'x', op:finalOp, value:boundary}}; }; })(),
-  "triangle_center": function triangle_center(p) { var centers=[{key:'circumcenter',label:'外心',desc:'三邊垂直平分線的交點'}, {key:'incenter',label:'內心',desc:'三角形三條角平分線的交點'}, {key:'centroid',label:'形心',desc:'三條中線的交點'}, {key:'orthocenter',label:'垂心',desc:'三條高的交點'}]; var item=centers.find(function(c){return c.key===(p.center||'centroid');})||centers[2]; var svg='<svg width="250" height="150" style="background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;"><polygon points="45,120 205,120 115,30" fill="#fff" stroke="#34495e" stroke-width="2"/><line x1="115" y1="30" x2="125" y2="120" stroke="#3498db" stroke-dasharray="4,3"/><line x1="45" y1="120" x2="160" y2="75" stroke="#3498db" stroke-dasharray="4,3"/><line x1="205" y1="120" x2="80" y2="75" stroke="#3498db" stroke-dasharray="4,3"/><circle cx="123" cy="88" r="5" fill="#e74c3c"/><text x="132" y="91" font-size="12" fill="#e74c3c">P</text></svg>'; var text='9. 下圖顯示三角形內三條線段交於點 \\(P\\)。若這三條線段是'+item.desc+'，點 \\(P\\) 是三角形的哪一個心？<br>'+svg; var steps='<div>'+item.label+'：'+item.desc+'。</div>'; return {questionHTML:text, correctAnswer:item.key, paramsUsed:{center:item.key}, solutionHTML:steps, pdfText:'9. 判斷三角形四心。', answers:[item.key], displayAnswer:item.label, steps:steps, checkType:'choiceKey', options:centers.map(function(c){return {key:c.key,label:c.label};}), imageSvg:svg}; },
+  "triangle_center": function triangle_center(p) {
+    var centers=[
+      {key:'circumcenter',label:'外心',desc:'三邊垂直平分線的交點'},
+      {key:'incenter',label:'內心',desc:'三角形三條角平分線的交點'},
+      {key:'centroid',label:'形心',desc:'三條中線的交點'},
+      {key:'orthocenter',label:'垂心',desc:'三條高的交點'}
+    ];
+    var shapes=[
+      {key:'acute-wide',label:'闊身',a:[32,132],b:[218,132],c:[118,24]},
+      {key:'acute-left',label:'左傾',a:[42,132],b:[212,122],c:[92,24]},
+      {key:'acute-right',label:'右傾',a:[28,122],b:[220,132],c:[148,28]},
+      {key:'acute-tall',label:'高身',a:[58,136],b:[202,126],c:[126,18]},
+      {key:'acute-low-left',label:'低左傾',a:[30,136],b:[216,116],c:[104,34]},
+      {key:'acute-low-right',label:'低右傾',a:[44,120],b:[220,136],c:[138,26]}
+    ];
+    function pick(list){return list[Math.floor(Math.random()*list.length)];}
+    function dist(u,v){var dx=u[0]-v[0],dy=u[1]-v[1];return Math.sqrt(dx*dx+dy*dy);}
+    function mid(u,v){return [(u[0]+v[0])/2,(u[1]+v[1])/2];}
+    function project(p0,u,v){var dx=v[0]-u[0],dy=v[1]-u[1],t=((p0[0]-u[0])*dx+(p0[1]-u[1])*dy)/(dx*dx+dy*dy);return [u[0]+t*dx,u[1]+t*dy];}
+    function circum(a,b,c){var d=2*(a[0]*(b[1]-c[1])+b[0]*(c[1]-a[1])+c[0]*(a[1]-b[1]));var aa=a[0]*a[0]+a[1]*a[1],bb=b[0]*b[0]+b[1]*b[1],cc=c[0]*c[0]+c[1]*c[1];return [(aa*(b[1]-c[1])+bb*(c[1]-a[1])+cc*(a[1]-b[1]))/d,(aa*(c[0]-b[0])+bb*(a[0]-c[0])+cc*(b[0]-a[0]))/d];}
+    function perpendicular(u,v){var m=mid(u,v),dx=v[0]-u[0],dy=v[1]-u[1],len=Math.sqrt(dx*dx+dy*dy),scale=90/len;return [[m[0]-dy*scale,m[1]+dx*scale],[m[0]+dy*scale,m[1]-dx*scale]];}
+    function line(seg){return '<line x1="'+seg[0][0].toFixed(2)+'" y1="'+seg[0][1].toFixed(2)+'" x2="'+seg[1][0].toFixed(2)+'" y2="'+seg[1][1].toFixed(2)+'" stroke="#3498db" stroke-width="1.8" stroke-dasharray="4,3"/>';}
+    var item=p.center!==undefined?centers.find(function(c){return c.key===p.center;}):pick(centers);
+    if(!item)item=centers[2];
+    var shape=p.shapeKey!==undefined?shapes.find(function(s){return s.key===p.shapeKey;}):pick(shapes);
+    if(!shape)shape=shapes[0];
+    var a=shape.a,b=shape.b,c=shape.c,pnt,segments;
+    if(item.key==='centroid'){pnt=[(a[0]+b[0]+c[0])/3,(a[1]+b[1]+c[1])/3];segments=[[a,mid(b,c)],[b,mid(a,c)],[c,mid(a,b)]];}
+    else if(item.key==='incenter'){var la=dist(b,c),lb=dist(a,c),lc=dist(a,b),sum=la+lb+lc;pnt=[(la*a[0]+lb*b[0]+lc*c[0])/sum,(la*a[1]+lb*b[1]+lc*c[1])/sum];segments=[[a,pnt],[b,pnt],[c,pnt]];}
+    else if(item.key==='circumcenter'){pnt=circum(a,b,c);segments=[perpendicular(a,b),perpendicular(b,c),perpendicular(c,a)];}
+    else {var o=circum(a,b,c);pnt=[a[0]+b[0]+c[0]-2*o[0],a[1]+b[1]+c[1]-2*o[1]];segments=[[a,project(a,b,c)],[b,project(b,a,c)],[c,project(c,a,b)]];}
+    var svg='<svg viewBox="0 0 250 160" width="250" height="160" style="max-width:100%;background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;">';
+    svg+='<polygon points="'+a.join(',')+' '+b.join(',')+' '+c.join(',')+'" fill="#fff" stroke="#34495e" stroke-width="2"/>';
+    for(var i=0;i<segments.length;i++)svg+=line(segments[i]);
+    svg+='<circle cx="'+pnt[0].toFixed(2)+'" cy="'+pnt[1].toFixed(2)+'" r="5" fill="#e74c3c"/><text x="'+(pnt[0]+8).toFixed(2)+'" y="'+(pnt[1]+4).toFixed(2)+'" font-size="12" fill="#e74c3c">P</text>';
+    svg+='<text x="'+(a[0]-12)+'" y="'+(a[1]+5)+'" font-size="12">A</text><text x="'+(b[0]+5)+'" y="'+(b[1]+5)+'" font-size="12">B</text><text x="'+(c[0]-3)+'" y="'+(c[1]-7)+'" font-size="12">C</text></svg>';
+    var text='9. 下圖顯示一個'+shape.label+'三角形內三條線交於點 \\(P\\)。若這三條線是'+item.desc+'，點 \\(P\\) 是三角形的哪一個心？<br>'+svg;
+    var steps='<div>'+item.label+'：'+item.desc+'。</div>';
+    return {questionHTML:text,correctAnswer:item.key,paramsUsed:{center:item.key,shapeKey:shape.key,vertices:{a:a,b:b,c:c}},solutionHTML:steps,pdfText:'9. 判斷三角形四心（'+shape.label+'三角形）。',answers:[item.key],displayAnswer:item.label,steps:steps,checkType:'choiceKey',options:centers.map(function(center){return {key:center.key,label:center.label};}),imageSvg:svg};
+  },
   "solid_mensuration": function solid_mensuration(p) { var rand=function(pool){return pool[Math.floor(Math.random()*pool.length)];}; var rPool=[2,3,4,5,6], hPool=[4,5,6,7,8,9,10,12]; var type=p.solidType||'sphere', r=(p.r!==undefined)?p.r:rand(rPool), h=(p.h!==undefined)?p.h:rand(hPool); var coeff, text, formula, unit='cm^3'; if(type==='sphere'){ coeff=makePiCoeff(4*r*r*r,3); text='10. 半徑為 \\('+r+'\\text{ cm}\\) 的球體，求體積。'; formula='\\frac{4}{3}\\pi r^3'; } else if(type==='hemisphere'){ coeff=makePiCoeff(2*r*r*r,3); text='10. 半徑為 \\('+r+'\\text{ cm}\\) 的半球體，求體積。'; formula='\\frac{2}{3}\\pi r^3'; } else if(type==='cylinder'){ coeff=makePiCoeff(r*r*h,1); text='11. 圓柱半徑為 \\('+r+'\\text{ cm}\\)，高為 \\('+h+'\\text{ cm}\\)。求體積。'; formula='\\pi r^2h'; } else { coeff=makePiCoeff(r*r*h,3); text='12. 圓錐半徑為 \\('+r+'\\text{ cm}\\)，高為 \\('+h+'\\text{ cm}\\)。求體積。'; formula='\\frac{1}{3}\\pi r^2h'; } var val=piCoeffValue(coeff)*Math.PI; var dec=(Math.round(val*1000)/1000).toString(); var piDisplay=piCoeffDisplay(coeff); var piInput=piCoeffInput(coeff); var piParam=piCoeffParam(coeff); var steps='<div>公式：\\('+formula+'\\)</div><div>答案：\\('+piDisplay+'\\text{ cm}^3 \\approx '+dec+'\\text{ cm}^3\\)</div>'; return {questionHTML:text, correctAnswer:dec, paramsUsed:{solidType:type,r:r,h:h,piCoeff:piParam,decimal:dec}, solutionHTML:steps, pdfText:text, answers:[dec,piInput], displayAnswer:piDisplay+' cm³ ≈ '+dec+' cm³', steps:steps, checkType:'unitNumeric', answerSpec:{allowUnit:true, unit:unit, tolerance:0.05, exactPiCoefficient:piCoeffSpec(coeff)}}; },
   "sector_measure": function sector_measure(p) { var rand=function(pool){return pool[Math.floor(Math.random()*pool.length)];}; var rPool=[3,4,5,6,8,9,10,12], anglePool=[30,45,60,90,120,135,150,180], askPool=['area','arc']; var r=(p.r!==undefined)?p.r:rand(rPool), angle=(p.angle!==undefined)?p.angle:rand(anglePool), ask=(p.ask!==undefined)?p.ask:rand(askPool); var coeff, text, unit, formula; if(ask==='arc'){ coeff=makePiCoeff(2*r*angle,360); text='13. 扇形半徑為 \\('+r+'\\text{ cm}\\)，圓心角為 \\('+angle+'^\\circ\\)。求弧長。'; unit='cm'; formula='\\frac{\\theta}{360^\\circ}\\times2\\pi r'; } else { coeff=makePiCoeff(r*r*angle,360); text='13. 扇形半徑為 \\('+r+'\\text{ cm}\\)，圓心角為 \\('+angle+'^\\circ\\)。求面積。'; unit='cm^2'; formula='\\frac{\\theta}{360^\\circ}\\times\\pi r^2'; } var val=piCoeffValue(coeff)*Math.PI; var dec=(Math.round(val*1000)/1000).toString(); var piDisplay=piCoeffDisplay(coeff); var piInput=piCoeffInput(coeff); var piParam=piCoeffParam(coeff); var steps='<div>公式：\\('+formula+'\\)</div><div>答案：\\('+piDisplay+'\\text{ '+unit.replace('^','^')+'} \\approx '+dec+'\\)</div>'; return {questionHTML:text, correctAnswer:dec, paramsUsed:{r:r,angle:angle,ask:ask,piCoeff:piParam,decimal:dec}, solutionHTML:steps, pdfText:text, answers:[dec,piInput], displayAnswer:piDisplay+' '+unit+' ≈ '+dec+' '+unit, steps:steps, checkType:'unitNumeric', answerSpec:{allowUnit:true, unit:unit, tolerance:0.05, exactPiCoefficient:piCoeffSpec(coeff)}}; },
   "pyth_cone": function pyth_cone(p) { var bases=[[3,4,5],[5,12,13],[8,15,17],[7,24,25]], scales=[1,2,3], triples=[]; for(var bi=0;bi<bases.length;bi++){for(var si=0;si<scales.length;si++){triples.push([bases[bi][0]*scales[si],bases[bi][1]*scales[si],bases[bi][2]*scales[si]]);}} var chosen=triples[Math.floor(Math.random()*triples.length)], mode=p.mode||'findL', r=(p.r!==undefined)?p.r:chosen[0], h=(p.h!==undefined)?p.h:chosen[1], l=(p.l!==undefined)?p.l:chosen[2]; var ans, text, steps; if(mode==='findH'){ ans=Math.sqrt(l*l-r*r); text='14. 圓錐的半徑為 \\('+r+'\\text{ cm}\\)，斜高為 \\('+l+'\\text{ cm}\\)。求垂直高。'; steps='<div>由畢氏定理：\\(h^2 + r^2 = l^2\\)。</div><div>\\(h=\\sqrt{'+l+'^2-'+r+'^2}='+ans+'\\)</div>'; } else { ans=Math.sqrt(r*r+h*h); text='14. 圓錐的半徑為 \\('+r+'\\text{ cm}\\)，垂直高為 \\('+h+'\\text{ cm}\\)。求斜高。'; steps='<div>由畢氏定理：\\(l^2 = r^2 + h^2\\)。</div><div>\\(l=\\sqrt{'+r+'^2+'+h+'^2}='+ans+'\\)</div>'; } var out=(Math.round(ans*1000)/1000).toString(); return {questionHTML:text, correctAnswer:out, paramsUsed:{mode:mode,r:r,h:h,l:l,result:out}, solutionHTML:steps, pdfText:text, answers:[out], displayAnswer:out+' cm', steps:steps, checkType:'unitNumeric', answerSpec:{allowUnit:true, unit:'cm', tolerance:0.05}}; },
@@ -904,6 +944,18 @@ function createAssessPDF() {
     finally { Math.random = originalRandom; }
   }
 
+  function stableStringify(value) {
+    if (Array.isArray(value)) return "[" + value.map(stableStringify).join(",") + "]";
+    if (value && typeof value === "object") {
+      return "{" + Object.keys(value).sort().map((key) => JSON.stringify(key) + ":" + stableStringify(value[key])).join(",") + "}";
+    }
+    return JSON.stringify(value);
+  }
+
+  function paramsSignature(params) {
+    return stableStringify(params || {});
+  }
+
   function createSnapshotSeed(seedValue) {
     if (seedValue !== null && seedValue !== undefined && seedValue !== "") return String(seedValue);
     if (typeof crypto !== "undefined" && crypto.getRandomValues) {
@@ -987,6 +1039,46 @@ function createAssessPDF() {
     return buildSnapshot(instances, finalSeed, options || {});
   }
 
+  function generateVariantSnapshot(spec, currentQuestion, count, seed, options) {
+    const opts = options || {};
+    const generatorApi = opts.generatorApi
+      || (typeof AssessGenerators !== "undefined" ? AssessGenerators : null)
+      || (typeof window !== "undefined" ? window.AssessGenerators : null);
+    if (!generatorApi || typeof generatorApi.generateQuestion !== "function") {
+      throw new Error("AssessGenerators 未載入，無法產生同類練習 PDF");
+    }
+    const requestedCount = Math.max(0, Number(count) || 5);
+    const finalSeed = createSnapshotSeed(seed);
+    const excludedSignature = paramsSignature(currentQuestion && currentQuestion.paramsUsed);
+    const seen = new Set([excludedSignature]);
+    const maxAttempts = opts.maxAttempts || Math.max(200, requestedCount * 200);
+    const instances = withOptionalSeed(finalSeed, () => {
+      const accepted = [];
+      for (let attempt = 0; attempt < maxAttempts && accepted.length < requestedCount; attempt += 1) {
+        const candidateSpec = Object.assign({}, spec, {
+          qid: "q" + String(accepted.length + 1).padStart(3, "0"),
+        });
+        const instance = buildInstance(candidateSpec, accepted.length, generatorApi);
+        const signature = paramsSignature(instance.paramsUsed);
+        if (seen.has(signature)) continue;
+        seen.add(signature);
+        accepted.push(instance);
+      }
+      return accepted;
+    });
+    const baseTitle = opts.baseTitle || "同類練習";
+    const title = instances.length < requestedCount
+      ? baseTitle + "(本題型共 " + instances.length + " 變式)"
+      : baseTitle + "（" + instances.length + "題）";
+    const snapshot = buildSnapshot(instances, finalSeed, Object.assign({}, opts, { title }));
+    snapshot.scope = "similar";
+    snapshot.requestedCount = requestedCount;
+    snapshot.actualCount = instances.length;
+    snapshot.sourceTypeKey = (spec && (spec.typeKey || (spec.typeDef && spec.typeDef.key))) || null;
+    snapshot.excludedParamsSignature = excludedSignature;
+    return snapshot;
+  }
+
   function generateSnapshotFromQuestions(questions, options) {
     const seed = options && options.seed ? String(options.seed) : "existing-runtime";
     const instances = questions.map((q, index) => normalizeQuestionInstance(q, index));
@@ -1044,15 +1136,19 @@ function createAssessPDF() {
     const title = (snapshot && snapshot.title ? snapshot.title : "(甲部) 短答題")
       + (mode === "teacher" ? " 答案版" : "");
     const modeClass = mode === "teacher" ? "teacher" : "student";
+    const showSolutions = mode === "teacher" && options && options.showSolutions === true;
     const rows = snapshot.questions.map((q, idx) => {
       const answer = mode === "teacher"
         ? '<div class="pdf-answer pdf-teacher-answer">' + answerHtml(q.displayAnswer || q.correctAnswer) + '</div>'
         : '<div class="pdf-answer-line"></div>';
       const code = showCode && q.code ? '<div class="pdf-code">' + escapeHtml(q.code) + '</div>' : "";
+      const solution = showSolutions && q.solutionHTML
+        ? '<div class="pdf-solution"><strong>解題步驟：</strong>' + stripScripts(q.solutionHTML) + '</div>'
+        : "";
       return [
         '<article class="pdf-question-row" data-qid="' + escapeHtml(q.qid) + '" data-type-key="' + escapeHtml(q.typeKey) + '">',
         '  <div class="pdf-question-left">',
-        '    <div class="pdf-question-body">' + questionHtml(q) + '</div>',
+        '    <div class="pdf-question-body">' + questionHtml(q) + '</div>' + solution,
         code,
         '  </div>',
         '  <div class="pdf-answer-right">',
@@ -1083,8 +1179,9 @@ function createAssessPDF() {
 
   function renderPrintDocument(snapshot, options) {
     const showCode = !options || options.showCode !== false;
+    const scope = options && options.scope === "similar" ? "similar" : "whole";
     const student = renderPDF(snapshot, "student", { showCode });
-    const teacher = renderPDF(snapshot, "teacher", { showCode });
+    const teacher = renderPDF(snapshot, "teacher", { showCode, showSolutions: scope === "similar" });
     const scriptOpen = "<scr" + "ipt";
     const scriptClose = "</scr" + "ipt>";
     return '<!DOCTYPE html>\n<html lang="zh-HK">\n<head>\n<meta charset="UTF-8">\n'
@@ -1093,7 +1190,7 @@ function createAssessPDF() {
       + scriptOpen + '>window.MathJax={tex:{inlineMath:[[\'\\\\(\',\'\\\\)\'],[\'$\',\'$\']],displayMath:[[\'$$\',\'$$\']]},options:{skipHtmlTags:[\'script\',\'noscript\',\'style\',\'textarea\',\'pre\']},startup:{typeset:false}};' + scriptClose + '\n'
       + scriptOpen + ' id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">' + scriptClose + '\n'
       + '<style>' + printCss() + '</style>\n</head>\n<body data-snapshot-id="' + escapeHtml(snapshot.snapshotId) + '">\n'
-      + student + '\n<div class="pdf-page-separator"></div>\n' + teacher + '\n'
+      + '<div data-pdf-scope="' + scope + '">' + student + '\n<div class="pdf-page-separator"></div>\n' + teacher + '</div>\n'
       + scriptOpen + '>' + printScript() + scriptClose + '\n</body>\n</html>';
   }
 
@@ -1113,6 +1210,8 @@ function createAssessPDF() {
       '.pdf-question-body{font-size:11pt;overflow-wrap:anywhere;}',
       '.pdf-question-body svg,.pdf-figure svg{max-width:100%;height:auto;}',
       '.pdf-code{font-family:Menlo,Consolas,monospace;font-size:7.5pt;color:#777;margin-top:1.5mm;}',
+      '.pdf-solution{margin-top:2mm;padding:2mm;border-left:2pt solid #c0392b;background:#fff7f5;font-size:9pt;overflow-wrap:anywhere;}',
+      '.pdf-solution svg{max-width:100%;height:auto;}',
       '.pdf-answer-right{display:flex;align-items:flex-end;gap:3mm;min-height:12mm;}',
       '.pdf-qno{font-weight:bold;font-size:11pt;min-width:9mm;}',
       '.pdf-answer-line{border-bottom:1pt solid #111;flex:1;height:9mm;}',
@@ -1157,10 +1256,11 @@ function createAssessPDF() {
     generateSnapshot,
     generateSnapshotFromSpecs,
     generateSnapshotFromQuestions,
+    generateVariantSnapshot,
     renderPDF,
     renderPrintDocument,
     printSnapshot,
-    _private: { hashString, printScript, printCss, answerHtml },
+    _private: { hashString, printScript, printCss, answerHtml, paramsSignature },
   };
 }
 
@@ -1172,8 +1272,8 @@ const TITLE = "2025-26 年度 中一第二學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"s1t2_prime_factor","typeDef":{"key":"s1t2_prime_factor","name":"質因數連乘式及指數記數法","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"primeFactor","params_schema":{"n":"可分解為質因數指數式的正整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"primeFactor","generator":"prime_factor","code":"LSC-2526-S1-T2-01-NA-3","source":""},"params":{}},{"qid":"q002","typeKey":"s1t2_hcf","typeDef":{"key":"s1t2_hcf","name":"H.C.F.","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"hcfLcm","params_schema":{"n1":"正整數","n2":"正整數","askLCM":"固定 false，只問 H.C.F."},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"hcfLcm","generator":"hcf_or_lcm","defaultParams":{"askLCM":false},"code":"LSC-2526-S1-T2-02-NA-4","source":""},"params":{}},{"qid":"q003","typeKey":"directed_add","typeDef":{"key":"directed_add","name":"有向數加法","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"signedNumeric","params_schema":{"a":"整數 -9..9，不取 0","b":"整數 -9..9，不取 0"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"signedNumeric","generator":"directed_add","code":"LSC-2526-S1-T2-03-NA-12","source":""},"params":{}},{"qid":"q004","typeKey":"directed_mul","typeDef":{"key":"directed_mul","name":"有向數乘法","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"signedNumeric","params_schema":{"a":"整數 -8..8，不取 0","b":"整數 -8..8，不取 0"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"signedNumeric","generator":"directed_mul","code":"LSC-2526-S1-T2-04-NA-13","source":""},"params":{}},{"qid":"q005","typeKey":"s1t2_word_to_alg","typeDef":{"key":"s1t2_word_to_alg","name":"文字轉代數式","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"algebraQ8","params_schema":{"t":"現有 5 種語句模板","a":"整數 2..9","b":"整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"algebraQ8","generator":"word_to_alg","code":"LSC-2526-S1-T2-05-NA-8","source":""},"params":{}},{"qid":"q006","typeKey":"s1t2_solve_eq_fraction","typeDef":{"key":"s1t2_solve_eq_fraction","name":"一元一次方程","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numericOrFraction","params_schema":{"coeff":"方程 ax=b 的 a","rVal":"方程 ax=b 的 b，可令答案為分數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numericOrFraction","generator":"solve_eq","defaultParams":{"coeff":4,"rVal":6},"prefix":"x = ","code":"LSC-2526-S1-T2-06-NA-7","source":""},"params":{}},{"qid":"q007","typeKey":"s1t2_solve_eq_negative","typeDef":{"key":"s1t2_solve_eq_negative","name":"含負數解一元一次方程","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numericOrFraction","params_schema":{"coeff":"方程 ax=b 的 a","xVal":"固定生成負數解"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numericOrFraction","generator":"solve_eq","defaultParams":{"xVal":-3},"prefix":"x = ","code":"LSC-2526-S1-T2-07-NA-7","source":""},"params":{}},{"qid":"q008","typeKey":"cuboid_volume","typeDef":{"key":"cuboid_volume","name":"長方體體積","category":"度量","difficulty":1,"grade":"s1","term":"2","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"cube":"false=長方體模式","l":"長 cm","w":"闊 cm","h":"高 cm"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"cuboid_volume","defaultParams":{"cube":false},"answerSpec":{"unit":"cm^3","allowUnit":true},"code":"LSC-2526-S1-T2-08-ME-4","source":""},"params":{}},{"qid":"q009","typeKey":"s1t2_poly_desc","typeDef":{"key":"s1t2_poly_desc","name":"多項式降冪排列","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"b":"x 項係數","c":"常數項絕對值"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"poly_desc","answerSpec":{"order":"strict"},"code":"LSC-2526-S1-T2-09-NA-9","source":""},"params":{}},{"qid":"q010","typeKey":"poly_constant","typeDef":{"key":"poly_constant","name":"常數項","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"signedNumeric","params_schema":{"a":"二次項係數","b":"一次項係數","c":"常數項，可為負"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"signedNumeric","generator":"poly_constant","code":"LSC-2526-S1-T2-10-NA-14","source":""},"params":{}},{"qid":"q011","typeKey":"s1t2_alg_simplify","typeDef":{"key":"s1t2_alg_simplify","name":"合併同類項","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"第一個 x 項係數","b":"第一個常數項","c":"第二個 x 項係數","d":"第二個常數項"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"alg_simplify","answerSpec":{"order":"loose"},"code":"LSC-2526-S1-T2-11-NA-6","source":""},"params":{}},{"qid":"q012","typeKey":"expand_bracket","typeDef":{"key":"expand_bracket","name":"展開括號","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"k":"括號外係數，可為負","a":"括號內 x 項係數","b":"括號內常數項，可為負"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"expand_bracket","answerSpec":{"order":"loose"},"code":"LSC-2526-S1-T2-12-NA-15","source":""},"params":{}},{"qid":"q013","typeKey":"s1t2_coordinate","typeDef":{"key":"s1t2_coordinate","name":"坐標的 x/y 坐標","category":"幾何","difficulty":1,"grade":"s1","term":"2","topicKey":"geometry","topicName":"幾何","type":"coordinate","checkType":"coordinatePoint","params_schema":{"rx":"A 點 x 坐標","ry":"A 點 y 坐標","askAxis":"x 或 y"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"coordinatePoint","generator":"coordinate","answerSpec":{"coordinateMode":"axis-value","interaction":{"clickTolerance":0}},"code":"LSC-2526-S1-T2-13-GE-2","source":""},"params":{}},{"qid":"q014","typeKey":"quadrant","typeDef":{"key":"quadrant","name":"象限判斷","category":"幾何","difficulty":1,"grade":"s1","term":"2","topicKey":"geometry","topicName":"幾何","type":"choice","checkType":"choiceKey","options":[{"key":"I","label":"A. 第一象限"},{"key":"II","label":"B. 第二象限"},{"key":"III","label":"C. 第三象限"},{"key":"IV","label":"D. 第四象限"}],"params_schema":{"x":"非零整數","y":"非零整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"quadrant","code":"LSC-2526-S1-T2-14-GE-4","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-11T04:31:48.540Z";
-const BANK_HASH = "b63_14_699743ea";
+const GENERATED_AT = "2026-07-11T13:53:48.466Z";
+const BANK_HASH = "b63_14_ff2c9842";
 const PRESET_KEY = "s1_term2_part_a";
 const GRADE = "s1";
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzxgJ2SvMO0FeHqdjwiYc2AlCyRiIXVEVmP3-Xs0y_IDO9inGTXC4w0strgWH7WgH_A/exec";
@@ -1529,6 +1629,7 @@ function showQ() {
   document.getElementById("p-text").textContent = "Q" + (currIdx + 1) + "/" + qList.length;
   document.getElementById("q-text").innerHTML = q.questionHTML;
   updateQuestionCodeDisplay(q);
+  updateSimilarPdfButton(q);
   document.getElementById("q-feedback").style.display = "none";
   document.getElementById("q-feedback").textContent = "";
   document.getElementById("btn-check").style.display = "block";
@@ -2042,6 +2143,78 @@ function printPDF() {
     showToast("✓ 已開啟 PDF 題目＋答案雙版");
   } catch (e) {
     showToast("⚠️ PDF 匯出失敗：" + (e.message || e));
+  }
+}
+
+function findQuestionSpec(q) {
+  if (!q || !Array.isArray(QUESTION_SPECS)) return null;
+  return QUESTION_SPECS.find(spec => spec.qid === q.qid)
+    || QUESTION_SPECS.find(spec => spec.typeKey === q.typeKey)
+    || null;
+}
+
+const similarPdfAvailabilityCache = new Map();
+
+function hasSimilarPdfVariant(spec, q) {
+  if (!spec || !q) return false;
+  const cacheKey = (q.typeKey || "") + ":" + JSON.stringify(q.paramsUsed || {});
+  if (similarPdfAvailabilityCache.has(cacheKey)) return similarPdfAvailabilityCache.get(cacheKey);
+  const probe = AssessPDF.generateVariantSnapshot(spec, q, 1, "availability:" + cacheKey, {
+    baseTitle: "同類練習",
+    presetKey: PRESET_KEY,
+    maxAttempts: 400,
+  });
+  const available = probe.actualCount > 0;
+  similarPdfAvailabilityCache.set(cacheKey, available);
+  return available;
+}
+
+function updateSimilarPdfButton(q) {
+  const btn = document.getElementById("btn-similar-pdf");
+  const hint = document.getElementById("similar-pdf-hint");
+  if (!btn) return;
+  const spec = findQuestionSpec(q);
+  let available = false;
+  if (spec) {
+    try { available = hasSimilarPdfVariant(spec, q); }
+    catch (e) { available = false; }
+  }
+  btn.disabled = !spec || !available;
+  const typeKey = q && q.typeKey ? q.typeKey : "";
+  if (btn.dataset) btn.dataset.typeKey = typeKey;
+  else if (btn.setAttribute) btn.setAttribute("data-type-key", typeKey);
+  btn.title = !spec
+    ? "此舊版練習未包含題型生成規格"
+    : (available ? "產生當前題型的同類練習" : "本題型暫無其他變式");
+  if (hint) {
+    hint.textContent = spec && !available ? "本題型暫無其他變式" : "";
+    hint.style.display = spec && !available ? "inline" : "none";
+  }
+}
+
+function printSimilarPDF() {
+  try {
+    const current = qList[currIdx];
+    const spec = findQuestionSpec(current);
+    if (!current || !spec) {
+      showToast("⚠️ 此題型暫未能產生同類練習");
+      return;
+    }
+    const seed = AssessPDF.createSnapshotSeed();
+    const snapshot = AssessPDF.generateVariantSnapshot(spec, current, 5, seed, {
+      baseTitle: "同類練習",
+      presetKey: PRESET_KEY,
+      generatedAt: new Date().toISOString(),
+    });
+    if (snapshot.actualCount === 0) {
+      updateSimilarPdfButton(current);
+      showToast("⚠️ 本題型暫無其他變式");
+      return;
+    }
+    AssessPDF.printSnapshot(snapshot, { showCode: true, scope: "similar" });
+    showToast("✓ 已開啟 " + snapshot.actualCount + " 題同類練習 PDF");
+  } catch (e) {
+    showToast("⚠️ 同類練習 PDF 失敗：" + (e.message || e));
   }
 }
 

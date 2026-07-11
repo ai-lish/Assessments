@@ -55,6 +55,18 @@ function createAssessPDF() {
     finally { Math.random = originalRandom; }
   }
 
+  function stableStringify(value) {
+    if (Array.isArray(value)) return "[" + value.map(stableStringify).join(",") + "]";
+    if (value && typeof value === "object") {
+      return "{" + Object.keys(value).sort().map((key) => JSON.stringify(key) + ":" + stableStringify(value[key])).join(",") + "}";
+    }
+    return JSON.stringify(value);
+  }
+
+  function paramsSignature(params) {
+    return stableStringify(params || {});
+  }
+
   function createSnapshotSeed(seedValue) {
     if (seedValue !== null && seedValue !== undefined && seedValue !== "") return String(seedValue);
     if (typeof crypto !== "undefined" && crypto.getRandomValues) {
@@ -138,6 +150,46 @@ function createAssessPDF() {
     return buildSnapshot(instances, finalSeed, options || {});
   }
 
+  function generateVariantSnapshot(spec, currentQuestion, count, seed, options) {
+    const opts = options || {};
+    const generatorApi = opts.generatorApi
+      || (typeof AssessGenerators !== "undefined" ? AssessGenerators : null)
+      || (typeof window !== "undefined" ? window.AssessGenerators : null);
+    if (!generatorApi || typeof generatorApi.generateQuestion !== "function") {
+      throw new Error("AssessGenerators 未載入，無法產生同類練習 PDF");
+    }
+    const requestedCount = Math.max(0, Number(count) || 5);
+    const finalSeed = createSnapshotSeed(seed);
+    const excludedSignature = paramsSignature(currentQuestion && currentQuestion.paramsUsed);
+    const seen = new Set([excludedSignature]);
+    const maxAttempts = opts.maxAttempts || Math.max(200, requestedCount * 200);
+    const instances = withOptionalSeed(finalSeed, () => {
+      const accepted = [];
+      for (let attempt = 0; attempt < maxAttempts && accepted.length < requestedCount; attempt += 1) {
+        const candidateSpec = Object.assign({}, spec, {
+          qid: "q" + String(accepted.length + 1).padStart(3, "0"),
+        });
+        const instance = buildInstance(candidateSpec, accepted.length, generatorApi);
+        const signature = paramsSignature(instance.paramsUsed);
+        if (seen.has(signature)) continue;
+        seen.add(signature);
+        accepted.push(instance);
+      }
+      return accepted;
+    });
+    const baseTitle = opts.baseTitle || "同類練習";
+    const title = instances.length < requestedCount
+      ? baseTitle + "(本題型共 " + instances.length + " 變式)"
+      : baseTitle + "（" + instances.length + "題）";
+    const snapshot = buildSnapshot(instances, finalSeed, Object.assign({}, opts, { title }));
+    snapshot.scope = "similar";
+    snapshot.requestedCount = requestedCount;
+    snapshot.actualCount = instances.length;
+    snapshot.sourceTypeKey = (spec && (spec.typeKey || (spec.typeDef && spec.typeDef.key))) || null;
+    snapshot.excludedParamsSignature = excludedSignature;
+    return snapshot;
+  }
+
   function generateSnapshotFromQuestions(questions, options) {
     const seed = options && options.seed ? String(options.seed) : "existing-runtime";
     const instances = questions.map((q, index) => normalizeQuestionInstance(q, index));
@@ -195,15 +247,19 @@ function createAssessPDF() {
     const title = (snapshot && snapshot.title ? snapshot.title : "(甲部) 短答題")
       + (mode === "teacher" ? " 答案版" : "");
     const modeClass = mode === "teacher" ? "teacher" : "student";
+    const showSolutions = mode === "teacher" && options && options.showSolutions === true;
     const rows = snapshot.questions.map((q, idx) => {
       const answer = mode === "teacher"
         ? '<div class="pdf-answer pdf-teacher-answer">' + answerHtml(q.displayAnswer || q.correctAnswer) + '</div>'
         : '<div class="pdf-answer-line"></div>';
       const code = showCode && q.code ? '<div class="pdf-code">' + escapeHtml(q.code) + '</div>' : "";
+      const solution = showSolutions && q.solutionHTML
+        ? '<div class="pdf-solution"><strong>解題步驟：</strong>' + stripScripts(q.solutionHTML) + '</div>'
+        : "";
       return [
         '<article class="pdf-question-row" data-qid="' + escapeHtml(q.qid) + '" data-type-key="' + escapeHtml(q.typeKey) + '">',
         '  <div class="pdf-question-left">',
-        '    <div class="pdf-question-body">' + questionHtml(q) + '</div>',
+        '    <div class="pdf-question-body">' + questionHtml(q) + '</div>' + solution,
         code,
         '  </div>',
         '  <div class="pdf-answer-right">',
@@ -234,8 +290,9 @@ function createAssessPDF() {
 
   function renderPrintDocument(snapshot, options) {
     const showCode = !options || options.showCode !== false;
+    const scope = options && options.scope === "similar" ? "similar" : "whole";
     const student = renderPDF(snapshot, "student", { showCode });
-    const teacher = renderPDF(snapshot, "teacher", { showCode });
+    const teacher = renderPDF(snapshot, "teacher", { showCode, showSolutions: scope === "similar" });
     const scriptOpen = "<scr" + "ipt";
     const scriptClose = "</scr" + "ipt>";
     return '<!DOCTYPE html>\n<html lang="zh-HK">\n<head>\n<meta charset="UTF-8">\n'
@@ -244,7 +301,7 @@ function createAssessPDF() {
       + scriptOpen + '>window.MathJax={tex:{inlineMath:[[\'\\\\(\',\'\\\\)\'],[\'$\',\'$\']],displayMath:[[\'$$\',\'$$\']]},options:{skipHtmlTags:[\'script\',\'noscript\',\'style\',\'textarea\',\'pre\']},startup:{typeset:false}};' + scriptClose + '\n'
       + scriptOpen + ' id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">' + scriptClose + '\n'
       + '<style>' + printCss() + '</style>\n</head>\n<body data-snapshot-id="' + escapeHtml(snapshot.snapshotId) + '">\n'
-      + student + '\n<div class="pdf-page-separator"></div>\n' + teacher + '\n'
+      + '<div data-pdf-scope="' + scope + '">' + student + '\n<div class="pdf-page-separator"></div>\n' + teacher + '</div>\n'
       + scriptOpen + '>' + printScript() + scriptClose + '\n</body>\n</html>';
   }
 
@@ -264,6 +321,8 @@ function createAssessPDF() {
       '.pdf-question-body{font-size:11pt;overflow-wrap:anywhere;}',
       '.pdf-question-body svg,.pdf-figure svg{max-width:100%;height:auto;}',
       '.pdf-code{font-family:Menlo,Consolas,monospace;font-size:7.5pt;color:#777;margin-top:1.5mm;}',
+      '.pdf-solution{margin-top:2mm;padding:2mm;border-left:2pt solid #c0392b;background:#fff7f5;font-size:9pt;overflow-wrap:anywhere;}',
+      '.pdf-solution svg{max-width:100%;height:auto;}',
       '.pdf-answer-right{display:flex;align-items:flex-end;gap:3mm;min-height:12mm;}',
       '.pdf-qno{font-weight:bold;font-size:11pt;min-width:9mm;}',
       '.pdf-answer-line{border-bottom:1pt solid #111;flex:1;height:9mm;}',
@@ -308,9 +367,10 @@ function createAssessPDF() {
     generateSnapshot,
     generateSnapshotFromSpecs,
     generateSnapshotFromQuestions,
+    generateVariantSnapshot,
     renderPDF,
     renderPrintDocument,
     printSnapshot,
-    _private: { hashString, printScript, printCss, answerHtml },
+    _private: { hashString, printScript, printCss, answerHtml, paramsSignature },
   };
 }
