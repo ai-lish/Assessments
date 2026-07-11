@@ -28,7 +28,7 @@ const cases = [
   ["s1", "2", "geometry", 2],
   ["s1", "2", "data_handling", 0],
   ["s3", "3", "number_and_algebra", 8],
-  ["s3", "3", "measurement", 5],
+  ["s3", "3", "measurement", 6],
   ["s3", "3", "geometry", 1],
   ["s3", "3", "data_handling", 0],
 ];

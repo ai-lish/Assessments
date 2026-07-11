@@ -48,7 +48,7 @@ check('s2/3/measurement → 5 題', filterBankStrict(bank.data, 's2', '3', 'meas
 check('s2/3/geometry → 0 題', filterBankStrict(bank.data, 's2', '3', 'geometry').length === 0);
 check('s2/3/data_handling → 0 題', filterBankStrict(bank.data, 's2', '3', 'data_handling').length === 0);
 check('s3/3/number_and_algebra → 8 題', filterBankStrict(bank.data, 's3', '3', 'number_and_algebra').length === 8);
-check('s3/3/measurement → 5 題', filterBankStrict(bank.data, 's3', '3', 'measurement').length === 5);
+check('s3/3/measurement → 6 題', filterBankStrict(bank.data, 's3', '3', 'measurement').length === 6);
 check('s3/3/geometry → 1 題', filterBankStrict(bank.data, 's3', '3', 'geometry').length === 1);
 check('s3/3/data_handling → 0 題', filterBankStrict(bank.data, 's3', '3', 'data_handling').length === 0);
 // 演示題型

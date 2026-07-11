@@ -75,6 +75,9 @@ jobs:
       - name: Pythagorean cone random regression
         run: node test/pyth_cone_random.cjs
 
+      - name: Hemisphere type definition regression
+        run: node test/hemisphere_type.cjs
+
       - name: Dynamic code scan
         run: node test/no_dynamic_code.cjs
 

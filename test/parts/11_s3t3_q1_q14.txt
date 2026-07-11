@@ -283,7 +283,7 @@
     },
     {
       "key": "solid_sphere",
-      "name": "球體及半球體量度",
+      "name": "球體量度",
       "category": "度量",
       "difficulty": 2,
       "grade": "s3",
@@ -293,7 +293,7 @@
       "type": "text",
       "checkType": "unitNumeric",
       "params_schema": {
-        "solidType": "sphere 或 hemisphere",
+        "solidType": "固定 sphere",
         "r": "半徑"
       },
       "answers": [],
@@ -308,6 +308,35 @@
         "solidType": "sphere"
       },
       "code": "LSC-2526-S3-T3-10-ME-5",
+      "source": ""
+    },
+    {
+      "key": "solid_hemisphere",
+      "name": "半球體量度",
+      "category": "度量",
+      "difficulty": 2,
+      "grade": "s3",
+      "term": "3",
+      "topicKey": "measurement",
+      "topicName": "度量",
+      "type": "text",
+      "checkType": "unitNumeric",
+      "params_schema": {
+        "solidType": "固定 hemisphere",
+        "r": "半徑"
+      },
+      "answers": [],
+      "displayAnswer": "",
+      "steps": "",
+      "pdfText": "",
+      "schemaVersion": 1,
+      "part": "part_a",
+      "validator": "unitNumeric",
+      "generator": "solid_mensuration",
+      "defaultParams": {
+        "solidType": "hemisphere"
+      },
+      "code": "LSC-2526-S3-T3-15-ME-5",
       "source": ""
     },
     {

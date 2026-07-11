@@ -2463,6 +2463,80 @@
       }
     }
   ],
+  "solid_hemisphere": [
+    {
+      "params": {
+        "solidType": "hemisphere",
+        "r": 2,
+        "h": 8
+      },
+      "result": {
+        "questionHTML": "10. 半徑為 \\(2\\text{ cm}\\) 的半球體，求體積。",
+        "correctAnswer": "16.755",
+        "paramsUsed": {
+          "solidType": "hemisphere",
+          "r": 2,
+          "h": 8,
+          "piCoeff": "16/3",
+          "decimal": "16.755"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{16}{3}\\pi\\text{ cm}^3 \\approx 16.755\\text{ cm}^3\\)</div>",
+        "pdfText": "10. 半徑為 \\(2\\text{ cm}\\) 的半球體，求體積。",
+        "answers": [
+          "16.755",
+          "16π/3"
+        ],
+        "displayAnswer": "\\frac{16}{3}\\pi cm³ ≈ 16.755 cm³",
+        "steps": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{16}{3}\\pi\\text{ cm}^3 \\approx 16.755\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": {
+            "numerator": 16,
+            "denominator": 3
+          }
+        }
+      }
+    },
+    {
+      "params": {
+        "solidType": "hemisphere",
+        "r": 5,
+        "h": 8
+      },
+      "result": {
+        "questionHTML": "10. 半徑為 \\(5\\text{ cm}\\) 的半球體，求體積。",
+        "correctAnswer": "261.799",
+        "paramsUsed": {
+          "solidType": "hemisphere",
+          "r": 5,
+          "h": 8,
+          "piCoeff": "250/3",
+          "decimal": "261.799"
+        },
+        "solutionHTML": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{250}{3}\\pi\\text{ cm}^3 \\approx 261.799\\text{ cm}^3\\)</div>",
+        "pdfText": "10. 半徑為 \\(5\\text{ cm}\\) 的半球體，求體積。",
+        "answers": [
+          "261.799",
+          "250π/3"
+        ],
+        "displayAnswer": "\\frac{250}{3}\\pi cm³ ≈ 261.799 cm³",
+        "steps": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{250}{3}\\pi\\text{ cm}^3 \\approx 261.799\\text{ cm}^3\\)</div>",
+        "checkType": "unitNumeric",
+        "answerSpec": {
+          "allowUnit": true,
+          "unit": "cm^3",
+          "tolerance": 0.05,
+          "exactPiCoefficient": {
+            "numerator": 250,
+            "denominator": 3
+          }
+        }
+      }
+    }
+  ],
   "solid_cylinder": [
     {
       "params": {

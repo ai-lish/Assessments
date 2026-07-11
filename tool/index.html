@@ -431,7 +431,8 @@ const QUESTION_TYPE_NAMES = Object.freeze({
   sci_notation: "科學記數法",
   solve_ineq: "一元一次不等式",
   triangle_center: "三角形四心",
-  solid_sphere: "球體及半球體量度",
+  solid_sphere: "球體量度",
+  solid_hemisphere: "半球體量度",
   solid_cylinder: "圓柱量度",
   solid_cone: "圓錐量度",
   sector_measure: "扇形量度",
@@ -1137,7 +1138,8 @@ function genParamsForType(type) {
     case "sci_notation": return { mantissa: pick([1.2,2.5,3.2,4.8,6.4,8.75]), exponent: r(3, 7) };
     case "solve_ineq": return { a: pick([-5,-4,-3,-2]), b: r(-6, 6), boundary: r(-5, 5), op: pick(["<", "<=", ">", ">="]) };
     case "triangle_center": return { center: pick(["circumcenter", "incenter", "centroid", "orthocenter"]) };
-    case "solid_sphere": return { solidType: pick(["sphere", "hemisphere"]), r: r(2, 6) };
+    case "solid_sphere": return { solidType: "sphere", r: r(2, 6) };
+    case "solid_hemisphere": return { solidType: "hemisphere", r: r(2, 6) };
     case "solid_cylinder": return { solidType: "cylinder", r: r(2, 6), h: r(4, 12) };
     case "solid_cone": return { solidType: "cone", r: r(2, 6), h: r(4, 12) };
     case "sector_measure": return { r: r(3, 10), angle: pick([30,45,60,90,120]), ask: pick(["arc", "area"]) };

@@ -23,7 +23,7 @@ Rules:
 - `schoolYear` is a four-digit school-year code, for example `2526` for 2025-26.
 - `grade` uses `S1`, `S2`, `S3`; demo or uncategorized examples may use `S0`.
 - `term` uses `T1`, `T2`, `T3`; demo or uncategorized examples may use `T0`.
-- `questionNo` is the two-digit order inside the preset.
+- `questionNo` is the two-digit order inside the preset. For a bank-only entry that is not yet in a preset, it is a reserved catalog position and does not add the entry to that preset.
 - `topicCode` is one of the topic abbreviations below.
 - `familyNo` is assigned by generator/question semantics, not by grade. Once assigned, a family number must not be reused or changed.
 
@@ -82,7 +82,7 @@ No current question-bank entry uses a `DSE` code. The format is reserved for lat
 | `ME-2` | 分數化百分數 | `frac_to_pct` | `LSC-2526-S1-T3-10-ME-2` |
 | `ME-3` | 圓面積 | `area_circle` | `LSC-2526-S0-T0-01-ME-3` |
 | `ME-4` | 長方體體積 | `cuboid_volume` | `LSC-2526-S1-T2-08-ME-4`, `LSC-2526-S2-T3-16-ME-4` |
-| `ME-5` | 球體 / 半球體 / 圓柱 / 圓錐量度 | `solid_mensuration` | `LSC-2526-S3-T3-10-ME-5`, `LSC-2526-S3-T3-11-ME-5`, `LSC-2526-S3-T3-12-ME-5` |
+| `ME-5` | 球體 / 半球體 / 圓柱 / 圓錐量度 | `solid_mensuration` | `LSC-2526-S3-T3-10-ME-5`, `LSC-2526-S3-T3-11-ME-5`, `LSC-2526-S3-T3-12-ME-5`, `LSC-2526-S3-T3-15-ME-5` |
 | `ME-6` | 扇形量度 | `sector_measure` | `LSC-2526-S3-T3-13-ME-6` |
 | `ME-7` | 畢氏定理配合圓錐 | `pyth_cone` | `LSC-2526-S3-T3-14-ME-7` |
 | `ME-8` | 捨入至指定小數位 | `round_decimal` | `LSC-2526-S2-T3-08-ME-8` |
