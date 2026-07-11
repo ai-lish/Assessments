@@ -69,6 +69,28 @@ check('finite fallback keeps alternatives unique', new Set(finiteSnapshot.questi
 check('finite fallback excludes current value', finiteSnapshot.questions.every((q) => q.paramsUsed.value !== 0));
 check('finite fallback title states actual count', finiteSnapshot.title === '同類練習(本題型共 3 變式)', finiteSnapshot.title);
 
+const zeroApi = {
+  generateQuestion() {
+    return {
+      questionHTML: 'only value',
+      correctAnswer: '1',
+      paramsUsed: { value: 1 },
+      solutionHTML: 'only solution',
+      displayAnswer: '1',
+      checkType: 'textExact',
+    };
+  },
+};
+const zeroSnapshot = pdf.generateVariantSnapshot(
+  { typeKey: 'zero_demo', typeDef: { key: 'zero_demo', generator: 'zero_demo', type: 'text' } },
+  { paramsUsed: { value: 1 } },
+  5,
+  'zero-fixture',
+  { generatorApi: zeroApi, maxAttempts: 20 },
+);
+check('zero-space fallback emits no variants', zeroSnapshot.actualCount === 0, String(zeroSnapshot.actualCount));
+check('zero-space fallback exposes an empty question list', zeroSnapshot.questions.length === 0, String(zeroSnapshot.questions.length));
+
 const typeByKey = new Map(bank.data.map((item) => [item.key, item]));
 const presetTypeKeys = [...new Set(bank.presets.flatMap((preset) => preset.questions.map((item) => item.typeKey)))];
 const limitedTypes = [];
@@ -92,6 +114,7 @@ for (const typeKey of presetTypeKeys) {
   }
 }
 check('all preset typeKeys audited', presetTypeKeys.length >= 50, String(presetTypeKeys.length));
+check('fixed s1t2 equation is detected as zero-space', limitedTypes.includes('s1t2_solve_eq_fraction:0'), limitedTypes.join(','));
 
 if (failures.length) {
   console.error(`similar PDF: ${failures.length} failure(s)`);

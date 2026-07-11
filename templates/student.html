@@ -56,9 +56,10 @@
   #quiz-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
   .quiz-content { padding: 10px 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
-  .similar-pdf-row { display: flex; justify-content: flex-end; width: 100%; margin: -5px 0 8px; }
+  .similar-pdf-row { display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 6px; width: 100%; margin: -5px 0 8px; }
   .similar-pdf-btn { max-width: 100%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 10px; font-size: 0.78em; font-weight: 700; cursor: pointer; white-space: nowrap; }
   .similar-pdf-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .similar-pdf-hint { display: none; color: var(--text-muted); font-size: 0.76em; }
   .question-text { font-size: 1.1em; color: var(--text-main); margin: 0; text-align: left; width: 100%; line-height: 1.6; }
   .question-text b { color: var(--accent); }
   .geo-image { margin-bottom: 15px; text-align: center; display: flex; justify-content: center; width: 100%; }
@@ -148,7 +149,7 @@
   <div id="quiz-view">
     <div class="quiz-content">
       <div class="question-card">
-        <div class="similar-pdf-row"><button type="button" id="btn-similar-pdf" class="similar-pdf-btn" onclick="printSimilarPDF()">🖨️ 同類練習 PDF</button></div>
+        <div class="similar-pdf-row"><button type="button" id="btn-similar-pdf" class="similar-pdf-btn" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">🖨️ 同類練習 PDF</button><span id="similar-pdf-hint" class="similar-pdf-hint" role="status"></span></div>
         <div id="q-text" class="question-text">題目載入中...</div>
       </div>
       <div id="q-image" class="geo-image" style="display:none;"></div>
@@ -1141,15 +1142,43 @@ function findQuestionSpec(q) {
     || null;
 }
 
+const similarPdfAvailabilityCache = new Map();
+
+function hasSimilarPdfVariant(spec, q) {
+  if (!spec || !q) return false;
+  const cacheKey = (q.typeKey || "") + ":" + JSON.stringify(q.paramsUsed || {});
+  if (similarPdfAvailabilityCache.has(cacheKey)) return similarPdfAvailabilityCache.get(cacheKey);
+  const probe = AssessPDF.generateVariantSnapshot(spec, q, 1, "availability:" + cacheKey, {
+    baseTitle: "同類練習",
+    presetKey: PRESET_KEY,
+    maxAttempts: 400,
+  });
+  const available = probe.actualCount > 0;
+  similarPdfAvailabilityCache.set(cacheKey, available);
+  return available;
+}
+
 function updateSimilarPdfButton(q) {
   const btn = document.getElementById("btn-similar-pdf");
+  const hint = document.getElementById("similar-pdf-hint");
   if (!btn) return;
   const spec = findQuestionSpec(q);
-  btn.disabled = !spec;
+  let available = false;
+  if (spec) {
+    try { available = hasSimilarPdfVariant(spec, q); }
+    catch (e) { available = false; }
+  }
+  btn.disabled = !spec || !available;
   const typeKey = q && q.typeKey ? q.typeKey : "";
   if (btn.dataset) btn.dataset.typeKey = typeKey;
   else if (btn.setAttribute) btn.setAttribute("data-type-key", typeKey);
-  btn.title = spec ? "產生當前題型的同類練習" : "此舊版練習未包含題型生成規格";
+  btn.title = !spec
+    ? "此舊版練習未包含題型生成規格"
+    : (available ? "產生當前題型的同類練習" : "本題型暫無其他變式");
+  if (hint) {
+    hint.textContent = spec && !available ? "本題型暫無其他變式" : "";
+    hint.style.display = spec && !available ? "inline" : "none";
+  }
 }
 
 function printSimilarPDF() {
@@ -1166,6 +1195,11 @@ function printSimilarPDF() {
       presetKey: PRESET_KEY,
       generatedAt: new Date().toISOString(),
     });
+    if (snapshot.actualCount === 0) {
+      updateSimilarPdfButton(current);
+      showToast("⚠️ 本題型暫無其他變式");
+      return;
+    }
     AssessPDF.printSnapshot(snapshot, { showCode: true, scope: "similar" });
     showToast("✓ 已開啟 " + snapshot.actualCount + " 題同類練習 PDF");
   } catch (e) {

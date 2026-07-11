@@ -390,6 +390,34 @@ check("similar PDF variants are mutually unique", new Set(similarPdfState.firstS
 check("similar PDF excludes current instance", !similarPdfState.firstSignatures.includes(similarPdfState.currentFirst));
 check("student caller uses shared similar PDF scope", similarPdfState.allSimilarScope);
 
+const s1Term2Preset = presetByKey.get("s1_term2_part_a");
+const s1Term2Specs = buildInteractiveQuestionSpecs(s1Term2Preset);
+const zeroVariantLoad = buildSandbox(0x51515151, s1Term2Preset, s1Term2Specs);
+const zeroVariantState = vm.runInContext(`
+  const fixedIndex = qList.findIndex(q => q.typeKey === "s1t2_solve_eq_fraction");
+  currIdx = fixedIndex;
+  showQ();
+  const button = document.getElementById("btn-similar-pdf");
+  const hint = document.getElementById("similar-pdf-hint");
+  let printCalls = 0;
+  const originalZeroPrint = AssessPDF.printSnapshot;
+  AssessPDF.printSnapshot = function() { printCalls += 1; };
+  printSimilarPDF();
+  AssessPDF.printSnapshot = originalZeroPrint;
+  ({
+    fixedIndex,
+    disabled: button.disabled,
+    title: button.title,
+    hintText: hint.textContent,
+    hintDisplay: hint.style.display,
+    printCalls,
+    toast: document.getElementById("toast").innerText
+  });
+`, zeroVariantLoad);
+check("zero-variant type disables similar PDF button", zeroVariantState.fixedIndex >= 0 && zeroVariantState.disabled);
+check("zero-variant type shows the required hint", zeroVariantState.title === "本題型暫無其他變式" && zeroVariantState.hintText === "本題型暫無其他變式" && zeroVariantState.hintDisplay === "inline");
+check("zero-variant type never prints an empty document", zeroVariantState.printCalls === 0 && /本題型暫無其他變式/.test(zeroVariantState.toast));
+
 check("in-progress toolbar whole-PDF button removed", !/<div class="toolbar"[\s\S]*?onclick="printPDF\(\)"/.test(template));
 check("in-progress local export button removed", !/<button[^>]+onclick="exportStudentAnswers\(\)"/.test(template));
 check("legacy Sheets-export button label absent", !/匯出記錄至(?: Google )?Sheets/.test(template));
