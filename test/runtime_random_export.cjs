@@ -103,6 +103,11 @@ function makeElement(id = "") {
       add: (...names) => names.forEach((name) => classes.add(name)),
       remove: (...names) => names.forEach((name) => classes.delete(name)),
       contains: (name) => classes.has(name),
+      toggle(name, force) {
+        const enabled = force === undefined ? !classes.has(name) : Boolean(force);
+        if (enabled) classes.add(name); else classes.delete(name);
+        return enabled;
+      },
     },
     appendChild(child) { this.children.push(child); return child; },
     setAttribute(name, value) { this[name] = value; },
@@ -418,12 +423,33 @@ check("zero-variant type disables similar PDF button", zeroVariantState.fixedInd
 check("zero-variant type shows the required hint", zeroVariantState.title === "本題型暫無其他變式" && zeroVariantState.hintText === "本題型暫無其他變式" && zeroVariantState.hintDisplay === "inline");
 check("zero-variant type never prints an empty document", zeroVariantState.printCalls === 0 && /本題型暫無其他變式/.test(zeroVariantState.toast));
 
-check("in-progress toolbar whole-PDF button removed", !/<div class="toolbar"[\s\S]*?onclick="printPDF\(\)"/.test(template));
+check("in-progress whole-PDF button shares the secondary PDF action row", /id="pdf-action-area"[\s\S]*id="btn-similar-pdf"[\s\S]*id="btn-whole-pdf"[^>]+onclick="printPDF\(\)"/.test(template));
 check("in-progress local export button removed", !/<button[^>]+onclick="exportStudentAnswers\(\)"/.test(template));
 check("legacy Sheets-export button label absent", !/匯出記錄至(?: Google )?Sheets/.test(template));
 check("completed result keeps sole teacher-submit button", /id="btn-export"[^>]+onclick="handleExport\(\)"[^>]*>📤 提交答案至老師/.test(template));
 check("result page keeps whole-paper PDF button", /id="btn-result-pdf"[^>]+onclick="printPDF\(\)"/.test(template));
 check("whole-paper PDF function remains available", /function printPDF\(\)/.test(template));
+
+const keypadPositionState = vm.runInContext(`
+(() => {
+  const keypadArea = document.getElementById("keypad-area");
+  const keypadButton = document.getElementById("btn-shift-keypad");
+  const before = keypadArea.classList.contains("keypad-raised");
+  toggleKeypadPosition();
+  const raised = keypadArea.classList.contains("keypad-raised");
+  const raisedPressed = keypadButton["aria-pressed"];
+  currIdx = Math.min(1, qList.length - 1);
+  showQ();
+  const keptAfterQuestionChange = keypadArea.classList.contains("keypad-raised");
+  toggleKeypadPosition();
+  return { before, raised, raisedPressed, keptAfterQuestionChange,
+     restored: !keypadArea.classList.contains("keypad-raised"),
+     restoredPressed: keypadButton["aria-pressed"] };
+})()
+`, firstLoad);
+check("keypad position toggle raises and restores the keypad", !keypadPositionState.before && keypadPositionState.raised && keypadPositionState.restored);
+check("keypad raised state survives question changes", keypadPositionState.keptAfterQuestionChange);
+check("keypad position toggle maintains aria-pressed", keypadPositionState.raisedPressed === "true" && keypadPositionState.restoredPressed === "false");
 
 const retryState = vm.runInContext(`
   const before = JSON.stringify(QUESTIONS.find(q => q.qid === "q001").paramsUsed);

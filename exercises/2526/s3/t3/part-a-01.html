@@ -42,7 +42,8 @@
 <style>
   :root { --primary:#34495e; --accent:#3498db; --accent-hover:#2980b9; --success:#2ecc71; --danger:#e74c3c; --warning:#f1c40f; --text-main:#2c3e50; --text-muted:#7f8c8d; --bg-main:#f5f7fa; --card-shadow:0 10px 25px rgba(0,0,0,0.05); }
   * { box-sizing: border-box; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif; background: var(--bg-main); margin: 0; padding: 8px; display: flex; justify-content: center; height: 98vh; box-sizing: border-box; overflow: hidden; }
+  html, body { height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif; background: var(--bg-main); margin: 0; padding: 8px 8px max(8px, env(safe-area-inset-bottom)); display: flex; justify-content: center; height: 100dvh; min-height: -webkit-fill-available; box-sizing: border-box; overflow: hidden; }
   .container { width: 100%; max-width: 500px; background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; height: 100%; position: relative; }
   .practice-title { padding: 10px 14px 8px; text-align: center; font-size: 1.02em; font-weight: 800; color: var(--primary); border-bottom: 1px solid #f0f2f5; line-height: 1.35; flex-shrink: 0; }
   .top-info { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 10px 15px; font-size: 0.9em; font-weight: 600; color: var(--text-muted); background: #fff; border-bottom: 1px solid #f0f2f5; flex-shrink: 0; white-space: nowrap; }
@@ -56,9 +57,10 @@
   #quiz-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
   .quiz-content { padding: 10px 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
-  .similar-pdf-row { display: flex; justify-content: flex-end; align-items: center; flex-wrap: wrap; gap: 6px; width: 100%; margin: -5px 0 8px; }
-  .similar-pdf-btn { max-width: 100%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 10px; font-size: 0.78em; font-weight: 700; cursor: pointer; white-space: nowrap; }
-  .similar-pdf-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+  .pdf-action-area { background: #f8f9fa; border-top: 1px solid #e6e9ec; padding: 5px 8px; flex-shrink: 0; }
+  .pdf-action-row { display: flex; justify-content: center; align-items: center; gap: 6px; width: 100%; }
+  .pdf-secondary-btn { min-width: 0; max-width: 50%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 9px; font-size: 0.76em; font-weight: 700; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pdf-secondary-btn:disabled { opacity: 0.55; cursor: not-allowed; }
   .similar-pdf-hint { display: none; color: var(--text-muted); font-size: 0.76em; }
   .question-text { font-size: 1.1em; color: var(--text-main); margin: 0; text-align: left; width: 100%; line-height: 1.6; }
   .question-text b { color: var(--accent); }
@@ -80,7 +82,10 @@
   .solution-box { width: 100%; background: #fffcf5; border: 1px solid #fce8b2; border-radius: 8px; padding: 12px; margin-top: 10px; display: none; text-align: left; color: #444; font-size: 0.95em; line-height: 1.6; overflow-x: auto; }
   .solution-box h4 { margin: 0 0 8px 0; color: #d35400; border-bottom: 1px dashed #fce8b2; padding-bottom: 5px; font-size: 0.95em; }
   .action-area { background: #fff; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
-  .keypad-area { background: #f1f3f5; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
+  .keypad-area { background: #f1f3f5; padding: 5px 8px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid #ddd; flex-shrink: 0; position: relative; transition: margin-bottom 0.2s ease; }
+  .keypad-area.keypad-raised { margin-bottom: min(22dvh, 180px); }
+  .keypad-tools { display: flex; justify-content: flex-end; margin-bottom: 3px; }
+  .keypad-shift-btn { border: 1px solid #c9ced3; background: #fff; color: var(--primary); border-radius: 999px; padding: 2px 8px; min-height: 24px; font-size: 0.72em; font-weight: 700; cursor: pointer; }
   .key-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
   .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
   .key-spacer { height: 34px; visibility: hidden; pointer-events: none; }
@@ -123,7 +128,7 @@
   @media print {
     body { background: #fff; padding: 0; height: auto; overflow: visible; display: block; }
     .container { box-shadow: none; max-width: 100%; height: auto; }
-    .top-info, .toolbar, .action-area, .keypad-area, .feedback-area, .btn-teach, .solution-box, .btn-row, .toast { display: none !important; }
+    .top-info, .toolbar, .action-area, .pdf-action-area, .keypad-area, .feedback-area, .btn-teach, .solution-box, .btn-row, .toast { display: none !important; }
     .quiz-content { overflow: visible; padding: 0; }
     #quiz-view, #result-view { display: block !important; height: auto; overflow: visible; }
     .question-text { page-break-inside: avoid; }
@@ -147,7 +152,6 @@
   <div id="quiz-view">
     <div class="quiz-content">
       <div class="question-card">
-        <div class="similar-pdf-row"><button type="button" id="btn-similar-pdf" class="similar-pdf-btn" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">🖨️ 同類練習 PDF</button><span id="similar-pdf-hint" class="similar-pdf-hint" role="status"></span></div>
         <div id="q-text" class="question-text">題目載入中...</div>
       </div>
       <div id="q-image" class="geo-image" style="display:none;"></div>
@@ -171,7 +175,15 @@
         <button class="main-btn btn-next" id="btn-next" onclick="nextQ()">下一題</button>
       </div>
     </div>
+    <div class="pdf-action-area" id="pdf-action-area">
+      <div class="pdf-action-row">
+        <button type="button" id="btn-similar-pdf" class="pdf-secondary-btn" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">🖨️ 同類練習 PDF</button>
+        <button type="button" id="btn-whole-pdf" class="pdf-secondary-btn" onclick="printPDF()">🖨️ 整卷 PDF 雙版</button>
+      </div>
+      <span id="similar-pdf-hint" class="similar-pdf-hint" role="status"></span>
+    </div>
     <div class="keypad-area" id="keypad-area">
+      <div class="keypad-tools"><button type="button" id="btn-shift-keypad" class="keypad-shift-btn" aria-pressed="false" onclick="toggleKeypadPosition()">⬆ 鍵盤上調</button></div>
       <div class="key-grid" id="keypad" aria-label="題型專用按鍵"></div>
     </div>
   </div>
@@ -1241,7 +1253,7 @@ const TITLE = "2025-26 年度 中三第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"poly_add_sub","typeDef":{"key":"poly_add_sub","name":"多項式加減及去括號","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"第一個多項式 x^2 係數","b":"第一個多項式 x 係數","c":"第一個多項式常數項","d":"第二個多項式 x^2 係數","e":"第二個多項式 x 係數","f":"第二個多項式常數項","op":"+ 或 -"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"poly_add_sub","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-01-NA-16","source":""},"params":{}},{"qid":"q002","typeKey":"binomial_expand","typeDef":{"key":"binomial_expand","name":"兩個二項式展開","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)(cx+d) 的 a","b":"(ax+b)(cx+d) 的 b","c":"(ax+b)(cx+d) 的 c","d":"(ax+b)(cx+d) 的 d","square":"false"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-02-NA-17","source":""},"params":{}},{"qid":"q003","typeKey":"s3t3_square_expand","typeDef":{"key":"s3t3_square_expand","name":"完全平方公式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)^2 的 a","b":"(ax+b)^2 的 b","square":"固定 true"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","defaultParams":{"square":true},"answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-03-NA-17","source":""},"params":{}},{"qid":"q004","typeKey":"s3t3_zero_exp","typeDef":{"key":"s3t3_zero_exp","name":"零指數定律","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"zeroCase":"固定 true","base":"非零整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"exp_law","defaultParams":{"zeroCase":true},"code":"LSC-2526-S3-T3-04-NA-5","source":""},"params":{}},{"qid":"q005","typeKey":"factor_diff_sq","typeDef":{"key":"factor_diff_sq","name":"平方差因式分解","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"ax 的 a","b":"常數 b，題目為 (ax)^2-b^2"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_diff_sq","code":"LSC-2526-S3-T3-05-NA-18","source":""},"params":{}},{"qid":"q006","typeKey":"factor_cross","typeDef":{"key":"factor_cross","name":"十字相乘法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"第一個因式 x 係數","b":"第一個因式常數","c":"第二個因式 x 係數","d":"第二個因式常數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_cross","code":"LSC-2526-S3-T3-06-NA-19","source":""},"params":{}},{"qid":"q007","typeKey":"sci_notation","typeDef":{"key":"sci_notation","name":"科學記數法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"scientificNotation","params_schema":{"mantissa":"1 ≤ a < 10","exponent":"10 的指數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"scientificNotation","generator":"sci_notation","code":"LSC-2526-S3-T3-07-NA-20","source":""},"params":{}},{"qid":"q008","typeKey":"solve_ineq","typeDef":{"key":"solve_ineq","name":"一元一次不等式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"inequality","params_schema":{"a":"x 係數，可為負數","b":"常數項","boundary":"答案邊界值","op":"原不等式方向"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"inequality","generator":"solve_ineq","code":"LSC-2526-S3-T3-08-NA-21","source":""},"params":{}},{"qid":"q009","typeKey":"triangle_center","typeDef":{"key":"triangle_center","name":"三角形四心","category":"幾何","difficulty":2,"grade":"s3","term":"3","topicKey":"geometry","topicName":"幾何","type":"choice","checkType":"choiceKey","params_schema":{"center":"circumcenter / incenter / centroid / orthocenter","shapeKey":"acute-wide / acute-left / acute-right / acute-tall / acute-low-left / acute-low-right"},"options":[{"key":"circumcenter","label":"外心"},{"key":"incenter","label":"內心"},{"key":"centroid","label":"形心"},{"key":"orthocenter","label":"垂心"}],"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"triangle_center","figure":{"kind":"triangle-center-svg"},"code":"LSC-2526-S3-T3-09-GE-5","source":""},"params":{}},{"qid":"q010","typeKey":"solid_sphere","typeDef":{"key":"solid_sphere","name":"球體量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 sphere","r":"半徑"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"sphere"},"code":"LSC-2526-S3-T3-10-ME-5","source":""},"params":{}},{"qid":"q011","typeKey":"solid_cylinder","typeDef":{"key":"solid_cylinder","name":"圓柱量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cylinder","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cylinder"},"code":"LSC-2526-S3-T3-11-ME-5","source":""},"params":{}},{"qid":"q012","typeKey":"solid_cone","typeDef":{"key":"solid_cone","name":"圓錐量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cone","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cone"},"code":"LSC-2526-S3-T3-12-ME-5","source":""},"params":{}},{"qid":"q013","typeKey":"sector_measure","typeDef":{"key":"sector_measure","name":"扇形量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"r":"半徑","angle":"圓心角","ask":"arc 或 area"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"sector_measure","code":"LSC-2526-S3-T3-13-ME-6","source":""},"params":{}},{"qid":"q014","typeKey":"pyth_cone","typeDef":{"key":"pyth_cone","name":"畢氏定理配合圓錐高與斜高","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"mode":"findL 或 findH","r":"半徑","h":"垂直高","l":"斜高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"pyth_cone","code":"LSC-2526-S3-T3-14-ME-7","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-11T13:58:19.150Z";
+const GENERATED_AT = "2026-07-11T16:09:23.754Z";
 const BANK_HASH = "b63_14_c496906a";
 const PRESET_KEY = "s3_term3_part_a";
 const GRADE = "s3";
@@ -1520,6 +1532,23 @@ function setKeypadVisible(visible) {
   if (area) area.style.display = visible ? "block" : "none";
 }
 
+let keypadRaised = false;
+
+function applyKeypadPosition() {
+  const area = document.getElementById("keypad-area");
+  const button = document.getElementById("btn-shift-keypad");
+  if (area) area.classList.toggle("keypad-raised", keypadRaised);
+  if (button) {
+    button.setAttribute("aria-pressed", keypadRaised ? "true" : "false");
+    button.textContent = keypadRaised ? "⬇ 鍵盤還原" : "⬆ 鍵盤上調";
+  }
+}
+
+function toggleKeypadPosition() {
+  keypadRaised = !keypadRaised;
+  applyKeypadPosition();
+}
+
 function keypadKeysForQuestion(q) {
   if (!q || q.type === "choice") return [];
   const config = INPUT_KEYPAD_CONFIG;
@@ -1794,6 +1823,24 @@ function simpleLatex(s) {
     .replace(/\^(-?\d+)/g, "^{$1}");
 }
 
+function splitTopLevelAdditive(s) {
+  let depth = 0;
+  let start = 0;
+  const terms = [];
+  const operators = [];
+  for (let i = 0; i < s.length; i += 1) {
+    if (s[i] === "(") depth += 1;
+    else if (s[i] === ")") depth -= 1;
+    else if (depth === 0 && i > start && (s[i] === "+" || s[i] === "-") && s[i - 1] !== "^") {
+      terms.push(s.slice(start, i));
+      operators.push(s[i]);
+      start = i + 1;
+    }
+  }
+  terms.push(s.slice(start));
+  return { terms, operators };
+}
+
 function fractionLatex(numerator, denominator) {
   const top = expressionToLatex(stripWrappingGroup(numerator));
   const bottom = expressionToLatex(stripWrappingGroup(denominator));
@@ -1804,6 +1851,18 @@ function fractionLatex(numerator, denominator) {
 function expressionToLatex(raw) {
   const s = String(raw || "").trim();
   if (!s || !hasBalancedGroups(s)) return null;
+
+  const additive = splitTopLevelAdditive(s);
+  if (additive.terms.length > 1) {
+    if (additive.terms.some((term) => term === "")) return null;
+    const renderedTerms = additive.terms.map((term) => expressionToLatex(term));
+    if (renderedTerms.some((term) => term === null)) return null;
+    let combined = renderedTerms[0];
+    for (let i = 0; i < additive.operators.length; i += 1) {
+      combined += additive.operators[i] + renderedTerms[i + 1];
+    }
+    return combined;
+  }
 
   const literalFracPi = s.match(/^\\frac\{([^{}]+)\}\{([^{}]+)\}(π|\\pi)$/i);
   if (literalFracPi) return "\\frac{" + literalFracPi[1] + "}{" + literalFracPi[2] + "}\\pi";
@@ -1842,6 +1901,21 @@ function inputToLatex(raw) {
   return expressionToLatex(s);
 }
 
+function inputToPreviewParts(raw) {
+  const original = String(raw || "");
+  const normalized = original.replace(/−/g, "-");
+  if (!normalized) return { latex: "", rawTail: "" };
+  const complete = inputToLatex(normalized);
+  if (complete !== null) return { latex: complete, rawTail: "" };
+  for (let split = normalized.length - 1; split > 0; split -= 1) {
+    const prefix = inputToLatex(normalized.slice(0, split));
+    if (prefix !== null && prefix !== "") {
+      return { latex: prefix, rawTail: normalized.slice(split) };
+    }
+  }
+  return { latex: "", rawTail: original };
+}
+
 function renderInputDisplay() {
   const el = document.getElementById("input-val");
   if (!el) return;
@@ -1850,14 +1924,16 @@ function renderInputDisplay() {
     return;
   }
   const raw = currInput;
-  const latex = inputToLatex(raw);
-  if (latex === null) {
+  const preview = inputToPreviewParts(raw);
+  if (!preview.latex) {
     el.textContent = raw;
     return;
   }
-  el.innerHTML = "\\(" + escapeInputHtml(latex) + "\\)";
+  el.innerHTML = '<span class="input-math-preview">\\(' + escapeInputHtml(preview.latex) + '\\)</span>'
+    + (preview.rawTail ? '<span class="input-raw-tail">' + escapeInputHtml(preview.rawTail) + '</span>' : '');
+  const mathPreview = typeof el.querySelector === "function" ? el.querySelector(".input-math-preview") : null;
   if (window.MathJax && MathJax.typesetPromise) {
-    MathJax.typesetPromise([el]).catch(() => {
+    MathJax.typesetPromise(mathPreview ? [mathPreview] : [el]).catch(() => {
       if (currInput === raw) el.textContent = raw;
     });
   } else {
