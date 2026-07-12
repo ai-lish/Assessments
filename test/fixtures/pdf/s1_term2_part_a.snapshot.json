@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-1f96dc57",
+  "snapshotId": "pdf-5186198c",
   "seed": "pdf-a3-fixture:s1_term2_part_a",
   "title": "2025-26 年度 中一第二學期(甲部)短答練習",
   "presetKey": "s1_term2_part_a",
@@ -84,9 +84,12 @@
       "typeKey": "s1t2_solve_eq_fraction",
       "code": "LSC-2526-S1-T2-06-NA-7",
       "paramsUsed": {
-        "coeff": 4,
-        "xVal": "3/2",
-        "rVal": 6
+        "mode": "fraction_mixed",
+        "form": "D",
+        "a": 8,
+        "b": 12,
+        "numerator": 3,
+        "denominator": 2
       },
       "answerSpec": null,
       "displayAnswer": "3/2"
@@ -97,9 +100,9 @@
       "typeKey": "s1t2_solve_eq_negative",
       "code": "LSC-2526-S1-T2-07-NA-7",
       "paramsUsed": {
-        "coeff": 3,
+        "coeff": 6,
         "xVal": -3,
-        "rVal": -9
+        "rVal": -18
       },
       "answerSpec": null,
       "displayAnswer": "-3"
@@ -110,18 +113,18 @@
       "typeKey": "cuboid_volume",
       "code": "LSC-2526-S1-T2-08-ME-4",
       "paramsUsed": {
-        "l": 11,
+        "l": 2,
         "w": 8,
-        "h": 2,
+        "h": 7,
         "cube": false,
         "unit": "cm^3",
-        "result": 176
+        "result": 112
       },
       "answerSpec": {
         "unit": "cm^3",
         "allowUnit": true
       },
-      "displayAnswer": "176 cm³"
+      "displayAnswer": "112 cm³"
     },
     {
       "index": 9,
@@ -129,13 +132,13 @@
       "typeKey": "s1t2_poly_desc",
       "code": "LSC-2526-S1-T2-09-NA-9",
       "paramsUsed": {
-        "b": 7,
-        "c": 7
+        "b": 3,
+        "c": 4
       },
       "answerSpec": {
         "order": "strict"
       },
-      "displayAnswer": "x^2+7x-7"
+      "displayAnswer": "x^2+3x-4"
     },
     {
       "index": 10,
@@ -143,12 +146,12 @@
       "typeKey": "poly_constant",
       "code": "LSC-2526-S1-T2-10-NA-14",
       "paramsUsed": {
-        "a": 2,
-        "b": 3,
-        "c": -8
+        "a": 4,
+        "b": 1,
+        "c": -12
       },
       "answerSpec": null,
-      "displayAnswer": "-8"
+      "displayAnswer": "-12"
     },
     {
       "index": 11,
@@ -156,17 +159,17 @@
       "typeKey": "s1t2_alg_simplify",
       "code": "LSC-2526-S1-T2-11-NA-6",
       "paramsUsed": {
-        "a": -6,
-        "b": -2,
+        "a": -4,
+        "b": -6,
         "c": 4,
-        "d": -7,
-        "xCoeff": -2,
-        "constTerm": -9
+        "d": -9,
+        "xCoeff": 0,
+        "constTerm": -15
       },
       "answerSpec": {
         "order": "loose"
       },
-      "displayAnswer": "-2x-9"
+      "displayAnswer": "-15"
     },
     {
       "index": 12,
@@ -174,16 +177,16 @@
       "typeKey": "expand_bracket",
       "code": "LSC-2526-S1-T2-12-NA-15",
       "paramsUsed": {
-        "k": -1,
+        "k": -3,
         "a": 1,
-        "b": -5,
-        "xCoeff": -1,
-        "constTerm": 5
+        "b": 1,
+        "xCoeff": -3,
+        "constTerm": -3
       },
       "answerSpec": {
         "order": "loose"
       },
-      "displayAnswer": "-x+5"
+      "displayAnswer": "-3x-3"
     },
     {
       "index": 13,
@@ -192,9 +195,9 @@
       "code": "LSC-2526-S1-T2-13-GE-2",
       "paramsUsed": {
         "rx": 2,
-        "ry": 2,
-        "askAxis": "x",
-        "coordVal": 2
+        "ry": 1,
+        "askAxis": "y",
+        "coordVal": 1
       },
       "answerSpec": {
         "coordinateMode": "axis-value",
@@ -202,7 +205,7 @@
           "clickTolerance": 0
         }
       },
-      "displayAnswer": "\\( x \\) 坐標為 2，A 點位置 (2, 2)"
+      "displayAnswer": "\\( y \\) 坐標為 1，A 點位置 (2, 1)"
     },
     {
       "index": 14,
@@ -210,8 +213,8 @@
       "typeKey": "quadrant",
       "code": "LSC-2526-S1-T2-14-GE-4",
       "paramsUsed": {
-        "x": -4,
-        "y": -1,
+        "x": -1,
+        "y": -4,
         "quadrant": "III"
       },
       "answerSpec": null,

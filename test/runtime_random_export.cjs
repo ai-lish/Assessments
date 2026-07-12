@@ -399,8 +399,11 @@ const s1Term2Preset = presetByKey.get("s1_term2_part_a");
 const s1Term2Specs = buildInteractiveQuestionSpecs(s1Term2Preset);
 const zeroVariantLoad = buildSandbox(0x51515151, s1Term2Preset, s1Term2Specs);
 const zeroVariantState = vm.runInContext(`
-  const fixedIndex = qList.findIndex(q => q.typeKey === "s1t2_solve_eq_fraction");
+  const fixedIndex = 0;
   currIdx = fixedIndex;
+  const originalVariantGenerator = AssessPDF.generateVariantSnapshot;
+  AssessPDF.generateVariantSnapshot = function() { return { actualCount: 0, questions: [] }; };
+  similarPdfAvailabilityCache.clear();
   showQ();
   const button = document.getElementById("btn-similar-pdf");
   const hint = document.getElementById("similar-pdf-hint");
@@ -409,6 +412,7 @@ const zeroVariantState = vm.runInContext(`
   AssessPDF.printSnapshot = function() { printCalls += 1; };
   printSimilarPDF();
   AssessPDF.printSnapshot = originalZeroPrint;
+  AssessPDF.generateVariantSnapshot = originalVariantGenerator;
   ({
     fixedIndex,
     disabled: button.disabled,

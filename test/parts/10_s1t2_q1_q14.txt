@@ -145,8 +145,11 @@
       "type": "text",
       "checkType": "numericOrFraction",
       "params_schema": {
-        "coeff": "方程 ax=b 的 a",
-        "rVal": "方程 ax=b 的 b，可令答案為分數"
+        "mode": "固定 fraction_mixed，隨機生成 D 或 B 形式",
+        "form": "D=ax=b；B=(ax)/b=c",
+        "a": "非零整數 x 係數",
+        "b": "D 的右側整數或 B 的非零分母",
+        "c": "B 的非零右側整數"
       },
       "answers": [],
       "displayAnswer": "",
@@ -157,8 +160,7 @@
       "validator": "numericOrFraction",
       "generator": "solve_eq",
       "defaultParams": {
-        "coeff": 4,
-        "rVal": 6
+        "mode": "fraction_mixed"
       },
       "prefix": "x = ",
       "code": "LSC-2526-S1-T2-06-NA-7",
