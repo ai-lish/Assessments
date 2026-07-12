@@ -58,21 +58,20 @@ function withSeed(seed, fn) {
 console.log('=== sector_measure random parameter contract ===');
 
 const explicit = generators.generateQuestion(typeDef, { r: 6, angle: 60, ask: 'area' });
+const explicitContract = Object.fromEntries(Object.entries(explicit).filter(([key]) => key !== 'solutionHTML' && key !== 'steps'));
 const expectedExplicit = {
   questionHTML: '13. 扇形半徑為 \\(6\\text{ cm}\\)，圓心角為 \\(60^\\circ\\)。求面積。',
   correctAnswer: '18.85',
   paramsUsed: { r: 6, angle: 60, ask: 'area', piCoeff: 6, decimal: '18.85' },
-  solutionHTML: '<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times\\pi r^2\\)</div><div>答案：\\(6π\\text{ cm^2} \\approx 18.85\\)</div>',
   pdfText: '13. 扇形半徑為 \\(6\\text{ cm}\\)，圓心角為 \\(60^\\circ\\)。求面積。',
   answers: ['18.85', '6π'],
   displayAnswer: '6π cm^2 ≈ 18.85 cm^2',
-  steps: '<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times\\pi r^2\\)</div><div>答案：\\(6π\\text{ cm^2} \\approx 18.85\\)</div>',
   checkType: 'unitNumeric',
   answerSpec: { allowUnit: true, unit: 'cm^2', tolerance: 0.05, exactPiCoefficient: 6 },
 };
-check('explicit {r:6,angle:60,ask:"area"} matches pre-fix output',
-  JSON.stringify(explicit) === JSON.stringify(expectedExplicit),
-  JSON.stringify(explicit));
+check('explicit {r:6,angle:60,ask:"area"} keeps pre-SOLIMG non-solution output',
+  JSON.stringify(explicitContract) === JSON.stringify(expectedExplicit),
+  JSON.stringify(explicitContract));
 
 let total = 0;
 let accepted = 0;

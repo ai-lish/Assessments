@@ -1404,7 +1404,7 @@
           "unit": "cm^3",
           "result": 60
         },
-        "solutionHTML": "<div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 3 \\times 4 \\times 5 = 60 \\)</div><div>答案：\\( 60 \\text{ cm}^3 \\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"cuboid_volume\" data-mode=\"cuboid\" data-l=\"3\" data-w=\"4\" data-h=\"5\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"長方體長闊高解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M48 58 L174 58 L218 30 L92 30 Z M48 58 L48 142 L174 142 L174 58 M174 142 L218 114 L218 30 M48 142 L92 114 L218 114 M92 30 L92 114\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"108\" y=\"160\" text-anchor=\"middle\" font-size=\"13\">長 3 cm</text><text x=\"192\" y=\"139\" font-size=\"13\">闊 4 cm</text><text x=\"12\" y=\"104\" font-size=\"13\">高 5 cm</text></svg></div><div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 3 \\times 4 \\times 5 = 60 \\)</div><div>答案：\\( 60 \\text{ cm}^3 \\)</div>",
         "pdfText": "8. 一個長方體的長、闊、高分別是 \\( 3 \\text{ cm} \\)、\\( 4 \\text{ cm} \\)、\\( 5 \\text{ cm} \\)。求它的體積。",
         "answers": [
           "60",
@@ -1412,7 +1412,7 @@
           "60cm³"
         ],
         "displayAnswer": "60 cm³",
-        "steps": "<div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 3 \\times 4 \\times 5 = 60 \\)</div><div>答案：\\( 60 \\text{ cm}^3 \\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"cuboid_volume\" data-mode=\"cuboid\" data-l=\"3\" data-w=\"4\" data-h=\"5\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"長方體長闊高解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M48 58 L174 58 L218 30 L92 30 Z M48 58 L48 142 L174 142 L174 58 M174 142 L218 114 L218 30 M48 142 L92 114 L218 114 M92 30 L92 114\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"108\" y=\"160\" text-anchor=\"middle\" font-size=\"13\">長 3 cm</text><text x=\"192\" y=\"139\" font-size=\"13\">闊 4 cm</text><text x=\"12\" y=\"104\" font-size=\"13\">高 5 cm</text></svg></div><div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 3 \\times 4 \\times 5 = 60 \\)</div><div>答案：\\( 60 \\text{ cm}^3 \\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "unit": "cm^3",
@@ -1438,7 +1438,7 @@
           "unit": "cm^3",
           "result": 84
         },
-        "solutionHTML": "<div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 7 \\times 2 \\times 6 = 84 \\)</div><div>答案：\\( 84 \\text{ cm}^3 \\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"cuboid_volume\" data-mode=\"cuboid\" data-l=\"7\" data-w=\"2\" data-h=\"6\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"長方體長闊高解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M48 58 L174 58 L218 30 L92 30 Z M48 58 L48 142 L174 142 L174 58 M174 142 L218 114 L218 30 M48 142 L92 114 L218 114 M92 30 L92 114\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"108\" y=\"160\" text-anchor=\"middle\" font-size=\"13\">長 7 cm</text><text x=\"192\" y=\"139\" font-size=\"13\">闊 2 cm</text><text x=\"12\" y=\"104\" font-size=\"13\">高 6 cm</text></svg></div><div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 7 \\times 2 \\times 6 = 84 \\)</div><div>答案：\\( 84 \\text{ cm}^3 \\)</div>",
         "pdfText": "8. 一個長方體的長、闊、高分別是 \\( 7 \\text{ cm} \\)、\\( 2 \\text{ cm} \\)、\\( 6 \\text{ cm} \\)。求它的體積。",
         "answers": [
           "84",
@@ -1446,7 +1446,7 @@
           "84cm³"
         ],
         "displayAnswer": "84 cm³",
-        "steps": "<div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 7 \\times 2 \\times 6 = 84 \\)</div><div>答案：\\( 84 \\text{ cm}^3 \\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"cuboid_volume\" data-mode=\"cuboid\" data-l=\"7\" data-w=\"2\" data-h=\"6\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"長方體長闊高解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M48 58 L174 58 L218 30 L92 30 Z M48 58 L48 142 L174 142 L174 58 M174 142 L218 114 L218 30 M48 142 L92 114 L218 114 M92 30 L92 114\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"108\" y=\"160\" text-anchor=\"middle\" font-size=\"13\">長 7 cm</text><text x=\"192\" y=\"139\" font-size=\"13\">闊 2 cm</text><text x=\"12\" y=\"104\" font-size=\"13\">高 6 cm</text></svg></div><div>長方體體積 = 長 \\(\\times\\) 闊 \\(\\times\\) 高</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 7 \\times 2 \\times 6 = 84 \\)</div><div>答案：\\( 84 \\text{ cm}^3 \\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "unit": "cm^3",
@@ -1579,13 +1579,13 @@
           "y": 3,
           "quadrant": "I"
         },
-        "solutionHTML": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第一象限</b>。</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"quadrant\" data-x=\"2\" data-y=\"3\" data-quadrant=\"I\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"四象限正負號解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><line x1=\"25\" y1=\"90\" x2=\"235\" y2=\"90\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"130\" y1=\"165\" x2=\"130\" y2=\"15\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"184\" y=\"32\" font-size=\"12\">I (+,+)</text><text x=\"42\" y=\"32\" font-size=\"12\">II (-,+)</text><text x=\"35\" y=\"157\" font-size=\"12\">III (-,-)</text><text x=\"181\" y=\"157\" font-size=\"12\">IV (+,-)</text><circle cx=\"190\" cy=\"50\" r=\"6\" fill=\"#e74c3c\"/><text x=\"198\" y=\"42\" font-size=\"13\" fill=\"#c0392b\">P(2,3)</text></svg></div><div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第一象限</b>。</div>",
         "pdfText": "14. 點 \\( P(2, 3) \\) 位於第幾象限？",
         "answers": [
           "I"
         ],
         "displayAnswer": "第一象限",
-        "steps": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第一象限</b>。</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"quadrant\" data-x=\"2\" data-y=\"3\" data-quadrant=\"I\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"四象限正負號解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><line x1=\"25\" y1=\"90\" x2=\"235\" y2=\"90\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"130\" y1=\"165\" x2=\"130\" y2=\"15\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"184\" y=\"32\" font-size=\"12\">I (+,+)</text><text x=\"42\" y=\"32\" font-size=\"12\">II (-,+)</text><text x=\"35\" y=\"157\" font-size=\"12\">III (-,-)</text><text x=\"181\" y=\"157\" font-size=\"12\">IV (+,-)</text><circle cx=\"190\" cy=\"50\" r=\"6\" fill=\"#e74c3c\"/><text x=\"198\" y=\"42\" font-size=\"13\" fill=\"#c0392b\">P(2,3)</text></svg></div><div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第一象限</b>。</div>",
         "checkType": "choiceKey",
         "options": [
           {
@@ -1620,13 +1620,13 @@
           "y": 3,
           "quadrant": "II"
         },
-        "solutionHTML": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第二象限</b>。</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"quadrant\" data-x=\"-2\" data-y=\"3\" data-quadrant=\"II\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"四象限正負號解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><line x1=\"25\" y1=\"90\" x2=\"235\" y2=\"90\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"130\" y1=\"165\" x2=\"130\" y2=\"15\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"184\" y=\"32\" font-size=\"12\">I (+,+)</text><text x=\"42\" y=\"32\" font-size=\"12\">II (-,+)</text><text x=\"35\" y=\"157\" font-size=\"12\">III (-,-)</text><text x=\"181\" y=\"157\" font-size=\"12\">IV (+,-)</text><circle cx=\"70\" cy=\"50\" r=\"6\" fill=\"#e74c3c\"/><text x=\"78\" y=\"42\" font-size=\"13\" fill=\"#c0392b\">P(-2,3)</text></svg></div><div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第二象限</b>。</div>",
         "pdfText": "14. 點 \\( P(-2, 3) \\) 位於第幾象限？",
         "answers": [
           "II"
         ],
         "displayAnswer": "第二象限",
-        "steps": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第二象限</b>。</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"quadrant\" data-x=\"-2\" data-y=\"3\" data-quadrant=\"II\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"四象限正負號解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><line x1=\"25\" y1=\"90\" x2=\"235\" y2=\"90\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"130\" y1=\"165\" x2=\"130\" y2=\"15\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"184\" y=\"32\" font-size=\"12\">I (+,+)</text><text x=\"42\" y=\"32\" font-size=\"12\">II (-,+)</text><text x=\"35\" y=\"157\" font-size=\"12\">III (-,-)</text><text x=\"181\" y=\"157\" font-size=\"12\">IV (+,-)</text><circle cx=\"70\" cy=\"50\" r=\"6\" fill=\"#e74c3c\"/><text x=\"78\" y=\"42\" font-size=\"13\" fill=\"#c0392b\">P(-2,3)</text></svg></div><div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=3\\)，所以點 \\(P\\) 位於<b>第二象限</b>。</div>",
         "checkType": "choiceKey",
         "options": [
           {
@@ -1661,13 +1661,13 @@
           "y": -3,
           "quadrant": "III"
         },
-        "solutionHTML": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第三象限</b>。</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"quadrant\" data-x=\"-2\" data-y=\"-3\" data-quadrant=\"III\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"四象限正負號解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><line x1=\"25\" y1=\"90\" x2=\"235\" y2=\"90\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"130\" y1=\"165\" x2=\"130\" y2=\"15\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"184\" y=\"32\" font-size=\"12\">I (+,+)</text><text x=\"42\" y=\"32\" font-size=\"12\">II (-,+)</text><text x=\"35\" y=\"157\" font-size=\"12\">III (-,-)</text><text x=\"181\" y=\"157\" font-size=\"12\">IV (+,-)</text><circle cx=\"70\" cy=\"130\" r=\"6\" fill=\"#e74c3c\"/><text x=\"78\" y=\"122\" font-size=\"13\" fill=\"#c0392b\">P(-2,-3)</text></svg></div><div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第三象限</b>。</div>",
         "pdfText": "14. 點 \\( P(-2, -3) \\) 位於第幾象限？",
         "answers": [
           "III"
         ],
         "displayAnswer": "第三象限",
-        "steps": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第三象限</b>。</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"quadrant\" data-x=\"-2\" data-y=\"-3\" data-quadrant=\"III\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"四象限正負號解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><line x1=\"25\" y1=\"90\" x2=\"235\" y2=\"90\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"130\" y1=\"165\" x2=\"130\" y2=\"15\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"184\" y=\"32\" font-size=\"12\">I (+,+)</text><text x=\"42\" y=\"32\" font-size=\"12\">II (-,+)</text><text x=\"35\" y=\"157\" font-size=\"12\">III (-,-)</text><text x=\"181\" y=\"157\" font-size=\"12\">IV (+,-)</text><circle cx=\"70\" cy=\"130\" r=\"6\" fill=\"#e74c3c\"/><text x=\"78\" y=\"122\" font-size=\"13\" fill=\"#c0392b\">P(-2,-3)</text></svg></div><div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=-2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第三象限</b>。</div>",
         "checkType": "choiceKey",
         "options": [
           {
@@ -1702,13 +1702,13 @@
           "y": -3,
           "quadrant": "IV"
         },
-        "solutionHTML": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第四象限</b>。</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"quadrant\" data-x=\"2\" data-y=\"-3\" data-quadrant=\"IV\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"四象限正負號解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><line x1=\"25\" y1=\"90\" x2=\"235\" y2=\"90\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"130\" y1=\"165\" x2=\"130\" y2=\"15\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"184\" y=\"32\" font-size=\"12\">I (+,+)</text><text x=\"42\" y=\"32\" font-size=\"12\">II (-,+)</text><text x=\"35\" y=\"157\" font-size=\"12\">III (-,-)</text><text x=\"181\" y=\"157\" font-size=\"12\">IV (+,-)</text><circle cx=\"190\" cy=\"130\" r=\"6\" fill=\"#e74c3c\"/><text x=\"198\" y=\"122\" font-size=\"13\" fill=\"#c0392b\">P(2,-3)</text></svg></div><div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第四象限</b>。</div>",
         "pdfText": "14. 點 \\( P(2, -3) \\) 位於第幾象限？",
         "answers": [
           "IV"
         ],
         "displayAnswer": "第四象限",
-        "steps": "<div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第四象限</b>。</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"quadrant\" data-x=\"2\" data-y=\"-3\" data-quadrant=\"IV\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"四象限正負號解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><line x1=\"25\" y1=\"90\" x2=\"235\" y2=\"90\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"130\" y1=\"165\" x2=\"130\" y2=\"15\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"184\" y=\"32\" font-size=\"12\">I (+,+)</text><text x=\"42\" y=\"32\" font-size=\"12\">II (-,+)</text><text x=\"35\" y=\"157\" font-size=\"12\">III (-,-)</text><text x=\"181\" y=\"157\" font-size=\"12\">IV (+,-)</text><circle cx=\"190\" cy=\"130\" r=\"6\" fill=\"#e74c3c\"/><text x=\"198\" y=\"122\" font-size=\"13\" fill=\"#c0392b\">P(2,-3)</text></svg></div><div>判斷象限時先看 \\(x\\) 和 \\(y\\) 的正負：</div><div>\\(x=2\\)，\\(y=-3\\)，所以點 \\(P\\) 位於<b>第四象限</b>。</div>",
         "checkType": "choiceKey",
         "options": [
           {
@@ -2342,13 +2342,13 @@
             ]
           }
         },
-        "solutionHTML": "<div>形心：三條中線的交點。</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"triangle_center\" data-center=\"centroid\" data-shape-key=\"acute-wide\"><div style=\"font-weight:bold;text-align:center;\">三條中線的交點</div><svg role=\"img\" aria-label=\"形心構造線解說圖\" viewBox=\"0 0 250 160\" width=\"250\" height=\"160\" style=\"max-width:100%;background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"32,132 218,132 118,24\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"32.00\" y1=\"132.00\" x2=\"168.00\" y2=\"78.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"218.00\" y1=\"132.00\" x2=\"75.00\" y2=\"78.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"118.00\" y1=\"24.00\" x2=\"125.00\" y2=\"132.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><circle cx=\"122.67\" cy=\"96.00\" r=\"5\" fill=\"#e74c3c\"/><text x=\"130.67\" y=\"100.00\" font-size=\"12\" fill=\"#e74c3c\">P</text><text x=\"20\" y=\"137\" font-size=\"12\">A</text><text x=\"223\" y=\"137\" font-size=\"12\">B</text><text x=\"115\" y=\"17\" font-size=\"12\">C</text></svg></div><div>形心：三條中線的交點。</div>",
         "pdfText": "9. 判斷三角形四心（闊身三角形）。",
         "answers": [
           "centroid"
         ],
         "displayAnswer": "形心",
-        "steps": "<div>形心：三條中線的交點。</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"triangle_center\" data-center=\"centroid\" data-shape-key=\"acute-wide\"><div style=\"font-weight:bold;text-align:center;\">三條中線的交點</div><svg role=\"img\" aria-label=\"形心構造線解說圖\" viewBox=\"0 0 250 160\" width=\"250\" height=\"160\" style=\"max-width:100%;background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"32,132 218,132 118,24\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"32.00\" y1=\"132.00\" x2=\"168.00\" y2=\"78.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"218.00\" y1=\"132.00\" x2=\"75.00\" y2=\"78.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"118.00\" y1=\"24.00\" x2=\"125.00\" y2=\"132.00\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><circle cx=\"122.67\" cy=\"96.00\" r=\"5\" fill=\"#e74c3c\"/><text x=\"130.67\" y=\"100.00\" font-size=\"12\" fill=\"#e74c3c\">P</text><text x=\"20\" y=\"137\" font-size=\"12\">A</text><text x=\"223\" y=\"137\" font-size=\"12\">B</text><text x=\"115\" y=\"17\" font-size=\"12\">C</text></svg></div><div>形心：三條中線的交點。</div>",
         "checkType": "choiceKey",
         "options": [
           {
@@ -2397,13 +2397,13 @@
             ]
           }
         },
-        "solutionHTML": "<div>垂心：三條高的交點。</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"triangle_center\" data-center=\"orthocenter\" data-shape-key=\"acute-right\"><div style=\"font-weight:bold;text-align:center;\">三條高的交點</div><svg role=\"img\" aria-label=\"垂心構造線解說圖\" viewBox=\"0 0 250 160\" width=\"250\" height=\"160\" style=\"max-width:100%;background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"28,122 220,132 148,28\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"28.00\" y1=\"122.00\" x2=\"153.11\" y2=\"35.38\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"220.00\" y1=\"132.00\" x2=\"142.13\" y2=\"32.60\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"148.00\" y1=\"28.00\" x2=\"142.79\" y2=\"127.98\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><circle cx=\"147.41\" cy=\"39.33\" r=\"5\" fill=\"#e74c3c\"/><text x=\"155.41\" y=\"43.33\" font-size=\"12\" fill=\"#e74c3c\">P</text><text x=\"16\" y=\"127\" font-size=\"12\">A</text><text x=\"225\" y=\"137\" font-size=\"12\">B</text><text x=\"145\" y=\"21\" font-size=\"12\">C</text></svg></div><div>垂心：三條高的交點。</div>",
         "pdfText": "9. 判斷三角形四心（右傾三角形）。",
         "answers": [
           "orthocenter"
         ],
         "displayAnswer": "垂心",
-        "steps": "<div>垂心：三條高的交點。</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"triangle_center\" data-center=\"orthocenter\" data-shape-key=\"acute-right\"><div style=\"font-weight:bold;text-align:center;\">三條高的交點</div><svg role=\"img\" aria-label=\"垂心構造線解說圖\" viewBox=\"0 0 250 160\" width=\"250\" height=\"160\" style=\"max-width:100%;background:#fafbfc;border:1px solid #e2e8f0;border-radius:10px;\"><polygon points=\"28,122 220,132 148,28\" fill=\"#fff\" stroke=\"#34495e\" stroke-width=\"2\"/><line x1=\"28.00\" y1=\"122.00\" x2=\"153.11\" y2=\"35.38\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"220.00\" y1=\"132.00\" x2=\"142.13\" y2=\"32.60\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><line x1=\"148.00\" y1=\"28.00\" x2=\"142.79\" y2=\"127.98\" stroke=\"#3498db\" stroke-width=\"1.8\" stroke-dasharray=\"4,3\"/><circle cx=\"147.41\" cy=\"39.33\" r=\"5\" fill=\"#e74c3c\"/><text x=\"155.41\" y=\"43.33\" font-size=\"12\" fill=\"#e74c3c\">P</text><text x=\"16\" y=\"127\" font-size=\"12\">A</text><text x=\"225\" y=\"137\" font-size=\"12\">B</text><text x=\"145\" y=\"21\" font-size=\"12\">C</text></svg></div><div>垂心：三條高的交點。</div>",
         "checkType": "choiceKey",
         "options": [
           {
@@ -2444,14 +2444,14 @@
           "piCoeff": 36,
           "decimal": "113.097"
         },
-        "solutionHTML": "<div>公式：\\(\\frac{4}{3}\\pi r^3\\)</div><div>答案：\\(36π\\text{ cm}^3 \\approx 113.097\\text{ cm}^3\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_sphere\" data-solid=\"sphere\" data-r=\"3\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"sphere 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><circle cx=\"130\" cy=\"88\" r=\"58\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><ellipse cx=\"130\" cy=\"88\" rx=\"58\" ry=\"16\" fill=\"none\" stroke=\"#7f8c8d\" stroke-dasharray=\"5,4\"/><circle cx=\"130\" cy=\"88\" r=\"3\" fill=\"#34495e\"/><line x1=\"130\" y1=\"88\" x2=\"188\" y2=\"88\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"148\" y=\"80\" font-size=\"13\">r = 3 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 4/3πr³</text></svg></div><div>公式：\\(\\frac{4}{3}\\pi r^3\\)</div><div>答案：\\(36π\\text{ cm}^3 \\approx 113.097\\text{ cm}^3\\)</div>",
         "pdfText": "10. 半徑為 \\(3\\text{ cm}\\) 的球體，求體積。",
         "answers": [
           "113.097",
           "36π"
         ],
         "displayAnswer": "36π cm³ ≈ 113.097 cm³",
-        "steps": "<div>公式：\\(\\frac{4}{3}\\pi r^3\\)</div><div>答案：\\(36π\\text{ cm}^3 \\approx 113.097\\text{ cm}^3\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_sphere\" data-solid=\"sphere\" data-r=\"3\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"sphere 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><circle cx=\"130\" cy=\"88\" r=\"58\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><ellipse cx=\"130\" cy=\"88\" rx=\"58\" ry=\"16\" fill=\"none\" stroke=\"#7f8c8d\" stroke-dasharray=\"5,4\"/><circle cx=\"130\" cy=\"88\" r=\"3\" fill=\"#34495e\"/><line x1=\"130\" y1=\"88\" x2=\"188\" y2=\"88\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"148\" y=\"80\" font-size=\"13\">r = 3 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 4/3πr³</text></svg></div><div>公式：\\(\\frac{4}{3}\\pi r^3\\)</div><div>答案：\\(36π\\text{ cm}^3 \\approx 113.097\\text{ cm}^3\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2477,14 +2477,14 @@
           "piCoeff": 144,
           "decimal": "452.389"
         },
-        "solutionHTML": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(144π\\text{ cm}^3 \\approx 452.389\\text{ cm}^3\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_hemisphere\" data-solid=\"hemisphere\" data-r=\"6\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"hemisphere 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M60 92 A70 70 0 0 1 200 92 L60 92 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 92 A70 70 0 0 0 200 92\" fill=\"none\" stroke=\"#7f8c8d\" stroke-width=\"1.5\" stroke-dasharray=\"5,4\"/><ellipse cx=\"130\" cy=\"92\" rx=\"70\" ry=\"16\" fill=\"none\" stroke=\"#34495e\"/><line x1=\"130\" y1=\"92\" x2=\"200\" y2=\"92\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"83\" font-size=\"13\">r = 6 cm</text><text x=\"130\" y=\"157\" text-anchor=\"middle\" font-size=\"12\">虛線補全整個球體；半球體積為整球一半</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 2/3πr³</text></svg></div><div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(144π\\text{ cm}^3 \\approx 452.389\\text{ cm}^3\\)</div>",
         "pdfText": "10. 半徑為 \\(6\\text{ cm}\\) 的半球體，求體積。",
         "answers": [
           "452.389",
           "144π"
         ],
         "displayAnswer": "144π cm³ ≈ 452.389 cm³",
-        "steps": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(144π\\text{ cm}^3 \\approx 452.389\\text{ cm}^3\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_hemisphere\" data-solid=\"hemisphere\" data-r=\"6\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"hemisphere 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M60 92 A70 70 0 0 1 200 92 L60 92 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 92 A70 70 0 0 0 200 92\" fill=\"none\" stroke=\"#7f8c8d\" stroke-width=\"1.5\" stroke-dasharray=\"5,4\"/><ellipse cx=\"130\" cy=\"92\" rx=\"70\" ry=\"16\" fill=\"none\" stroke=\"#34495e\"/><line x1=\"130\" y1=\"92\" x2=\"200\" y2=\"92\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"83\" font-size=\"13\">r = 6 cm</text><text x=\"130\" y=\"157\" text-anchor=\"middle\" font-size=\"12\">虛線補全整個球體；半球體積為整球一半</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 2/3πr³</text></svg></div><div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(144π\\text{ cm}^3 \\approx 452.389\\text{ cm}^3\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2512,14 +2512,14 @@
           "piCoeff": "16/3",
           "decimal": "16.755"
         },
-        "solutionHTML": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{16}{3}\\pi\\text{ cm}^3 \\approx 16.755\\text{ cm}^3\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_hemisphere\" data-solid=\"hemisphere\" data-r=\"2\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"hemisphere 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M60 92 A70 70 0 0 1 200 92 L60 92 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 92 A70 70 0 0 0 200 92\" fill=\"none\" stroke=\"#7f8c8d\" stroke-width=\"1.5\" stroke-dasharray=\"5,4\"/><ellipse cx=\"130\" cy=\"92\" rx=\"70\" ry=\"16\" fill=\"none\" stroke=\"#34495e\"/><line x1=\"130\" y1=\"92\" x2=\"200\" y2=\"92\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"83\" font-size=\"13\">r = 2 cm</text><text x=\"130\" y=\"157\" text-anchor=\"middle\" font-size=\"12\">虛線補全整個球體；半球體積為整球一半</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 2/3πr³</text></svg></div><div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{16}{3}\\pi\\text{ cm}^3 \\approx 16.755\\text{ cm}^3\\)</div>",
         "pdfText": "10. 半徑為 \\(2\\text{ cm}\\) 的半球體，求體積。",
         "answers": [
           "16.755",
           "16π/3"
         ],
         "displayAnswer": "\\frac{16}{3}\\pi cm³ ≈ 16.755 cm³",
-        "steps": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{16}{3}\\pi\\text{ cm}^3 \\approx 16.755\\text{ cm}^3\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_hemisphere\" data-solid=\"hemisphere\" data-r=\"2\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"hemisphere 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M60 92 A70 70 0 0 1 200 92 L60 92 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 92 A70 70 0 0 0 200 92\" fill=\"none\" stroke=\"#7f8c8d\" stroke-width=\"1.5\" stroke-dasharray=\"5,4\"/><ellipse cx=\"130\" cy=\"92\" rx=\"70\" ry=\"16\" fill=\"none\" stroke=\"#34495e\"/><line x1=\"130\" y1=\"92\" x2=\"200\" y2=\"92\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"83\" font-size=\"13\">r = 2 cm</text><text x=\"130\" y=\"157\" text-anchor=\"middle\" font-size=\"12\">虛線補全整個球體；半球體積為整球一半</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 2/3πr³</text></svg></div><div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{16}{3}\\pi\\text{ cm}^3 \\approx 16.755\\text{ cm}^3\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2548,14 +2548,14 @@
           "piCoeff": "250/3",
           "decimal": "261.799"
         },
-        "solutionHTML": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{250}{3}\\pi\\text{ cm}^3 \\approx 261.799\\text{ cm}^3\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_hemisphere\" data-solid=\"hemisphere\" data-r=\"5\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"hemisphere 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M60 92 A70 70 0 0 1 200 92 L60 92 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 92 A70 70 0 0 0 200 92\" fill=\"none\" stroke=\"#7f8c8d\" stroke-width=\"1.5\" stroke-dasharray=\"5,4\"/><ellipse cx=\"130\" cy=\"92\" rx=\"70\" ry=\"16\" fill=\"none\" stroke=\"#34495e\"/><line x1=\"130\" y1=\"92\" x2=\"200\" y2=\"92\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"83\" font-size=\"13\">r = 5 cm</text><text x=\"130\" y=\"157\" text-anchor=\"middle\" font-size=\"12\">虛線補全整個球體；半球體積為整球一半</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 2/3πr³</text></svg></div><div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{250}{3}\\pi\\text{ cm}^3 \\approx 261.799\\text{ cm}^3\\)</div>",
         "pdfText": "10. 半徑為 \\(5\\text{ cm}\\) 的半球體，求體積。",
         "answers": [
           "261.799",
           "250π/3"
         ],
         "displayAnswer": "\\frac{250}{3}\\pi cm³ ≈ 261.799 cm³",
-        "steps": "<div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{250}{3}\\pi\\text{ cm}^3 \\approx 261.799\\text{ cm}^3\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_hemisphere\" data-solid=\"hemisphere\" data-r=\"5\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"hemisphere 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M60 92 A70 70 0 0 1 200 92 L60 92 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 92 A70 70 0 0 0 200 92\" fill=\"none\" stroke=\"#7f8c8d\" stroke-width=\"1.5\" stroke-dasharray=\"5,4\"/><ellipse cx=\"130\" cy=\"92\" rx=\"70\" ry=\"16\" fill=\"none\" stroke=\"#34495e\"/><line x1=\"130\" y1=\"92\" x2=\"200\" y2=\"92\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"83\" font-size=\"13\">r = 5 cm</text><text x=\"130\" y=\"157\" text-anchor=\"middle\" font-size=\"12\">虛線補全整個球體；半球體積為整球一半</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 2/3πr³</text></svg></div><div>公式：\\(\\frac{2}{3}\\pi r^3\\)</div><div>答案：\\(\\frac{250}{3}\\pi\\text{ cm}^3 \\approx 261.799\\text{ cm}^3\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2586,14 +2586,14 @@
           "piCoeff": 45,
           "decimal": "141.372"
         },
-        "solutionHTML": "<div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(45π\\text{ cm}^3 \\approx 141.372\\text{ cm}^3\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_cylinder\" data-solid=\"cylinder\" data-r=\"3\" data-h=\"5\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"cylinder 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><ellipse cx=\"130\" cy=\"42\" rx=\"64\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M66 42 L66 137 M194 42 L194 137\" stroke=\"#2980b9\" stroke-width=\"2\"/><ellipse cx=\"130\" cy=\"137\" rx=\"64\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><line x1=\"130\" y1=\"42\" x2=\"194\" y2=\"42\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"148\" y=\"34\" font-size=\"13\">r = 3 cm</text><line x1=\"204\" y1=\"42\" x2=\"204\" y2=\"137\" stroke=\"#27ae60\" stroke-width=\"2\"/><text x=\"198\" y=\"94\" text-anchor=\"end\" font-size=\"12\">h = 5 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = πr²h</text></svg></div><div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(45π\\text{ cm}^3 \\approx 141.372\\text{ cm}^3\\)</div>",
         "pdfText": "11. 圓柱半徑為 \\(3\\text{ cm}\\)，高為 \\(5\\text{ cm}\\)。求體積。",
         "answers": [
           "141.372",
           "45π"
         ],
         "displayAnswer": "45π cm³ ≈ 141.372 cm³",
-        "steps": "<div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(45π\\text{ cm}^3 \\approx 141.372\\text{ cm}^3\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_cylinder\" data-solid=\"cylinder\" data-r=\"3\" data-h=\"5\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"cylinder 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><ellipse cx=\"130\" cy=\"42\" rx=\"64\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M66 42 L66 137 M194 42 L194 137\" stroke=\"#2980b9\" stroke-width=\"2\"/><ellipse cx=\"130\" cy=\"137\" rx=\"64\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><line x1=\"130\" y1=\"42\" x2=\"194\" y2=\"42\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"148\" y=\"34\" font-size=\"13\">r = 3 cm</text><line x1=\"204\" y1=\"42\" x2=\"204\" y2=\"137\" stroke=\"#27ae60\" stroke-width=\"2\"/><text x=\"198\" y=\"94\" text-anchor=\"end\" font-size=\"12\">h = 5 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = πr²h</text></svg></div><div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(45π\\text{ cm}^3 \\approx 141.372\\text{ cm}^3\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2619,14 +2619,14 @@
           "piCoeff": 112,
           "decimal": "351.858"
         },
-        "solutionHTML": "<div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(112π\\text{ cm}^3 \\approx 351.858\\text{ cm}^3\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_cylinder\" data-solid=\"cylinder\" data-r=\"4\" data-h=\"7\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"cylinder 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><ellipse cx=\"130\" cy=\"42\" rx=\"64\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M66 42 L66 137 M194 42 L194 137\" stroke=\"#2980b9\" stroke-width=\"2\"/><ellipse cx=\"130\" cy=\"137\" rx=\"64\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><line x1=\"130\" y1=\"42\" x2=\"194\" y2=\"42\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"148\" y=\"34\" font-size=\"13\">r = 4 cm</text><line x1=\"204\" y1=\"42\" x2=\"204\" y2=\"137\" stroke=\"#27ae60\" stroke-width=\"2\"/><text x=\"198\" y=\"94\" text-anchor=\"end\" font-size=\"12\">h = 7 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = πr²h</text></svg></div><div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(112π\\text{ cm}^3 \\approx 351.858\\text{ cm}^3\\)</div>",
         "pdfText": "11. 圓柱半徑為 \\(4\\text{ cm}\\)，高為 \\(7\\text{ cm}\\)。求體積。",
         "answers": [
           "351.858",
           "112π"
         ],
         "displayAnswer": "112π cm³ ≈ 351.858 cm³",
-        "steps": "<div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(112π\\text{ cm}^3 \\approx 351.858\\text{ cm}^3\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_cylinder\" data-solid=\"cylinder\" data-r=\"4\" data-h=\"7\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"cylinder 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><ellipse cx=\"130\" cy=\"42\" rx=\"64\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M66 42 L66 137 M194 42 L194 137\" stroke=\"#2980b9\" stroke-width=\"2\"/><ellipse cx=\"130\" cy=\"137\" rx=\"64\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><line x1=\"130\" y1=\"42\" x2=\"194\" y2=\"42\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"148\" y=\"34\" font-size=\"13\">r = 4 cm</text><line x1=\"204\" y1=\"42\" x2=\"204\" y2=\"137\" stroke=\"#27ae60\" stroke-width=\"2\"/><text x=\"198\" y=\"94\" text-anchor=\"end\" font-size=\"12\">h = 7 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = πr²h</text></svg></div><div>公式：\\(\\pi r^2h\\)</div><div>答案：\\(112π\\text{ cm}^3 \\approx 351.858\\text{ cm}^3\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2654,14 +2654,14 @@
           "piCoeff": 24,
           "decimal": "75.398"
         },
-        "solutionHTML": "<div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(24π\\text{ cm}^3 \\approx 75.398\\text{ cm}^3\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_cone\" data-solid=\"cone\" data-r=\"3\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"cone 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><ellipse cx=\"130\" cy=\"137\" rx=\"70\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 137 L130 25 L200 137\" fill=\"#eef7ff\" fill-opacity=\".55\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 137 A70 18 0 0 0 200 137\" fill=\"none\" stroke=\"#7f8c8d\" stroke-dasharray=\"5,4\"/><line x1=\"130\" y1=\"137\" x2=\"200\" y2=\"137\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"129\" font-size=\"13\">r = 3 cm</text><line x1=\"130\" y1=\"25\" x2=\"130\" y2=\"137\" stroke=\"#27ae60\" stroke-width=\"2\" stroke-dasharray=\"4,3\"/><text x=\"136\" y=\"84\" font-size=\"13\">h = 8 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 1/3πr²h</text></svg></div><div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(24π\\text{ cm}^3 \\approx 75.398\\text{ cm}^3\\)</div>",
         "pdfText": "12. 圓錐半徑為 \\(3\\text{ cm}\\)，高為 \\(8\\text{ cm}\\)。求體積。",
         "answers": [
           "75.398",
           "24π"
         ],
         "displayAnswer": "24π cm³ ≈ 75.398 cm³",
-        "steps": "<div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(24π\\text{ cm}^3 \\approx 75.398\\text{ cm}^3\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_cone\" data-solid=\"cone\" data-r=\"3\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"cone 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><ellipse cx=\"130\" cy=\"137\" rx=\"70\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 137 L130 25 L200 137\" fill=\"#eef7ff\" fill-opacity=\".55\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 137 A70 18 0 0 0 200 137\" fill=\"none\" stroke=\"#7f8c8d\" stroke-dasharray=\"5,4\"/><line x1=\"130\" y1=\"137\" x2=\"200\" y2=\"137\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"129\" font-size=\"13\">r = 3 cm</text><line x1=\"130\" y1=\"25\" x2=\"130\" y2=\"137\" stroke=\"#27ae60\" stroke-width=\"2\" stroke-dasharray=\"4,3\"/><text x=\"136\" y=\"84\" font-size=\"13\">h = 8 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 1/3πr²h</text></svg></div><div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(24π\\text{ cm}^3 \\approx 75.398\\text{ cm}^3\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2687,14 +2687,14 @@
           "piCoeff": 60,
           "decimal": "188.496"
         },
-        "solutionHTML": "<div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(60π\\text{ cm}^3 \\approx 188.496\\text{ cm}^3\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_cone\" data-solid=\"cone\" data-r=\"6\" data-h=\"5\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"cone 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><ellipse cx=\"130\" cy=\"137\" rx=\"70\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 137 L130 25 L200 137\" fill=\"#eef7ff\" fill-opacity=\".55\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 137 A70 18 0 0 0 200 137\" fill=\"none\" stroke=\"#7f8c8d\" stroke-dasharray=\"5,4\"/><line x1=\"130\" y1=\"137\" x2=\"200\" y2=\"137\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"129\" font-size=\"13\">r = 6 cm</text><line x1=\"130\" y1=\"25\" x2=\"130\" y2=\"137\" stroke=\"#27ae60\" stroke-width=\"2\" stroke-dasharray=\"4,3\"/><text x=\"136\" y=\"84\" font-size=\"13\">h = 5 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 1/3πr²h</text></svg></div><div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(60π\\text{ cm}^3 \\approx 188.496\\text{ cm}^3\\)</div>",
         "pdfText": "12. 圓錐半徑為 \\(6\\text{ cm}\\)，高為 \\(5\\text{ cm}\\)。求體積。",
         "answers": [
           "188.496",
           "60π"
         ],
         "displayAnswer": "60π cm³ ≈ 188.496 cm³",
-        "steps": "<div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(60π\\text{ cm}^3 \\approx 188.496\\text{ cm}^3\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"solid_cone\" data-solid=\"cone\" data-r=\"6\" data-h=\"5\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"cone 量度解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><ellipse cx=\"130\" cy=\"137\" rx=\"70\" ry=\"18\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 137 L130 25 L200 137\" fill=\"#eef7ff\" fill-opacity=\".55\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M60 137 A70 18 0 0 0 200 137\" fill=\"none\" stroke=\"#7f8c8d\" stroke-dasharray=\"5,4\"/><line x1=\"130\" y1=\"137\" x2=\"200\" y2=\"137\" stroke=\"#e74c3c\" stroke-width=\"2\"/><text x=\"151\" y=\"129\" font-size=\"13\">r = 6 cm</text><line x1=\"130\" y1=\"25\" x2=\"130\" y2=\"137\" stroke=\"#27ae60\" stroke-width=\"2\" stroke-dasharray=\"4,3\"/><text x=\"136\" y=\"84\" font-size=\"13\">h = 5 cm</text><text x=\"130\" y=\"174\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">V = 1/3πr²h</text></svg></div><div>公式：\\(\\frac{1}{3}\\pi r^2h\\)</div><div>答案：\\(60π\\text{ cm}^3 \\approx 188.496\\text{ cm}^3\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2722,14 +2722,14 @@
           "piCoeff": 6,
           "decimal": "18.85"
         },
-        "solutionHTML": "<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times\\pi r^2\\)</div><div>答案：\\(6π\\text{ cm^2} \\approx 18.85\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"sector_measure\" data-r=\"6\" data-angle=\"60\" data-ask=\"area\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"扇形圓心角與半徑解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M92 120 L164 120 A72 72 0 0 0 128.00 57.65 Z\" fill=\"#d6ecff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M164 120 A72 72 0 0 0 128.00 57.65\" fill=\"none\" stroke=\"#2980b9\" stroke-width=\"2\"/><circle cx=\"92\" cy=\"120\" r=\"3\" fill=\"#34495e\"/><text x=\"120\" y=\"111\" font-size=\"13\">r = 6 cm</text><text x=\"104\" y=\"96\" font-size=\"13\">60°</text><text x=\"130\" y=\"166\" text-anchor=\"middle\" font-size=\"12\">陰影部分 = 所求面積</text></svg></div><div>公式：\\(\\frac{\\theta}{360^\\circ}\\times\\pi r^2\\)</div><div>答案：\\(6π\\text{ cm^2} \\approx 18.85\\)</div>",
         "pdfText": "13. 扇形半徑為 \\(6\\text{ cm}\\)，圓心角為 \\(60^\\circ\\)。求面積。",
         "answers": [
           "18.85",
           "6π"
         ],
         "displayAnswer": "6π cm^2 ≈ 18.85 cm^2",
-        "steps": "<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times\\pi r^2\\)</div><div>答案：\\(6π\\text{ cm^2} \\approx 18.85\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"sector_measure\" data-r=\"6\" data-angle=\"60\" data-ask=\"area\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"扇形圓心角與半徑解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M92 120 L164 120 A72 72 0 0 0 128.00 57.65 Z\" fill=\"#d6ecff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M164 120 A72 72 0 0 0 128.00 57.65\" fill=\"none\" stroke=\"#2980b9\" stroke-width=\"2\"/><circle cx=\"92\" cy=\"120\" r=\"3\" fill=\"#34495e\"/><text x=\"120\" y=\"111\" font-size=\"13\">r = 6 cm</text><text x=\"104\" y=\"96\" font-size=\"13\">60°</text><text x=\"130\" y=\"166\" text-anchor=\"middle\" font-size=\"12\">陰影部分 = 所求面積</text></svg></div><div>公式：\\(\\frac{\\theta}{360^\\circ}\\times\\pi r^2\\)</div><div>答案：\\(6π\\text{ cm^2} \\approx 18.85\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2755,14 +2755,14 @@
           "piCoeff": 4,
           "decimal": "12.566"
         },
-        "solutionHTML": "<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times2\\pi r\\)</div><div>答案：\\(4π\\text{ cm} \\approx 12.566\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"sector_measure\" data-r=\"8\" data-angle=\"90\" data-ask=\"arc\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"扇形圓心角與半徑解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M92 120 L164 120 A72 72 0 0 0 92.00 48.00 Z\" fill=\"#d6ecff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M164 120 A72 72 0 0 0 92.00 48.00\" fill=\"none\" stroke=\"#e74c3c\" stroke-width=\"5\"/><circle cx=\"92\" cy=\"120\" r=\"3\" fill=\"#34495e\"/><text x=\"120\" y=\"111\" font-size=\"13\">r = 8 cm</text><text x=\"104\" y=\"96\" font-size=\"13\">90°</text><text x=\"130\" y=\"166\" text-anchor=\"middle\" font-size=\"12\">紅色弧線 = 所求弧長</text></svg></div><div>公式：\\(\\frac{\\theta}{360^\\circ}\\times2\\pi r\\)</div><div>答案：\\(4π\\text{ cm} \\approx 12.566\\)</div>",
         "pdfText": "13. 扇形半徑為 \\(8\\text{ cm}\\)，圓心角為 \\(90^\\circ\\)。求弧長。",
         "answers": [
           "12.566",
           "4π"
         ],
         "displayAnswer": "4π cm ≈ 12.566 cm",
-        "steps": "<div>公式：\\(\\frac{\\theta}{360^\\circ}\\times2\\pi r\\)</div><div>答案：\\(4π\\text{ cm} \\approx 12.566\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"sector_measure\" data-r=\"8\" data-angle=\"90\" data-ask=\"arc\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"扇形圓心角與半徑解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M92 120 L164 120 A72 72 0 0 0 92.00 48.00 Z\" fill=\"#d6ecff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M164 120 A72 72 0 0 0 92.00 48.00\" fill=\"none\" stroke=\"#e74c3c\" stroke-width=\"5\"/><circle cx=\"92\" cy=\"120\" r=\"3\" fill=\"#34495e\"/><text x=\"120\" y=\"111\" font-size=\"13\">r = 8 cm</text><text x=\"104\" y=\"96\" font-size=\"13\">90°</text><text x=\"130\" y=\"166\" text-anchor=\"middle\" font-size=\"12\">紅色弧線 = 所求弧長</text></svg></div><div>公式：\\(\\frac{\\theta}{360^\\circ}\\times2\\pi r\\)</div><div>答案：\\(4π\\text{ cm} \\approx 12.566\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2791,13 +2791,13 @@
           "l": 13,
           "result": "13"
         },
-        "solutionHTML": "<div>由畢氏定理：\\(l^2 = r^2 + h^2\\)。</div><div>\\(l=\\sqrt{5^2+12^2}=13\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"pyth_cone\" data-mode=\"findL\" data-r=\"5\" data-h=\"12\" data-l=\"13\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"圓錐截面畢氏定理解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M55 145 L205 145 L55 35 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M55 132 L68 132 L68 145\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"123\" y=\"163\" font-size=\"13\">r = 5 cm</text><text x=\"10\" y=\"94\" font-size=\"13\">h = 12 cm</text><text x=\"137\" y=\"82\" font-size=\"13\">l = 13 cm</text><text x=\"130\" y=\"25\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">r² + h² = l²</text></svg></div><div>由畢氏定理：\\(l^2 = r^2 + h^2\\)。</div><div>\\(l=\\sqrt{5^2+12^2}=13\\)</div>",
         "pdfText": "14. 圓錐的半徑為 \\(5\\text{ cm}\\)，垂直高為 \\(12\\text{ cm}\\)。求斜高。",
         "answers": [
           "13"
         ],
         "displayAnswer": "13 cm",
-        "steps": "<div>由畢氏定理：\\(l^2 = r^2 + h^2\\)。</div><div>\\(l=\\sqrt{5^2+12^2}=13\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"pyth_cone\" data-mode=\"findL\" data-r=\"5\" data-h=\"12\" data-l=\"13\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"圓錐截面畢氏定理解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M55 145 L205 145 L55 35 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M55 132 L68 132 L68 145\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"123\" y=\"163\" font-size=\"13\">r = 5 cm</text><text x=\"10\" y=\"94\" font-size=\"13\">h = 12 cm</text><text x=\"137\" y=\"82\" font-size=\"13\">l = 13 cm</text><text x=\"130\" y=\"25\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">r² + h² = l²</text></svg></div><div>由畢氏定理：\\(l^2 = r^2 + h^2\\)。</div><div>\\(l=\\sqrt{5^2+12^2}=13\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -2823,13 +2823,13 @@
           "l": 13,
           "result": "12"
         },
-        "solutionHTML": "<div>由畢氏定理：\\(h^2 + r^2 = l^2\\)。</div><div>\\(h=\\sqrt{13^2-5^2}=12\\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"pyth_cone\" data-mode=\"findH\" data-r=\"5\" data-h=\"12\" data-l=\"13\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"圓錐截面畢氏定理解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M55 145 L205 145 L55 35 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M55 132 L68 132 L68 145\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"123\" y=\"163\" font-size=\"13\">r = 5 cm</text><text x=\"10\" y=\"94\" font-size=\"13\">h = 12 cm</text><text x=\"137\" y=\"82\" font-size=\"13\">l = 13 cm</text><text x=\"130\" y=\"25\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">r² + h² = l²</text></svg></div><div>由畢氏定理：\\(h^2 + r^2 = l^2\\)。</div><div>\\(h=\\sqrt{13^2-5^2}=12\\)</div>",
         "pdfText": "14. 圓錐的半徑為 \\(5\\text{ cm}\\)，斜高為 \\(13\\text{ cm}\\)。求垂直高。",
         "answers": [
           "12"
         ],
         "displayAnswer": "12 cm",
-        "steps": "<div>由畢氏定理：\\(h^2 + r^2 = l^2\\)。</div><div>\\(h=\\sqrt{13^2-5^2}=12\\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"pyth_cone\" data-mode=\"findH\" data-r=\"5\" data-h=\"12\" data-l=\"13\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"圓錐截面畢氏定理解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M55 145 L205 145 L55 35 Z\" fill=\"#eef7ff\" stroke=\"#2980b9\" stroke-width=\"2\"/><path d=\"M55 132 L68 132 L68 145\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"123\" y=\"163\" font-size=\"13\">r = 5 cm</text><text x=\"10\" y=\"94\" font-size=\"13\">h = 12 cm</text><text x=\"137\" y=\"82\" font-size=\"13\">l = 13 cm</text><text x=\"130\" y=\"25\" text-anchor=\"middle\" font-size=\"13\" font-weight=\"bold\">r² + h² = l²</text></svg></div><div>由畢氏定理：\\(h^2 + r^2 = l^2\\)。</div><div>\\(h=\\sqrt{13^2-5^2}=12\\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "allowUnit": true,
@@ -3511,7 +3511,7 @@
           "cube": true,
           "result": 125
         },
-        "solutionHTML": "<div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 5^3 = 125 \\)</div><div>答案：\\( 125 \\text{ cm}^3 \\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"cuboid_volume_cube\" data-mode=\"cube\" data-l=\"5\" data-w=\"5\" data-h=\"5\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"立方體邊長解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M48 58 L174 58 L218 30 L92 30 Z M48 58 L48 142 L174 142 L174 58 M174 142 L218 114 L218 30 M48 142 L92 114 L218 114 M92 30 L92 114\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"108\" y=\"160\" text-anchor=\"middle\" font-size=\"13\">邊長 5 cm</text><text x=\"192\" y=\"139\" font-size=\"13\">邊長 5 cm</text><text x=\"12\" y=\"104\" font-size=\"13\">邊長 5 cm</text></svg></div><div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 5^3 = 125 \\)</div><div>答案：\\( 125 \\text{ cm}^3 \\)</div>",
         "pdfText": "16. 一個立方體的邊長是 \\( 5 \\text{ cm} \\)。求它的體積。",
         "answers": [
           "125",
@@ -3519,7 +3519,7 @@
           "125cm³"
         ],
         "displayAnswer": "125 cm³",
-        "steps": "<div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 5^3 = 125 \\)</div><div>答案：\\( 125 \\text{ cm}^3 \\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"cuboid_volume_cube\" data-mode=\"cube\" data-l=\"5\" data-w=\"5\" data-h=\"5\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"立方體邊長解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M48 58 L174 58 L218 30 L92 30 Z M48 58 L48 142 L174 142 L174 58 M174 142 L218 114 L218 30 M48 142 L92 114 L218 114 M92 30 L92 114\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"108\" y=\"160\" text-anchor=\"middle\" font-size=\"13\">邊長 5 cm</text><text x=\"192\" y=\"139\" font-size=\"13\">邊長 5 cm</text><text x=\"12\" y=\"104\" font-size=\"13\">邊長 5 cm</text></svg></div><div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 5^3 = 125 \\)</div><div>答案：\\( 125 \\text{ cm}^3 \\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "unit": "cm^3",
@@ -3540,7 +3540,7 @@
           "cube": true,
           "result": 512
         },
-        "solutionHTML": "<div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 8^3 = 512 \\)</div><div>答案：\\( 512 \\text{ cm}^3 \\)</div>",
+        "solutionHTML": "<div class=\"solution-diagram\" data-solution-diagram=\"cuboid_volume_cube\" data-mode=\"cube\" data-l=\"8\" data-w=\"8\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"立方體邊長解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M48 58 L174 58 L218 30 L92 30 Z M48 58 L48 142 L174 142 L174 58 M174 142 L218 114 L218 30 M48 142 L92 114 L218 114 M92 30 L92 114\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"108\" y=\"160\" text-anchor=\"middle\" font-size=\"13\">邊長 8 cm</text><text x=\"192\" y=\"139\" font-size=\"13\">邊長 8 cm</text><text x=\"12\" y=\"104\" font-size=\"13\">邊長 8 cm</text></svg></div><div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 8^3 = 512 \\)</div><div>答案：\\( 512 \\text{ cm}^3 \\)</div>",
         "pdfText": "16. 一個立方體的邊長是 \\( 8 \\text{ cm} \\)。求它的體積。",
         "answers": [
           "512",
@@ -3548,7 +3548,7 @@
           "512cm³"
         ],
         "displayAnswer": "512 cm³",
-        "steps": "<div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 8^3 = 512 \\)</div><div>答案：\\( 512 \\text{ cm}^3 \\)</div>",
+        "steps": "<div class=\"solution-diagram\" data-solution-diagram=\"cuboid_volume_cube\" data-mode=\"cube\" data-l=\"8\" data-w=\"8\" data-h=\"8\"><svg viewBox=\"0 0 260 180\" role=\"img\" aria-label=\"立方體邊長解說圖\" style=\"display:block;width:100%;max-width:360px;height:auto;margin:10px auto;background:#fff;border:1px solid #dbe4ee;border-radius:10px;\"><path d=\"M48 58 L174 58 L218 30 L92 30 Z M48 58 L48 142 L174 142 L174 58 M174 142 L218 114 L218 30 M48 142 L92 114 L218 114 M92 30 L92 114\" fill=\"none\" stroke=\"#34495e\" stroke-width=\"2\"/><text x=\"108\" y=\"160\" text-anchor=\"middle\" font-size=\"13\">邊長 8 cm</text><text x=\"192\" y=\"139\" font-size=\"13\">邊長 8 cm</text><text x=\"12\" y=\"104\" font-size=\"13\">邊長 8 cm</text></svg></div><div>立方體體積 = 邊長<sup>3</sup></div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 8^3 = 512 \\)</div><div>答案：\\( 512 \\text{ cm}^3 \\)</div>",
         "checkType": "unitNumeric",
         "answerSpec": {
           "unit": "cm^3",
