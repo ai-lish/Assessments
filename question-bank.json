@@ -759,8 +759,11 @@
       "type": "text",
       "checkType": "numericOrFraction",
       "params_schema": {
-        "coeff": "方程 ax=b 的 a",
-        "rVal": "方程 ax=b 的 b，可令答案為分數"
+        "mode": "固定 fraction_mixed，隨機生成 D 或 B 形式",
+        "form": "D=ax=b；B=(ax)/b=c",
+        "a": "非零整數 x 係數",
+        "b": "D 的右側整數或 B 的非零分母",
+        "c": "B 的非零右側整數"
       },
       "answers": [],
       "displayAnswer": "",
@@ -771,8 +774,7 @@
       "validator": "numericOrFraction",
       "generator": "solve_eq",
       "defaultParams": {
-        "coeff": 4,
-        "rVal": 6
+        "mode": "fraction_mixed"
       },
       "prefix": "x = ",
       "code": "LSC-2526-S1-T2-06-NA-7",
@@ -1562,12 +1564,13 @@
       "topicKey": "number_and_algebra",
       "topicName": "數與代數",
       "type": "text",
-      "checkType": "numeric",
+      "checkType": "numericOrFraction",
       "params_schema": {
-        "a": "分子 x 係數 2..9",
-        "c": "分母 2..6",
-        "d": "等式右側 -6..8",
-        "xVal": "固定生成的解"
+        "mode": "固定 fraction_mixed，隨機生成 D 或 B 形式",
+        "form": "D=ax=b；B=(ax)/b=c",
+        "a": "非零整數 x 係數",
+        "b": "D 的右側整數或 B 的非零分母",
+        "c": "B 的非零右側整數"
       },
       "prefix": "x = ",
       "answers": [],
@@ -1576,10 +1579,10 @@
       "pdfText": "",
       "schemaVersion": 1,
       "part": "part_a",
-      "validator": "numeric",
+      "validator": "numericOrFraction",
       "generator": "solve_eq",
       "defaultParams": {
-        "mode": "fraction"
+        "mode": "fraction_mixed"
       },
       "code": "LSC-2526-S2-T3-03-NA-7",
       "source": "s2-t3-marking-scheme-2026-07-05",
@@ -1595,11 +1598,16 @@
       "topicKey": "number_and_algebra",
       "topicName": "數與代數",
       "type": "text",
-      "checkType": "numeric",
+      "checkType": "numericOrFraction",
       "params_schema": {
+        "mode": "固定 bracket_mixed，隨機生成 bracket 或 C 形式",
+        "form": "bracket=k(m-x)=n；C=(x+a)/b=c",
         "k": "括號外係數 2..6",
         "m": "括號內常數 -5..6",
-        "xVal": "固定生成的解"
+        "xVal": "固定生成的解",
+        "a": "C 的非零整數常數",
+        "b": "C 的非零分母",
+        "c": "C 的非零右側整數"
       },
       "prefix": "x = ",
       "answers": [],
@@ -1608,10 +1616,10 @@
       "pdfText": "",
       "schemaVersion": 1,
       "part": "part_a",
-      "validator": "numeric",
+      "validator": "numericOrFraction",
       "generator": "solve_eq",
       "defaultParams": {
-        "mode": "bracket"
+        "mode": "bracket_mixed"
       },
       "code": "LSC-2526-S2-T3-04-NA-7",
       "source": "s2-t3-marking-scheme-2026-07-05",

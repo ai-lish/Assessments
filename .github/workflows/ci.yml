@@ -63,6 +63,9 @@ jobs:
       - name: Solve inequality random parameter regression
         run: node test/solve_ineq_random.cjs
 
+      - name: Solve equation fraction-mode regression
+        run: node test/solve_eq_fraction_random.cjs
+
       - name: Validator fixture test
         run: node test/test_validators.cjs
 

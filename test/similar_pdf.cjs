@@ -94,6 +94,7 @@ check('zero-space fallback exposes an empty question list', zeroSnapshot.questio
 const typeByKey = new Map(bank.data.map((item) => [item.key, item]));
 const presetTypeKeys = [...new Set(bank.presets.flatMap((preset) => preset.questions.map((item) => item.typeKey)))];
 const limitedTypes = [];
+const variantCounts = new Map();
 for (const typeKey of presetTypeKeys) {
   const def = typeByKey.get(typeKey);
   const current = generators.generateQuestion(def, {});
@@ -105,6 +106,7 @@ for (const typeKey of presetTypeKeys) {
     { generatorApi: generators, maxAttempts: 1000 },
   );
   const variantSignatures = variants.questions.map((q) => pdf._private.paramsSignature(q.paramsUsed));
+  variantCounts.set(typeKey, variants.actualCount);
   check(`${typeKey} variants are unique`, new Set(variantSignatures).size === variantSignatures.length);
   check(`${typeKey} variants exclude current params`, !variantSignatures.includes(pdf._private.paramsSignature(current.paramsUsed)));
   check(`${typeKey} emits no more than requested count`, variants.actualCount <= 5);
@@ -114,7 +116,7 @@ for (const typeKey of presetTypeKeys) {
   }
 }
 check('all preset typeKeys audited', presetTypeKeys.length >= 50, String(presetTypeKeys.length));
-check('fixed s1t2 equation is detected as zero-space', limitedTypes.includes('s1t2_solve_eq_fraction:0'), limitedTypes.join(','));
+check('s1t2 fraction equation now provides five alternatives', variantCounts.get('s1t2_solve_eq_fraction') === 5, String(variantCounts.get('s1t2_solve_eq_fraction')));
 
 if (failures.length) {
   console.error(`similar PDF: ${failures.length} failure(s)`);
