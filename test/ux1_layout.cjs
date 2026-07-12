@@ -42,12 +42,20 @@ check('template numeric keypad items occupy the left four columns',
   keypadConfig && keypadConfig.baseRows.every((row) => row.length === 4) &&
   '0123456789.'.split('').every((label) => keypadConfig.baseRows.flat().includes(label)),
   keypadConfig ? JSON.stringify(keypadConfig.baseRows) : 'missing config');
-check('template base controls include minus, delete, and clear',
-  keypadConfig && ['-', '⌫', 'C'].every((label) => keypadConfig.controlKeys.includes(label)));
+check('template keeps four operators fixed and delete/clear controls',
+  keypadConfig && ['+', '-', '×', '÷'].every((label) => keypadConfig.constantOperators.includes(label)) &&
+  ['⌫', 'C'].every((label) => keypadConfig.controlKeys.includes(label)));
 check('template has keypad-area id for collapse control', /id="keypad-area"/.test(template));
 check('template has independent action-area id', /id="action-area"/.test(template));
 check('template places both PDF controls between answer actions and keypad',
   /id="action-area"[\s\S]*id="pdf-action-area"[\s\S]*id="btn-similar-pdf"[\s\S]*id="btn-whole-pdf"[\s\S]*id="keypad-area"/.test(template));
+check('template places keypad shift with both PDF controls in one row',
+  /class="pdf-action-row"[\s\S]{0,1500}id="btn-similar-pdf"[\s\S]{0,800}id="btn-whole-pdf"[\s\S]{0,800}id="btn-shift-keypad"/.test(template) &&
+  !/class="keypad-tools"/.test(template));
+check('template uses short labels and full accessible descriptions',
+  />同類 PDF<\/button>/.test(template) && />整卷 PDF<\/button>/.test(template) && />鍵盤 ↑<\/button>/.test(template) &&
+  /id="btn-similar-pdf"[^>]+aria-label=/.test(template) && /id="btn-whole-pdf"[^>]+aria-label=/.test(template) &&
+  /id="btn-shift-keypad"[^>]+aria-label=/.test(template));
 check('template keeps result-page whole PDF control', /id="btn-result-pdf"[^>]+onclick="printPDF\(\)"/.test(template));
 check('template applies dynamic viewport and safe-area bottom padding',
   /height:\s*100dvh/.test(template) && /env\(safe-area-inset-bottom\)/.test(template));
@@ -57,6 +65,9 @@ check('template has session keypad position toggle',
 check('next button lives outside keypad-area',
   /id="action-area"[\s\S]{0,500}id="btn-next"/.test(template) &&
   !/id="keypad-area"[\s\S]{0,500}id="btn-next"/.test(template));
+check('check and next share one fixed action slot',
+  /class="btn-row answer-action-slot"[\s\S]{0,400}id="btn-check"[\s\S]{0,400}id="btn-next"/.test(template) &&
+  /\.answer-action-slot\s*\{[^}]*display:\s*grid/.test(template));
 check('template has collapseAnswerControlsAfterCheck()', /function collapseAnswerControlsAfterCheck\(\)/.test(template));
 check('checkAns collapses controls after answer', /checkAns\(\)[\s\S]*collapseAnswerControlsAfterCheck\(\)/.test(template));
 check('showQ restores keypad for next question', /showQ\(\)[\s\S]*setKeypadVisible\(true\)/.test(template));

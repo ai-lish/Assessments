@@ -20,6 +20,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>{{TITLE_HTML}}</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <script>
   window.MathJax = {
     tex: { inlineMath: [['\\(','\\)'], ['$','$']], displayMath: [['$$','$$']] },
@@ -30,10 +32,10 @@
         MathJax.startup.defaultReady();
         // 處理 cold-cache race：showQ 可能喺 MathJax 載入完成前已跑；
         // MathJax 就緒後即刻 typeset 而家嘅 quiz-view，否則學生睇到 raw \(...\)。
-        const qv = document.getElementById("quiz-view");
-        if (qv && qv.style.display !== "none" && qv.innerHTML.trim()) {
-          MathJax.typesetPromise([qv]).catch(() => {});
-        }
+        const targets = ["q-text", "feedback-answer", "solution-box"]
+          .map((id) => document.getElementById(id))
+          .filter((element) => element && element.offsetParent !== null && element.innerHTML.trim());
+        if (targets.length) MathJax.typesetPromise(targets).catch(() => {});
       }
     }
   };
@@ -54,12 +56,12 @@
   .top-question-code { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.01em; color: var(--primary); }
   .copy-code-btn { flex: 0 0 auto; border: 1px solid #d5dbdb; background: #fff; color: var(--primary); border-radius: 999px; padding: 2px 7px; font-size: 0.78em; font-weight: 700; cursor: pointer; }
   .copy-code-btn:active { transform: translateY(1px); }
-  #quiz-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-  .quiz-content { padding: 10px 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+  #quiz-view { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+  .quiz-content { padding: 10px 15px; flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
   .pdf-action-area { background: #f8f9fa; border-top: 1px solid #e6e9ec; padding: 5px 8px; flex-shrink: 0; }
-  .pdf-action-row { display: flex; justify-content: center; align-items: center; gap: 6px; width: 100%; }
-  .pdf-secondary-btn { min-width: 0; max-width: 50%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 9px; font-size: 0.76em; font-weight: 700; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pdf-action-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 5px; width: 100%; }
+  .pdf-secondary-btn { min-width: 0; width: 100%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 6px; font-size: 0.74em; font-weight: 700; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .pdf-secondary-btn:disabled { opacity: 0.55; cursor: not-allowed; }
   .similar-pdf-hint { display: none; color: var(--text-muted); font-size: 0.76em; }
   .question-text { font-size: 1.1em; color: var(--text-main); margin: 0; text-align: left; width: 100%; line-height: 1.6; }
@@ -74,8 +76,8 @@
   .prefix-label { margin-right: 4px; }
   .suffix-label { margin-left: 4px; }
   .virtual-input { flex-grow: 1; min-height: 50px; background: #fff; border: 2px solid var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.4em; font-family: monospace; color: var(--text-main); padding: 0 10px; word-break: break-all; }
-  .feedback-area { width: 95%; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 10px; }
-  .feedback { width: 100%; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center; display: none; font-size: 1.05em; }
+  .feedback-area { width: 95%; height: 100px; flex: 0 0 100px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 6px; margin-bottom: 10px; overflow: hidden; }
+  .feedback { width: 100%; min-height: 42px; max-height: 58px; overflow-y: auto; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center; display: none; font-size: 1.05em; }
   .correct { background-color: #d4edda; color: #155724; }
   .incorrect { background-color: #f8d7da; color: #721c24; }
   .btn-teach { display: none; background-color: #f39c12; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.95em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-top: 5px; }
@@ -84,9 +86,8 @@
   .action-area { background: #fff; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
   .keypad-area { background: #f1f3f5; padding: 5px 8px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid #ddd; flex-shrink: 0; position: relative; transition: margin-bottom 0.2s ease; }
   .keypad-area.keypad-raised { margin-bottom: min(22dvh, 180px); }
-  .keypad-tools { display: flex; justify-content: flex-end; margin-bottom: 3px; }
-  .keypad-shift-btn { border: 1px solid #c9ced3; background: #fff; color: var(--primary); border-radius: 999px; padding: 2px 8px; min-height: 24px; font-size: 0.72em; font-weight: 700; cursor: pointer; }
   .key-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+  .keypad-area.keypad-input-hidden .key-grid { visibility: hidden; pointer-events: none; }
   .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
   .key-spacer { height: 34px; visibility: hidden; pointer-events: none; }
   .key:active { background: #eee; transform: translateY(2px); }
@@ -95,6 +96,8 @@
   .btn-next { background-color: var(--success); display: none; }
   .btn-row { display: flex; gap: 6px; width: 100%; }
   .btn-row .main-btn { flex: 1; }
+  .answer-action-slot { display: grid; min-height: 45px; }
+  .answer-action-slot .main-btn { grid-area: 1 / 1; min-height: 45px; margin-bottom: 0; }
   #result-view { display: none; flex-direction: column; padding: 20px; overflow-y: auto; text-align: center; flex-grow: 1; height: 100%; }
   .history-box { margin-top: 10px; border: 1px solid #eee; border-radius: 8px; max-height: 280px; overflow-y: auto; background: #fff; }
   .history-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
@@ -170,20 +173,20 @@
       <div id="solution-box" class="solution-box"></div>
     </div>
     <div class="action-area" id="action-area">
-      <div class="btn-row">
+      <div class="btn-row answer-action-slot">
         <button class="main-btn btn-check" id="btn-check" onclick="checkAns()">核對答案</button>
         <button class="main-btn btn-next" id="btn-next" onclick="nextQ()">下一題</button>
       </div>
     </div>
     <div class="pdf-action-area" id="pdf-action-area">
       <div class="pdf-action-row">
-        <button type="button" id="btn-similar-pdf" class="pdf-secondary-btn" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">🖨️ 同類練習 PDF</button>
-        <button type="button" id="btn-whole-pdf" class="pdf-secondary-btn" onclick="printPDF()">🖨️ 整卷 PDF 雙版</button>
+        <button type="button" id="btn-similar-pdf" class="pdf-secondary-btn" aria-label="開啟當前題型的同類練習 PDF 預覽" title="開啟當前題型的同類練習 PDF 預覽" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">同類 PDF</button>
+        <button type="button" id="btn-whole-pdf" class="pdf-secondary-btn" aria-label="開啟整卷題目及答案雙版 PDF 預覽" title="開啟整卷題目及答案雙版 PDF 預覽" onclick="printPDF()">整卷 PDF</button>
+        <button type="button" id="btn-shift-keypad" class="pdf-secondary-btn" aria-label="將虛擬鍵盤上調" title="將虛擬鍵盤上調" aria-pressed="false" onclick="toggleKeypadPosition()">鍵盤 ↑</button>
       </div>
       <span id="similar-pdf-hint" class="similar-pdf-hint" role="status"></span>
     </div>
     <div class="keypad-area" id="keypad-area">
-      <div class="keypad-tools"><button type="button" id="btn-shift-keypad" class="keypad-shift-btn" aria-pressed="false" onclick="toggleKeypadPosition()">⬆ 鍵盤上調</button></div>
       <div class="key-grid" id="keypad" aria-label="題型專用按鍵"></div>
     </div>
   </div>
@@ -252,7 +255,9 @@ const STUDENT_ID_RULE_TEXT = "8 位數字 + 大寫 F 或 M，例如 20255001F";
 const SHOW_QUESTION_CODE = true;
 const INPUT_KEYPAD_CONFIG = {
   "baseRows": [["7", "8", "9", "0"], ["4", "5", "6", "."], ["1", "2", "3", null]],
-  "controlKeys": ["-", "⌫", "C"],
+  "fixedRows": [["+", "-"], ["×", "÷"], ["⌫", "C"]],
+  "constantOperators": ["+", "-", "×", "÷"],
+  "controlKeys": ["⌫", "C"],
   "keyOrder": ["+", "×", "÷", "^", "(", ")", "/", "%", "π", "√", "±", ",", ":", ">", "<", "=", "≥", "≤", "x", "y", "a", "b", "k", "S", "A", "R", "H", "*"],
   "validator": {
     "numericOrFraction": ["/"],
@@ -518,7 +523,19 @@ function clickDot(x, y) {
 
 function setKeypadVisible(visible) {
   const area = document.getElementById("keypad-area");
-  if (area) area.style.display = visible ? "block" : "none";
+  const button = document.getElementById("btn-shift-keypad");
+  if (area) {
+    area.style.display = visible ? "block" : "none";
+    if (visible) area.classList.remove("keypad-input-hidden");
+  }
+  if (button) button.disabled = !visible;
+}
+
+function setKeypadInputVisible(visible) {
+  const area = document.getElementById("keypad-area");
+  if (!area) return;
+  if (visible) area.classList.remove("keypad-input-hidden");
+  else area.classList.add("keypad-input-hidden");
 }
 
 let keypadRaised = false;
@@ -529,7 +546,9 @@ function applyKeypadPosition() {
   if (area) area.classList.toggle("keypad-raised", keypadRaised);
   if (button) {
     button.setAttribute("aria-pressed", keypadRaised ? "true" : "false");
-    button.textContent = keypadRaised ? "⬇ 鍵盤還原" : "⬆ 鍵盤上調";
+    button.textContent = keypadRaised ? "鍵盤 ↓" : "鍵盤 ↑";
+    button.setAttribute("aria-label", keypadRaised ? "將虛擬鍵盤還原" : "將虛擬鍵盤上調");
+    button.title = keypadRaised ? "將虛擬鍵盤還原" : "將虛擬鍵盤上調";
   }
 }
 
@@ -541,7 +560,7 @@ function toggleKeypadPosition() {
 function keypadKeysForQuestion(q) {
   if (!q || q.type === "choice") return [];
   const config = INPUT_KEYPAD_CONFIG;
-  const required = new Set(config.controlKeys);
+  const required = new Set(config.constantOperators.concat(config.controlKeys));
   const supported = new Set(config.keyOrder.concat([".", "-"]));
   String(q.correctAnswer || "").split("").forEach((character) => {
     if (supported.has(character)) required.add(character);
@@ -552,7 +571,7 @@ function keypadKeysForQuestion(q) {
     required.add("π");
     required.add("/");
   }
-  return config.keyOrder.filter((key) => required.has(key)).concat(
+  return config.constantOperators.concat(config.keyOrder.filter((key) => required.has(key) && !config.constantOperators.includes(key))).concat(
     config.controlKeys.filter((key) => !config.keyOrder.includes(key))
   );
 }
@@ -567,7 +586,7 @@ function makeKeypadButton(keyValue) {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "key";
-  button.textContent = keyValue;
+  button.textContent = keyValue === "-" ? "−" : keyValue;
   if (keyValue === "⌫" || keyValue === "C") {
     button.style.background = "#fee";
     button.style.color = "red";
@@ -588,19 +607,24 @@ function renderQuestionKeypad(q) {
     return;
   }
   const config = INPUT_KEYPAD_CONFIG;
-  const extras = keypadKeysForQuestion(q);
-  const extraSlots = [extras.slice(0, 5), extras.slice(5, 10), extras.slice(10, 15)];
+  const fixedKeys = new Set(config.constantOperators.concat(config.controlKeys));
+  const extras = keypadKeysForQuestion(q).filter((key) => !fixedKeys.has(key));
+  const extraSlots = [[], [], []];
+  extras.forEach((key, index) => extraSlots[index % extraSlots.length].push(key));
   config.baseRows.forEach((baseRow, rowIndex) => {
-    baseRow.concat(extraSlots[rowIndex]).forEach((keyValue) => area.appendChild(makeKeypadButton(keyValue)));
-    for (let i = extraSlots[rowIndex].length; i < 5; i++) area.appendChild(makeKeypadButton(null));
+    baseRow.concat(config.fixedRows[rowIndex], extraSlots[rowIndex]).forEach((keyValue) => area.appendChild(makeKeypadButton(keyValue)));
+    for (let i = extraSlots[rowIndex].length; i < 3; i++) area.appendChild(makeKeypadButton(null));
   });
   setKeypadVisible(true);
 }
 
 function collapseAnswerControlsAfterCheck() {
-  setKeypadVisible(false);
-  document.getElementById("input-row").style.display = "none";
-  document.getElementById("q-options").style.display = "none";
+  setKeypadInputVisible(false);
+  [document.getElementById("input-row"), document.getElementById("q-options")].forEach((element) => {
+    if (!element || element.style.display === "none") return;
+    element.style.visibility = "hidden";
+    element.style.pointerEvents = "none";
+  });
 }
 
 /* === 顯示提示 === */
@@ -649,7 +673,9 @@ function showQ() {
   currSelectedPoint = null;
   answered = false;
   document.getElementById("p-text").textContent = "Q" + (currIdx + 1) + "/" + qList.length;
-  document.getElementById("q-text").innerHTML = q.questionHTML;
+  const questionText = document.getElementById("q-text");
+  if (questionText.dataset) delete questionText.dataset.mathJaxRendered;
+  questionText.innerHTML = q.questionHTML;
   updateQuestionCodeDisplay(q);
   updateSimilarPdfButton(q);
   document.getElementById("q-feedback").style.display = "none";
@@ -660,6 +686,7 @@ function showQ() {
   setKeypadVisible(true);
   document.getElementById("solution-box").style.display = "none";
   document.getElementById("solution-box").innerHTML = "";
+  if (document.getElementById("solution-box").dataset) delete document.getElementById("solution-box").dataset.mathJaxRendered;
   renderInputDisplay();
   renderQuestionKeypad(q);
   document.getElementById("prefix").style.display = "none";
@@ -667,8 +694,12 @@ function showQ() {
   document.getElementById("q-hint").style.display = "none";
   document.getElementById("q-options").style.display = "none";
   document.getElementById("q-options").innerHTML = "";
+  document.getElementById("q-options").style.visibility = "visible";
+  document.getElementById("q-options").style.pointerEvents = "auto";
   document.getElementById("q-coord-hint").style.display = "none";
   document.getElementById("input-row").style.display = "flex";
+  document.getElementById("input-row").style.visibility = "visible";
+  document.getElementById("input-row").style.pointerEvents = "auto";
   document.getElementById("q-image").style.display = "none";
   document.getElementById("q-image").innerHTML = "";
 
@@ -722,9 +753,36 @@ function showQ() {
     }
   }
 
-  if (window.MathJax && MathJax.typesetPromise) {
-    MathJax.typesetPromise([document.getElementById("quiz-view")]).catch(() => {});
+  typesetElementOnce(questionText);
+}
+
+function typesetElementOnce(element) {
+  if (!element || (element.dataset && element.dataset.mathJaxRendered === "true")) return Promise.resolve(false);
+  if (!window.MathJax || !MathJax.typesetPromise) return Promise.resolve(false);
+  return MathJax.typesetPromise([element]).then(() => {
+    if (element.dataset) element.dataset.mathJaxRendered = "true";
+    return true;
+  }).catch(() => false);
+}
+
+function answerNeedsMathJax(answer) {
+  const value = String(answer || "").trim();
+  if (!value) return false;
+  if (/\\(?:frac|times|pi|sqrt|%)|[\/π^√×÷±<>=()]/.test(value)) return true;
+  return /(?:\d|[+\-])\s*[A-Za-z]|[A-Za-z]\s*(?:\d|[+\-])/.test(value);
+}
+
+function renderFeedbackAnswer(container, answer) {
+  const value = String(answer == null ? "" : answer);
+  const answerSpan = document.createElement("span");
+  answerSpan.id = "feedback-answer";
+  if (answerNeedsMathJax(value)) {
+    answerSpan.innerHTML = /\\[([]/.test(value) ? value : "\\( " + value + " \\)";
+  } else {
+    answerSpan.textContent = value;
   }
+  container.appendChild(answerSpan);
+  if (answerNeedsMathJax(value)) typesetElementOnce(answerSpan);
 }
 
 /* === 按鍵輸入 === */
@@ -913,6 +971,10 @@ function renderInputDisplay() {
     return;
   }
   const raw = currInput;
+  if (/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)) {
+    el.textContent = raw;
+    return;
+  }
   const preview = inputToPreviewParts(raw);
   if (!preview.latex) {
     el.textContent = raw;
@@ -985,8 +1047,9 @@ function checkAns() {
     fb.innerHTML = "✓ 正確！";
   } else {
     fb.className = "feedback incorrect";
-    let ans = q.displayAnswer || q.correctAnswer;
-    fb.innerHTML = "✗ 答錯。正確答案： " + ans;
+    const ans = q.displayAnswer || q.correctAnswer;
+    fb.textContent = "✗ 答錯。正確答案： ";
+    renderFeedbackAnswer(fb, ans);
     origWrongIds.push(q.qid);
   }
   document.getElementById("btn-check").style.display = "none";
@@ -995,9 +1058,6 @@ function checkAns() {
   collapseAnswerControlsAfterCheck();
   const solBox = document.getElementById("solution-box");
   solBox.innerHTML = "<h4>教學步驟</h4>" + (q.solutionHTML || q.steps || "");
-  if (window.MathJax && MathJax.typesetPromise) {
-    MathJax.typesetPromise([solBox]).catch(() => {});
-  }
   sessionLog.push({ qid: q.qid, user: userAns, correct: isCorrect });
   sessionAnswers.push(userAns);
   const correctCount = sessionLog.filter(s => s.correct).length;
@@ -1006,7 +1066,9 @@ function checkAns() {
 
 function toggleTeach() {
   const solBox = document.getElementById("solution-box");
-  solBox.style.display = solBox.style.display === "block" ? "none" : "block";
+  const opening = solBox.style.display !== "block";
+  solBox.style.display = opening ? "block" : "none";
+  if (opening) typesetElementOnce(solBox);
 }
 
 function nextQ() {
@@ -1209,7 +1271,7 @@ function printPDF() {
       generatedAt: new Date().toISOString(),
     });
     AssessPDF.printSnapshot(snapshot, { showCode: true });
-    showToast("✓ 已開啟 PDF 題目＋答案雙版");
+    showToast("✓ 已開啟 PDF 題目＋答案雙版預覽");
   } catch (e) {
     showToast("⚠️ PDF 匯出失敗：" + (e.message || e));
   }
@@ -1281,7 +1343,7 @@ function printSimilarPDF() {
       return;
     }
     AssessPDF.printSnapshot(snapshot, { showCode: true, scope: "similar" });
-    showToast("✓ 已開啟 " + snapshot.actualCount + " 題同類練習 PDF");
+    showToast("✓ 已開啟 " + snapshot.actualCount + " 題同類練習 PDF 預覽");
   } catch (e) {
     showToast("⚠️ 同類練習 PDF 失敗：" + (e.message || e));
   }

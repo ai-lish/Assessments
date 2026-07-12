@@ -301,6 +301,7 @@ function createAssessPDF() {
       + scriptOpen + '>window.MathJax={tex:{inlineMath:[[\'\\\\(\',\'\\\\)\'],[\'$\',\'$\']],displayMath:[[\'$$\',\'$$\']]},options:{skipHtmlTags:[\'script\',\'noscript\',\'style\',\'textarea\',\'pre\']},startup:{typeset:false}};' + scriptClose + '\n'
       + scriptOpen + ' id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">' + scriptClose + '\n'
       + '<style>' + printCss() + '</style>\n</head>\n<body data-snapshot-id="' + escapeHtml(snapshot.snapshotId) + '">\n'
+      + '<div class="pdf-preview-note" role="status">預覽已開啟。請使用瀏覽器的「列印」功能輸出或儲存 PDF。</div>\n'
       + '<div data-pdf-scope="' + scope + '">' + student + '\n<div class="pdf-page-separator"></div>\n' + teacher + '</div>\n'
       + scriptOpen + '>' + printScript() + scriptClose + '\n</body>\n</html>';
   }
@@ -328,7 +329,8 @@ function createAssessPDF() {
       '.pdf-answer-line{border-bottom:1pt solid #111;flex:1;height:9mm;}',
       '.pdf-teacher-answer{border-bottom:1pt solid #111;flex:1;min-height:9mm;color:#c0392b;font-weight:700;font-size:11pt;overflow-wrap:anywhere;}',
       '.pdf-page-separator{page-break-before:always;}',
-      '@media screen{body{padding:18px;max-width:900px;margin:0 auto;background:#f3f5f7;}.pdf-paper{background:#fff;padding:16mm;box-shadow:0 4px 18px rgba(0,0,0,.12);margin-bottom:24px;}.pdf-page-separator{display:none;}}',
+      '.pdf-preview-note{display:none;}',
+      '@media screen{body{padding:18px;max-width:900px;margin:0 auto;background:#f3f5f7;}.pdf-preview-note{display:block;position:sticky;top:8px;z-index:10;margin:0 auto 14px;padding:10px 14px;border:1px solid #9ec5e5;border-radius:8px;background:#eef7ff;color:#234;font-family:"PingFang HK","Microsoft JhengHei",sans-serif;font-size:10pt;text-align:center;}.pdf-paper{background:#fff;padding:16mm;box-shadow:0 4px 18px rgba(0,0,0,.12);margin-bottom:24px;}.pdf-page-separator{display:none;}}',
     ].join("\n");
   }
 
@@ -344,7 +346,7 @@ function createAssessPDF() {
       '  await waitForAssets();',
       '  await nextFrame();',
       '  await nextFrame();',
-      '  window.print();',
+      '  document.body.setAttribute("data-print-ready","true");',
       '}',
       'if(document.readyState==="complete")run();else window.addEventListener("load",run,{once:true});',
       '})();'

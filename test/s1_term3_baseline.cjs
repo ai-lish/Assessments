@@ -402,13 +402,17 @@ const collapseState = evalInStudent(`
   checkAns();
   const afterCheck = {
     keypad: document.getElementById("keypad-area").style.display,
+    keypadHidden: document.getElementById("keypad-area").classList.contains("keypad-input-hidden"),
     input: document.getElementById("input-row").style.display,
+    inputVisibility: document.getElementById("input-row").style.visibility,
     next: document.getElementById("btn-next").style.display
   };
   nextQ();
   const afterNext = {
     keypad: document.getElementById("keypad-area").style.display,
+    keypadHidden: document.getElementById("keypad-area").classList.contains("keypad-input-hidden"),
     input: document.getElementById("input-row").style.display,
+    inputVisibility: document.getElementById("input-row").style.visibility,
     inputText: document.getElementById("input-val").textContent
   };
   const choiceQ = QUESTIONS.find(q => q.type === "choice");
@@ -417,15 +421,18 @@ const collapseState = evalInStudent(`
   showQ();
   currSelectedChoice = choiceQ.correctAnswer;
   checkAns();
-  const choiceOptions = document.getElementById("q-options").style.display;
+  const choiceOptions = {
+    display: document.getElementById("q-options").style.display,
+    visibility: document.getElementById("q-options").style.visibility
+  };
   ({ afterCheck, afterNext, choiceOptions });
 `);
-check("checkAns hides keypad after answer", collapseState.afterCheck.keypad === "none");
-check("checkAns hides text input row after answer", collapseState.afterCheck.input === "none");
+check("checkAns visually hides keypad while preserving its layout slot", collapseState.afterCheck.keypad === "block" && collapseState.afterCheck.keypadHidden);
+check("checkAns visually hides text input while preserving its layout slot", collapseState.afterCheck.input === "flex" && collapseState.afterCheck.inputVisibility === "hidden");
 check("checkAns shows next button after answer", collapseState.afterCheck.next === "block");
-check("nextQ restores keypad", collapseState.afterNext.keypad === "block");
+check("nextQ restores keypad", collapseState.afterNext.keypad === "block" && !collapseState.afterNext.keypadHidden && collapseState.afterNext.inputVisibility === "visible");
 check("nextQ clears input display", collapseState.afterNext.inputText === "");
-check("choice answer hides options after answer", collapseState.choiceOptions === "none");
+check("choice answer visually hides options while preserving their layout slot", collapseState.choiceOptions.display === "flex" && collapseState.choiceOptions.visibility === "hidden");
 
 section("6. print and virtual keypad baseline");
 evalInStudent("printPDF();");
