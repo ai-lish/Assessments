@@ -20,6 +20,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>2025-26 年度 中一第三學期(甲部)短答練習</title>
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
 <script>
   window.MathJax = {
     tex: { inlineMath: [['\\(','\\)'], ['$','$']], displayMath: [['$$','$$']] },
@@ -30,10 +32,10 @@
         MathJax.startup.defaultReady();
         // 處理 cold-cache race：showQ 可能喺 MathJax 載入完成前已跑；
         // MathJax 就緒後即刻 typeset 而家嘅 quiz-view，否則學生睇到 raw \(...\)。
-        const qv = document.getElementById("quiz-view");
-        if (qv && qv.style.display !== "none" && qv.innerHTML.trim()) {
-          MathJax.typesetPromise([qv]).catch(() => {});
-        }
+        const targets = ["q-text", "feedback-answer", "solution-box"]
+          .map((id) => document.getElementById(id))
+          .filter((element) => element && element.offsetParent !== null && element.innerHTML.trim());
+        if (targets.length) MathJax.typesetPromise(targets).catch(() => {});
       }
     }
   };
@@ -54,12 +56,12 @@
   .top-question-code { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.01em; color: var(--primary); }
   .copy-code-btn { flex: 0 0 auto; border: 1px solid #d5dbdb; background: #fff; color: var(--primary); border-radius: 999px; padding: 2px 7px; font-size: 0.78em; font-weight: 700; cursor: pointer; }
   .copy-code-btn:active { transform: translateY(1px); }
-  #quiz-view { display: flex; flex-direction: column; height: 100%; overflow: hidden; }
-  .quiz-content { padding: 10px 15px; flex-grow: 1; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+  #quiz-view { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+  .quiz-content { padding: 10px 15px; flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
   .pdf-action-area { background: #f8f9fa; border-top: 1px solid #e6e9ec; padding: 5px 8px; flex-shrink: 0; }
-  .pdf-action-row { display: flex; justify-content: center; align-items: center; gap: 6px; width: 100%; }
-  .pdf-secondary-btn { min-width: 0; max-width: 50%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 9px; font-size: 0.76em; font-weight: 700; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pdf-action-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 5px; width: 100%; }
+  .pdf-secondary-btn { min-width: 0; width: 100%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 6px; font-size: 0.74em; font-weight: 700; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .pdf-secondary-btn:disabled { opacity: 0.55; cursor: not-allowed; }
   .similar-pdf-hint { display: none; color: var(--text-muted); font-size: 0.76em; }
   .question-text { font-size: 1.1em; color: var(--text-main); margin: 0; text-align: left; width: 100%; line-height: 1.6; }
@@ -74,8 +76,8 @@
   .prefix-label { margin-right: 4px; }
   .suffix-label { margin-left: 4px; }
   .virtual-input { flex-grow: 1; min-height: 50px; background: #fff; border: 2px solid var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.4em; font-family: monospace; color: var(--text-main); padding: 0 10px; word-break: break-all; }
-  .feedback-area { width: 95%; display: flex; flex-direction: column; align-items: center; gap: 8px; margin-bottom: 10px; }
-  .feedback { width: 100%; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center; display: none; font-size: 1.05em; }
+  .feedback-area { width: 95%; height: 100px; flex: 0 0 100px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 6px; margin-bottom: 10px; overflow: hidden; }
+  .feedback { width: 100%; min-height: 42px; max-height: 58px; overflow-y: auto; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center; display: none; font-size: 1.05em; }
   .correct { background-color: #d4edda; color: #155724; }
   .incorrect { background-color: #f8d7da; color: #721c24; }
   .btn-teach { display: none; background-color: #f39c12; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.95em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-top: 5px; }
@@ -84,9 +86,8 @@
   .action-area { background: #fff; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
   .keypad-area { background: #f1f3f5; padding: 5px 8px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid #ddd; flex-shrink: 0; position: relative; transition: margin-bottom 0.2s ease; }
   .keypad-area.keypad-raised { margin-bottom: min(22dvh, 180px); }
-  .keypad-tools { display: flex; justify-content: flex-end; margin-bottom: 3px; }
-  .keypad-shift-btn { border: 1px solid #c9ced3; background: #fff; color: var(--primary); border-radius: 999px; padding: 2px 8px; min-height: 24px; font-size: 0.72em; font-weight: 700; cursor: pointer; }
   .key-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+  .keypad-area.keypad-input-hidden .key-grid { visibility: hidden; pointer-events: none; }
   .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
   .key-spacer { height: 34px; visibility: hidden; pointer-events: none; }
   .key:active { background: #eee; transform: translateY(2px); }
@@ -95,6 +96,8 @@
   .btn-next { background-color: var(--success); display: none; }
   .btn-row { display: flex; gap: 6px; width: 100%; }
   .btn-row .main-btn { flex: 1; }
+  .answer-action-slot { display: grid; min-height: 45px; }
+  .answer-action-slot .main-btn { grid-area: 1 / 1; min-height: 45px; margin-bottom: 0; }
   #result-view { display: none; flex-direction: column; padding: 20px; overflow-y: auto; text-align: center; flex-grow: 1; height: 100%; }
   .history-box { margin-top: 10px; border: 1px solid #eee; border-radius: 8px; max-height: 280px; overflow-y: auto; background: #fff; }
   .history-table { width: 100%; border-collapse: collapse; font-size: 0.85em; }
@@ -170,20 +173,20 @@
       <div id="solution-box" class="solution-box"></div>
     </div>
     <div class="action-area" id="action-area">
-      <div class="btn-row">
+      <div class="btn-row answer-action-slot">
         <button class="main-btn btn-check" id="btn-check" onclick="checkAns()">核對答案</button>
         <button class="main-btn btn-next" id="btn-next" onclick="nextQ()">下一題</button>
       </div>
     </div>
     <div class="pdf-action-area" id="pdf-action-area">
       <div class="pdf-action-row">
-        <button type="button" id="btn-similar-pdf" class="pdf-secondary-btn" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">🖨️ 同類練習 PDF</button>
-        <button type="button" id="btn-whole-pdf" class="pdf-secondary-btn" onclick="printPDF()">🖨️ 整卷 PDF 雙版</button>
+        <button type="button" id="btn-similar-pdf" class="pdf-secondary-btn" aria-label="開啟當前題型的同類練習 PDF 預覽" title="開啟當前題型的同類練習 PDF 預覽" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">同類 PDF</button>
+        <button type="button" id="btn-whole-pdf" class="pdf-secondary-btn" aria-label="開啟整卷題目及答案雙版 PDF 預覽" title="開啟整卷題目及答案雙版 PDF 預覽" onclick="printPDF()">整卷 PDF</button>
+        <button type="button" id="btn-shift-keypad" class="pdf-secondary-btn" aria-label="將虛擬鍵盤上調" title="將虛擬鍵盤上調" aria-pressed="false" onclick="toggleKeypadPosition()">鍵盤 ↑</button>
       </div>
       <span id="similar-pdf-hint" class="similar-pdf-hint" role="status"></span>
     </div>
     <div class="keypad-area" id="keypad-area">
-      <div class="keypad-tools"><button type="button" id="btn-shift-keypad" class="keypad-shift-btn" aria-pressed="false" onclick="toggleKeypadPosition()">⬆ 鍵盤上調</button></div>
       <div class="key-grid" id="keypad" aria-label="題型專用按鍵"></div>
     </div>
   </div>
@@ -746,6 +749,163 @@
   function ratioGcd3(a, b, c) {
     return gcdInt(gcdInt(a, b), c);
   }
+  const solveEqGenerator = (function() {
+    var coefficientValues = [2, 3, 4, 5, 6, 7, 8, 9];
+    var denominatorValues = [2, 3, 4, 5, 6, 7, 8, 9];
+    var rhsValues = [-12, -11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    var constantValues = [-9, -8, -7, -6, -5, -4, -3, -2, -1, 1, 2, 3, 4, 5, 6, 7, 8, 9];
+
+    function reducedFraction(numerator, denominator) {
+      var sign = denominator < 0 ? -1 : 1;
+      numerator *= sign;
+      denominator = Math.abs(denominator);
+      var divisor = gcdInt(numerator, denominator);
+      return {
+        numerator: numerator / divisor,
+        denominator: denominator / divisor,
+      };
+    }
+
+    function fractionText(value) {
+      return value.denominator === 1
+        ? String(value.numerator)
+        : value.numerator + '/' + value.denominator;
+    }
+
+    function pick(pool) {
+      return pool[Math.floor(Math.random() * pool.length)];
+    }
+
+    function matching(pool, params, keys, label) {
+      var matches = pool.filter(function(candidate) {
+        return keys.every(function(key) {
+          return params[key] === undefined || params[key] === candidate[key];
+        });
+      });
+      if (matches.length === 0) throw new Error('No legal solve_eq ' + label + ' parameters');
+      return pick(matches);
+    }
+
+    var dCombos = [];
+    coefficientValues.forEach(function(a) {
+      rhsValues.forEach(function(b) {
+        var answer = reducedFraction(b, a);
+        if (answer.denominator !== 1) dCombos.push({ a:a, b:b });
+      });
+    });
+
+    var bCombos = [];
+    coefficientValues.forEach(function(a) {
+      denominatorValues.forEach(function(b) {
+        constantValues.forEach(function(c) {
+          var coefficient = reducedFraction(a, b);
+          var answer = reducedFraction(b * c, a);
+          if (coefficient.denominator !== 1 && answer.denominator !== 1) {
+            bCombos.push({ a:a, b:b, c:c });
+          }
+        });
+      });
+    });
+
+    var cCombos = [];
+    constantValues.forEach(function(a) {
+      denominatorValues.forEach(function(b) {
+        constantValues.forEach(function(c) {
+          cCombos.push({ a:a, b:b, c:c });
+        });
+      });
+    });
+
+    function generateD(p) {
+      var chosen = matching(dCombos, p, ['a', 'b'], 'D');
+      var answer = reducedFraction(chosen.b, chosen.a);
+      var ans = fractionText(answer);
+      var text = '解方程 \\( ' + chosen.a + 'x = ' + chosen.b + ' \\)。';
+      var steps = '<div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} '
+        + chosen.a + 'x &= ' + chosen.b + ' \\\\ x &= \\frac{' + chosen.b + '}{' + chosen.a
+        + '} \\\\ x &= ' + ans + ' \\end{aligned} \\)</div>';
+      return {
+        questionHTML:text,
+        correctAnswer:ans,
+        paramsUsed:{mode:'fraction_mixed',form:'D',a:chosen.a,b:chosen.b,numerator:answer.numerator,denominator:answer.denominator},
+        solutionHTML:steps,
+        pdfText:text,
+        answers:[ans],
+        displayAnswer:ans,
+        steps:steps,
+        checkType:'numericOrFraction',
+        prefix:'x = ',
+      };
+    }
+
+    function generateB(p) {
+      var chosen = matching(bCombos, p, ['a', 'b', 'c'], 'B');
+      var answer = reducedFraction(chosen.b * chosen.c, chosen.a);
+      var ans = fractionText(answer);
+      var text = '解方程 \\( \\frac{' + chosen.a + 'x}{' + chosen.b + '} = ' + chosen.c + ' \\)。';
+      var steps = '<div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} '
+        + '\\frac{' + chosen.a + 'x}{' + chosen.b + '} &= ' + chosen.c
+        + ' \\\\ ' + chosen.a + 'x &= ' + (chosen.b * chosen.c)
+        + ' \\\\ x &= \\frac{' + (chosen.b * chosen.c) + '}{' + chosen.a
+        + '} \\\\ x &= ' + ans + ' \\end{aligned} \\)</div>';
+      return {
+        questionHTML:text,
+        correctAnswer:ans,
+        paramsUsed:{mode:'fraction_mixed',form:'B',a:chosen.a,b:chosen.b,c:chosen.c,numerator:answer.numerator,denominator:answer.denominator},
+        solutionHTML:steps,
+        pdfText:text,
+        answers:[ans],
+        displayAnswer:ans,
+        steps:steps,
+        checkType:'numericOrFraction',
+        prefix:'x = ',
+      };
+    }
+
+    function generateC(p) {
+      var chosen = matching(cCombos, p, ['a', 'b', 'c'], 'C');
+      var answer = chosen.b * chosen.c - chosen.a;
+      var sign = chosen.a >= 0 ? '+ ' + chosen.a : '- ' + Math.abs(chosen.a);
+      var text = '4. 解方程 \\( \\frac{x ' + sign + '}{' + chosen.b + '} = ' + chosen.c + ' \\)。';
+      var steps = '<div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} '
+        + '\\frac{x ' + sign + '}{' + chosen.b + '} &= ' + chosen.c
+        + ' \\\\ x ' + sign + ' &= ' + (chosen.b * chosen.c)
+        + ' \\\\ x &= ' + answer + ' \\end{aligned} \\)</div>';
+      return {
+        questionHTML:text,
+        correctAnswer:String(answer),
+        paramsUsed:{mode:'bracket_mixed',form:'C',a:chosen.a,b:chosen.b,c:chosen.c,xVal:answer},
+        solutionHTML:steps,
+        pdfText:text,
+        answers:[String(answer)],
+        displayAnswer:String(answer),
+        steps:steps,
+        checkType:'numericOrFraction',
+        prefix:'x = ',
+      };
+    }
+
+    return function solve_eq(p) {
+      if (p.mode === 'fraction_mixed' && p.rVal === undefined) {
+        var fractionForm = p.form || (Math.random() < 0.5 ? 'D' : 'B');
+        if (fractionForm === 'D') return generateD(p);
+        if (fractionForm === 'B') return generateB(p);
+        throw new Error('Unknown solve_eq fraction_mixed form: ' + fractionForm);
+      }
+      if (p.mode === 'bracket_mixed') {
+        var bracketForm = p.form || (Math.random() < 0.5 ? 'bracket' : 'C');
+        if (bracketForm === 'C') return generateC(p);
+        if (bracketForm !== 'bracket') throw new Error('Unknown solve_eq bracket_mixed form: ' + bracketForm);
+        p = Object.assign({}, p, { mode:'bracket' });
+      }
+
+      var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;};
+      function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=b;b=a%b;a=t;}return a||1;}
+      if (p.mode === 'fraction') { var xValF = (p.xVal !== undefined) ? p.xVal : r(-6, 8); if (xValF === 0) xValF = 3; var aF = (p.a !== undefined) ? p.a : r(2, 9); var cF = (p.c !== undefined) ? p.c : r(2, 6); var dF = (p.d !== undefined) ? p.d : r(-6, 8); if (dF === 0) dF = 4; var bF = cF * dF - aF * xValF; var bStrF = bF >= 0 ? ('+ ' + bF) : ('- ' + Math.abs(bF)); var textF = '3. 解方程 \\( \\frac{' + aF + 'x ' + bStrF + '}{' + cF + '} = ' + dF + ' \\)。'; var ansF = xValF.toString(); var stepsF = '<div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} \\frac{' + aF + 'x ' + bStrF + '}{' + cF + '} &= ' + dF + ' \\\\ ' + aF + 'x ' + bStrF + ' &= ' + (cF*dF) + ' \\\\ ' + aF + 'x &= ' + (cF*dF - bF) + ' \\\\ x &= ' + ansF + ' \\end{aligned} \\)</div>'; return { questionHTML: textF, correctAnswer: ansF, paramsUsed: {mode:'fraction', a:aF, b:bF, c:cF, d:dF, xVal:xValF}, solutionHTML: stepsF, pdfText: textF, answers: [ansF], displayAnswer: ansF, steps: stepsF, checkType: 'numeric', prefix: 'x = ' }; }
+      if (p.mode === 'bracket') { var xValB = (p.xVal !== undefined) ? p.xVal : r(-9, 6); if (xValB === 0) xValB = -3; var kB = (p.k !== undefined) ? p.k : r(2, 6); var mB = (p.m !== undefined) ? p.m : r(-5, 6); var nB = kB * (mB - xValB); var textB = '4. 解方程 \\( ' + kB + '(' + mB + ' - x) = ' + nB + ' \\)。'; var ansB = xValB.toString(); var stepsB = '<div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} ' + kB + '(' + mB + '-x) &= ' + nB + ' \\\\ ' + (kB*mB) + ' - ' + kB + 'x &= ' + nB + ' \\\\ -' + kB + 'x &= ' + (nB - kB*mB) + ' \\\\ x &= ' + ansB + ' \\end{aligned} \\)</div>'; return { questionHTML: textB, correctAnswer: ansB, paramsUsed: {mode:'bracket', k:kB, m:mB, xVal:xValB, n:nB}, solutionHTML: stepsB, pdfText: textB, answers: [ansB], displayAnswer: ansB, steps: stepsB, checkType: 'numeric', prefix: 'x = ' }; }
+      var coeff = p.coeff || r(2, 7); var rVal, xVal, ans; if (p.rVal !== undefined) { rVal = p.rVal; var g = gcd(rVal, coeff); var num = rVal / g, den = coeff / g; ans = (den === 1) ? String(num) : (num + '/' + den); xVal = ans; } else { xVal = (p.xVal !== undefined) ? p.xVal : r(-9, -2); rVal = coeff * xVal; ans = xVal.toString(); } var text = '7. 解方程 \\( ' + coeff + 'x = ' + rVal + ' \\)。'; var steps = '<div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} ' + coeff + 'x &= ' + rVal + ' \\\\ x &= \\frac{' + rVal + '}{' + coeff + '} \\\\ x &= ' + ans + ' \\end{aligned} \\)</div>'; return { questionHTML: text, correctAnswer: ans, paramsUsed: {coeff:coeff, xVal:xVal, rVal:rVal}, solutionHTML: steps, pdfText: text, answers: [ans], displayAnswer: ans, steps: steps, checkType: 'numeric', prefix: 'x = ' };
+    };
+  })();
   function solutionSvg(kind, attrs, body, label, viewBox) {
     var data = ' data-solution-diagram="' + kind + '"';
     Object.keys(attrs || {}).forEach(function(key) {
@@ -801,7 +961,7 @@
   "hcf_or_lcm": function hcf_or_lcm(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var n1 = p.n1; if (n1 === undefined) n1 = r(6,12) * 2; var n2 = p.n2; if (n2 === undefined) n2 = r(6,12) * 3; if (n1 === n2) n2 += 3; var askLCM = p.askLCM; if (askLCM === undefined) askLCM = (r(0,1) === 1); var a = n1, b = n2, common = [], rows = [a + ' \\quad ' + b]; while (true) { var d = 1; var primes = [2,3,5,7]; for (var i = 0; i < primes.length; i++) { var k = primes[i]; if (a % k === 0 && b % k === 0) { d = k; break; } } if (d === 1) break; common.push(d); a /= d; b /= d; rows.push(a + ' \\quad ' + b); } if (common.length === 0) { common = [1]; rows.push(a + ' \\quad ' + b); } var tbl = '<table style="border-collapse:collapse;margin:10px auto;font-family:Times New Roman,serif;font-size:1.2em;">'; for (var i = 0; i < common.length; i++) { tbl += '<tr><td style="border-right:1px solid black;padding:2px 8px;color:#e74c3c;font-weight:bold;text-align:right;">' + common[i] + '</td><td style="border-bottom:1px solid black;padding:2px 12px;text-align:left;">\\( ' + rows[i] + ' \\)</td></tr>'; } tbl += '<tr><td></td><td style="padding:2px 12px;text-align:left;">\\( ' + rows[rows.length-1] + ' \\)</td></tr></table>'; function g2(a,b){ while(b){var t=b; b=a%b; a=t;} return a; } var hcf = g2(n1, n2); var lcm = (n1 * n2) / hcf; var text, askedAns, displayAns, stepsTail; if (askLCM) { text = '4. 求 \\( ' + n1 + ' \\) 和 \\( ' + n2 + ' \\) 的 L.C.M. (最小公倍數)。'; askedAns = lcm.toString(); displayAns = lcm.toString(); stepsTail = '<div style="margin-top:5px;text-align:left;font-size:1.1em;">H.C.F. \\( = ' + hcf + ' \\)</div><div style="margin-top:5px;text-align:left;font-size:1.1em;">L.C.M. \\( = ' + hcf + ' \\times ' + (n1/hcf) + ' \\times ' + (n2/hcf) + ' = ' + lcm + ' \\)</div>'; } else { text = '4. 求 \\( ' + n1 + ' \\) 和 \\( ' + n2 + ' \\) 的 H.C.F. (最大公因數)。'; askedAns = hcf.toString(); displayAns = hcf.toString(); stepsTail = '<div style="margin-top:5px;text-align:left;font-size:1.1em;">H.C.F. \\( = ' + common.join(' \\times ') + ' = ' + hcf + ' \\)</div>'; } var steps = tbl + stepsTail; return { questionHTML: text, correctAnswer: askedAns, paramsUsed: {n1:n1, n2:n2, askLCM:askLCM, hcf:hcf, lcm:lcm}, solutionHTML: steps, pdfText: text, answers: [askedAns], displayAnswer: displayAns, steps: steps, checkType: 'hcfLcm', askLCM: askLCM, hcf: hcf, lcm: lcm }; },
   "exp_law": function exp_law(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; if (p.zeroCase) { var base = p.base || r(2, 9); var text0 = '4. 計算 \\( ' + base + '^0 \\)。'; var steps0 = '<div>零指數定律：</div><div style="font-size:1.05em;margin-top:5px;">任何非零數的零次方都等於 \\(1\\)，所以 \\( ' + base + '^0 = 1 \\)。</div>'; return { questionHTML: text0, correctAnswer: '1', paramsUsed: {base:base, zeroCase:true}, solutionHTML: steps0, pdfText: text0, answers: ['1'], displayAnswer: '1', steps: steps0, checkType: 'numeric' }; } var a = p.a || r(2, 6); var b = p.b || r(2, 6); var sum = a + b; var text = '5. 化簡 \\( x^{' + a + '}(x^{' + b + '}) \\)。'; var chainA = []; for (var i = 0; i < a; i++) chainA.push('x'); var chainB = []; for (var j = 0; j < b; j++) chainB.push('x'); var steps = '<div>步驟：</div><div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} &\\quad x^{' + a + '}(x^{' + b + '}) \\\\&=' + chainA.join(' \\cdot ') + ')(' + chainB.join(' \\cdot ') + ') \\\\&=' + chainA.join('') + chainB.join('') + ' \\\\&=x^{' + sum + '} \\end{aligned} \\)</div>'; return { questionHTML: text, correctAnswer: 'x^' + sum, paramsUsed: {a:a, b:b}, solutionHTML: steps, pdfText: text, answers: ['x^' + sum, 'x^(' + sum + ')', 'x**' + sum], displayAnswer: 'x^{' + sum + '}', steps: steps, checkType: 'textExact' }; },
   "alg_simplify": function alg_simplify(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var a = (p.a !== undefined) ? p.a : r(-6, -2); var b = (p.b !== undefined) ? p.b : r(-8, -2); var c = (p.c !== undefined) ? p.c : r(2, 6); var d = (p.d !== undefined) ? p.d : r(-9, -2); var xCoeff = a + c; var constTerm = b + d; var t1 = a + 'x'; var t2 = (b >= 0 ? '+ ' : '- ') + (Math.abs(b)); var t3 = (c >= 0 ? '+ ' : '- ') + (Math.abs(c)) + 'x'; var t4 = (d >= 0 ? '+ ' : '- ') + (Math.abs(d)); var polyStr = t1 + ' ' + t2 + ' ' + t3 + ' ' + t4; var groupedStr = t1 + ' ' + t3 + ' ' + t2 + ' ' + t4; var text = '6. 化簡 \\( ' + polyStr + ' \\) 。'; var stdAns = ''; if (xCoeff === 1) stdAns = 'x' + (constTerm >= 0 ? '+' : '-') + Math.abs(constTerm); else if (xCoeff === -1) stdAns = '-x' + (constTerm >= 0 ? '+' : '-') + Math.abs(constTerm); else if (xCoeff === 0) stdAns = constTerm.toString(); else stdAns = xCoeff + 'x' + (constTerm >= 0 ? '+' : '-') + Math.abs(constTerm); var steps = '<div>步驟：</div><div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} &\\quad ' + polyStr + ' \\\\&= ' + groupedStr + ' \\\\&= ' + stdAns + ' \\end{aligned} \\)</div>'; return { questionHTML: text, correctAnswer: stdAns, paramsUsed: {a:a, b:b, c:c, d:d, xCoeff:xCoeff, constTerm:constTerm}, solutionHTML: steps, pdfText: text, answers: [stdAns], displayAnswer: stdAns, steps: steps, checkType: 'textExact' }; },
-  "solve_eq": function solve_eq(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; function gcd(a,b){a=Math.abs(a);b=Math.abs(b);while(b){var t=b;b=a%b;a=t;}return a||1;} if (p.mode === 'fraction') { var xValF = (p.xVal !== undefined) ? p.xVal : r(-6, 8); if (xValF === 0) xValF = 3; var aF = (p.a !== undefined) ? p.a : r(2, 9); var cF = (p.c !== undefined) ? p.c : r(2, 6); var dF = (p.d !== undefined) ? p.d : r(-6, 8); if (dF === 0) dF = 4; var bF = cF * dF - aF * xValF; var bStrF = bF >= 0 ? ('+ ' + bF) : ('- ' + Math.abs(bF)); var textF = '3. 解方程 \\( \\frac{' + aF + 'x ' + bStrF + '}{' + cF + '} = ' + dF + ' \\)。'; var ansF = xValF.toString(); var stepsF = '<div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} \\frac{' + aF + 'x ' + bStrF + '}{' + cF + '} &= ' + dF + ' \\\\ ' + aF + 'x ' + bStrF + ' &= ' + (cF*dF) + ' \\\\ ' + aF + 'x &= ' + (cF*dF - bF) + ' \\\\ x &= ' + ansF + ' \\end{aligned} \\)</div>'; return { questionHTML: textF, correctAnswer: ansF, paramsUsed: {mode:'fraction', a:aF, b:bF, c:cF, d:dF, xVal:xValF}, solutionHTML: stepsF, pdfText: textF, answers: [ansF], displayAnswer: ansF, steps: stepsF, checkType: 'numeric', prefix: 'x = ' }; } if (p.mode === 'bracket') { var xValB = (p.xVal !== undefined) ? p.xVal : r(-9, 6); if (xValB === 0) xValB = -3; var kB = (p.k !== undefined) ? p.k : r(2, 6); var mB = (p.m !== undefined) ? p.m : r(-5, 6); var nB = kB * (mB - xValB); var textB = '4. 解方程 \\( ' + kB + '(' + mB + ' - x) = ' + nB + ' \\)。'; var ansB = xValB.toString(); var stepsB = '<div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} ' + kB + '(' + mB + '-x) &= ' + nB + ' \\\\ ' + (kB*mB) + ' - ' + kB + 'x &= ' + nB + ' \\\\ -' + kB + 'x &= ' + (nB - kB*mB) + ' \\\\ x &= ' + ansB + ' \\end{aligned} \\)</div>'; return { questionHTML: textB, correctAnswer: ansB, paramsUsed: {mode:'bracket', k:kB, m:mB, xVal:xValB, n:nB}, solutionHTML: stepsB, pdfText: textB, answers: [ansB], displayAnswer: ansB, steps: stepsB, checkType: 'numeric', prefix: 'x = ' }; } var coeff = p.coeff || r(2, 7); var rVal, xVal, ans; if (p.rVal !== undefined) { rVal = p.rVal; var g = gcd(rVal, coeff); var num = rVal / g, den = coeff / g; ans = (den === 1) ? String(num) : (num + '/' + den); xVal = ans; } else { xVal = (p.xVal !== undefined) ? p.xVal : r(-9, -2); rVal = coeff * xVal; ans = xVal.toString(); } var text = '7. 解方程 \\( ' + coeff + 'x = ' + rVal + ' \\)。'; var steps = '<div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} ' + coeff + 'x &= ' + rVal + ' \\\\ x &= \\frac{' + rVal + '}{' + coeff + '} \\\\ x &= ' + ans + ' \\end{aligned} \\)</div>'; return { questionHTML: text, correctAnswer: ans, paramsUsed: {coeff:coeff, xVal:xVal, rVal:rVal}, solutionHTML: steps, pdfText: text, answers: [ans], displayAnswer: ans, steps: steps, checkType: 'numeric', prefix: 'x = ' }; },
+  "solve_eq": solveEqGenerator,
   "word_to_alg": function word_to_alg(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var t = p.t; if (t === undefined) t = r(1, 5); var a = p.a; if (a === undefined) a = r(2, 9); var b = p.b; if (b === undefined) b = r(2, 9); var text, answers, displayAnswer, steps; if (t === 1) { text = '8. 以代數式表示：「\\( x \\) 與 \\( ' + a + ' \\) 之積減去 \\( ' + b + ' \\)」。'; answers = [a + 'x-' + b]; displayAnswer = a + 'x-' + b; steps = '<div style="line-height:1.6;">1. 「\\( x \\) 與 \\( ' + a + ' \\) 之積」寫作 \\(' + a + 'x\\)<br>2. 「再減去 \\( ' + b + ' \\)」寫作 \\(' + a + 'x - ' + b + '\\)</div>'; } else if (t === 2) { text = '8. 以代數式表示：「由 \\( x \\) 減去 \\( ' + a + ' \\) 之差除以 \\( ' + b + ' \\)」。'; answers = ['(x-' + a + ')/' + b, '(x-' + a + ')\\div' + b]; displayAnswer = '\\frac{x-' + a + '}{' + b + '}'; steps = '<div style="line-height:1.6;">1. 「由 \\( x \\) 減去 \\( ' + a + ' \\)」的<b>差</b>即結果 \\( x - ' + a + ' \\) ，寫作 \\((x-' + a + ')\\)<br>2. 「再除以 \\( ' + b + ' \\)」寫作 \\(\\frac{x-' + a + '}{' + b + '}\\)</div>'; } else if (t === 3) { text = '8. 以代數式表示：「\\( x \\) 與 \\( ' + a + ' \\) 之和乘以 \\( ' + b + ' \\)」。'; answers = [b + '(x+' + a + ')']; displayAnswer = b + '(x+' + a + ')'; steps = '<div style="line-height:1.6;">1. 「\\( x \\) 與 \\( ' + a + ' \\) 之和」寫作 \\((x+' + a + ')\\)<br>2. 「再乘以 \\( ' + b + ' \\)」寫作 \\(' + b + '(x+' + a + ')\\)</div>'; } else if (t === 4) { text = '8. 以代數式表示：「\\( x \\) 除以 \\( ' + a + ' \\) 之後加上 \\( ' + b + ' \\)」。'; answers = ['x/' + a + '+' + b, 'x\\div' + a + '+' + b]; displayAnswer = '\\frac{x}{' + a + '}+' + b; steps = '<div style="line-height:1.6;">1. 「\\( x \\) 除以 \\( ' + a + ' \\)」寫作 \\(\\frac{x}{' + a + '}\\)<br>2. 「再加上 \\( ' + b + ' \\)」寫作 \\(\\frac{x}{' + a + '}+' + b + '\\)</div>'; } else { text = '8. 以代數式表示：「\\( ' + a + ' \\) 與 \\( x \\) 之差乘以 \\( ' + b + ' \\)」。'; answers = [b + '(' + a + '-x)', '(' + a + '-x)\\times' + b, '(' + a + '-x)*' + b]; displayAnswer = b + '(' + a + '-x)'; steps = '<div style="line-height:1.6;">1. 「\\( ' + a + ' \\) 與 \\( x \\) 之差」即 \\( ' + a + ' \\) 減去 \\( x \\) 的結果，寫作 \\(( ' + a + '-x )\\)<br>2. 「再乘以 \\( ' + b + ' \\)」寫作 \\(' + b + '(' + a + '-x)\\)</div>'; } return { questionHTML: text, correctAnswer: answers[0], paramsUsed: {t:t, a:a, b:b}, solutionHTML: steps, pdfText: text, answers: answers, displayAnswer: displayAnswer, steps: steps, checkType: 'algebraQ8', q8subtype: t }; },
   "sig_fig": function sig_fig(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var baseNums = [12.345, 184.62, 2.7183, 345.28, 8.9372, 45.192, 762.81, 5.0483, 29.981]; var baseNum = p.baseNum || baseNums[r(0, baseNums.length-1)]; var sf = p.sf || r(2, 3); var p10 = Math.floor(Math.log10(baseNum)); var power = Math.pow(10, p10 - sf + 1); var roundedVal = Math.round(baseNum / power) * power; var L_val = Math.floor(baseNum / power) * power; var H_val = L_val + power; var decimals = Math.max(0, sf - p10 - 1); var res = roundedVal.toFixed(decimals); var L = L_val.toFixed(decimals); var H = H_val.toFixed(decimals); var pos = Math.round(((baseNum - L_val) / (H_val - L_val)) * 100); var text = '9. 把 \\( ' + baseNum + ' \\) 捨入至 ' + sf + ' 位有效數字。'; var steps = '<div>步驟圖解：</div><div style="margin:15px 0;padding:12px;background:#fffcf5;border:1px solid #fce8b2;border-radius:8px;font-family:monospace;max-width:320px;margin-left:auto;margin-right:auto;"><div style="display:flex;justify-content:space-between;font-weight:bold;color:#2c3e50;font-size:1.05em;margin-bottom:4px;"><span>' + L + '</span><span>' + H + '</span></div><div style="position:relative;height:16px;border-bottom:2px solid #34495e;margin:4px 0;"><span style="position:absolute;left:0;bottom:0;height:8px;border-left:2px solid #34495e;"></span><span style="position:absolute;left:50%;bottom:0;height:8px;border-left:2px solid #7f8c8d;"></span><span style="position:absolute;right:0;bottom:0;height:8px;border-left:2px solid #34495e;"></span><span style="position:absolute;left:' + pos + '%;top:-8px;color:#e74c3c;font-weight:bold;transform:translateX(-50%);">\u2193</span></div><div style="position:relative;height:18px;margin-top:4px;"><span style="position:absolute;left:' + pos + '%;transform:translateX(-50%);color:#e74c3c;font-weight:bold;font-size:1em;">' + baseNum + '</span></div></div><div style="margin-top:10px;line-height:1.6;">因 \\( ' + baseNum + ' \\) 較接近 \\( ' + res + ' \\) ，<br>故 \\( ' + baseNum + ' \\approx ' + res + ' \\) 。</div>'; return { questionHTML: text, correctAnswer: res, paramsUsed: {baseNum: baseNum, sf: sf, roundedVal: roundedVal}, solutionHTML: steps, pdfText: text, answers: [res, parseFloat(res).toString()], displayAnswer: res, steps: steps, checkType: 'textExact' }; },
   "frac_to_pct": function frac_to_pct(p) { var r = function(lo,hi){return Math.floor(Math.random()*(hi-lo+1))+lo;}; var dataset = [{f:'3/4',tex:'\\frac{3}{4}',ans:'75'},{f:'1/4',tex:'\\frac{1}{4}',ans:'25'},{f:'1/2',tex:'\\frac{1}{2}',ans:'50'},{f:'1/5',tex:'\\frac{1}{5}',ans:'20'},{f:'2/5',tex:'\\frac{2}{5}',ans:'40'},{f:'3/5',tex:'\\frac{3}{5}',ans:'60'},{f:'4/5',tex:'\\frac{4}{5}',ans:'80'},{f:'1/10',tex:'\\frac{1}{10}',ans:'10'},{f:'7/10',tex:'\\frac{7}{10}',ans:'70'}]; var item = p.item || dataset[r(0, dataset.length-1)]; var text = '10. 把 \\( ' + item.tex + ' \\) 化為百分數。'; var steps = '<div>步驟：</div><div style="font-size:1.05em;margin-top:5px;">\\( \\begin{aligned} &\\quad ' + item.tex + ' \\times 100\\% \\\\&=\\left(' + item.tex + ' \\times 100 \\right)\\% \\\\&= ' + item.ans + '\\% \\end{aligned} \\)</div>'; return { questionHTML: text, correctAnswer: item.ans + '%', paramsUsed: {item: item.f}, solutionHTML: steps, pdfText: text, answers: [item.ans + '%', item.ans + ' %'], displayAnswer: item.ans + '\\%', steps: steps, checkType: 'fracPct' }; },
@@ -1218,6 +1378,7 @@ function createAssessPDF() {
       + scriptOpen + '>window.MathJax={tex:{inlineMath:[[\'\\\\(\',\'\\\\)\'],[\'$\',\'$\']],displayMath:[[\'$$\',\'$$\']]},options:{skipHtmlTags:[\'script\',\'noscript\',\'style\',\'textarea\',\'pre\']},startup:{typeset:false}};' + scriptClose + '\n'
       + scriptOpen + ' id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">' + scriptClose + '\n'
       + '<style>' + printCss() + '</style>\n</head>\n<body data-snapshot-id="' + escapeHtml(snapshot.snapshotId) + '">\n'
+      + '<div class="pdf-preview-note" role="status">預覽已開啟。請使用瀏覽器的「列印」功能輸出或儲存 PDF。</div>\n'
       + '<div data-pdf-scope="' + scope + '">' + student + '\n<div class="pdf-page-separator"></div>\n' + teacher + '</div>\n'
       + scriptOpen + '>' + printScript() + scriptClose + '\n</body>\n</html>';
   }
@@ -1245,7 +1406,8 @@ function createAssessPDF() {
       '.pdf-answer-line{border-bottom:1pt solid #111;flex:1;height:9mm;}',
       '.pdf-teacher-answer{border-bottom:1pt solid #111;flex:1;min-height:9mm;color:#c0392b;font-weight:700;font-size:11pt;overflow-wrap:anywhere;}',
       '.pdf-page-separator{page-break-before:always;}',
-      '@media screen{body{padding:18px;max-width:900px;margin:0 auto;background:#f3f5f7;}.pdf-paper{background:#fff;padding:16mm;box-shadow:0 4px 18px rgba(0,0,0,.12);margin-bottom:24px;}.pdf-page-separator{display:none;}}',
+      '.pdf-preview-note{display:none;}',
+      '@media screen{body{padding:18px;max-width:900px;margin:0 auto;background:#f3f5f7;}.pdf-preview-note{display:block;position:sticky;top:8px;z-index:10;margin:0 auto 14px;padding:10px 14px;border:1px solid #9ec5e5;border-radius:8px;background:#eef7ff;color:#234;font-family:"PingFang HK","Microsoft JhengHei",sans-serif;font-size:10pt;text-align:center;}.pdf-paper{background:#fff;padding:16mm;box-shadow:0 4px 18px rgba(0,0,0,.12);margin-bottom:24px;}.pdf-page-separator{display:none;}}',
     ].join("\n");
   }
 
@@ -1261,7 +1423,7 @@ function createAssessPDF() {
       '  await waitForAssets();',
       '  await nextFrame();',
       '  await nextFrame();',
-      '  window.print();',
+      '  document.body.setAttribute("data-print-ready","true");',
       '}',
       'if(document.readyState==="complete")run();else window.addEventListener("load",run,{once:true});',
       '})();'
@@ -1300,8 +1462,8 @@ const TITLE = "2025-26 年度 中一第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"frac_arith","typeDef":{"key":"frac_arith","name":"分數運算（含負數）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"factor":"整數 ±1..±3（最終結果）","bottom":"整數 -8..-2（分母，不含 0）","a":"分子第一項 a（隨機 2..8）","c":"分母第一項絕對值加 1..5"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"frac_arith","code":"LSC-2526-S1-T3-01-NA-1","source":""},"params":{}},{"qid":"q002","typeKey":"neg_power","typeDef":{"key":"neg_power","name":"負數的乘方","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"base":"整數 2..5","exp":"整數 2..4"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"neg_power","code":"LSC-2526-S1-T3-02-NA-2","source":""},"params":{}},{"qid":"q003","typeKey":"prime_factor","typeDef":{"key":"prime_factor","name":"質因數分解（指數記數法）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"primeFactor","params_schema":{"n":"整數（必須含 ≥2 個質因數），預設從 9 個示範數中選"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"primeFactor","generator":"prime_factor","code":"LSC-2526-S1-T3-03-NA-3","source":""},"params":{}},{"qid":"q004","typeKey":"hcf_or_lcm","typeDef":{"key":"hcf_or_lcm","name":"HCF／LCM 隨機","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"hcfLcm","params_schema":{"n1":"12..24 偶數倍數","n2":"18..36 三的倍數（≠ n1）","askLCM":"bool：true=問 LCM，false=問 HCF"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"hcfLcm","generator":"hcf_or_lcm","code":"LSC-2526-S1-T3-04-NA-4","source":""},"params":{}},{"qid":"q005","typeKey":"exp_law","typeDef":{"key":"exp_law","name":"指數律（同底相乘）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"a":"整數 2..6","b":"整數 2..6"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"exp_law","code":"LSC-2526-S1-T3-05-NA-5","source":""},"params":{}},{"qid":"q006","typeKey":"alg_simplify","typeDef":{"key":"alg_simplify","name":"代數化簡（合併同類項）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"a":"整數 -6..-2（x 係數）","b":"整數 -8..-2（常數項）","c":"整數 2..6（x 係數）","d":"整數 -9..-2（常數項）"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"alg_simplify","code":"LSC-2526-S1-T3-06-NA-6","source":""},"params":{}},{"qid":"q007","typeKey":"solve_eq","typeDef":{"key":"solve_eq","name":"解一元一次方程","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"coeff":"整數 2..7","xVal":"整數 -9..-2"},"prefix":"x = ","answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"solve_eq","code":"LSC-2526-S1-T3-07-NA-7","source":""},"params":{}},{"qid":"q008","typeKey":"word_to_alg","typeDef":{"key":"word_to_alg","name":"文字轉代數式（5 個子類型）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"algebraQ8","params_schema":{"t":"子類型 1..5（見原工具）","a":"整數 2..9","b":"整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"algebraQ8","generator":"word_to_alg","code":"LSC-2526-S1-T3-08-NA-8","source":""},"params":{}},{"qid":"q009","typeKey":"sig_fig","typeDef":{"key":"sig_fig","name":"有效數字","category":"度量","difficulty":1,"grade":"s1","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"textExact","params_schema":{"baseNum":"示範數 9 選 1","sf":"2..3 位有效數字"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"sig_fig","code":"LSC-2526-S1-T3-09-ME-1","source":""},"params":{}},{"qid":"q010","typeKey":"frac_to_pct","typeDef":{"key":"frac_to_pct","name":"分數化百分數","category":"度量","difficulty":1,"grade":"s1","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"fracPct","params_schema":{"item":"從 9 個示範分數中選"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"fracPct","generator":"frac_to_pct","code":"LSC-2526-S1-T3-10-ME-2","source":""},"params":{}},{"qid":"q011","typeKey":"poly_desc","typeDef":{"key":"poly_desc","name":"多項式降冪排列","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"b":"整數 2..9","c":"整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"poly_desc","code":"LSC-2526-S1-T3-11-NA-9","source":""},"params":{}},{"qid":"q012","typeKey":"formula_sub","typeDef":{"key":"formula_sub","name":"公式代入","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"a":"整數 3..8","b":"整數 2..5","c":"整數 -5..-2","isPlus":"bool：true=加法、false=減法"},"prefix":"y = ","answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"formula_sub","code":"LSC-2526-S1-T3-12-NA-10","source":""},"params":{}},{"qid":"q013","typeKey":"congruence","typeDef":{"key":"congruence","name":"全等三角形（S.S.S./S.A.S./A.S.A./A.A.S./R.H.S.）","category":"幾何","difficulty":2,"grade":"s1","term":"3","topicKey":"geometry","topicName":"幾何","type":"congruence","checkType":"congruenceReason","params_schema":{"t1":"三角形 1 的頂點字母（3 個）","t2":"三角形 2 的頂點字母（3 個）","reason":"5 種全等理由之一"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"congruenceReason","generator":"congruence","code":"LSC-2526-S1-T3-13-GE-1","source":"","figure":{"kind":"generated-svg-triangle-pair"}},"params":{}},{"qid":"q014","typeKey":"coordinate","typeDef":{"key":"coordinate","name":"坐標輸入及點選","category":"幾何","difficulty":1,"grade":"s1","term":"3","topicKey":"geometry","topicName":"幾何","type":"coordinate","checkType":"coordinatePoint","params_schema":{"rx":"整數 ±1..±2（x 坐標）","ry":"整數 ±1..±2（y 坐標）","askAxis":"'x' 或 'y'（問邊條軸）"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"coordinatePoint","generator":"coordinate","code":"LSC-2526-S1-T3-14-GE-2","source":"","answerSpec":{"coordinateMode":"axis-value","interaction":{"kind":"grid-click-and-axis-value","target":"generated","clickTolerance":0}}},"params":{}},{"qid":"q015","typeKey":"seq_nth","typeDef":{"key":"seq_nth","name":"數列通項","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"nth":"1..5（項數）","multiplier":"整數 2..5","constant":"整數 -5..5"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"seq_nth","code":"LSC-2526-S1-T3-15-NA-11","source":""},"params":{}},{"qid":"q016","typeKey":"data_type","typeDef":{"key":"data_type","name":"離散／連續數據","category":"數據處理","difficulty":1,"grade":"s1","term":"3","topicKey":"data_handling","topicName":"數據處理","type":"choice","checkType":"choiceKey","options":[{"key":"離散數據","label":"A. 離散數據"},{"key":"連續數據","label":"B. 連續數據"}],"params_schema":{"scenario":"6 個示範情境中選 1"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"data_type","code":"LSC-2526-S1-T3-16-DH-1","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-12T03:37:52.609Z";
-const BANK_HASH = "b63_16_f1e82a91";
+const GENERATED_AT = "2026-07-12T23:28:49.539Z";
+const BANK_HASH = "b63_16_964f21d8";
 const PRESET_KEY = "s1_term3_part_a";
 const GRADE = "s1";
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzxgJ2SvMO0FeHqdjwiYc2AlCyRiIXVEVmP3-Xs0y_IDO9inGTXC4w0strgWH7WgH_A/exec";
@@ -1310,7 +1472,9 @@ const STUDENT_ID_RULE_TEXT = "8 位數字 + 大寫 F 或 M，例如 20255001F";
 const SHOW_QUESTION_CODE = true;
 const INPUT_KEYPAD_CONFIG = {
   "baseRows": [["7", "8", "9", "0"], ["4", "5", "6", "."], ["1", "2", "3", null]],
-  "controlKeys": ["-", "⌫", "C"],
+  "fixedRows": [["+", "-"], ["×", "÷"], ["⌫", "C"]],
+  "constantOperators": ["+", "-", "×", "÷"],
+  "controlKeys": ["⌫", "C"],
   "keyOrder": ["+", "×", "÷", "^", "(", ")", "/", "%", "π", "√", "±", ",", ":", ">", "<", "=", "≥", "≤", "x", "y", "a", "b", "k", "S", "A", "R", "H", "*"],
   "validator": {
     "numericOrFraction": ["/"],
@@ -1576,7 +1740,19 @@ function clickDot(x, y) {
 
 function setKeypadVisible(visible) {
   const area = document.getElementById("keypad-area");
-  if (area) area.style.display = visible ? "block" : "none";
+  const button = document.getElementById("btn-shift-keypad");
+  if (area) {
+    area.style.display = visible ? "block" : "none";
+    if (visible) area.classList.remove("keypad-input-hidden");
+  }
+  if (button) button.disabled = !visible;
+}
+
+function setKeypadInputVisible(visible) {
+  const area = document.getElementById("keypad-area");
+  if (!area) return;
+  if (visible) area.classList.remove("keypad-input-hidden");
+  else area.classList.add("keypad-input-hidden");
 }
 
 let keypadRaised = false;
@@ -1587,7 +1763,9 @@ function applyKeypadPosition() {
   if (area) area.classList.toggle("keypad-raised", keypadRaised);
   if (button) {
     button.setAttribute("aria-pressed", keypadRaised ? "true" : "false");
-    button.textContent = keypadRaised ? "⬇ 鍵盤還原" : "⬆ 鍵盤上調";
+    button.textContent = keypadRaised ? "鍵盤 ↓" : "鍵盤 ↑";
+    button.setAttribute("aria-label", keypadRaised ? "將虛擬鍵盤還原" : "將虛擬鍵盤上調");
+    button.title = keypadRaised ? "將虛擬鍵盤還原" : "將虛擬鍵盤上調";
   }
 }
 
@@ -1599,7 +1777,7 @@ function toggleKeypadPosition() {
 function keypadKeysForQuestion(q) {
   if (!q || q.type === "choice") return [];
   const config = INPUT_KEYPAD_CONFIG;
-  const required = new Set(config.controlKeys);
+  const required = new Set(config.constantOperators.concat(config.controlKeys));
   const supported = new Set(config.keyOrder.concat([".", "-"]));
   String(q.correctAnswer || "").split("").forEach((character) => {
     if (supported.has(character)) required.add(character);
@@ -1610,7 +1788,7 @@ function keypadKeysForQuestion(q) {
     required.add("π");
     required.add("/");
   }
-  return config.keyOrder.filter((key) => required.has(key)).concat(
+  return config.constantOperators.concat(config.keyOrder.filter((key) => required.has(key) && !config.constantOperators.includes(key))).concat(
     config.controlKeys.filter((key) => !config.keyOrder.includes(key))
   );
 }
@@ -1625,7 +1803,7 @@ function makeKeypadButton(keyValue) {
   const button = document.createElement("button");
   button.type = "button";
   button.className = "key";
-  button.textContent = keyValue;
+  button.textContent = keyValue === "-" ? "−" : keyValue;
   if (keyValue === "⌫" || keyValue === "C") {
     button.style.background = "#fee";
     button.style.color = "red";
@@ -1646,19 +1824,24 @@ function renderQuestionKeypad(q) {
     return;
   }
   const config = INPUT_KEYPAD_CONFIG;
-  const extras = keypadKeysForQuestion(q);
-  const extraSlots = [extras.slice(0, 5), extras.slice(5, 10), extras.slice(10, 15)];
+  const fixedKeys = new Set(config.constantOperators.concat(config.controlKeys));
+  const extras = keypadKeysForQuestion(q).filter((key) => !fixedKeys.has(key));
+  const extraSlots = [[], [], []];
+  extras.forEach((key, index) => extraSlots[index % extraSlots.length].push(key));
   config.baseRows.forEach((baseRow, rowIndex) => {
-    baseRow.concat(extraSlots[rowIndex]).forEach((keyValue) => area.appendChild(makeKeypadButton(keyValue)));
-    for (let i = extraSlots[rowIndex].length; i < 5; i++) area.appendChild(makeKeypadButton(null));
+    baseRow.concat(config.fixedRows[rowIndex], extraSlots[rowIndex]).forEach((keyValue) => area.appendChild(makeKeypadButton(keyValue)));
+    for (let i = extraSlots[rowIndex].length; i < 3; i++) area.appendChild(makeKeypadButton(null));
   });
   setKeypadVisible(true);
 }
 
 function collapseAnswerControlsAfterCheck() {
-  setKeypadVisible(false);
-  document.getElementById("input-row").style.display = "none";
-  document.getElementById("q-options").style.display = "none";
+  setKeypadInputVisible(false);
+  [document.getElementById("input-row"), document.getElementById("q-options")].forEach((element) => {
+    if (!element || element.style.display === "none") return;
+    element.style.visibility = "hidden";
+    element.style.pointerEvents = "none";
+  });
 }
 
 /* === 顯示提示 === */
@@ -1707,7 +1890,9 @@ function showQ() {
   currSelectedPoint = null;
   answered = false;
   document.getElementById("p-text").textContent = "Q" + (currIdx + 1) + "/" + qList.length;
-  document.getElementById("q-text").innerHTML = q.questionHTML;
+  const questionText = document.getElementById("q-text");
+  if (questionText.dataset) delete questionText.dataset.mathJaxRendered;
+  questionText.innerHTML = q.questionHTML;
   updateQuestionCodeDisplay(q);
   updateSimilarPdfButton(q);
   document.getElementById("q-feedback").style.display = "none";
@@ -1718,6 +1903,7 @@ function showQ() {
   setKeypadVisible(true);
   document.getElementById("solution-box").style.display = "none";
   document.getElementById("solution-box").innerHTML = "";
+  if (document.getElementById("solution-box").dataset) delete document.getElementById("solution-box").dataset.mathJaxRendered;
   renderInputDisplay();
   renderQuestionKeypad(q);
   document.getElementById("prefix").style.display = "none";
@@ -1725,8 +1911,12 @@ function showQ() {
   document.getElementById("q-hint").style.display = "none";
   document.getElementById("q-options").style.display = "none";
   document.getElementById("q-options").innerHTML = "";
+  document.getElementById("q-options").style.visibility = "visible";
+  document.getElementById("q-options").style.pointerEvents = "auto";
   document.getElementById("q-coord-hint").style.display = "none";
   document.getElementById("input-row").style.display = "flex";
+  document.getElementById("input-row").style.visibility = "visible";
+  document.getElementById("input-row").style.pointerEvents = "auto";
   document.getElementById("q-image").style.display = "none";
   document.getElementById("q-image").innerHTML = "";
 
@@ -1780,9 +1970,36 @@ function showQ() {
     }
   }
 
-  if (window.MathJax && MathJax.typesetPromise) {
-    MathJax.typesetPromise([document.getElementById("quiz-view")]).catch(() => {});
+  typesetElementOnce(questionText);
+}
+
+function typesetElementOnce(element) {
+  if (!element || (element.dataset && element.dataset.mathJaxRendered === "true")) return Promise.resolve(false);
+  if (!window.MathJax || !MathJax.typesetPromise) return Promise.resolve(false);
+  return MathJax.typesetPromise([element]).then(() => {
+    if (element.dataset) element.dataset.mathJaxRendered = "true";
+    return true;
+  }).catch(() => false);
+}
+
+function answerNeedsMathJax(answer) {
+  const value = String(answer || "").trim();
+  if (!value) return false;
+  if (/\\(?:frac|times|pi|sqrt|%)|[\/π^√×÷±<>=()]/.test(value)) return true;
+  return /(?:\d|[+\-])\s*[A-Za-z]|[A-Za-z]\s*(?:\d|[+\-])/.test(value);
+}
+
+function renderFeedbackAnswer(container, answer) {
+  const value = String(answer == null ? "" : answer);
+  const answerSpan = document.createElement("span");
+  answerSpan.id = "feedback-answer";
+  if (answerNeedsMathJax(value)) {
+    answerSpan.innerHTML = /\\[([]/.test(value) ? value : "\\( " + value + " \\)";
+  } else {
+    answerSpan.textContent = value;
   }
+  container.appendChild(answerSpan);
+  if (answerNeedsMathJax(value)) typesetElementOnce(answerSpan);
 }
 
 /* === 按鍵輸入 === */
@@ -1971,6 +2188,10 @@ function renderInputDisplay() {
     return;
   }
   const raw = currInput;
+  if (/^-?(?:\d+(?:\.\d*)?|\.\d+)$/.test(raw)) {
+    el.textContent = raw;
+    return;
+  }
   const preview = inputToPreviewParts(raw);
   if (!preview.latex) {
     el.textContent = raw;
@@ -2043,8 +2264,9 @@ function checkAns() {
     fb.innerHTML = "✓ 正確！";
   } else {
     fb.className = "feedback incorrect";
-    let ans = q.displayAnswer || q.correctAnswer;
-    fb.innerHTML = "✗ 答錯。正確答案： " + ans;
+    const ans = q.displayAnswer || q.correctAnswer;
+    fb.textContent = "✗ 答錯。正確答案： ";
+    renderFeedbackAnswer(fb, ans);
     origWrongIds.push(q.qid);
   }
   document.getElementById("btn-check").style.display = "none";
@@ -2053,9 +2275,6 @@ function checkAns() {
   collapseAnswerControlsAfterCheck();
   const solBox = document.getElementById("solution-box");
   solBox.innerHTML = "<h4>教學步驟</h4>" + (q.solutionHTML || q.steps || "");
-  if (window.MathJax && MathJax.typesetPromise) {
-    MathJax.typesetPromise([solBox]).catch(() => {});
-  }
   sessionLog.push({ qid: q.qid, user: userAns, correct: isCorrect });
   sessionAnswers.push(userAns);
   const correctCount = sessionLog.filter(s => s.correct).length;
@@ -2064,7 +2283,9 @@ function checkAns() {
 
 function toggleTeach() {
   const solBox = document.getElementById("solution-box");
-  solBox.style.display = solBox.style.display === "block" ? "none" : "block";
+  const opening = solBox.style.display !== "block";
+  solBox.style.display = opening ? "block" : "none";
+  if (opening) typesetElementOnce(solBox);
 }
 
 function nextQ() {
@@ -2267,7 +2488,7 @@ function printPDF() {
       generatedAt: new Date().toISOString(),
     });
     AssessPDF.printSnapshot(snapshot, { showCode: true });
-    showToast("✓ 已開啟 PDF 題目＋答案雙版");
+    showToast("✓ 已開啟 PDF 題目＋答案雙版預覽");
   } catch (e) {
     showToast("⚠️ PDF 匯出失敗：" + (e.message || e));
   }
@@ -2339,7 +2560,7 @@ function printSimilarPDF() {
       return;
     }
     AssessPDF.printSnapshot(snapshot, { showCode: true, scope: "similar" });
-    showToast("✓ 已開啟 " + snapshot.actualCount + " 題同類練習 PDF");
+    showToast("✓ 已開啟 " + snapshot.actualCount + " 題同類練習 PDF 預覽");
   } catch (e) {
     showToast("⚠️ 同類練習 PDF 失敗：" + (e.message || e));
   }

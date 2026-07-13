@@ -111,6 +111,9 @@ jobs:
       - name: UX1 keyboard and collapse regression
         run: node test/ux1_layout.cjs
 
+      - name: Student six-item UI/UX contract
+        run: node test/student_ux_six.cjs
+
       - name: Input answerability regression
         run: node test/input_answerability.cjs
 

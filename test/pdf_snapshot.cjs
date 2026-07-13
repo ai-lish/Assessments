@@ -169,6 +169,9 @@ for (const presetKey of PRESET_KEYS) {
   check(`${presetKey} combined print has MathJax wait`, printHtml.includes('waitForMathJax') && printHtml.includes('MathJax.typesetPromise'));
   check(`${presetKey} combined print waits for two animation frames`, (printHtml.match(/await nextFrame\(\)/g) || []).length >= 2);
   check(`${presetKey} combined print does not use setTimeout`, !/setTimeout\s*\(/.test(printHtml));
+  check(`${presetKey} combined preview never auto-prints`, !/window\.print\s*\(/.test(printHtml));
+  check(`${presetKey} combined preview marks readiness and explains browser print`,
+    printHtml.includes('data-print-ready') && printHtml.includes('請使用瀏覽器的「列印」功能'));
 
   for (const q of snapshot.questions) {
     if (SPECIAL_TYPES.has(q.typeKey)) {

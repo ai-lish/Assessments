@@ -97,9 +97,10 @@ check('template uses one dynamic nine-column keypad',
   !/id="keypad-context"/.test(template));
 check('numeric base occupies four left slots across exactly three rows',
   keypadConfig.baseRows.length === 3 && keypadConfig.baseRows.every((row) => row.length === 4));
-check('base keys include digits, decimal, minus, delete, and clear',
+check('base keys include digits/decimal plus fixed operators and controls',
   '0123456789.'.split('').every((key) => baseKeys.has(key)) &&
-  ['-', '⌫', 'C'].every((key) => keypadConfig.controlKeys.includes(key)));
+  ['+', '-', '×', '÷'].every((key) => keypadConfig.constantOperators.includes(key)) &&
+  ['⌫', 'C'].every((key) => keypadConfig.controlKeys.includes(key)));
 check('template keeps raw slash for physical-keyboard fraction input', /else if \(k === "\/"\) \{ kp\("\/"\)/.test(template));
 check('template has structured preview helpers for fractions and radicals',
   /function topLevelSlashIndex\(/.test(template) && /function renderRadicals\(/.test(template) && /function expressionToLatex\(/.test(template));
@@ -146,6 +147,8 @@ check('root context exposes plus-minus, radical, and comma', hasKeys('square_roo
 check('congruence context exposes S/A/R/H and decimal point', hasKeys('congruence', ['S', 'A', 'R', 'H', '.']));
 check('inequality context exposes >/< /=/≥/≤ and x', hasKeys('solve_ineq', ['>', '<', '=', '≥', '≤', 'x']));
 check('pi context exposes pi and slash', hasKeys('solid_cone', ['π', '/']));
+check('all non-choice contexts expose four fixed operators',
+  bank.data.filter((def) => def.type !== 'choice').every((def) => hasKeys(def.key, ['+', '-', '×', '÷'])));
 check('maximum keypad remains within three rows', maximum.count <= 15, JSON.stringify(maximum));
 
 console.log(`\nMost crowded keypad: ${maximum.key} (${maximum.count} supplemental keys: ${maximum.keys.join(' ')})`);

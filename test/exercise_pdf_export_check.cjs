@@ -154,6 +154,9 @@ for (const target of TARGETS) {
   check('opens one print document', sandbox.__printTargets.length === 1);
   check('student and teacher modes present', /data-mode="student"/.test(printed || '') && /data-mode="teacher"/.test(printed || ''));
   check('teacher answers styled red/bold class present', /pdf-teacher-answer/.test(printed || '') && /color:#c0392b/.test(printed || ''));
+  check('preview does not auto-call window.print', !/window\.print\s*\(/.test(printed || ''));
+  check('preview includes manual print guidance and readiness marker',
+    /pdf-preview-note/.test(printed || '') && /data-print-ready/.test(printed || ''));
   const nums = questionNumbers(printed || '');
   const firstHalf = nums.slice(0, target.count);
   const secondHalf = nums.slice(target.count);
