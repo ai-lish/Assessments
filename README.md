@@ -7,16 +7,17 @@
 ## 工具清單
 
 - **初中短答網頁製作工具**（見本 repo）— 題目庫 + 學生版模板 + 老師選題工具。
-- 預載練習（中一第三學期甲部）：`s1_term3_part_a`（16 題固定組合）。
+- **2025-26 年度預載練習**：中一第二學期甲部（14 題）、中一第三學期甲部（16 題）、中二第三學期甲部（16 題）、中三第三學期甲部（14 題）。
 
 ## 系統組成
 
 | 檔案 | 用途 |
 |---|---|
-| `question-bank.json` | 外部題目庫：18 個題型 + 1 個 preset。每個題型有 `grade` / `term` / `topicKey` / `topicName` 供分層篩選。 |
+| `question-bank.json` | 外部題目庫：63 個題型 + 4 個 preset。每個題型有 `grade` / `term` / `topicKey` / `topicName` 供分層篩選。 |
 | `templates/student.html` | 學生版模板（含佔位符，**不可直接開啟使用**） |
 | `tool/index.html` | 老師選題工具：年級 → 學期 → 課題 → 題目，逐題預覽及確認後匯出 |
 | `docs/attempt-types.md` | 學生作答記錄的 `initial` / `wrong_retry` / `single_retry` 契約 |
+| `exercises/2526/` | 由正式管道產生的四份 2025-26 年度學生練習 |
 | `test/` | 測試腳本 |
 
 學生收到的是由工具產生嘅 `student-practice-{presetKey}-YYYYMMDD.html`（或自訂模式：`student-practice-YYYYMMDD.html`），已內嵌全部題目。
@@ -30,7 +31,7 @@
 3. 按「**載入題目庫 + 模板**」→ 載入成功後顯示題型數量。
 4. 揀模式：
    - **分層自訂**（本階段主要）：依序揀「年級」→「學期」→「課題」→ 喺題目清單按「加入」。
-   - **Preset**：「中一第三學期甲部」（16 題）一鍵載入。
+   - **Preset**：按 2025-26 學年分組，一鍵載入 `s1_term2_part_a`、`s1_term3_part_a`、`s2_term3_part_a` 或 `s3_term3_part_a`。
 5. 喺「**出題清單**」用「↑ / ↓」調整順序，按「移除」剔除題目。
 6. 按「**生成預覽**」→ 每題以獨立卡片顯示：
    - **基本資料**：年級、學期、課題、題目名稱、題型 key、難度、type/checkType。
@@ -49,6 +50,7 @@
 - ✓ 所有題目生成成功（冇 `hasError`）
 - ✓ 所有題目已勾選「已檢查，內容正確」
 - ✓ 預覽結果同清單一致（自上次確認後冇再改動）
+- ✓ 學生模板已成功載入
 
 未符合時，匯出按鈕下方會列出仲欠咩。
 
@@ -62,11 +64,19 @@
 
 ## 安全性
 
-- 學生版完全冇密碼；任何人都可以瀏覽。
+- 學生版冇登入門檻；任何人都可以瀏覽主要練習。
 - 唔可以將密碼當作安全控制：學生版 HTML 一旦派發就係公開檔案。
-- 工具不會喺前端 collect 真密碼、token 或學生資料。
-- **本階段未啟用嘅功能（後續階段）：** 教師版答案解鎖、PDF 匯出、Google Sheets 學習記錄、單題重做、錯題重做。工具 UI 已隱藏相關按鈕。
+- 老師工具可設定 Google Sheets Web App URL 及 4 位提前遞交 PIN；匯出檔只會保存 PIN 的 SHA-256 hash，不會保存 PIN 明文。靜態前端 hash 只屬簡單攔截，唔係真正權限保護。
+- PDF 題目／答案雙版、Google Sheets 提交、單題重做、錯題重做及提前遞交已啟用，相關入口會按現行條件顯示或啟用。
+- 正常提交只會喺所有錯題完成後啟用；提前遞交需要已配置 GAS URL 及老師 PIN。GAS 採 append-only：同一學生多次提前遞交會新增多行，教師須以最後一行為準。
 - MathJax 由 CDN 載入（`cdn.jsdelivr.net`），完全離線時 LaTeX 會顯示為 `\( ... \)` 原文字串。
+
+## 學生練習功能
+
+- 題目類型與次序由 preset 固定，學生每次重新開檔時會由 generator runtime 重新抽取參數；同一 session 內重做則保留同一批題目。
+- 正確答案可同時顯示精確分數／π 形式與小數近似值；因式分解題要求完全因式分解。
+- 作答中可開啟整卷 PDF 雙版或當前題型的同類練習 PDF；兩者只開獨立 HTML 預覽頁，由使用者自行選擇列印。
+- 學生可重做錯題或從歷史記錄重做單題。完成全部錯題後，可用學生證編號提交至已配置的 Google Sheets。
 
 ## 題目庫分類結構
 
@@ -100,7 +110,7 @@
 
 ```bash
 # 1. 題目庫完整性
-python3 test/validate_bank.py      # 18 passed, 0 failed
+python3 test/validate_bank.py
 
 # 2. PR-A2 schema / generator / validator contract
 python3 test/validate_schema.py
@@ -108,11 +118,11 @@ node test/test_generators_equivalence.cjs
 node test/test_validators.cjs
 node test/no_dynamic_code.cjs
 
-# 3. Preset 端到端生成
-python3 test/validate_preset.py    # 16 generated, 0 failures
+# 3. 四個 Preset 端到端生成
+python3 test/validate_preset.py
 
 # 4. 老師選題工具驗收
-python3 test/validate_tool.py      # 123 項檢查通過
+python3 test/validate_tool.py
 
 # 5. 老師工具 headless 端到端流程
 node test/test_tool_logic.cjs      # 篩選 → 預覽 → 確認 → 匯出

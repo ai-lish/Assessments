@@ -1318,24 +1318,7 @@ function retrySingle(qid) {
   showQ();
 }
 
-/* === 匯出 / 列印 === */
-function exportStudentAnswers() {
-  // 匯出當前輪嘅逐題結果（純本地）
-  const details = lastResult ? lastResult.details : [];
-  let text = "題目\t題目內容\t學生答案\t正確答案\t對錯\n";
-  details.forEach((s, i) => {
-    const qText = s.questionHTML ? s.questionHTML.replace(/<[^>]+>/g, "") : "";
-    text += (i + 1) + "\t" + qText + "\t" + s.myAnswer + "\t" + (s.displayAnswer || "") + "\t" + (s.correct ? "✓" : "✗") + "\n";
-  });
-  const blob = new Blob([text], { type: "text/plain;charset=utf-8" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "student_answers_" + Date.now() + ".tsv";
-  a.click();
-  URL.revokeObjectURL(url);
-}
-
+/* === 列印 === */
 function printPDF() {
   try {
     const seed = AssessPDF.createSnapshotSeed();
