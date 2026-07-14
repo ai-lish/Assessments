@@ -54,8 +54,10 @@ check('student runtime uses sessionStorage and contains no localStorage calls',
   /sessionStorage\.getItem\(storageKey\(\)\)/.test(template) &&
   /sessionStorage\.setItem\(studentIdStorageKey\(\)/.test(template) &&
   !/\blocalStorage\s*\./.test(template));
-check('template places both PDF controls between answer actions and keypad',
-  /id="action-area"[\s\S]*id="pdf-action-area"[\s\S]*id="btn-similar-pdf"[\s\S]*id="btn-whole-pdf"[\s\S]*id="keypad-area"/.test(template));
+check('template uses question-scroll followed by a bottom-dock',
+  /id="question-scroll"[\s\S]*id="bottom-dock"/.test(template));
+check('bottom-dock orders answer, PDF, keypad, then answer actions',
+  /id="bottom-dock"[\s\S]*id="answer-dock"[\s\S]*id="control-dock"[\s\S]*id="pdf-action-area"[\s\S]*id="keypad-area"[\s\S]*id="action-area"/.test(template));
 check('template places keypad shift with both PDF controls in one row',
   /class="pdf-action-row"[\s\S]{0,1500}id="btn-similar-pdf"[\s\S]{0,800}id="btn-whole-pdf"[\s\S]{0,800}id="btn-shift-keypad"/.test(template) &&
   !/class="keypad-tools"/.test(template));
@@ -72,10 +74,10 @@ check('template applies dynamic viewport and safe-area bottom padding',
   /height:\s*100dvh/.test(template) && /env\(safe-area-inset-bottom\)/.test(template));
 check('template has session keypad position toggle',
   /id="btn-shift-keypad"/.test(template) && /let keypadRaised = false/.test(template) &&
-  /function toggleKeypadPosition\(\)/.test(template) && /classList\.toggle\("keypad-raised", keypadRaised\)/.test(template));
-check('next button lives outside keypad-area',
-  /id="action-area"[\s\S]{0,500}id="btn-next"/.test(template) &&
-  !/id="keypad-area"[\s\S]{0,500}id="btn-next"/.test(template));
+  /function toggleKeypadPosition\(\)/.test(template) &&
+  /getElementById\("bottom-dock"\)[\s\S]{0,400}classList\.toggle\("keypad-raised", keypadRaised\)/.test(template));
+check('next button follows the closed keypad-area inside control-dock',
+  /id="keypad-area"[\s\S]{0,300}<\/div>\s*<div class="action-area" id="action-area">[\s\S]{0,500}id="btn-next"/.test(template));
 check('check and next share one fixed action slot',
   /class="btn-row answer-action-slot"[\s\S]{0,400}id="btn-check"[\s\S]{0,400}id="btn-next"/.test(template) &&
   /\.answer-action-slot\s*\{[^}]*display:\s*grid/.test(template));
@@ -93,6 +95,21 @@ check('template keypad configuration includes fraction, ratio, root, congruence,
 check('template computes variable keys from the current answer instead of a global variable row',
   /String\(q\.correctAnswer \|\| ""\)\.split\(""\)/.test(template) &&
   !/"alg_simplify_2var": \["a", "b"\]/.test(template));
+check('answer controls remain visible and become locked after checking',
+  /classList\.add\("answer-control-locked"\)/.test(template) &&
+  /setAttribute\("aria-disabled", "true"\)/.test(template) &&
+  !/function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,500}style\.visibility = "hidden"/.test(template));
+check('solution drawer has its own bounded scrolling area',
+  /\.solution-box\s*\{[^}]*max-height:[^}]*overflow:\s*auto/.test(template));
+check('landscape uses a left question-answer column and right control column',
+  /@media \(orientation: landscape\)[\s\S]*\.question-scroll\s*\{[^}]*grid-column:\s*1/.test(template) &&
+  /\.answer-dock\s*\{[^}]*grid-column:\s*1/.test(template) &&
+  /\.control-dock\s*\{[^}]*grid-column:\s*2/.test(template));
+check('layout avoids fixed and absolute positioning for dock elements',
+  !/\.(?:bottom-dock|answer-dock|control-dock|action-area|keypad-area)\s*\{[^}]*position:\s*(?:fixed|absolute)/.test(template));
+check('result page routes all-retry through confirmation',
+  /id="btn-retry-all"[^>]+onclick="confirmRetryAll\(\)"/.test(template) &&
+  /確定重做全部題目\?『重做錯題』會按最新一輪結果更新/.test(template));
 
 for (const rel of exercisePaths) {
   const html = fs.readFileSync(path.join(ROOT, rel), 'utf8');
@@ -113,9 +130,8 @@ for (const rel of exercisePaths) {
     /\.partial-submit-row\s*\{[^}]*display:\s*none/.test(html));
   check(`${rel} includes keypad safe-area and position toggle`,
     /env\(safe-area-inset-bottom\)/.test(html) && /id="btn-shift-keypad"/.test(html));
-  check(`${rel} keeps next button outside keypad-area`,
-    /id="action-area"[\s\S]{0,500}id="btn-next"/.test(html) &&
-    !/id="keypad-area"[\s\S]{0,500}id="btn-next"/.test(html));
+  check(`${rel} places action-area after keypad-area`,
+    /id="keypad-area"[\s\S]{0,300}<\/div>\s*<div class="action-area" id="action-area">[\s\S]{0,500}id="btn-next"/.test(html));
   check(`${rel} includes fresh PDF seed path`, /const seed = AssessPDF\.createSnapshotSeed\(\)/.test(html));
   check(`${rel} includes collapse controls helper`, /function collapseAnswerControlsAfterCheck\(\)/.test(html));
 }

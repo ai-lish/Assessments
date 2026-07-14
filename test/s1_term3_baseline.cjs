@@ -407,6 +407,8 @@ const collapseState = evalInStudent(`
     keypadHidden: document.getElementById("keypad-area").classList.contains("keypad-input-hidden"),
     input: document.getElementById("input-row").style.display,
     inputVisibility: document.getElementById("input-row").style.visibility,
+    inputLocked: document.getElementById("input-row").classList.contains("answer-control-locked"),
+    inputPointerEvents: document.getElementById("input-row").style.pointerEvents,
     next: document.getElementById("btn-next").style.display
   };
   nextQ();
@@ -425,16 +427,18 @@ const collapseState = evalInStudent(`
   checkAns();
   const choiceOptions = {
     display: document.getElementById("q-options").style.display,
-    visibility: document.getElementById("q-options").style.visibility
+    visibility: document.getElementById("q-options").style.visibility,
+    locked: document.getElementById("q-options").classList.contains("answer-control-locked"),
+    pointerEvents: document.getElementById("q-options").style.pointerEvents
   };
   ({ afterCheck, afterNext, choiceOptions });
 `);
 check("checkAns visually hides keypad while preserving its layout slot", collapseState.afterCheck.keypad === "block" && collapseState.afterCheck.keypadHidden);
-check("checkAns visually hides text input while preserving its layout slot", collapseState.afterCheck.input === "flex" && collapseState.afterCheck.inputVisibility === "hidden");
+check("checkAns keeps text input visible but locks it", collapseState.afterCheck.input === "flex" && collapseState.afterCheck.inputVisibility === "visible" && collapseState.afterCheck.inputLocked && collapseState.afterCheck.inputPointerEvents === "none");
 check("checkAns shows next button after answer", collapseState.afterCheck.next === "block");
 check("nextQ restores keypad", collapseState.afterNext.keypad === "block" && !collapseState.afterNext.keypadHidden && collapseState.afterNext.inputVisibility === "visible");
 check("nextQ clears input display", collapseState.afterNext.inputText === "");
-check("choice answer visually hides options while preserving their layout slot", collapseState.choiceOptions.display === "flex" && collapseState.choiceOptions.visibility === "hidden");
+check("choice answer keeps options visible but locks them", collapseState.choiceOptions.display === "flex" && collapseState.choiceOptions.visibility === "visible" && collapseState.choiceOptions.locked && collapseState.choiceOptions.pointerEvents === "none");
 
 section("6. print and virtual keypad baseline");
 evalInStudent("printPDF();");
