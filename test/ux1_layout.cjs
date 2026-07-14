@@ -48,7 +48,7 @@ check('template keeps four operators fixed and delete/clear controls',
 check('template has keypad-area id for collapse control', /id="keypad-area"/.test(template));
 check('template has independent action-area id', /id="action-area"/.test(template));
 check('optional student ID screen stays outside the fixed answer action area',
-  /id="student-start-view"[\s\S]*id="top-info"[\s\S]*id="quiz-view"/.test(template) &&
+  /id="student-start-view"[\s\S]*class="top-info"[\s\S]*id="quiz-view"/.test(template) &&
   !/id="action-area"[\s\S]{0,1200}id="student-start-view"/.test(template));
 check('student runtime uses sessionStorage and contains no localStorage calls',
   /sessionStorage\.getItem\(storageKey\(\)\)/.test(template) &&

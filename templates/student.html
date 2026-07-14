@@ -59,6 +59,7 @@
   .student-id-error { min-height: 22px; margin: 7px 0 9px; color: var(--danger); font-size: 0.86em; font-weight: 700; }
   .student-start-btn { margin: 0; background: var(--accent); }
   .top-info { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 10px 15px; font-size: 0.9em; font-weight: 600; color: var(--text-muted); background: #fff; border-bottom: 1px solid #f0f2f5; flex-shrink: 0; white-space: nowrap; }
+  body.student-start-active .top-info { display: none; }
   .progress-badge { background: #ecf0f1; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.85em; }
   .score-badge { color: var(--accent); font-size: 0.9em; }
   .top-code-wrap { min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 5px; color: var(--text-muted); overflow: hidden; }
@@ -150,7 +151,7 @@
   }
 </style>
 </head>
-<body>
+<body class="student-start-active">
 
 <div class="container">
   <div id="practice-title" class="practice-title">{{TITLE_HTML}}</div>
@@ -165,7 +166,7 @@
     </div>
   </div>
 
-  <div id="top-info" class="top-info" style="display:none;">
+  <div class="top-info">
     <span id="p-text" class="progress-badge">載入中...</span>
     <span id="top-code-wrap" class="top-code-wrap" style="display:none;">
       <span class="top-code-label">題目編碼:</span>
@@ -735,8 +736,8 @@ function promptTeacherPin() {
 
 function showStudentStartScreen() {
   const input = document.getElementById("student-id-input");
+  document.body.classList.add("student-start-active");
   document.getElementById("student-start-view").style.display = "flex";
-  document.getElementById("top-info").style.display = "none";
   document.getElementById("quiz-view").style.display = "none";
   document.getElementById("result-view").style.display = "none";
   document.getElementById("student-id-error").textContent = "";
@@ -783,8 +784,8 @@ function initGame(mode) {
   answered = false;
   isSingleRetry = false;
   backup = null;
+  document.body.classList.remove("student-start-active");
   document.getElementById("student-start-view").style.display = "none";
-  document.getElementById("top-info").style.display = "grid";
   document.getElementById("quiz-view").style.display = "flex";
   document.getElementById("result-view").style.display = "none";
   updatePartialSubmitButton();
@@ -1281,8 +1282,8 @@ function restoreFromBackup() {
 
 /* === 結果頁 === */
 function showResult() {
+  document.body.classList.remove("student-start-active");
   document.getElementById("student-start-view").style.display = "none";
-  document.getElementById("top-info").style.display = "grid";
   document.getElementById("quiz-view").style.display = "none";
   document.getElementById("result-view").style.display = "flex";
   if (lastResult) {
@@ -1379,8 +1380,8 @@ function retrySingle(qid) {
   currSelectedChoice = null;
   currSelectedPoint = null;
   answered = false;
+  document.body.classList.remove("student-start-active");
   document.getElementById("student-start-view").style.display = "none";
-  document.getElementById("top-info").style.display = "grid";
   document.getElementById("quiz-view").style.display = "flex";
   document.getElementById("result-view").style.display = "none";
   showQ();
