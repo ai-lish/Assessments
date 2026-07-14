@@ -221,6 +221,11 @@
           <button type="button" class="secondary preset-source-btn" onclick="applyResourcePreset('gas')">一鍵套用 Preset</button>
           <small class="hint" id="gasUrlHint">此網址會嵌入學生練習檔（等同公開投遞信箱），請勿使用含敏感 token 嘅 URL。</small>
         </div>
+        <div>
+          <label>提前遞交老師 PIN（4 位數字，可留空）</label>
+          <input type="password" id="teacherPin" inputmode="numeric" maxlength="4" placeholder="例如 1234" oninput="validateTeacherPinField()">
+          <small class="hint" id="teacherPinHint">留空時學生檔不會顯示「提前遞交」。匯出檔只會嵌入 hash，不會嵌入明文 PIN。</small>
+        </div>
       </div>
       <div class="btn-row">
         <button onclick="loadAll()">📥 載入題目庫 + 模板</button>
@@ -378,6 +383,7 @@
    ============================================================ */
 const STORAGE_KEY = "assess_tool_v2";
 const ALLOWED_GAS_HOSTS = new Set(["script.google.com", "script.googleusercontent.com"]);
+const TEACHER_PIN_PATTERN = /^\d{4}$/;
 const DEFAULT_RESOURCE_PRESETS = Object.freeze({
   question: {
     label: "題目庫",
@@ -587,6 +593,50 @@ function getGasUrlForExport(statusId) {
   return result.value;
 }
 
+function validateTeacherPinField() {
+  const input = document.getElementById("teacherPin");
+  const hint = document.getElementById("teacherPinHint");
+  if (!input || !hint) return { ok: true, empty: true, value: "" };
+  const value = input.value.trim();
+  if (!value) {
+    hint.textContent = "留空時學生檔不會顯示「提前遞交」。匯出檔只會嵌入 hash，不會嵌入明文 PIN。";
+    hint.style.color = "";
+    return { ok: true, empty: true, value: "" };
+  }
+  if (!TEACHER_PIN_PATTERN.test(value)) {
+    hint.textContent = "⚠️ PIN 必須為 4 位數字。";
+    hint.style.color = "var(--danger)";
+    return { ok: false, empty: false, value, error: "老師 PIN 必須為 4 位數字。" };
+  }
+  hint.textContent = "✓ PIN 格式有效；匯出時會即時計算 SHA-256 hash。";
+  hint.style.color = "var(--success)";
+  return { ok: true, empty: false, value };
+}
+
+async function sha256Hex(text) {
+  if (!window.crypto || !crypto.subtle || !crypto.subtle.digest) {
+    throw new Error("此瀏覽器不支援 Web Crypto，未能計算老師 PIN hash。");
+  }
+  const bytes = new TextEncoder().encode(String(text || ""));
+  const buffer = await crypto.subtle.digest("SHA-256", bytes);
+  return Array.from(new Uint8Array(buffer)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function getTeacherPinHashForExport(statusId) {
+  const result = validateTeacherPinField();
+  if (!result.ok) {
+    showStatus(statusId, "err", result.error);
+    return null;
+  }
+  if (result.empty) return "";
+  try {
+    return await sha256Hex(result.value);
+  } catch (err) {
+    showStatus(statusId, "err", err.message || String(err));
+    return null;
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   initCollapsibles();
   const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
@@ -595,6 +645,7 @@ window.addEventListener("DOMContentLoaded", () => {
   if (saved.gasUrl) document.getElementById("gasUrl").value = saved.gasUrl;
   if (saved.activeMode) activeMode = saved.activeMode;
   validateGasUrlField();
+  validateTeacherPinField();
   updateExportGates();
   // MathJax lifecycle
   window.addEventListener("mathjax-ready", () => {
@@ -640,7 +691,9 @@ function clearUrls() {
   document.getElementById("bankUrl").value = "";
   document.getElementById("tmplUrl").value = "";
   document.getElementById("gasUrl").value = "";
+  document.getElementById("teacherPin").value = "";
   validateGasUrlField();
+  validateTeacherPinField();
 }
 
 async function applyResourcePreset(kind) {
@@ -737,8 +790,8 @@ async function loadAll() {
         !tmpl.includes("{{QUESTION_SPECS}}") || !tmpl.includes("{{BANK_HASH}}") ||
         !tmpl.includes("{{PRESET_KEY}}") || !tmpl.includes("{{GRADE}}") || !tmpl.includes("{{VALIDATORS_SCRIPT}}") ||
         !tmpl.includes("{{GENERATORS_SCRIPT}}") || !tmpl.includes("{{PDF_SCRIPT}}") ||
-        !tmpl.includes("{{RUNTIME_SEED}}")) {
-      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{TITLE_HTML}} / {{QUESTIONS_DATA}} / {{QUESTION_SPECS}} / {{BANK_HASH}} / {{PRESET_KEY}} / {{GRADE}} / {{VALIDATORS_SCRIPT}} / {{GENERATORS_SCRIPT}} / {{PDF_SCRIPT}} / {{RUNTIME_SEED}}）");
+        !tmpl.includes("{{RUNTIME_SEED}}") || !tmpl.includes("{{TEACHER_PIN_HASH}}")) {
+      throw new Error("模板缺少必要佔位符（{{TITLE}} / {{TITLE_HTML}} / {{QUESTIONS_DATA}} / {{QUESTION_SPECS}} / {{BANK_HASH}} / {{PRESET_KEY}} / {{GRADE}} / {{VALIDATORS_SCRIPT}} / {{GENERATORS_SCRIPT}} / {{PDF_SCRIPT}} / {{RUNTIME_SEED}} / {{TEACHER_PIN_HASH}}）");
     }
     // Bank validation（先過題目庫）
     const validation = validateBank(bank);
@@ -877,7 +930,7 @@ function validateBank(b) {
 }
 
 function validateTemplate(s) {
-  const required = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GRADE}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
+  const required = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GRADE}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}", "{{TEACHER_PIN_HASH}}"];
   const missing = required.filter(ph => !s.includes(ph));
   return { ok: missing.length === 0, missing };
 }
@@ -1654,11 +1707,13 @@ function buildQuestionSpecsForBasket() {
 // Year/grade/term are derived from the first basket question's bank code
 // (e.g. LSC-2526-S1-T2-01-NA-3 → year=2526, grade=s1, term=t2).
 // For regular mode, the sourcePreset is the active preset key.
-function buildPubPackage() {
+async function buildPubPackage() {
   if (!bank) return null;
   if (!Array.isArray(basket) || basket.length === 0) return null;
   const gasUrl = getGasUrlForExport("pubPackageStatus");
   if (gasUrl === null) return null;
+  const teacherPinHash = await getTeacherPinHashForExport("pubPackageStatus");
+  if (teacherPinHash === null) return null;
   const isCustom = activePresetKey === "custom";
   const mode = isCustom ? "custom" : "regular";
   // Derive year/grade/term from first basket question's bank code
@@ -1698,14 +1753,15 @@ function buildPubPackage() {
     grade,
     questionCodes,
     gasUrl,
+    teacherPinHash,
     generatedAt,
     bankHash,
     title,
   };
 }
 
-function copyPubPackage() {
-  const pkg = buildPubPackage();
+async function copyPubPackage() {
+  const pkg = await buildPubPackage();
   if (!pkg) {
     const status = document.getElementById("pubPackageStatus");
     if (status && status.className.includes("err") && status.innerHTML) return;
@@ -1734,7 +1790,7 @@ function copyPubPackage() {
   }
 }
 
-function exportStudent() {
+async function exportStudent() {
   if (!bank || !tmpl) { showStatus("exportStatus", "err", "請先載入題目庫 + 模板"); return; }
   // Re-run gate
   if (basket.length === 0 || basket.some(b => b.hasError) || basket.some(b => !b.confirmed)) {
@@ -1746,7 +1802,7 @@ function exportStudent() {
   const ymd = new Date().toISOString().slice(0, 10).replace(/-/g, "");
   const questionSpecs = buildQuestionSpecsForBasket();
   // Validate placeholders before replace
-  const requiredPlaceholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GRADE}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"];
+  const requiredPlaceholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GRADE}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}", "{{TEACHER_PIN_HASH}}"];
   for (const ph of requiredPlaceholders) {
     if (!tmpl.includes(ph)) {
       showStatus("exportStatus", "err", "模板缺少必要佔位符：" + ph);
@@ -1767,6 +1823,8 @@ function exportStudent() {
   const grade = deriveGradeFromBasket() || "unknown";
   const gasUrl = getGasUrlForExport("exportStatus");
   if (gasUrl === null) return;
+  const teacherPinHash = await getTeacherPinHashForExport("exportStatus");
+  if (teacherPinHash === null) return;
 
   const safeReplace = (str, pattern, replacement) => str.replace(pattern, () => replacement);
   let html = tmpl;
@@ -1783,6 +1841,7 @@ function exportStudent() {
   html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
   html = safeReplace(html, /\{\{GRADE\}\}/g, JSON.stringify(grade));
   html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl));
+  html = safeReplace(html, /\{\{TEACHER_PIN_HASH\}\}/g, JSON.stringify(teacherPinHash));
 
   // Verify no placeholder residue
   const leftover = html.match(/\{\{[A-Z_]+\}\}/g);

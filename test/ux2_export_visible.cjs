@@ -29,7 +29,7 @@ check("exportCard no longer has inline display:none", !/<div class="card" id="ex
 check("JS no longer hides exportCard", !/getElementById\("exportCard"\)\.style\.display\s*=\s*"none"/.test(html));
 check("export hint is present", /id="exportHint"/.test(html) && /請先於④生成預覽並確認全部題目/.test(html));
 check("publish package button starts disabled", /id="btn-copy-pkg" disabled/.test(html));
-check("DOMContentLoaded refreshes export gates", /validateGasUrlField\(\);\s*updateExportGates\(\);/.test(html));
+check("DOMContentLoaded refreshes export gates", /validateGasUrlField\(\);[\s\S]{0,80}updateExportGates\(\);/.test(html));
 check("renderBasket refreshes export gates", /function renderBasket\(\)[\s\S]*updateExportGates\(\);[\s\S]*}\s*\/\* ============================================================\s*Preset 模式/.test(html));
 check("markPreviewDirty refreshes export gates", /function markPreviewDirty\(\)[\s\S]*updateExportGates\(\);[\s\S]*}\s*function genParamsForType/.test(html));
 check("updateExportGates disables student export", /if \(exportBtn\) exportBtn\.disabled = !canExport;/.test(html));

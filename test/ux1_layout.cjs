@@ -52,6 +52,10 @@ check('template places both PDF controls between answer actions and keypad',
 check('template places keypad shift with both PDF controls in one row',
   /class="pdf-action-row"[\s\S]{0,1500}id="btn-similar-pdf"[\s\S]{0,800}id="btn-whole-pdf"[\s\S]{0,800}id="btn-shift-keypad"/.test(template) &&
   !/class="keypad-tools"/.test(template));
+check('partial submit stays outside action-area and is hidden by default',
+  /id="pdf-action-area"[\s\S]{0,1200}id="partial-submit-row"[\s\S]{0,300}id="btn-partial-submit"/.test(template) &&
+  !/id="action-area"[\s\S]{0,800}id="btn-partial-submit"/.test(template) &&
+  /\.partial-submit-row\s*\{[^}]*display:\s*none/.test(template));
 check('template uses short labels and full accessible descriptions',
   />同類 PDF<\/button>/.test(template) && />整卷 PDF<\/button>/.test(template) && />鍵盤 ↑<\/button>/.test(template) &&
   /id="btn-similar-pdf"[^>]+aria-label=/.test(template) && /id="btn-whole-pdf"[^>]+aria-label=/.test(template) &&
@@ -92,6 +96,10 @@ for (const rel of exercisePaths) {
   check(`${rel} includes independent action-area id`, /id="action-area"/.test(html));
   check(`${rel} includes adjacent in-progress PDF controls`,
     /id="pdf-action-area"[\s\S]*id="btn-similar-pdf"[\s\S]*id="btn-whole-pdf"/.test(html));
+  check(`${rel} includes hidden partial submit outside action-area`,
+    /id="pdf-action-area"[\s\S]{0,1200}id="partial-submit-row"[\s\S]{0,300}id="btn-partial-submit"/.test(html) &&
+    !/id="action-area"[\s\S]{0,800}id="btn-partial-submit"/.test(html) &&
+    /\.partial-submit-row\s*\{[^}]*display:\s*none/.test(html));
   check(`${rel} includes keypad safe-area and position toggle`,
     /env\(safe-area-inset-bottom\)/.test(html) && /id="btn-shift-keypad"/.test(html));
   check(`${rel} keeps next button outside keypad-area`,

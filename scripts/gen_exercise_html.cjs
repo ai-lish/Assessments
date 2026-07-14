@@ -23,6 +23,7 @@
  *                              [--year=2526] [--topic=...] [--out-root=exercises] \
  *                              [--overwrite] \
  *                              [--gas-url=https://script.google.com/macros/s/...] \
+ *                              [--teacher-pin=1234] [--teacher-pin-hash=<sha256>] \
  *                              [presetKey1 presetKey2 ...]
  *
  * Default: --mode=regular, --year=2526, all presets.
@@ -43,6 +44,8 @@ const DEFAULTS = {
   name: null,      // for custom / by-topic
   topic: null,     // for by-topic
   gasUrl: '',
+  teacherPin: '',
+  teacherPinHash: '',
   overwrite: false,
 };
 
@@ -58,6 +61,8 @@ function parseArgs(argv) {
     else if (a.startsWith('--topic=')) opts.topic = a.slice(8);
     else if (a.startsWith('--out-root=')) opts.outRoot = path.resolve(a.slice(11));
     else if (a.startsWith('--gas-url=')) opts.gasUrl = a.slice(10);
+    else if (a.startsWith('--teacher-pin=')) opts.teacherPin = a.slice(14);
+    else if (a.startsWith('--teacher-pin-hash=')) opts.teacherPinHash = a.slice(19);
     else if (a === '--overwrite') opts.overwrite = true;
     else if (a === '--help' || a === '-h') {
       console.log(fs.readFileSync(__filename, 'utf-8').split('\n').filter(l => l.startsWith(' *') || l.startsWith('#')).join('\n'));
@@ -88,7 +93,7 @@ const AssessValidators = require(path.join(ROOT, 'tool/validators.js'));
 const pdfScript = fs.readFileSync(path.join(ROOT, 'tool/pdf.js'), 'utf-8');
 
 // --- Required placeholder check (mirrors tool) ---
-const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GRADE}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
+const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GRADE}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}', '{{TEACHER_PIN_HASH}}'];
 for (const ph of REQUIRED) {
   if (!tmpl.includes(ph)) { console.error('Template missing placeholder:', ph); process.exit(1); }
 }
@@ -187,7 +192,35 @@ function safeName(s) {
   return String(s).replace(/[^a-zA-Z0-9_\\-]/g, '_');
 }
 
-function buildHtml({ title, presetKey, grade, gasUrl, specs, generatedAt, bankHash }) {
+function sha256Hex(text) {
+  return crypto.createHash('sha256').update(String(text || '')).digest('hex');
+}
+
+function resolveTeacherPinHash() {
+  if (opts.teacherPin && opts.teacherPinHash) {
+    console.error('Use either --teacher-pin or --teacher-pin-hash, not both.');
+    process.exit(2);
+  }
+  if (opts.teacherPin) {
+    if (!/^\d{4}$/.test(opts.teacherPin)) {
+      console.error('--teacher-pin must be exactly 4 digits.');
+      process.exit(2);
+    }
+    return sha256Hex(opts.teacherPin);
+  }
+  if (opts.teacherPinHash) {
+    if (!/^[a-f0-9]{64}$/i.test(opts.teacherPinHash)) {
+      console.error('--teacher-pin-hash must be a 64-character SHA-256 hex string.');
+      process.exit(2);
+    }
+    return opts.teacherPinHash.toLowerCase();
+  }
+  return '';
+}
+
+const teacherPinHash = resolveTeacherPinHash();
+
+function buildHtml({ title, presetKey, grade, gasUrl, teacherPinHash, specs, generatedAt, bankHash }) {
   let html = tmpl;
   html = safeReplace(html, /\{\{TITLE_HTML\}\}/g, escapeHtml(title));
   html = safeReplace(html, /\{\{TITLE\}\}/g, JSON.stringify(title));
@@ -202,6 +235,7 @@ function buildHtml({ title, presetKey, grade, gasUrl, specs, generatedAt, bankHa
   html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
   html = safeReplace(html, /\{\{GRADE\}\}/g, JSON.stringify(grade || "unknown"));
   html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl || ''));
+  html = safeReplace(html, /\{\{TEACHER_PIN_HASH\}\}/g, JSON.stringify(teacherPinHash || ''));
   const leftover = html.match(/\{\{[A-Z_]+\}\}/g);
   if (leftover && leftover.length) {
     console.error('  LEFTOVER PLACEHOLDERS:', leftover);
@@ -229,7 +263,7 @@ for (const preset of presets) {
   const bankHash = computeBankHash(preset.key, specs);
   const generatedAt = new Date().toISOString();
   const presetKey = preset.key;
-  const html = buildHtml({ title, presetKey, grade, gasUrl: opts.gasUrl, specs, generatedAt, bankHash });
+  const html = buildHtml({ title, presetKey, grade, gasUrl: opts.gasUrl, teacherPinHash, specs, generatedAt, bankHash });
 
   // Question codes (for publish package)
   const questionCodes = specs.map(s => {

@@ -4,6 +4,8 @@
 
 const fs = require('fs');
 const path = require('path');
+const { TextEncoder } = require('util');
+const { webcrypto } = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
 const bank = JSON.parse(fs.readFileSync(path.join(ROOT, 'question-bank.json'), 'utf-8'));
@@ -139,7 +141,7 @@ const URLShim = URL;
 URLShim.createObjectURL = () => 'blob:tool-export';
 URLShim.revokeObjectURL = () => {};
 let lastBlobText = '';
-const winMock = { addEventListener: () => {}, dispatchEvent: () => {}, document: mockDoc, localStorage: { getItem: () => null, setItem: () => {} } };
+const winMock = { addEventListener: () => {}, dispatchEvent: () => {}, document: mockDoc, localStorage: { getItem: () => null, setItem: () => {} }, crypto: webcrypto };
 const sandbox = {
   document: mockDoc,
   window: winMock,
@@ -149,6 +151,8 @@ const sandbox = {
   Date,
   JSON,
   Object,
+  TextEncoder,
+  crypto: webcrypto,
   Set, Map, Array, String, Number, Boolean, Error, Promise,
   URL: URLShim,
   Blob: function(parts) { lastBlobText = (parts || []).join(''); },
@@ -159,6 +163,8 @@ const sandbox = {
 };
 // Make window properties visible to the script (AssessTool = window.AssessTool etc.)
 for (const k of Object.keys(sandbox)) sandbox[k === 'window' ? '__skip__' : k] = sandbox[k];
+
+async function main() {
 
 // 先載外部共用模組（建立 AssessTool / AssessGenerators / AssessValidators / AssessPDF globals）
 const filterScript = fs.readFileSync(path.join(ROOT, 'tool/filter.js'), 'utf-8');
@@ -238,8 +244,8 @@ if (typeof renderFn === 'function') {
 }
 
 // === 4. 模板佔位符 ===
-section('4. 模板 13 個必要佔位符');
-const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GRADE}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
+section('4. 模板 14 個必要佔位符');
+const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GRADE}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}', '{{TEACHER_PIN_HASH}}'];
 for (const ph of REQUIRED) {
   check(`模板有 ${ph}`, tmpl.includes(ph));
 }
@@ -266,9 +272,14 @@ check('UI 有第三欄 gasUrl input', /id="gasUrl"/.test(toolHtmlFixed));
 check('UI 有公開投遞信箱提醒', toolHtmlFixed.includes('等同公開投遞信箱'));
 check('saveUrls 會保存 gasUrl', /gasUrl:\s*document\.getElementById\("gasUrl"\)\.value\.trim\(\)/.test(toolHtmlFixed));
 check('DOMContentLoaded 會回填 saved.gasUrl', /saved\.gasUrl[\s\S]{0,80}getElementById\("gasUrl"\)\.value/.test(toolHtmlFixed));
+check('老師 PIN 明文不保存到 localStorage',
+      !/teacherPin:\s*document\.getElementById\("teacherPin"\)\.value\.trim\(\)/.test(toolHtmlFixed) &&
+      !/saved\.teacherPin/.test(toolHtmlFixed));
 check('exportStudent 使用 getGasUrlForExport("exportStatus")',
       /const gasUrl = getGasUrlForExport\("exportStatus"\)/.test(toolHtmlFixed));
 check('發佈指令包包含 gasUrl 欄位', /questionCodes,[\s\S]{0,80}gasUrl,/.test(toolHtmlFixed));
+check('發佈指令包包含 teacherPinHash 欄位', /questionCodes,[\s\S]{0,120}teacherPinHash,/.test(toolHtmlFixed));
+check('老師 PIN UI 提示匯出檔只嵌入 hash', /id="teacherPin"/.test(toolHtmlFixed) && toolHtmlFixed.includes('只會嵌入 hash'));
 check('三個資源欄位均有一鍵套用 Preset 按鈕',
       (toolHtmlFixed.match(/applyResourcePreset\('/g) || []).length >= 3 &&
       toolHtmlFixed.includes("applyResourcePreset('question')") &&
@@ -310,11 +321,13 @@ try {
       hasError: false,
       confirmed: true
     }];
-    exportStudent();
   `, sandbox);
+  await vm.runInContext('exportStudent()', sandbox);
   const exported = sandbox.__getLastBlobText();
   check('exportStudent 會把合法 GAS URL 注入學生 HTML',
         exported.includes('const GAS_URL = "https://script.google.com/macros/s/abc/exec";'));
+  check('未填老師 PIN 時匯出空 TEACHER_PIN_HASH',
+        exported.includes('const TEACHER_PIN_HASH = "";'));
 } catch (e) {
   check('exportStudent GAS URL 注入測試可執行', false, e.message);
 }
@@ -422,3 +435,9 @@ if (FAILED > 0) {
 }
 console.log('✅ Teacher tool headless regression test passed.');
 process.exit(0);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

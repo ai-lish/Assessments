@@ -36,6 +36,7 @@ check('routes s3 to 中三', /s3:\s*'中三'/.test(source));
 check('uses 未分類 fallback', /FALLBACK_SHEET\s*=\s*'未分類'/.test(source));
 check('creates attempt-sheet header only when empty', /sheet\.getLastRow\(\) === 0/.test(source));
 check('student template keeps GAS_URL as a generation placeholder', template.includes('const GAS_URL = {{GAS_URL}};'));
+check('student template keeps TEACHER_PIN_HASH as a generation placeholder', template.includes('const TEACHER_PIN_HASH = {{TEACHER_PIN_HASH}};'));
 
 const gasUrls = exerciseFiles.map(file => {
   const html = fs.readFileSync(path.join(root, file), 'utf8');

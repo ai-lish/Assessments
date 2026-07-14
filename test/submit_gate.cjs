@@ -4,6 +4,8 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { TextEncoder } = require('util');
+const { webcrypto } = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..');
 const template = fs.readFileSync(path.join(ROOT, 'templates/student.html'), 'utf8');
@@ -48,7 +50,7 @@ function makeElement(id = '') {
   };
 }
 
-function buildHtml({ grade = 's1', gasUrl = 'https://example.invalid/sheets' } = {}) {
+function buildHtml({ grade = 's1', gasUrl = 'https://example.invalid/sheets', teacherPinHash = '' } = {}) {
   return template
     .replace(/\{\{TITLE_HTML\}\}/g, 'Submit Gate Test')
     .replace(/\{\{TITLE\}\}/g, JSON.stringify('Submit Gate Test'))
@@ -59,6 +61,7 @@ function buildHtml({ grade = 's1', gasUrl = 'https://example.invalid/sheets' } =
     .replace(/\{\{PRESET_KEY\}\}/g, JSON.stringify('s1_term3_part_a'))
     .replace(/\{\{GRADE\}\}/g, JSON.stringify(grade))
     .replace(/\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl))
+    .replace(/\{\{TEACHER_PIN_HASH\}\}/g, JSON.stringify(teacherPinHash))
     .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validatorsScript)
     .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generators.toStandaloneScript())
     .replace(/\{\{PDF_SCRIPT\}\}/g, pdfScript)
@@ -75,7 +78,7 @@ function buildSandbox(promptValues, htmlOptions = {}) {
     'suffix', 'q-hint', 'q-options', 'q-coord-hint', 'input-row', 'q-image',
     'toast', 'final-score', 'btn-retry-wrong', 'history-body', 'detail-modal',
     'modal-title', 'modal-body-content', 'btn-export', 'submit-hint', 'score-mini',
-    'q-code', 'btn-back-practice',
+    'q-code', 'btn-back-practice', 'partial-submit-row', 'btn-partial-submit',
   ];
   ids.forEach((id) => elements.set(id, makeElement(id)));
   elements.get('quiz-view').style.display = 'flex';
@@ -116,6 +119,9 @@ function buildSandbox(promptValues, htmlOptions = {}) {
     Boolean,
     Error,
     Promise,
+    TextEncoder,
+    Uint8Array,
+    crypto: webcrypto,
     setTimeout: (fn) => { if (typeof fn === 'function') fn(); return 1; },
     clearTimeout: () => {},
     prompt: () => prompts.shift(),
@@ -129,6 +135,7 @@ function buildSandbox(promptValues, htmlOptions = {}) {
   sandbox.window.localStorage = sandbox.localStorage;
   sandbox.window.URL = sandbox.URL;
   sandbox.window.Blob = sandbox.Blob;
+  sandbox.window.crypto = sandbox.crypto;
 
   const html = buildHtml(htmlOptions);
   const leftover = html.match(/\{\{[A-Z_]+\}\}/g);
@@ -146,6 +153,28 @@ function run(code, sandbox) {
   return vm.runInContext(code, sandbox);
 }
 
+function digestPin(pin) {
+  return require('crypto').createHash('sha256').update(String(pin)).digest('hex');
+}
+
+async function flushPromises() {
+  await Promise.resolve();
+  await Promise.resolve();
+  await Promise.resolve();
+  await new Promise((resolve) => setImmediate(resolve));
+  await new Promise((resolve) => setTimeout(resolve, 5));
+  await Promise.resolve();
+}
+
+async function waitFor(condition, maxTicks = 100) {
+  for (let i = 0; i < maxTicks; i += 1) {
+    if (condition()) return true;
+    await flushPromises();
+  }
+  return condition();
+}
+
+async function main() {
 console.log('=== Submit Gate / Student ID / Payload ===');
 
 let sandbox = buildSandbox([]);
@@ -210,8 +239,126 @@ check('empty GAS_URL disables submit even when completedAll', sandbox.__elements
 check('empty GAS_URL shows unconfigured destination hint', /未配置提交目的地/.test(sandbox.__elements.get('submit-hint').textContent));
 check('empty GAS_URL does not send request', sandbox.__fetchCalls.length === 0);
 
+console.log('\n=== Partial Submit / PIN Gate ===');
+
+const pinHash = digestPin('1234');
+
+sandbox = buildSandbox([], { gasUrl: '', teacherPinHash: pinHash });
+run(`
+  allAttempts = [];
+  lastResult = null;
+  qList = new Array(16).fill(null).map((_, i) => ({ qid: "q" + String(i + 1).padStart(3, "0") }));
+  sessionLog = [{ correct: true }];
+  updatePartialSubmitButton();
+`, sandbox);
+check('partial submit hidden when GAS_URL empty', sandbox.__elements.get('partial-submit-row').style.display === 'none');
+
+sandbox = buildSandbox([], { gasUrl: 'https://example.invalid/sheets', teacherPinHash: '' });
+run(`
+  allAttempts = [];
+  lastResult = null;
+  qList = new Array(16).fill(null).map((_, i) => ({ qid: "q" + String(i + 1).padStart(3, "0") }));
+  sessionLog = [{ correct: true }];
+  updatePartialSubmitButton();
+`, sandbox);
+check('partial submit hidden when teacher PIN hash empty', sandbox.__elements.get('partial-submit-row').style.display === 'none');
+
+sandbox = buildSandbox([], { gasUrl: 'https://example.invalid/sheets', teacherPinHash: pinHash });
+run(`
+  allAttempts = [];
+  lastResult = null;
+  qList = new Array(16).fill(null).map((_, i) => ({ qid: "q" + String(i + 1).padStart(3, "0") }));
+  sessionLog = [{ correct: true }];
+  updatePartialSubmitButton();
+`, sandbox);
+check('partial submit visible when unfinished with GAS_URL and PIN hash', sandbox.__elements.get('partial-submit-row').style.display === 'block');
+check('partial submit button enabled when visible', sandbox.__elements.get('btn-partial-submit').disabled === false);
+
+sandbox = buildSandbox(['0000'], { gasUrl: 'https://example.invalid/sheets', teacherPinHash: pinHash });
+run(`
+  allAttempts = [];
+  lastResult = null;
+  qList = new Array(16).fill(null).map((_, i) => ({ qid: "q" + String(i + 1).padStart(3, "0"), typeKey: "dummy" }));
+  sessionLog = [{ correct: true }, { correct: false }];
+  sessionAnswers = ["1", "2"];
+  currIdx = 2;
+  handlePartialSubmit();
+`, sandbox);
+await waitFor(() => sandbox.__fetchCalls.length === 0);
+check('wrong PIN rejects partial submit before fetch', sandbox.__fetchCalls.length === 0);
+check('wrong PIN does not reset current question index', run('currIdx', sandbox) === 2);
+
+sandbox = buildSandbox(['1234', '20255001f'], { gasUrl: 'https://example.invalid/sheets', teacherPinHash: pinHash });
+run(`
+  allAttempts = [];
+  lastResult = null;
+  qList = new Array(16).fill(null).map((_, i) => ({ qid: "q" + String(i + 1).padStart(3, "0"), typeKey: "dummy" }));
+  sessionLog = [{ correct: true }, { correct: false }];
+  sessionAnswers = ["1", "2"];
+  currIdx = 2;
+  handlePartialSubmit();
+`, sandbox);
+await waitFor(() => sandbox.__fetchCalls.length === 1);
+check('correct PIN and student ID sends partial submit request', sandbox.__fetchCalls.length === 1);
+const partialPayload = JSON.parse(sandbox.__fetchCalls[0].options.body);
+const partialRow = partialPayload.rows[partialPayload.rows.length - 1];
+const payloadFields = [
+  'studentId', 'grade', 'toolId', 'attemptNumber', 'attemptType', 'score',
+  'total', 'remainingWrongCount', 'completedAll', 'date', 'time',
+];
+check('partial submit payload keeps 11-field contract',
+      Object.keys(partialRow).length === payloadFields.length &&
+      payloadFields.every((field) => Object.prototype.hasOwnProperty.call(partialRow, field)));
+check('partial submit payload marks completedAll false', partialRow.completedAll === false, JSON.stringify(partialRow));
+check('partial submit score counts correct answered only', partialRow.score === 1, JSON.stringify(partialRow));
+check('partial submit total remains full paper length', partialRow.total === 16, JSON.stringify(partialRow));
+check('partial submit normalizes student ID', partialRow.studentId === '20255001F');
+check('partial submit preserves current question index after sending', run('currIdx', sandbox) === 2);
+check('partial submit stores local answeredCount without sending it',
+      run('allAttempts[0].answeredCount', sandbox) === 2 && !Object.prototype.hasOwnProperty.call(partialRow, 'answeredCount'),
+      JSON.stringify({ local: run('allAttempts[0]', sandbox), row: partialRow }));
+
+sandbox = buildSandbox(['1234', '20255001F', '1234', '20255001F'], { gasUrl: 'https://example.invalid/sheets', teacherPinHash: pinHash });
+run(`
+  allAttempts = [];
+  lastResult = null;
+  qList = new Array(16).fill(null).map((_, i) => ({ qid: "q" + String(i + 1).padStart(3, "0"), typeKey: "dummy" }));
+  sessionLog = [{ correct: true }];
+  sessionAnswers = ["1"];
+  currIdx = 1;
+  handlePartialSubmit();
+`, sandbox);
+await waitFor(() => sandbox.__fetchCalls.length === 1);
+run(`
+  sessionLog.push({ correct: true });
+  sessionAnswers.push("2");
+  currIdx = 2;
+  handlePartialSubmit();
+`, sandbox);
+await waitFor(() => sandbox.__fetchCalls.length === 2);
+check('partial submit can be repeated without resetting answer state',
+      sandbox.__fetchCalls.length === 2 && run('currIdx', sandbox) === 2 && run('sessionLog.length', sandbox) === 2);
+
+sandbox = buildSandbox(['20255001F'], { gasUrl: 'https://example.invalid/sheets', teacherPinHash: pinHash });
+run(`
+  allAttempts = [
+    { attemptNumber: 1, attemptType: "initial", score: 16, total: 16, remainingWrongCount: 0, completedAll: true, date: "7/7", time: "10:00", details: [] }
+  ];
+  lastResult = allAttempts[0];
+  showResult();
+  handleExport();
+`, sandbox);
+check('normal completed submit still does not ask for teacher PIN', sandbox.__fetchCalls.length === 1);
+check('normal completed submit keeps completedAll true', JSON.parse(sandbox.__fetchCalls[0].options.body).rows[0].completedAll === true);
+
 console.log(`\n=== Summary: ${passed} passed, ${failures.length} failed ===`);
 if (failures.length) {
   failures.forEach((failure) => console.error('  - ' + failure));
   process.exit(1);
 }
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

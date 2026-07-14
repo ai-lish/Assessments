@@ -243,7 +243,8 @@ function buildSandbox(questions) {
     .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validatorsScript)
     .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generatorsScript)
     .replace(/\{\{PDF_SCRIPT\}\}/g, pdfScript)
-    .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
+    .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null))
+    .replace(/\{\{TEACHER_PIN_HASH\}\}/g, JSON.stringify(""));
   const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]);
   const runnableScripts = scripts.filter((script) => !script.includes("window.MathJax ="));
   if (!runnableScripts.some((script) => script.includes("function checkAnswer"))) {
