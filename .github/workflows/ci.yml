@@ -126,6 +126,9 @@ jobs:
       - name: PDF snapshot fixture regression
         run: node test/pdf_snapshot.cjs
 
+      - name: PDF teacher answer display regression
+        run: node test/pdf_answer_display.cjs
+
       - name: Similar-question PDF regression
         run: node test/similar_pdf.cjs
 

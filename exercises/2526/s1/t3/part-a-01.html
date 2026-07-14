@@ -1094,6 +1094,13 @@
 
 function createAssessPDF() {
   const SHOW_QUESTION_CODE = true;
+  const SOLVE_EQ_TYPE_KEYS = new Set([
+    "solve_eq",
+    "s1t2_solve_eq_fraction",
+    "s1t2_solve_eq_negative",
+    "solve_eq_fraction",
+    "solve_eq_bracket",
+  ]);
 
   function escapeHtml(value) {
     return String(value == null ? "" : value)
@@ -1305,12 +1312,23 @@ function createAssessPDF() {
     return html;
   }
 
-  function answerHtml(answer) {
-    const raw = String(answer == null ? "" : answer);
-    if (raw === "") return "";
-    const hasMath = /\\|π|√|±|≥|≤|×|%|≈|²|³|[<>]|\^/.test(raw) && !/\$/.test(raw);
-    if (!hasMath) return escapeHtml(raw);
-    const tex = raw
+  function escapeUnescapedPercent(value) {
+    const input = String(value || "");
+    let output = "";
+    for (let i = 0; i < input.length; i += 1) {
+      if (input[i] !== "%") {
+        output += input[i];
+        continue;
+      }
+      let slashCount = 0;
+      for (let j = i - 1; j >= 0 && input[j] === "\\"; j -= 1) slashCount += 1;
+      output += slashCount % 2 === 1 ? "%" : "\\%";
+    }
+    return output;
+  }
+
+  function normalizeAnswerTex(value) {
+    return escapeUnescapedPercent(String(value || "")
       .replace(/π/g, "\\pi")
       .replace(/√(\d+)/g, "\\sqrt{$1}")
       .replace(/±/g, "\\pm ")
@@ -1319,9 +1337,43 @@ function createAssessPDF() {
       .replace(/×/g, "\\times ")
       .replace(/≈/g, "\\approx ")
       .replace(/²/g, "^2")
-      .replace(/³/g, "^3")
-      .replace(/%/g, "\\%");
-    return "\\(" + tex + "\\)";
+      .replace(/³/g, "^3"));
+  }
+
+  function renderExistingMathSegments(raw) {
+    const segmentPattern = /\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]/g;
+    let output = "";
+    let cursor = 0;
+    let found = false;
+    let match;
+    while ((match = segmentPattern.exec(raw)) !== null) {
+      found = true;
+      output += escapeHtml(raw.slice(cursor, match.index));
+      const display = match[2] !== undefined;
+      output += display
+        ? "\\[" + normalizeAnswerTex(match[2]) + "\\]"
+        : "\\(" + normalizeAnswerTex(match[1]) + "\\)";
+      cursor = match.index + match[0].length;
+    }
+    if (!found) return null;
+    return output + escapeHtml(raw.slice(cursor));
+  }
+
+  function answerHtml(answer) {
+    const raw = String(answer == null ? "" : answer);
+    if (raw === "") return "";
+    const segmented = renderExistingMathSegments(raw);
+    if (segmented !== null) return segmented;
+    const hasMath = /\\|π|√|±|≥|≤|×|%|≈|²|³|[<>]|\^/.test(raw) && !/\$/.test(raw);
+    if (!hasMath) return escapeHtml(raw);
+    return "\\(" + normalizeAnswerTex(raw) + "\\)";
+  }
+
+  function teacherAnswerText(q) {
+    const raw = String(q.displayAnswer || q.correctAnswer || "");
+    if (!SOLVE_EQ_TYPE_KEYS.has(q.typeKey)) return raw;
+    const withoutOpeningDelimiter = raw.trim().replace(/^(?:\\\(|\\\[|\$\$?|\s)+/, "");
+    return /^x\s*=/.test(withoutOpeningDelimiter) ? raw : "x = " + raw;
   }
 
   function renderPDF(snapshot, mode, options) {
@@ -1333,7 +1385,7 @@ function createAssessPDF() {
     const showSolutions = mode === "teacher" && options && options.showSolutions === true;
     const rows = snapshot.questions.map((q, idx) => {
       const answer = mode === "teacher"
-        ? '<div class="pdf-answer pdf-teacher-answer">' + answerHtml(q.displayAnswer || q.correctAnswer) + '</div>'
+        ? '<div class="pdf-answer pdf-teacher-answer">' + answerHtml(teacherAnswerText(q)) + '</div>'
         : '<div class="pdf-answer-line"></div>';
       const code = showCode && q.code ? '<div class="pdf-code">' + escapeHtml(q.code) + '</div>' : "";
       const solution = showSolutions && q.solutionHTML
@@ -1456,7 +1508,7 @@ function createAssessPDF() {
     renderPDF,
     renderPrintDocument,
     printSnapshot,
-    _private: { hashString, printScript, printCss, answerHtml, paramsSignature },
+    _private: { hashString, printScript, printCss, answerHtml, teacherAnswerText, paramsSignature },
   };
 }
 
@@ -1468,7 +1520,7 @@ const TITLE = "2025-26 年度 中一第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"frac_arith","typeDef":{"key":"frac_arith","name":"分數運算（含負數）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"factor":"整數 ±1..±3（最終結果）","bottom":"整數 -8..-2（分母，不含 0）","a":"分子第一項 a（隨機 2..8）","c":"分母第一項絕對值加 1..5"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"frac_arith","code":"LSC-2526-S1-T3-01-NA-1","source":""},"params":{}},{"qid":"q002","typeKey":"neg_power","typeDef":{"key":"neg_power","name":"負數的乘方","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"base":"整數 2..5","exp":"整數 2..4"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"neg_power","code":"LSC-2526-S1-T3-02-NA-2","source":""},"params":{}},{"qid":"q003","typeKey":"prime_factor","typeDef":{"key":"prime_factor","name":"質因數分解（指數記數法）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"primeFactor","params_schema":{"n":"整數（必須含 ≥2 個質因數），預設從 9 個示範數中選"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"primeFactor","generator":"prime_factor","code":"LSC-2526-S1-T3-03-NA-3","source":""},"params":{}},{"qid":"q004","typeKey":"hcf_or_lcm","typeDef":{"key":"hcf_or_lcm","name":"HCF／LCM 隨機","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"hcfLcm","params_schema":{"n1":"12..24 偶數倍數","n2":"18..36 三的倍數（≠ n1）","askLCM":"bool：true=問 LCM，false=問 HCF"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"hcfLcm","generator":"hcf_or_lcm","code":"LSC-2526-S1-T3-04-NA-4","source":""},"params":{}},{"qid":"q005","typeKey":"exp_law","typeDef":{"key":"exp_law","name":"指數律（同底相乘）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"a":"整數 2..6","b":"整數 2..6"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"exp_law","code":"LSC-2526-S1-T3-05-NA-5","source":""},"params":{}},{"qid":"q006","typeKey":"alg_simplify","typeDef":{"key":"alg_simplify","name":"代數化簡（合併同類項）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"a":"整數 -6..-2（x 係數）","b":"整數 -8..-2（常數項）","c":"整數 2..6（x 係數）","d":"整數 -9..-2（常數項）"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"alg_simplify","code":"LSC-2526-S1-T3-06-NA-6","source":""},"params":{}},{"qid":"q007","typeKey":"solve_eq","typeDef":{"key":"solve_eq","name":"解一元一次方程","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"coeff":"整數 2..7","xVal":"整數 -9..-2"},"prefix":"x = ","answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"solve_eq","code":"LSC-2526-S1-T3-07-NA-7","source":""},"params":{}},{"qid":"q008","typeKey":"word_to_alg","typeDef":{"key":"word_to_alg","name":"文字轉代數式（5 個子類型）","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"algebraQ8","params_schema":{"t":"子類型 1..5（見原工具）","a":"整數 2..9","b":"整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"algebraQ8","generator":"word_to_alg","code":"LSC-2526-S1-T3-08-NA-8","source":""},"params":{}},{"qid":"q009","typeKey":"sig_fig","typeDef":{"key":"sig_fig","name":"有效數字","category":"度量","difficulty":1,"grade":"s1","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"textExact","params_schema":{"baseNum":"示範數 9 選 1","sf":"2..3 位有效數字"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"sig_fig","code":"LSC-2526-S1-T3-09-ME-1","source":""},"params":{}},{"qid":"q010","typeKey":"frac_to_pct","typeDef":{"key":"frac_to_pct","name":"分數化百分數","category":"度量","difficulty":1,"grade":"s1","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"fracPct","params_schema":{"item":"從 9 個示範分數中選"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"fracPct","generator":"frac_to_pct","code":"LSC-2526-S1-T3-10-ME-2","source":""},"params":{}},{"qid":"q011","typeKey":"poly_desc","typeDef":{"key":"poly_desc","name":"多項式降冪排列","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"b":"整數 2..9","c":"整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"poly_desc","code":"LSC-2526-S1-T3-11-NA-9","source":""},"params":{}},{"qid":"q012","typeKey":"formula_sub","typeDef":{"key":"formula_sub","name":"公式代入","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"a":"整數 3..8","b":"整數 2..5","c":"整數 -5..-2","isPlus":"bool：true=加法、false=減法"},"prefix":"y = ","answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"formula_sub","code":"LSC-2526-S1-T3-12-NA-10","source":""},"params":{}},{"qid":"q013","typeKey":"congruence","typeDef":{"key":"congruence","name":"全等三角形（S.S.S./S.A.S./A.S.A./A.A.S./R.H.S.）","category":"幾何","difficulty":2,"grade":"s1","term":"3","topicKey":"geometry","topicName":"幾何","type":"congruence","checkType":"congruenceReason","params_schema":{"t1":"三角形 1 的頂點字母（3 個）","t2":"三角形 2 的頂點字母（3 個）","reason":"5 種全等理由之一"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"congruenceReason","generator":"congruence","code":"LSC-2526-S1-T3-13-GE-1","source":"","figure":{"kind":"generated-svg-triangle-pair"}},"params":{}},{"qid":"q014","typeKey":"coordinate","typeDef":{"key":"coordinate","name":"坐標輸入及點選","category":"幾何","difficulty":1,"grade":"s1","term":"3","topicKey":"geometry","topicName":"幾何","type":"coordinate","checkType":"coordinatePoint","params_schema":{"rx":"整數 ±1..±2（x 坐標）","ry":"整數 ±1..±2（y 坐標）","askAxis":"'x' 或 'y'（問邊條軸）"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"coordinatePoint","generator":"coordinate","code":"LSC-2526-S1-T3-14-GE-2","source":"","answerSpec":{"coordinateMode":"axis-value","interaction":{"kind":"grid-click-and-axis-value","target":"generated","clickTolerance":0}}},"params":{}},{"qid":"q015","typeKey":"seq_nth","typeDef":{"key":"seq_nth","name":"數列通項","category":"數與代數","difficulty":1,"grade":"s1","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"nth":"1..5（項數）","multiplier":"整數 2..5","constant":"整數 -5..5"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"seq_nth","code":"LSC-2526-S1-T3-15-NA-11","source":""},"params":{}},{"qid":"q016","typeKey":"data_type","typeDef":{"key":"data_type","name":"離散／連續數據","category":"數據處理","difficulty":1,"grade":"s1","term":"3","topicKey":"data_handling","topicName":"數據處理","type":"choice","checkType":"choiceKey","options":[{"key":"離散數據","label":"A. 離散數據"},{"key":"連續數據","label":"B. 連續數據"}],"params_schema":{"scenario":"6 個示範情境中選 1"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"data_type","code":"LSC-2526-S1-T3-16-DH-1","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-14T08:56:01.734Z";
+const GENERATED_AT = "2026-07-14T09:47:56.664Z";
 const BANK_HASH = "b63_16_964f21d8";
 const PRESET_KEY = "s1_term3_part_a";
 const GRADE = "s1";
