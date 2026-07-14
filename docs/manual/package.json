@@ -1,0 +1,15 @@
+{
+  "name": "assessments-manual-build",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Markdown, screenshot, HTML and PDF tooling for Assessments manuals",
+  "scripts": {
+    "capture:student": "node ../../scripts/capture_student_manual.cjs",
+    "build:student": "node ../../scripts/build_student_manual.cjs",
+    "check:student": "node ../../test/student_manual_contract.cjs"
+  },
+  "devDependencies": {
+    "markdown-it": "14.3.0",
+    "playwright": "1.61.1"
+  }
+}

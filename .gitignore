@@ -9,3 +9,6 @@ test/artifacts/
 __pycache__/
 *.pyc
 .DS_Store
+docs/manual/output/
+docs/manual/node_modules/
+tmp/pdfs/
