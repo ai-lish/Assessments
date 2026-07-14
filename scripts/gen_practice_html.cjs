@@ -56,7 +56,7 @@ const AssessValidators = require(path.join(ROOT, 'tool/validators.js'));
 const pdfScript = fs.readFileSync(path.join(ROOT, 'tool/pdf.js'), 'utf-8');
 
 // --- Required placeholder check (mirrors tool) ---
-const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GRADE}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}'];
+const REQUIRED = ['{{TITLE}}', '{{TITLE_HTML}}', '{{QUESTIONS_DATA}}', '{{QUESTION_SPECS}}', '{{GENERATED_AT}}', '{{BANK_HASH}}', '{{PRESET_KEY}}', '{{GRADE}}', '{{GAS_URL}}', '{{VALIDATORS_SCRIPT}}', '{{GENERATORS_SCRIPT}}', '{{PDF_SCRIPT}}', '{{RUNTIME_SEED}}', '{{TEACHER_PIN_HASH}}'];
 for (const ph of REQUIRED) {
   if (!tmpl.includes(ph)) { console.error('Template missing placeholder:', ph); process.exit(1); }
 }
@@ -190,6 +190,7 @@ for (const preset of presets) {
   html = safeReplace(html, /\{\{PRESET_KEY\}\}/g, JSON.stringify(presetKey));
   html = safeReplace(html, /\{\{GRADE\}\}/g, JSON.stringify(deriveGrade(presetKey)));
   html = safeReplace(html, /\{\{GAS_URL\}\}/g, JSON.stringify(gasUrl));
+  html = safeReplace(html, /\{\{TEACHER_PIN_HASH\}\}/g, JSON.stringify(''));
 
   const leftover = html.match(/\{\{[A-Z_]+\}\}/g);
   if (leftover && leftover.length) { console.error('  LEFTOVER PLACEHOLDERS:', leftover); process.exit(1); }

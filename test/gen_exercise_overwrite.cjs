@@ -47,6 +47,14 @@ try {
   check('--overwrite replaces part-a-01', fs.readFileSync(PART_01, 'utf8') !== 'sentinel');
   check('--overwrite keeps the canonical part-a-01 path', /part-a-01\.html/.test(overwrite.stdout));
 
+  const pin = '9876';
+  const pinHash = require('crypto').createHash('sha256').update(pin).digest('hex');
+  const withPin = run(['--overwrite', `--teacher-pin=${pin}`]);
+  check('--teacher-pin generation succeeds', withPin.status === 0, withPin.stderr);
+  const withPinHtml = fs.readFileSync(PART_01, 'utf8');
+  check('--teacher-pin embeds only the hash', withPinHtml.includes(`const TEACHER_PIN_HASH = "${pinHash}";`));
+  check('--teacher-pin does not embed the plaintext PIN', !withPinHtml.includes(pin));
+
   if (process.exitCode) process.exit(process.exitCode);
   console.log(`\n${passed} overwrite checks passed.`);
 } finally {

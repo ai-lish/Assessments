@@ -293,6 +293,7 @@ html = html.replace("{{VALIDATORS_SCRIPT}}", (ROOT / "tool" / "validators.js").r
 html = html.replace("{{GENERATORS_SCRIPT}}", (ROOT / "tool" / "generators.js").read_text(encoding="utf-8"))
 html = html.replace("{{PDF_SCRIPT}}", (ROOT / "tool" / "pdf.js").read_text(encoding="utf-8"))
 html = html.replace("{{RUNTIME_SEED}}", json.dumps(None))
+html = html.replace("{{TEACHER_PIN_HASH}}", json.dumps(""))
 
 # Verify no placeholder residue
 leftover = re.findall(r"\{\{[A-Z_]+\}\}", html)
@@ -317,7 +318,7 @@ print(f"  (wrote {out}, {len(html)} bytes)")
 # 8. 佔位符 + JS 語法
 # ----------------------------------------------------------------------
 print("\n=== 8. 佔位符 + JS 語法 ===")
-required_placeholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GRADE}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}"]
+required_placeholders = ["{{TITLE}}", "{{TITLE_HTML}}", "{{QUESTIONS_DATA}}", "{{QUESTION_SPECS}}", "{{GENERATED_AT}}", "{{BANK_HASH}}", "{{PRESET_KEY}}", "{{GRADE}}", "{{GAS_URL}}", "{{VALIDATORS_SCRIPT}}", "{{GENERATORS_SCRIPT}}", "{{PDF_SCRIPT}}", "{{RUNTIME_SEED}}", "{{TEACHER_PIN_HASH}}"]
 for ph in required_placeholders:
     check(f"模板有 {ph}", ph in tmpl)
 

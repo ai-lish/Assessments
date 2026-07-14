@@ -123,6 +123,7 @@ html = html.replace('{{VALIDATORS_SCRIPT}}', (ROOT / 'tool' / 'validators.js').r
 html = html.replace('{{GENERATORS_SCRIPT}}', (ROOT / 'tool' / 'generators.js').read_text())
 html = html.replace('{{PDF_SCRIPT}}', (ROOT / 'tool' / 'pdf.js').read_text())
 html = html.replace('{{RUNTIME_SEED}}', json.dumps(None))
+html = html.replace('{{TEACHER_PIN_HASH}}', json.dumps(''))
 
 # Sanity: no placeholders left
 leftover = re.findall(r'\{\{[A-Z_]+\}\}', html)

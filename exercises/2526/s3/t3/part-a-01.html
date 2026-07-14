@@ -9,6 +9,7 @@
        PRESET_KEY         使用的 preset key（'s1_term3_part_a'、'custom' 等）
        GRADE              生成時寫入的年級（s1 / s2 / s3；不可由 runtime 猜）
        GAS_URL            Google Sheets 提交網址（可為空字串）
+       TEACHER_PIN_HASH   4 位老師 PIN 的 SHA-256 hash（可為空字串）
        VALIDATORS_SCRIPT  由 tool/validators.js 內嵌的共用判分 registry
        GENERATORS_SCRIPT  由 tool/generators.js 內嵌的共用題目 generator registry
        PDF_SCRIPT         由 tool/pdf.js 內嵌的共用 snapshot + PDF renderer
@@ -64,6 +65,8 @@
   .pdf-secondary-btn { min-width: 0; width: 100%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 6px; font-size: 0.74em; font-weight: 700; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .pdf-secondary-btn:disabled { opacity: 0.55; cursor: not-allowed; }
   .similar-pdf-hint { display: none; color: var(--text-muted); font-size: 0.76em; }
+  .partial-submit-row { margin-top: 5px; display: none; }
+  .partial-submit-btn { width: 100%; border-color: #f39c12; color: #8a5b00; background: #fff9e8; }
   .question-text { font-size: 1.1em; color: var(--text-main); margin: 0; text-align: left; width: 100%; line-height: 1.6; }
   .question-text b { color: var(--accent); }
   .geo-image { margin-bottom: 15px; text-align: center; display: flex; justify-content: center; width: 100%; }
@@ -183,6 +186,9 @@
         <button type="button" id="btn-similar-pdf" class="pdf-secondary-btn" aria-label="開啟當前題型的同類練習 PDF 預覽" title="開啟當前題型的同類練習 PDF 預覽" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">同類 PDF</button>
         <button type="button" id="btn-whole-pdf" class="pdf-secondary-btn" aria-label="開啟整卷題目及答案雙版 PDF 預覽" title="開啟整卷題目及答案雙版 PDF 預覽" onclick="printPDF()">整卷 PDF</button>
         <button type="button" id="btn-shift-keypad" class="pdf-secondary-btn" aria-label="將虛擬鍵盤上調" title="將虛擬鍵盤上調" aria-pressed="false" onclick="toggleKeypadPosition()">鍵盤 ↑</button>
+      </div>
+      <div class="partial-submit-row" id="partial-submit-row">
+        <button type="button" id="btn-partial-submit" class="pdf-secondary-btn partial-submit-btn" onclick="handlePartialSubmit()">提前遞交</button>
       </div>
       <span id="similar-pdf-hint" class="similar-pdf-hint" role="status"></span>
     </div>
@@ -1462,11 +1468,12 @@ const TITLE = "2025-26 年度 中三第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"poly_add_sub","typeDef":{"key":"poly_add_sub","name":"多項式加減及去括號","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"第一個多項式 x^2 係數","b":"第一個多項式 x 係數","c":"第一個多項式常數項","d":"第二個多項式 x^2 係數","e":"第二個多項式 x 係數","f":"第二個多項式常數項","op":"+ 或 -"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"poly_add_sub","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-01-NA-16","source":""},"params":{}},{"qid":"q002","typeKey":"binomial_expand","typeDef":{"key":"binomial_expand","name":"兩個二項式展開","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)(cx+d) 的 a","b":"(ax+b)(cx+d) 的 b","c":"(ax+b)(cx+d) 的 c","d":"(ax+b)(cx+d) 的 d","square":"false"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-02-NA-17","source":""},"params":{}},{"qid":"q003","typeKey":"s3t3_square_expand","typeDef":{"key":"s3t3_square_expand","name":"完全平方公式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)^2 的 a","b":"(ax+b)^2 的 b","square":"固定 true"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","defaultParams":{"square":true},"answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-03-NA-17","source":""},"params":{}},{"qid":"q004","typeKey":"s3t3_zero_exp","typeDef":{"key":"s3t3_zero_exp","name":"零指數定律","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"zeroCase":"固定 true","base":"非零整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"exp_law","defaultParams":{"zeroCase":true},"code":"LSC-2526-S3-T3-04-NA-5","source":""},"params":{}},{"qid":"q005","typeKey":"factor_diff_sq","typeDef":{"key":"factor_diff_sq","name":"平方差因式分解","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"ax 的 a","b":"常數 b，題目為 (ax)^2-b^2"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_diff_sq","code":"LSC-2526-S3-T3-05-NA-18","source":""},"params":{}},{"qid":"q006","typeKey":"factor_cross","typeDef":{"key":"factor_cross","name":"十字相乘法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"第一個因式 x 係數","b":"第一個因式常數","c":"第二個因式 x 係數","d":"第二個因式常數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_cross","code":"LSC-2526-S3-T3-06-NA-19","source":""},"params":{}},{"qid":"q007","typeKey":"sci_notation","typeDef":{"key":"sci_notation","name":"科學記數法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"scientificNotation","params_schema":{"mantissa":"1 ≤ a < 10","exponent":"10 的指數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"scientificNotation","generator":"sci_notation","code":"LSC-2526-S3-T3-07-NA-20","source":""},"params":{}},{"qid":"q008","typeKey":"solve_ineq","typeDef":{"key":"solve_ineq","name":"一元一次不等式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"inequality","params_schema":{"a":"x 係數，可為負數","b":"常數項","boundary":"答案邊界值","op":"原不等式方向"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"inequality","generator":"solve_ineq","code":"LSC-2526-S3-T3-08-NA-21","source":""},"params":{}},{"qid":"q009","typeKey":"triangle_center","typeDef":{"key":"triangle_center","name":"三角形四心","category":"幾何","difficulty":2,"grade":"s3","term":"3","topicKey":"geometry","topicName":"幾何","type":"choice","checkType":"choiceKey","params_schema":{"center":"circumcenter / incenter / centroid / orthocenter","shapeKey":"acute-wide / acute-left / acute-right / acute-tall / acute-low-left / acute-low-right"},"options":[{"key":"circumcenter","label":"外心"},{"key":"incenter","label":"內心"},{"key":"centroid","label":"形心"},{"key":"orthocenter","label":"垂心"}],"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"triangle_center","figure":{"kind":"triangle-center-svg"},"code":"LSC-2526-S3-T3-09-GE-5","source":""},"params":{}},{"qid":"q010","typeKey":"solid_sphere","typeDef":{"key":"solid_sphere","name":"球體量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 sphere","r":"半徑"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"sphere"},"code":"LSC-2526-S3-T3-10-ME-5","source":""},"params":{}},{"qid":"q011","typeKey":"solid_cylinder","typeDef":{"key":"solid_cylinder","name":"圓柱量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cylinder","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cylinder"},"code":"LSC-2526-S3-T3-11-ME-5","source":""},"params":{}},{"qid":"q012","typeKey":"solid_cone","typeDef":{"key":"solid_cone","name":"圓錐量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cone","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cone"},"code":"LSC-2526-S3-T3-12-ME-5","source":""},"params":{}},{"qid":"q013","typeKey":"sector_measure","typeDef":{"key":"sector_measure","name":"扇形量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"r":"半徑","angle":"圓心角","ask":"arc 或 area"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"sector_measure","code":"LSC-2526-S3-T3-13-ME-6","source":""},"params":{}},{"qid":"q014","typeKey":"pyth_cone","typeDef":{"key":"pyth_cone","name":"畢氏定理配合圓錐高與斜高","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"mode":"findL 或 findH","r":"半徑","h":"垂直高","l":"斜高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"pyth_cone","code":"LSC-2526-S3-T3-14-ME-7","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-12T23:28:49.533Z";
+const GENERATED_AT = "2026-07-14T03:11:47.474Z";
 const BANK_HASH = "b63_14_23868787";
 const PRESET_KEY = "s3_term3_part_a";
 const GRADE = "s3";
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzxgJ2SvMO0FeHqdjwiYc2AlCyRiIXVEVmP3-Xs0y_IDO9inGTXC4w0strgWH7WgH_A/exec";
+const TEACHER_PIN_HASH = "";
 const STUDENT_ID_PATTERN = /^\d{8}[FM]$/;
 const STUDENT_ID_RULE_TEXT = "8 位數字 + 大寫 F 或 M，例如 20255001F";
 const SHOW_QUESTION_CODE = true;
@@ -1852,6 +1859,61 @@ function showToast(msg) {
   setTimeout(() => t.classList.remove("show"), 2500);
 }
 
+function dateTimeParts() {
+  const d = new Date();
+  return {
+    date: (d.getMonth() + 1) + "/" + d.getDate(),
+    time: String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0")
+  };
+}
+
+function hasTeacherPinHash() {
+  return !!String(TEACHER_PIN_HASH || "").trim();
+}
+
+function canShowPartialSubmit() {
+  return !!(GAS_URL && hasTeacherPinHash() && qList.length > 0 && sessionLog.length < qList.length);
+}
+
+function updatePartialSubmitButton() {
+  const row = document.getElementById("partial-submit-row");
+  const btn = document.getElementById("btn-partial-submit");
+  if (!row || !btn) return;
+  const visible = canShowPartialSubmit();
+  row.style.display = visible ? "block" : "none";
+  btn.disabled = !visible;
+}
+
+function sha256Hex(text) {
+  if (!window.crypto || !crypto.subtle || !crypto.subtle.digest) {
+    return Promise.reject(new Error("此瀏覽器不支援安全 hash，未能提前遞交。"));
+  }
+  const bytes = new TextEncoder().encode(String(text || ""));
+  return crypto.subtle.digest("SHA-256", bytes).then(buffer => {
+    return Array.from(new Uint8Array(buffer))
+      .map(b => b.toString(16).padStart(2, "0"))
+      .join("");
+  });
+}
+
+function promptStudentId() {
+  const sid = (prompt("請輸入你的學生證編號（" + STUDENT_ID_RULE_TEXT + "）") || "").trim().toUpperCase();
+  if (!STUDENT_ID_PATTERN.test(sid)) {
+    showToast("⚠️ 學生證編號格式錯誤：" + STUDENT_ID_RULE_TEXT);
+    return null;
+  }
+  return sid;
+}
+
+function promptTeacherPin() {
+  const pin = (prompt("請輸入 4 位老師 PIN 以提前遞交") || "").trim();
+  if (!/^\d{4}$/.test(pin)) {
+    showToast("⚠️ 老師 PIN 必須為 4 位數字");
+    return null;
+  }
+  return pin;
+}
+
 /* === 開始遊戲 === */
 function initGame(mode) {
   if (mode === "all") {
@@ -1878,6 +1940,7 @@ function initGame(mode) {
   backup = null;
   document.getElementById("quiz-view").style.display = "flex";
   document.getElementById("result-view").style.display = "none";
+  updatePartialSubmitButton();
   showQ();
 }
 
@@ -1895,6 +1958,7 @@ function showQ() {
   questionText.innerHTML = q.questionHTML;
   updateQuestionCodeDisplay(q);
   updateSimilarPdfButton(q);
+  updatePartialSubmitButton();
   document.getElementById("q-feedback").style.display = "none";
   document.getElementById("q-feedback").textContent = "";
   document.getElementById("btn-check").style.display = "block";
@@ -2279,6 +2343,7 @@ function checkAns() {
   sessionAnswers.push(userAns);
   const correctCount = sessionLog.filter(s => s.correct).length;
   document.getElementById("score-mini").textContent = "得分: " + correctCount;
+  updatePartialSubmitButton();
 }
 
 function toggleTeach() {
@@ -2293,6 +2358,40 @@ function nextQ() {
   showQ();
 }
 
+function buildAttemptFromCurrentSession(options = {}) {
+  const total = qList.length;
+  const score = sessionLog.filter(s => s.correct).length;
+  const answeredCount = sessionLog.length;
+  const completedAll = options.completedAll === true;
+  const remainingWrongCount = completedAll ? (total - score) : (total - score);
+  const attemptNumber = allAttempts.length + 1;
+  const dt = dateTimeParts();
+  return {
+    n: attemptNumber,
+    attemptNumber: attemptNumber,
+    attemptType: currentAttemptType,
+    score: score,
+    total: total,
+    remainingWrongCount: remainingWrongCount,
+    completedAll: completedAll,
+    date: dt.date,
+    time: dt.time,
+    answeredCount: answeredCount,
+    partial: options.partial === true,
+    details: qList.map((q, i) => ({
+      qid: q.qid,
+      questionHTML: q.questionHTML,
+      displayAnswer: q.displayAnswer,
+      myAnswer: sessionAnswers[i] || "",
+      correct: sessionLog[i] ? sessionLog[i].correct : false,
+      answered: !!sessionLog[i],
+      steps: q.solutionHTML || q.steps || "",
+      typeKey: q.typeKey,
+      type: q.type
+    }))
+  };
+}
+
 /* === 完成一輪 === */
 function finishGame() {
   // 單題重做：還原狀態，唔記錄新嘗試
@@ -2305,31 +2404,8 @@ function finishGame() {
   const score = sessionLog.filter(s => s.correct).length;
   const remainingWrongCount = total - score;
   const completedAll = (remainingWrongCount === 0);
-  const attemptNumber = allAttempts.length + 1;
-  const d = new Date();
-  const dateStr = (d.getMonth() + 1) + "/" + d.getDate();
-  const timeStr = String(d.getHours()).padStart(2, "0") + ":" + String(d.getMinutes()).padStart(2, "0");
-  const attempt = {
-    n: attemptNumber,
-    attemptNumber: attemptNumber,
-    attemptType: currentAttemptType,
-    score: score,
-    total: total,
-    remainingWrongCount: remainingWrongCount,
-    completedAll: completedAll,
-    date: dateStr,
-    time: timeStr,
-    details: qList.map((q, i) => ({
-      qid: q.qid,
-      questionHTML: q.questionHTML,
-      displayAnswer: q.displayAnswer,
-      myAnswer: sessionAnswers[i] || "",
-      correct: sessionLog[i] ? sessionLog[i].correct : false,
-      steps: q.solutionHTML || q.steps || "",
-      typeKey: q.typeKey,
-      type: q.type
-    }))
-  };
+  const attempt = buildAttemptFromCurrentSession({ completedAll: completedAll, partial: false });
+  attempt.remainingWrongCount = remainingWrongCount;
   allAttempts.push(attempt);
   saveAttempts();
   lastResult = attempt;
@@ -2369,6 +2445,7 @@ function showResult() {
   }
   updateSubmitGate();
   renderHistory();
+  updatePartialSubmitButton();
 }
 
 function canSubmitToTeacher() {
@@ -2571,13 +2648,38 @@ function handleExport() {
   if (allAttempts.length === 0) { showToast("⚠️ 暫無記錄可匯出"); return; }
   if (!GAS_URL) { showToast("⚠️ 未配置提交目的地"); updateSubmitGate(); return; }
   if (!canSubmitToTeacher()) { showToast("⚠️ 完成所有錯題重做後方可提交"); updateSubmitGate(); return; }
-  // 用戶輸入學生編號
-  const sid = (prompt("請輸入你的學生證編號（" + STUDENT_ID_RULE_TEXT + "）") || "").trim().toUpperCase();
-  if (!STUDENT_ID_PATTERN.test(sid)) {
-    showToast("⚠️ 學生證編號格式錯誤：" + STUDENT_ID_RULE_TEXT);
+  const sid = promptStudentId();
+  if (!sid) return;
+  submitToSheets(sid);
+}
+
+function handlePartialSubmit() {
+  if (!GAS_URL || !hasTeacherPinHash() || sessionLog.length >= qList.length) {
+    updatePartialSubmitButton();
     return;
   }
-  submitToSheets(sid);
+  if (sessionLog.length === 0) {
+    showToast("⚠️ 尚未作答任何題目，暫不能提前遞交");
+    return;
+  }
+  const pin = promptTeacherPin();
+  if (pin === null) return;
+  sha256Hex(pin)
+    .then(hash => {
+      if (hash !== String(TEACHER_PIN_HASH || "").trim().toLowerCase()) {
+        showToast("⚠️ 老師 PIN 不正確，未有遞交");
+        return;
+      }
+      const sid = promptStudentId();
+      if (!sid) return;
+      const attempt = buildAttemptFromCurrentSession({ completedAll: false, partial: true });
+      allAttempts.push(attempt);
+      saveAttempts();
+      lastResult = attempt;
+      submitToSheets(sid);
+      updatePartialSubmitButton();
+    })
+    .catch(err => showToast("⚠️ " + (err.message || err)));
 }
 
 function submitToSheets(studentId) {

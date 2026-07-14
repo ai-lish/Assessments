@@ -144,7 +144,8 @@ function buildHtml(preset, specs = questionSpecs) {
     .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validators.toStandaloneScript())
     .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generators.toStandaloneScript())
     .replace(/\{\{PDF_SCRIPT\}\}/g, pdfScript)
-    .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
+    .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null))
+    .replace(/\{\{TEACHER_PIN_HASH\}\}/g, JSON.stringify(""));
 }
 
 function buildSandbox(seed, preset = s1Term3Preset, specs = questionSpecs) {

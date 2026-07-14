@@ -77,7 +77,8 @@ let html = tmpl
   .replace(/\{\{VALIDATORS_SCRIPT\}\}/g, validators.toStandaloneScript())
   .replace(/\{\{GENERATORS_SCRIPT\}\}/g, generators.toStandaloneScript())
   .replace(/\{\{PDF_SCRIPT\}\}/g, pdfScript)
-  .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
+  .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null))
+  .replace(/\{\{TEACHER_PIN_HASH\}\}/g, JSON.stringify(""));
 
 const leftovers = html.match(/\{\{[A-Z_]+\}\}/g) || [];
 if (leftovers.length) throw new Error(`leftover placeholders: ${leftovers.join(", ")}`);
