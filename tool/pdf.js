@@ -11,6 +11,13 @@
 
 function createAssessPDF() {
   const SHOW_QUESTION_CODE = true;
+  const SOLVE_EQ_TYPE_KEYS = new Set([
+    "solve_eq",
+    "s1t2_solve_eq_fraction",
+    "s1t2_solve_eq_negative",
+    "solve_eq_fraction",
+    "solve_eq_bracket",
+  ]);
 
   function escapeHtml(value) {
     return String(value == null ? "" : value)
@@ -222,12 +229,23 @@ function createAssessPDF() {
     return html;
   }
 
-  function answerHtml(answer) {
-    const raw = String(answer == null ? "" : answer);
-    if (raw === "") return "";
-    const hasMath = /\\|π|√|±|≥|≤|×|%|≈|²|³|[<>]|\^/.test(raw) && !/\$/.test(raw);
-    if (!hasMath) return escapeHtml(raw);
-    const tex = raw
+  function escapeUnescapedPercent(value) {
+    const input = String(value || "");
+    let output = "";
+    for (let i = 0; i < input.length; i += 1) {
+      if (input[i] !== "%") {
+        output += input[i];
+        continue;
+      }
+      let slashCount = 0;
+      for (let j = i - 1; j >= 0 && input[j] === "\\"; j -= 1) slashCount += 1;
+      output += slashCount % 2 === 1 ? "%" : "\\%";
+    }
+    return output;
+  }
+
+  function normalizeAnswerTex(value) {
+    return escapeUnescapedPercent(String(value || "")
       .replace(/π/g, "\\pi")
       .replace(/√(\d+)/g, "\\sqrt{$1}")
       .replace(/±/g, "\\pm ")
@@ -236,9 +254,43 @@ function createAssessPDF() {
       .replace(/×/g, "\\times ")
       .replace(/≈/g, "\\approx ")
       .replace(/²/g, "^2")
-      .replace(/³/g, "^3")
-      .replace(/%/g, "\\%");
-    return "\\(" + tex + "\\)";
+      .replace(/³/g, "^3"));
+  }
+
+  function renderExistingMathSegments(raw) {
+    const segmentPattern = /\\\(([\s\S]*?)\\\)|\\\[([\s\S]*?)\\\]/g;
+    let output = "";
+    let cursor = 0;
+    let found = false;
+    let match;
+    while ((match = segmentPattern.exec(raw)) !== null) {
+      found = true;
+      output += escapeHtml(raw.slice(cursor, match.index));
+      const display = match[2] !== undefined;
+      output += display
+        ? "\\[" + normalizeAnswerTex(match[2]) + "\\]"
+        : "\\(" + normalizeAnswerTex(match[1]) + "\\)";
+      cursor = match.index + match[0].length;
+    }
+    if (!found) return null;
+    return output + escapeHtml(raw.slice(cursor));
+  }
+
+  function answerHtml(answer) {
+    const raw = String(answer == null ? "" : answer);
+    if (raw === "") return "";
+    const segmented = renderExistingMathSegments(raw);
+    if (segmented !== null) return segmented;
+    const hasMath = /\\|π|√|±|≥|≤|×|%|≈|²|³|[<>]|\^/.test(raw) && !/\$/.test(raw);
+    if (!hasMath) return escapeHtml(raw);
+    return "\\(" + normalizeAnswerTex(raw) + "\\)";
+  }
+
+  function teacherAnswerText(q) {
+    const raw = String(q.displayAnswer || q.correctAnswer || "");
+    if (!SOLVE_EQ_TYPE_KEYS.has(q.typeKey)) return raw;
+    const withoutOpeningDelimiter = raw.trim().replace(/^(?:\\\(|\\\[|\$\$?|\s)+/, "");
+    return /^x\s*=/.test(withoutOpeningDelimiter) ? raw : "x = " + raw;
   }
 
   function renderPDF(snapshot, mode, options) {
@@ -250,7 +302,7 @@ function createAssessPDF() {
     const showSolutions = mode === "teacher" && options && options.showSolutions === true;
     const rows = snapshot.questions.map((q, idx) => {
       const answer = mode === "teacher"
-        ? '<div class="pdf-answer pdf-teacher-answer">' + answerHtml(q.displayAnswer || q.correctAnswer) + '</div>'
+        ? '<div class="pdf-answer pdf-teacher-answer">' + answerHtml(teacherAnswerText(q)) + '</div>'
         : '<div class="pdf-answer-line"></div>';
       const code = showCode && q.code ? '<div class="pdf-code">' + escapeHtml(q.code) + '</div>' : "";
       const solution = showSolutions && q.solutionHTML
@@ -373,6 +425,6 @@ function createAssessPDF() {
     renderPDF,
     renderPrintDocument,
     printSnapshot,
-    _private: { hashString, printScript, printCss, answerHtml, paramsSignature },
+    _private: { hashString, printScript, printCss, answerHtml, teacherAnswerText, paramsSignature },
   };
 }
