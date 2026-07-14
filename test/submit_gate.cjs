@@ -427,6 +427,27 @@ run(`
 check('normal completed submit still does not ask for teacher PIN', sandbox.__fetchCalls.length === 1);
 check('normal completed submit keeps completedAll true', JSON.parse(sandbox.__fetchCalls[0].options.body).rows[0].completedAll === true);
 
+console.log('\n=== Retry All Confirmation ===');
+sandbox = buildSandbox([]);
+run(`
+  allAttempts = [{ attemptNumber: 1, score: 3, total: 4 }];
+  window.__retryMode = null;
+  window.__confirmMessages = [];
+  initGame = mode => { window.__retryMode = mode; };
+  window.confirm = message => { window.__confirmMessages.push(message); return false; };
+  confirmRetryAll();
+`, sandbox);
+check('cancelled all-retry does not restart practice', sandbox.window.__retryMode === null);
+check('all-retry confirmation uses the approved warning text',
+  sandbox.window.__confirmMessages[0] === "確定重做全部題目?『重做錯題』會按最新一輪結果更新");
+check('cancelled all-retry keeps session history', run('allAttempts.length', sandbox) === 1);
+run(`
+  window.confirm = message => { window.__confirmMessages.push(message); return true; };
+  confirmRetryAll();
+`, sandbox);
+check('confirmed all-retry restarts the full practice', sandbox.window.__retryMode === 'all');
+check('confirmation wrapper does not clear session history', run('allAttempts.length', sandbox) === 1);
+
 console.log(`\n=== Summary: ${passed} passed, ${failures.length} failed ===`);
 if (failures.length) {
   failures.forEach((failure) => console.error('  - ' + failure));

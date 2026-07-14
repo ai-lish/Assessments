@@ -68,8 +68,12 @@
   .copy-code-btn { flex: 0 0 auto; border: 1px solid #d5dbdb; background: #fff; color: var(--primary); border-radius: 999px; padding: 2px 7px; font-size: 0.78em; font-weight: 700; cursor: pointer; }
   .copy-code-btn:active { transform: translateY(1px); }
   #quiz-view { display: none; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
-  .quiz-content { padding: 10px 15px; flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+  .question-scroll { padding: 10px 15px; flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
+  .bottom-dock { --keypad-raise-offset: 0px; flex: 0 0 auto; min-height: 0; display: flex; flex-direction: column; background: #fff; margin-bottom: 0; transition: margin-bottom 0.2s ease; }
+  .bottom-dock.keypad-raised { margin-bottom: var(--keypad-raise-offset); }
+  .answer-dock { flex: 0 0 auto; min-height: 0; padding: 8px 15px 0; background: #fff; border-top: 1px solid #eef1f3; }
+  .control-dock { flex: 0 0 auto; min-height: 0; display: flex; flex-direction: column; justify-content: flex-end; }
   .pdf-action-area { background: #f8f9fa; border-top: 1px solid #e6e9ec; padding: 5px 8px; flex-shrink: 0; }
   .pdf-action-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-items: center; gap: 5px; width: 100%; }
   .pdf-secondary-btn { min-width: 0; width: 100%; border: 1px solid #bdc3c7; background: #fff; color: var(--primary); border-radius: 999px; padding: 5px 6px; font-size: 0.74em; font-weight: 700; cursor: pointer; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -83,23 +87,26 @@
   .hint-text { color: var(--text-muted); font-size: 0.9em; margin-bottom: 10px; font-weight: 600; }
   .opt-btn-large { background: #fff; border: 2px solid var(--accent); color: var(--accent); padding: 10px 16px; border-radius: 10px; font-weight: bold; font-size: 1.0em; cursor: pointer; transition: all 0.2s; outline: none; min-width: 90px; }
   .opt-btn-large:active, .opt-btn-large.selected { background: var(--accent); color: #fff; }
-  .options-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 15px; width: 100%; }
-  .input-container { display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 15px; flex-wrap: wrap; gap: 8px; }
+  .options-row { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 8px; width: 100%; }
+  .input-container { display: flex; align-items: center; justify-content: center; width: 100%; margin-bottom: 8px; flex-wrap: wrap; gap: 8px; }
+  .answer-control-locked { pointer-events: none; opacity: 0.82; }
   .prefix-label, .suffix-label { font-weight: bold; font-size: 1.4em; color: var(--text-main); }
   .prefix-label { margin-right: 4px; }
   .suffix-label { margin-left: 4px; }
   .virtual-input { flex-grow: 1; min-height: 50px; background: #fff; border: 2px solid var(--accent); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 1.4em; font-family: monospace; color: var(--text-main); padding: 0 10px; word-break: break-all; }
-  .feedback-area { width: 95%; height: 100px; flex: 0 0 100px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 6px; margin-bottom: 10px; overflow: hidden; }
+  .answer-detail-slot { width: 100%; height: 148px; display: grid; grid-template-rows: minmax(0, 1fr) 40px; overflow: hidden; }
+  .feedback-area { grid-area: 1 / 1; width: 100%; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; overflow: hidden; }
   .feedback { width: 100%; min-height: 42px; max-height: 58px; overflow-y: auto; padding: 10px; border-radius: 6px; font-weight: bold; text-align: center; display: none; font-size: 1.05em; }
   .correct { background-color: #d4edda; color: #155724; }
   .incorrect { background-color: #f8d7da; color: #721c24; }
-  .btn-teach { display: none; background-color: #f39c12; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.95em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin-top: 5px; }
-  .solution-box { width: 100%; background: #fffcf5; border: 1px solid #fce8b2; border-radius: 8px; padding: 12px; margin-top: 10px; display: none; text-align: left; color: #444; font-size: 0.95em; line-height: 1.6; overflow-x: auto; }
+  .teach-action-slot { grid-area: 2 / 1; min-height: 40px; display: flex; align-items: center; justify-content: center; }
+  .btn-teach { display: none; background-color: #f39c12; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-size: 0.95em; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2); margin: 0; }
+  .solution-box { grid-area: 1 / 1; width: 100%; min-height: 0; max-height: 100%; background: #fffcf5; border: 1px solid #fce8b2; border-radius: 8px; padding: 12px; margin: 0; display: none; text-align: left; color: #444; font-size: 0.95em; line-height: 1.6; overflow: auto; }
   .solution-box h4 { margin: 0 0 8px 0; color: #d35400; border-bottom: 1px dashed #fce8b2; padding-bottom: 5px; font-size: 0.95em; }
-  .action-area { background: #fff; padding: 8px; border-top: 1px solid #ddd; flex-shrink: 0; }
-  .keypad-area { background: #f1f3f5; padding: 5px 8px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid #ddd; flex-shrink: 0; position: relative; transition: margin-bottom 0.2s ease; }
-  .keypad-area.keypad-raised { margin-bottom: min(22dvh, 180px); }
+  .action-area { background: #fff; min-height: 63px; padding: 8px 8px calc(8px + env(safe-area-inset-bottom)); border-top: 1px solid #ddd; flex-shrink: 0; }
+  .keypad-area { height: 122px; background: #f1f3f5; padding: 5px 8px 8px; border-top: 1px solid #ddd; flex: 0 0 122px; position: relative; }
   .key-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
+  .keypad-area.keypad-unavailable .key-grid,
   .keypad-area.keypad-input-hidden .key-grid { visibility: hidden; pointer-events: none; }
   .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
   .key-spacer { height: 34px; visibility: hidden; pointer-events: none; }
@@ -141,11 +148,24 @@
     .copy-code-btn { padding: 2px 6px; font-size: 0.76em; }
     .top-code-wrap { gap: 3px; }
   }
+  @media (orientation: landscape) and (min-width: 600px) {
+    body { padding: 6px max(6px, env(safe-area-inset-right)) 6px max(6px, env(safe-area-inset-left)); }
+    .container { max-width: 980px; }
+    #quiz-view { display: none; grid-template-columns: minmax(0, 1fr) minmax(360px, 0.95fr); grid-template-rows: minmax(0, 1fr) auto; column-gap: 8px; }
+    #quiz-view[style*="display: flex"] { display: grid !important; }
+    .question-scroll { grid-column: 1; grid-row: 1; padding: 8px 12px; }
+    .bottom-dock { display: contents; }
+    .answer-dock { grid-column: 1; grid-row: 2; max-height: min(56dvh, 260px); padding: 6px 12px 0; transition: transform 0.2s ease; }
+    .control-dock { grid-column: 2; grid-row: 1 / span 2; min-height: 0; border-left: 1px solid #e3e7ea; transition: transform 0.2s ease; }
+    .bottom-dock.keypad-raised > .answer-dock,
+    .bottom-dock.keypad-raised > .control-dock { transform: translateY(calc(-1 * var(--keypad-raise-offset))); }
+    .answer-detail-slot { height: 130px; }
+  }
   @media print {
     body { background: #fff; padding: 0; height: auto; overflow: visible; display: block; }
     .container { box-shadow: none; max-width: 100%; height: auto; }
     .top-info, .toolbar, .action-area, .pdf-action-area, .keypad-area, .feedback-area, .btn-teach, .solution-box, .btn-row, .toast { display: none !important; }
-    .quiz-content { overflow: visible; padding: 0; }
+    .question-scroll { overflow: visible; padding: 0; }
     #quiz-view, #result-view { display: block !important; height: auto; overflow: visible; }
     .question-text { page-break-inside: avoid; }
   }
@@ -177,44 +197,54 @@
   </div>
 
   <div id="quiz-view">
-    <div class="quiz-content">
+    <div class="question-scroll" id="question-scroll">
       <div class="question-card">
         <div id="q-text" class="question-text">題目載入中...</div>
       </div>
       <div id="q-image" class="geo-image" style="display:none;"></div>
       <div id="q-hint" class="hint-text" style="display:none;"></div>
-      <div id="q-options" class="options-row" style="display:none;"></div>
       <div id="q-coord-hint" class="hint-text" style="display:none;">請於下方坐標平面點擊 A 點位置</div>
-      <div class="input-container" id="input-row">
-        <span id="prefix" class="prefix-label" style="display:none;"></span>
-        <div class="virtual-input" id="input-wrap"><span id="input-val"></span></div>
-        <span id="suffix" class="suffix-label" style="display:none;"></span>
-      </div>
-      <div class="feedback-area">
-        <div id="q-feedback" class="feedback"></div>
-        <button id="btn-teach" class="btn-teach" onclick="toggleTeach()">💡 查看教學步驟</button>
-      </div>
-      <div id="solution-box" class="solution-box"></div>
     </div>
-    <div class="action-area" id="action-area">
-      <div class="btn-row answer-action-slot">
-        <button class="main-btn btn-check" id="btn-check" onclick="checkAns()">核對答案</button>
-        <button class="main-btn btn-next" id="btn-next" onclick="nextQ()">下一題</button>
+    <div class="bottom-dock" id="bottom-dock">
+      <div class="answer-dock" id="answer-dock">
+        <div id="q-options" class="options-row" style="display:none;"></div>
+        <div class="input-container" id="input-row">
+          <span id="prefix" class="prefix-label" style="display:none;"></span>
+          <div class="virtual-input" id="input-wrap"><span id="input-val"></span></div>
+          <span id="suffix" class="suffix-label" style="display:none;"></span>
+        </div>
+        <div class="answer-detail-slot" id="answer-detail-slot">
+          <div class="feedback-area">
+            <div id="q-feedback" class="feedback"></div>
+          </div>
+          <div id="solution-box" class="solution-box"></div>
+          <div class="teach-action-slot">
+            <button id="btn-teach" class="btn-teach" onclick="toggleTeach()">💡 查看教學步驟</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="pdf-action-area" id="pdf-action-area">
-      <div class="pdf-action-row">
-        <button type="button" id="btn-similar-pdf" class="pdf-secondary-btn" aria-label="開啟當前題型的同類練習 PDF 預覽" title="開啟當前題型的同類練習 PDF 預覽" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">同類 PDF</button>
-        <button type="button" id="btn-whole-pdf" class="pdf-secondary-btn" aria-label="開啟整卷題目及答案雙版 PDF 預覽" title="開啟整卷題目及答案雙版 PDF 預覽" onclick="printPDF()">整卷 PDF</button>
-        <button type="button" id="btn-shift-keypad" class="pdf-secondary-btn" aria-label="將虛擬鍵盤上調" title="將虛擬鍵盤上調" aria-pressed="false" onclick="toggleKeypadPosition()">鍵盤 ↑</button>
+      <div class="control-dock" id="control-dock">
+        <div class="pdf-action-area" id="pdf-action-area">
+          <div class="pdf-action-row">
+            <button type="button" id="btn-similar-pdf" class="pdf-secondary-btn" aria-label="開啟當前題型的同類練習 PDF 預覽" title="開啟當前題型的同類練習 PDF 預覽" aria-describedby="similar-pdf-hint" onclick="printSimilarPDF()">同類 PDF</button>
+            <button type="button" id="btn-whole-pdf" class="pdf-secondary-btn" aria-label="開啟整卷題目及答案雙版 PDF 預覽" title="開啟整卷題目及答案雙版 PDF 預覽" onclick="printPDF()">整卷 PDF</button>
+            <button type="button" id="btn-shift-keypad" class="pdf-secondary-btn" aria-label="將虛擬鍵盤上調" title="將虛擬鍵盤上調" aria-pressed="false" onclick="toggleKeypadPosition()">鍵盤 ↑</button>
+          </div>
+          <div class="partial-submit-row" id="partial-submit-row">
+            <button type="button" id="btn-partial-submit" class="pdf-secondary-btn partial-submit-btn" onclick="handlePartialSubmit()">提前遞交</button>
+          </div>
+          <span id="similar-pdf-hint" class="similar-pdf-hint" role="status"></span>
+        </div>
+        <div class="keypad-area" id="keypad-area">
+          <div class="key-grid" id="keypad" aria-label="題型專用按鍵"></div>
+        </div>
+        <div class="action-area" id="action-area">
+          <div class="btn-row answer-action-slot">
+            <button class="main-btn btn-check" id="btn-check" onclick="checkAns()">核對答案</button>
+            <button class="main-btn btn-next" id="btn-next" onclick="nextQ()">下一題</button>
+          </div>
+        </div>
       </div>
-      <div class="partial-submit-row" id="partial-submit-row">
-        <button type="button" id="btn-partial-submit" class="pdf-secondary-btn partial-submit-btn" onclick="handlePartialSubmit()">提前遞交</button>
-      </div>
-      <span id="similar-pdf-hint" class="similar-pdf-hint" role="status"></span>
-    </div>
-    <div class="keypad-area" id="keypad-area">
-      <div class="key-grid" id="keypad" aria-label="題型專用按鍵"></div>
     </div>
   </div>
 
@@ -223,7 +253,7 @@
     <h1 id="final-score" style="font-size:3em; margin:8px 0; color: var(--success);"></h1>
     <div id="result-buttons" style="width:100%; margin-bottom:15px;">
       <div class="btn-row">
-        <button class="main-btn" id="btn-retry-all" style="background:#95a5a6;" onclick="initGame('all')">全部重做</button>
+        <button class="main-btn" id="btn-retry-all" style="background:#95a5a6;" onclick="confirmRetryAll()">全部重做</button>
         <button class="main-btn" id="btn-retry-wrong" style="background: var(--danger);" onclick="initGame('wrong')">重做錯題</button>
       </div>
       <button class="main-btn" id="btn-result-pdf" style="background:#7f8c8d;" onclick="printPDF()">🖨️ 整卷 PDF 雙版</button>
@@ -1541,7 +1571,7 @@ const TITLE = "2025-26 年度 中三第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"poly_add_sub","typeDef":{"key":"poly_add_sub","name":"多項式加減及去括號","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"第一個多項式 x^2 係數","b":"第一個多項式 x 係數","c":"第一個多項式常數項","d":"第二個多項式 x^2 係數","e":"第二個多項式 x 係數","f":"第二個多項式常數項","op":"+ 或 -"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"poly_add_sub","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-01-NA-16","source":""},"params":{}},{"qid":"q002","typeKey":"binomial_expand","typeDef":{"key":"binomial_expand","name":"兩個二項式展開","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)(cx+d) 的 a","b":"(ax+b)(cx+d) 的 b","c":"(ax+b)(cx+d) 的 c","d":"(ax+b)(cx+d) 的 d","square":"false"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-02-NA-17","source":""},"params":{}},{"qid":"q003","typeKey":"s3t3_square_expand","typeDef":{"key":"s3t3_square_expand","name":"完全平方公式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)^2 的 a","b":"(ax+b)^2 的 b","square":"固定 true"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","defaultParams":{"square":true},"answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-03-NA-17","source":""},"params":{}},{"qid":"q004","typeKey":"s3t3_zero_exp","typeDef":{"key":"s3t3_zero_exp","name":"零指數定律","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"zeroCase":"固定 true","base":"非零整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"exp_law","defaultParams":{"zeroCase":true},"code":"LSC-2526-S3-T3-04-NA-5","source":""},"params":{}},{"qid":"q005","typeKey":"factor_diff_sq","typeDef":{"key":"factor_diff_sq","name":"平方差因式分解","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"ax 的 a","b":"常數 b，題目為 (ax)^2-b^2"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_diff_sq","code":"LSC-2526-S3-T3-05-NA-18","source":""},"params":{}},{"qid":"q006","typeKey":"factor_cross","typeDef":{"key":"factor_cross","name":"十字相乘法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"第一個因式 x 係數","b":"第一個因式常數","c":"第二個因式 x 係數","d":"第二個因式常數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_cross","code":"LSC-2526-S3-T3-06-NA-19","source":""},"params":{}},{"qid":"q007","typeKey":"sci_notation","typeDef":{"key":"sci_notation","name":"科學記數法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"scientificNotation","params_schema":{"mantissa":"1 ≤ a < 10","exponent":"10 的指數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"scientificNotation","generator":"sci_notation","code":"LSC-2526-S3-T3-07-NA-20","source":""},"params":{}},{"qid":"q008","typeKey":"solve_ineq","typeDef":{"key":"solve_ineq","name":"一元一次不等式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"inequality","params_schema":{"a":"x 係數，可為負數","b":"常數項","boundary":"答案邊界值","op":"原不等式方向"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"inequality","generator":"solve_ineq","code":"LSC-2526-S3-T3-08-NA-21","source":""},"params":{}},{"qid":"q009","typeKey":"triangle_center","typeDef":{"key":"triangle_center","name":"三角形四心","category":"幾何","difficulty":2,"grade":"s3","term":"3","topicKey":"geometry","topicName":"幾何","type":"choice","checkType":"choiceKey","params_schema":{"center":"circumcenter / incenter / centroid / orthocenter","shapeKey":"acute-wide / acute-left / acute-right / acute-tall / acute-low-left / acute-low-right"},"options":[{"key":"circumcenter","label":"外心"},{"key":"incenter","label":"內心"},{"key":"centroid","label":"形心"},{"key":"orthocenter","label":"垂心"}],"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"triangle_center","figure":{"kind":"triangle-center-svg"},"code":"LSC-2526-S3-T3-09-GE-5","source":""},"params":{}},{"qid":"q010","typeKey":"solid_sphere","typeDef":{"key":"solid_sphere","name":"球體量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 sphere","r":"半徑"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"sphere"},"code":"LSC-2526-S3-T3-10-ME-5","source":""},"params":{}},{"qid":"q011","typeKey":"solid_cylinder","typeDef":{"key":"solid_cylinder","name":"圓柱量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cylinder","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cylinder"},"code":"LSC-2526-S3-T3-11-ME-5","source":""},"params":{}},{"qid":"q012","typeKey":"solid_cone","typeDef":{"key":"solid_cone","name":"圓錐量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cone","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cone"},"code":"LSC-2526-S3-T3-12-ME-5","source":""},"params":{}},{"qid":"q013","typeKey":"sector_measure","typeDef":{"key":"sector_measure","name":"扇形量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"r":"半徑","angle":"圓心角","ask":"arc 或 area"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"sector_measure","code":"LSC-2526-S3-T3-13-ME-6","source":""},"params":{}},{"qid":"q014","typeKey":"pyth_cone","typeDef":{"key":"pyth_cone","name":"畢氏定理配合圓錐高與斜高","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"mode":"findL 或 findH","r":"半徑","h":"垂直高","l":"斜高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"pyth_cone","code":"LSC-2526-S3-T3-14-ME-7","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-14T15:20:34.579Z";
+const GENERATED_AT = "2026-07-14T17:21:34.283Z";
 const BANK_HASH = "b63_14_23868787";
 const PRESET_KEY = "s3_term3_part_a";
 const GRADE = "s3";
@@ -1744,7 +1774,11 @@ async function copyCurrentQuestionCode() {
 if (window.addEventListener) {
   window.addEventListener("resize", () => {
     if (qList[currIdx]) updateQuestionCodeDisplay(qList[currIdx]);
+    updateKeypadRaiseOffset();
   });
+}
+if (window.visualViewport && window.visualViewport.addEventListener) {
+  window.visualViewport.addEventListener("resize", updateKeypadRaiseOffset);
 }
 
 /* === 工具：sessionStorage 載入 / 儲存 === */
@@ -1837,8 +1871,13 @@ function setKeypadVisible(visible) {
   const area = document.getElementById("keypad-area");
   const button = document.getElementById("btn-shift-keypad");
   if (area) {
-    area.style.display = visible ? "block" : "none";
-    if (visible) area.classList.remove("keypad-input-hidden");
+    area.style.display = "block";
+    if (visible) {
+      area.classList.remove("keypad-unavailable");
+      area.classList.remove("keypad-input-hidden");
+    } else {
+      area.classList.add("keypad-unavailable");
+    }
   }
   if (button) button.disabled = !visible;
 }
@@ -1852,10 +1891,41 @@ function setKeypadInputVisible(visible) {
 
 let keypadRaised = false;
 
+function updateKeypadRaiseOffset() {
+  const dock = document.getElementById("bottom-dock");
+  const questionScroll = document.getElementById("question-scroll");
+  if (!dock) return 0;
+  const setOffset = value => {
+    if (dock.style.setProperty) dock.style.setProperty("--keypad-raise-offset", value);
+    else dock.style["--keypad-raise-offset"] = value;
+  };
+  if (!keypadRaised) {
+    setOffset("0px");
+    return 0;
+  }
+  const viewportHeight = window.visualViewport && window.visualViewport.height
+    ? window.visualViewport.height
+    : (window.innerHeight || 0);
+  const currentValue = dock.style.getPropertyValue
+    ? dock.style.getPropertyValue("--keypad-raise-offset")
+    : dock.style["--keypad-raise-offset"];
+  const currentOffset = parseFloat(currentValue) || 0;
+  const questionHeight = questionScroll && questionScroll.getBoundingClientRect
+    ? questionScroll.getBoundingClientRect().height
+    : 0;
+  const minimumQuestionHeight = 72;
+  const desiredOffset = Math.min(viewportHeight * 0.22, 180);
+  const maxOffset = Math.max(0, currentOffset + questionHeight - minimumQuestionHeight);
+  const offset = Math.max(0, Math.min(desiredOffset, maxOffset));
+  setOffset(offset.toFixed(2) + "px");
+  return offset;
+}
+
 function applyKeypadPosition() {
-  const area = document.getElementById("keypad-area");
+  const dock = document.getElementById("bottom-dock");
   const button = document.getElementById("btn-shift-keypad");
-  if (area) area.classList.toggle("keypad-raised", keypadRaised);
+  if (dock) dock.classList.toggle("keypad-raised", keypadRaised);
+  updateKeypadRaiseOffset();
   if (button) {
     button.setAttribute("aria-pressed", keypadRaised ? "true" : "false");
     button.textContent = keypadRaised ? "鍵盤 ↓" : "鍵盤 ↑";
@@ -1934,8 +2004,9 @@ function collapseAnswerControlsAfterCheck() {
   setKeypadInputVisible(false);
   [document.getElementById("input-row"), document.getElementById("q-options")].forEach((element) => {
     if (!element || element.style.display === "none") return;
-    element.style.visibility = "hidden";
     element.style.pointerEvents = "none";
+    element.classList.add("answer-control-locked");
+    element.setAttribute("aria-disabled", "true");
   });
 }
 
@@ -2081,6 +2152,8 @@ function showQ() {
   document.getElementById("btn-check").style.display = "block";
   document.getElementById("btn-next").style.display = "none";
   document.getElementById("btn-teach").style.display = "none";
+  document.getElementById("btn-teach").textContent = "💡 查看教學步驟";
+  document.getElementById("btn-teach").setAttribute("aria-expanded", "false");
   setKeypadVisible(true);
   document.getElementById("solution-box").style.display = "none";
   document.getElementById("solution-box").innerHTML = "";
@@ -2094,10 +2167,14 @@ function showQ() {
   document.getElementById("q-options").innerHTML = "";
   document.getElementById("q-options").style.visibility = "visible";
   document.getElementById("q-options").style.pointerEvents = "auto";
+  document.getElementById("q-options").classList.remove("answer-control-locked");
+  document.getElementById("q-options").setAttribute("aria-disabled", "false");
   document.getElementById("q-coord-hint").style.display = "none";
   document.getElementById("input-row").style.display = "flex";
   document.getElementById("input-row").style.visibility = "visible";
   document.getElementById("input-row").style.pointerEvents = "auto";
+  document.getElementById("input-row").classList.remove("answer-control-locked");
+  document.getElementById("input-row").setAttribute("aria-disabled", "false");
   document.getElementById("q-image").style.display = "none";
   document.getElementById("q-image").innerHTML = "";
 
@@ -2465,14 +2542,25 @@ function checkAns() {
 
 function toggleTeach() {
   const solBox = document.getElementById("solution-box");
+  const feedback = document.getElementById("q-feedback");
+  const button = document.getElementById("btn-teach");
   const opening = solBox.style.display !== "block";
   solBox.style.display = opening ? "block" : "none";
+  feedback.style.display = opening ? "none" : "block";
+  button.textContent = opening ? "收起教學步驟" : "💡 查看教學步驟";
+  button.setAttribute("aria-expanded", opening ? "true" : "false");
   if (opening) typesetElementOnce(solBox);
+  updateKeypadRaiseOffset();
 }
 
 function nextQ() {
   currIdx++;
   showQ();
+}
+
+function confirmRetryAll() {
+  const message = "確定重做全部題目?『重做錯題』會按最新一輪結果更新";
+  if (!window.confirm || window.confirm(message)) initGame("all");
 }
 
 function buildAttemptFromCurrentSession(options = {}) {

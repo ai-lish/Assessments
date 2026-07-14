@@ -441,18 +441,18 @@ check("whole-paper PDF function remains available", /function printPDF\(\)/.test
 
 const keypadPositionState = vm.runInContext(`
 (() => {
-  const keypadArea = document.getElementById("keypad-area");
+  const bottomDock = document.getElementById("bottom-dock");
   const keypadButton = document.getElementById("btn-shift-keypad");
-  const before = keypadArea.classList.contains("keypad-raised");
+  const before = bottomDock.classList.contains("keypad-raised");
   toggleKeypadPosition();
-  const raised = keypadArea.classList.contains("keypad-raised");
+  const raised = bottomDock.classList.contains("keypad-raised");
   const raisedPressed = keypadButton["aria-pressed"];
   currIdx = Math.min(1, qList.length - 1);
   showQ();
-  const keptAfterQuestionChange = keypadArea.classList.contains("keypad-raised");
+  const keptAfterQuestionChange = bottomDock.classList.contains("keypad-raised");
   toggleKeypadPosition();
   return { before, raised, raisedPressed, keptAfterQuestionChange,
-     restored: !keypadArea.classList.contains("keypad-raised"),
+     restored: !bottomDock.classList.contains("keypad-raised"),
      restoredPressed: keypadButton["aria-pressed"] };
 })()
 `, firstLoad);

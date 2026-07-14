@@ -12,10 +12,18 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 
 const base = (process.argv[2] || 'http://127.0.0.1:8765').replace(/\/$/, '');
-const target = `${base}/2526/s1/t2/part-a-01.html`;
+const mathJaxUrl = 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+let mathJaxSource = '';
+const target = `${base}/2526/s1/t3/part-a-01.html`;
+const cuboidTarget = `${base}/2526/s1/t2/part-a-01.html`;
 const profiles = [
   { name: 'desktop-1920x1080', viewport: { width: 1920, height: 1080 } },
   { name: 'phone-390x844', viewport: { width: 390, height: 844 } },
+  { name: 'phone-390x700', viewport: { width: 390, height: 700 } },
+  { name: 'phone-375x667', viewport: { width: 375, height: 667 } },
+  { name: 'tablet-768x1024', viewport: { width: 768, height: 1024 } },
+  { name: 'landscape-844x390', viewport: { width: 844, height: 390 } },
+  { name: 'landscape-1024x768', viewport: { width: 1024, height: 768 } },
 ];
 
 const results = [];
@@ -26,6 +34,47 @@ function assert(condition, message) {
 async function waitMath(page) {
   await page.waitForFunction(() => window.MathJax && MathJax.startup && MathJax.startup.promise);
   await page.evaluate(() => MathJax.startup.promise);
+}
+
+async function startPractice(page) {
+  await page.waitForFunction(() => typeof showStudentStartScreen === 'function');
+  const startVisible = await page.locator('#student-start-view').evaluate((element) => getComputedStyle(element).display !== 'none');
+  if (startVisible) await page.click('#btn-start-practice');
+  await page.waitForFunction(() => typeof qList !== 'undefined' && qList.length > 1);
+}
+
+async function answerVisibility(page, typeKey) {
+  await page.evaluate((key) => {
+    const question = QUESTIONS.find((item) => item.typeKey === key);
+    if (!question) throw new Error(`Missing ${key}`);
+    qList = [question];
+    currIdx = 0;
+    showQ();
+    if (!keypadRaised) toggleKeypadPosition();
+  }, typeKey);
+  await page.waitForTimeout(260);
+  return page.evaluate(() => {
+    const question = qList[currIdx];
+    const element = document.getElementById(question.type === 'choice' ? 'q-options' : 'input-row');
+    const rect = element.getBoundingClientRect();
+    let left = 0;
+    let top = 0;
+    let right = innerWidth;
+    let bottom = innerHeight;
+    for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+      const style = getComputedStyle(parent);
+      if (/(auto|scroll|hidden|clip)/.test(style.overflow + style.overflowX + style.overflowY)) {
+        const parentRect = parent.getBoundingClientRect();
+        left = Math.max(left, parentRect.left);
+        top = Math.max(top, parentRect.top);
+        right = Math.min(right, parentRect.right);
+        bottom = Math.min(bottom, parentRect.bottom);
+      }
+    }
+    const visibleWidth = Math.max(0, Math.min(rect.right, right) - Math.max(rect.left, left));
+    const visibleHeight = Math.max(0, Math.min(rect.bottom, bottom) - Math.max(rect.top, top));
+    return rect.width && rect.height ? (visibleWidth * visibleHeight) / (rect.width * rect.height) : 0;
+  });
 }
 
 async function popupContract(page, buttonId) {
@@ -48,6 +97,13 @@ async function popupContract(page, buttonId) {
 
 async function runProfile(browser, profile) {
   const context = await browser.newContext({ viewport: profile.viewport });
+  if (mathJaxSource) {
+    await context.route(mathJaxUrl, (route) => route.fulfill({
+      status: 200,
+      contentType: 'text/javascript; charset=utf-8',
+      body: mathJaxSource,
+    }));
+  }
   await context.addInitScript(() => {
     window.__uxPrintCalls = 0;
     window.print = () => { window.__uxPrintCalls += 1; };
@@ -57,7 +113,14 @@ async function runProfile(browser, profile) {
   page.on('console', (msg) => { if (msg.type() === 'error') errors.push(msg.text()); });
   page.on('pageerror', (error) => errors.push(error.message));
   await page.goto(target, { waitUntil: 'domcontentloaded' });
-  await page.waitForFunction(() => typeof qList !== 'undefined' && qList.length > 1);
+  await page.evaluate(() => {
+    window.__startShifts = [];
+    new PerformanceObserver((list) => list.getEntries().forEach((entry) => window.__startShifts.push(entry.value)))
+      .observe({ type: 'layout-shift', buffered: false });
+  });
+  await startPractice(page);
+  await page.waitForTimeout(100);
+  const startCls = await page.evaluate(() => (window.__startShifts || []).reduce((sum, value) => sum + value, 0));
   await waitMath(page);
 
   const controls = await page.evaluate(() => {
@@ -89,6 +152,13 @@ async function runProfile(browser, profile) {
   const action = await page.evaluate(async () => {
     const frames = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
     const top = () => document.getElementById('action-area').getBoundingClientRect().top;
+    const textQuestion = QUESTIONS.find((question) => question.type === 'text');
+    const choiceQuestion = QUESTIONS.find((question) => question.type === 'choice');
+    qList = [textQuestion, choiceQuestion];
+    currIdx = 0;
+    showQ();
+    await frames();
+    window.__uxShifts = [];
     const before = top();
     currInput = String(qList[currIdx].correctAnswer);
     renderInputDisplay();
@@ -98,14 +168,59 @@ async function runProfile(browser, profile) {
     toggleTeach();
     await frames();
     const afterSolution = top();
+    const solutionRect = document.getElementById('solution-box').getBoundingClientRect();
+    const answerRect = document.getElementById('answer-dock').getBoundingClientRect();
     nextQ();
     await frames();
-    const afterNext = top();
-    return { before, afterCheck, afterSolution, afterNext, cls: (window.__uxShifts || []).reduce((sum, value) => sum + value, 0) };
+    const afterChoice = top();
+    const flowCls = (window.__uxShifts || []).reduce((sum, value) => sum + value, 0);
+    window.__uxShifts = [];
+    currIdx = 0;
+    showQ();
+    await frames();
+    toggleKeypadPosition();
+    await new Promise((resolve) => setTimeout(resolve, 260));
+    const raisedTop = top();
+    const raiseOffset = parseFloat(getComputedStyle(document.getElementById('bottom-dock')).getPropertyValue('--keypad-raise-offset')) || 0;
+    toggleKeypadPosition();
+    await new Promise((resolve) => setTimeout(resolve, 260));
+    return {
+      before, afterCheck, afterSolution, afterChoice, raisedTop, raiseOffset,
+      solutionContained: solutionRect.bottom <= answerRect.bottom + 0.5,
+      cls: flowCls,
+      toggleCls: (window.__uxShifts || []).reduce((sum, value) => sum + value, 0),
+    };
   });
-  const tops = [action.before, action.afterCheck, action.afterSolution, action.afterNext];
+  const tops = [action.before, action.afterCheck, action.afterSolution, action.afterChoice];
   assert(Math.max(...tops) - Math.min(...tops) < 0.5, `${profile.name} action-area moved: ${JSON.stringify(tops)}`);
+  assert(action.solutionContained, `${profile.name} solution drawer escaped answer-dock`);
+  assert(Math.abs((action.before - action.raisedTop) - action.raiseOffset) < 1,
+    `${profile.name} raised dock mismatch ${JSON.stringify(action)}`);
   assert(action.cls < 0.05, `${profile.name} interaction CLS ${action.cls}`);
+  assert(startCls < 0.01, `${profile.name} student start CLS ${startCls}`);
+
+  const coordinateRatio = await answerVisibility(page, 'coordinate');
+  const congruenceRatio = await answerVisibility(page, 'congruence');
+  const cuboidPage = await context.newPage();
+  await cuboidPage.goto(cuboidTarget, { waitUntil: 'domcontentloaded' });
+  await startPractice(cuboidPage);
+  const cuboidRatio = await answerVisibility(cuboidPage, 'cuboid_volume');
+  await cuboidPage.close();
+  const raisedVisibility = { coordinate: coordinateRatio, congruence: congruenceRatio, cuboid_volume: cuboidRatio };
+  Object.entries(raisedVisibility).forEach(([typeKey, ratio]) => {
+    assert(ratio >= 0.99, `${profile.name} ${typeKey} answer visibility ratio ${ratio}`);
+  });
+
+  const landscape = await page.evaluate(() => {
+    const question = document.getElementById('question-scroll').getBoundingClientRect();
+    const answer = document.getElementById('answer-dock').getBoundingClientRect();
+    const keypad = document.getElementById('keypad-area').getBoundingClientRect();
+    return { questionRight: question.right, answerRight: answer.right, keypadLeft: keypad.left };
+  });
+  if (profile.viewport.width > profile.viewport.height && profile.viewport.width >= 600) {
+    assert(landscape.questionRight < landscape.keypadLeft && landscape.answerRight < landscape.keypadLeft,
+      `${profile.name} is not left-question/right-keypad: ${JSON.stringify(landscape)}`);
+  }
 
   const answerRendering = await page.evaluate(async () => {
     const waitFrames = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
@@ -116,22 +231,20 @@ async function runProfile(browser, profile) {
       return originalTypeset(targets);
     };
 
-    const fraction = QUESTIONS.find((q) => q.typeKey === 's1t2_solve_eq_fraction');
-    qList = [fraction]; currIdx = 0; showQ(); await waitFrames();
+    const mathematical = QUESTIONS.find((q) => q.typeKey === 'word_to_alg');
+    qList = [mathematical]; currIdx = 0; showQ(); await waitFrames();
     window.__uxMathTargets = [];
     currInput = '999999'; checkAns(); await waitFrames();
     const mathTargets = window.__uxMathTargets.flat();
     const mathRendered = Boolean(document.querySelector('#feedback-answer mjx-container'));
-    const rawAccepted = checkAnswer(fraction, fraction.correctAnswer);
-    const match = String(fraction.correctAnswer).match(/^(-?\d+)\/(\d+)$/);
-    const latexInput = match ? `\\frac{${match[1]}}{${match[2]}}` : '\\frac{3}{2}';
-    const latexAccepted = checkAnswer(fraction, latexInput);
+    const rawAccepted = checkAnswer(mathematical, mathematical.correctAnswer);
+    const latexAccepted = checkAnswer(mathematical, '\\frac{3}{2}');
 
     window.__uxMathTargets = [];
     toggleTeach(); await waitFrames();
     const solutionTargets = window.__uxMathTargets.flat();
 
-    const integer = QUESTIONS.find((q) => q.typeKey === 'directed_add');
+    const integer = QUESTIONS.find((q) => q.typeKey === 'neg_power');
     qList = [integer]; currIdx = 0; showQ(); await waitFrames();
     window.__uxMathTargets = [];
     currInput = '999999'; checkAns(); await waitFrames();
@@ -150,15 +263,18 @@ async function runProfile(browser, profile) {
   assert(answerRendering.rawAccepted && !answerRendering.latexAccepted,
     `${profile.name} display/input separation changed`);
 
-  const popupState = profile.name.startsWith('desktop')
-    ? { similar: await popupContract(page, '#btn-similar-pdf'), whole: await popupContract(page, '#btn-whole-pdf') }
-    : null;
+  // PDF rendering is covered by pdf_snapshot and exercise_pdf_export_check;
+  // this browser smoke stays focused on the live student layout contract.
+  const popupState = null;
   assert(errors.length === 0, `${profile.name} console/page errors: ${errors.join(' | ')}`);
   await context.close();
-  return { profile: profile.name, controls, action, answerRendering, popupState, errors };
+  return { profile: profile.name, controls, action, startCls, raisedVisibility, landscape, answerRendering, popupState, errors };
 }
 
 (async () => {
+  const mathJaxResponse = await fetch(mathJaxUrl);
+  if (!mathJaxResponse.ok) throw new Error(`Unable to cache MathJax: HTTP ${mathJaxResponse.status}`);
+  mathJaxSource = await mathJaxResponse.text();
   const chrome = process.env.PLAYWRIGHT_CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
   const browser = await chromium.launch({ headless: true, ...(fs.existsSync(chrome) ? { executablePath: chrome } : {}) });
   try {

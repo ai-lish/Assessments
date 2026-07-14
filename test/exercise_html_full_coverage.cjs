@@ -72,6 +72,16 @@ function lcm(a, b) {
   return Math.abs(a * b) / gcd(a, b);
 }
 
+function reducedFractionText(numerator, denominator) {
+  const sign = denominator < 0 ? -1 : 1;
+  numerator *= sign;
+  denominator = Math.abs(denominator);
+  const divisor = gcd(numerator, denominator);
+  numerator /= divisor;
+  denominator /= divisor;
+  return denominator === 1 ? String(numerator) : `${numerator}/${denominator}`;
+}
+
 function factorMap(n) {
   const out = {};
   let m = Math.abs(n);
@@ -177,6 +187,15 @@ function independentExpected(q) {
     case "s1t2_solve_eq_negative":
     case "solve_eq_fraction":
     case "solve_eq_bracket":
+      if (p.mode === "fraction_mixed" && p.form === "D") {
+        return reducedFractionText(p.b, p.a);
+      }
+      if (p.mode === "fraction_mixed" && p.form === "B") {
+        return reducedFractionText(p.b * p.c, p.a);
+      }
+      if (p.mode === "bracket_mixed" && p.form === "C") {
+        return String(p.b * p.c - p.a);
+      }
       if (String(p.xVal).includes("/")) return String(p.xVal);
       if (q.correctAnswer.includes("/") && p.rVal !== undefined && p.coeff !== undefined) {
         const g = gcd(p.rVal, p.coeff);
@@ -224,16 +243,29 @@ function independentExpected(q) {
       return `-${coef}x(${inner})`;
     }
     case "factor_diff_sq":
-    case "s2t3_factor_diff_sq": return `(${lin(p.a, -p.b)})(${lin(p.a, p.b)})`;
+    case "s2t3_factor_diff_sq": {
+      const common = gcd(p.a, p.b);
+      const coefficient = common * common;
+      const prefix = coefficient === 1 ? "" : String(coefficient);
+      return `${prefix}(${lin(p.a / common, -p.b / common)})(${lin(p.a / common, p.b / common)})`;
+    }
     case "round_decimal": return roundDecimalExpected(p);
-    case "combine_fractions": return `(${p.m}a+${p.c})/(${p.m}k)`;
+    case "combine_fractions": {
+      const common = gcd(p.m, p.c);
+      const m = p.m / common;
+      const c = p.c / common;
+      return `(${m === 1 ? "a" : `${m}a`}+${c})/(${m === 1 ? "k" : `${m}k`})`;
+    }
     case "coef_exp_div": {
       const expDiff = p.expN - p.expD;
       const xPow = expDiff === 1 ? "x" : `x^${expDiff}`;
       const termPart = p.rNum === 1 ? xPow : `${p.rNum}${xPow}`;
       return p.rDen === 1 ? termPart : `${termPart}/${p.rDen}`;
     }
-    case "ratio_three": return `${p.common}:${p.bFinal}:${p.cFinal}`;
+    case "ratio_three": {
+      const common = gcd(gcd(p.common, p.bFinal), p.cFinal);
+      return `${p.common / common}:${p.bFinal / common}:${p.cFinal / common}`;
+    }
     case "discount": return String(+(p.price * p.disTen / 10).toFixed(2));
     case "profit_pct": return String(p.result);
     case "square_root_pm": return simplifyRootExpected(p.n);
@@ -244,7 +276,13 @@ function independentExpected(q) {
     case "binomial_expand":
     case "s3t3_square_expand": return poly2(p.x2, p.x1, p.constTerm);
     case "s3t3_zero_exp": return "1";
-    case "factor_cross": return `(${lin(p.a, p.b)})(${lin(p.c, p.d)})`;
+    case "factor_cross": {
+      const firstCommon = gcd(p.a, p.b);
+      const secondCommon = gcd(p.c, p.d);
+      const coefficient = firstCommon * secondCommon;
+      const prefix = coefficient === 1 ? "" : String(coefficient);
+      return `${prefix}(${lin(p.a / firstCommon, p.b / firstCommon)})(${lin(p.c / secondCommon, p.d / secondCommon)})`;
+    }
     case "sci_notation": return `${p.mantissa}×10^${p.exponent}`;
     case "solve_ineq": return `x${p.op}${p.boundary}`;
     case "triangle_center": return p.center;
@@ -299,6 +337,11 @@ async function loadExercisePage(browser, exercise, viewport = { width: 1280, hei
     }, hooks.gasUrl);
   }
   await page.waitForFunction(() => typeof QUESTIONS !== "undefined" && QUESTIONS.length > 0);
+  const startVisible = await page.locator("#student-start-view").evaluate((element) => getComputedStyle(element).display !== "none");
+  if (startVisible) {
+    await page.click("#btn-start-practice");
+    await page.waitForFunction(() => typeof qList !== "undefined" && qList.length > 0);
+  }
   return { context, page, consoleErrors, pageErrors };
 }
 
@@ -509,15 +552,26 @@ async function runFunctionalPath(browser, exercise, viewport) {
     await page.click("#btn-teach");
     const solutionVisible = await page.locator("#solution-box").evaluate((el) => getComputedStyle(el).display !== "none" && el.textContent.length > 0);
     set("4. show solution", solutionVisible);
-    const keypadHidden = await page.locator("#keypad-area").evaluate((el) => getComputedStyle(el).display === "none");
-    set("5. hide keyboard", keypadHidden);
+    const keypadLocked = await page.evaluate(() => {
+      const area = document.getElementById("keypad-area");
+      const grid = document.getElementById("keypad");
+      return getComputedStyle(area).display !== "none"
+        && getComputedStyle(grid).visibility === "hidden"
+        && document.getElementById("input-row").classList.contains("answer-control-locked");
+    });
+    set("5. hide keyboard", keypadLocked, "fixed-height keypad slot remains while keys are hidden and answer is locked");
     const beforeProgress = await page.locator("#p-text").evaluate((el) => el.textContent);
     await page.click("#btn-next");
-    const keypadVisible = await page.locator("#keypad-area").evaluate((el) => getComputedStyle(el).display !== "none");
+    const keypadVisible = await page.evaluate(() => {
+      const area = document.getElementById("keypad-area");
+      const grid = document.getElementById("keypad");
+      return getComputedStyle(area).display !== "none"
+        && getComputedStyle(grid).visibility === "visible";
+    });
     set("6. re-show keyboard", keypadVisible);
     const afterProgress = await page.locator("#p-text").evaluate((el) => el.textContent);
     set("7. hidden keyboard -> solution -> next", beforeProgress !== afterProgress && keypadVisible);
-    set("8. progress increments", /Q 2 \//.test(afterProgress), afterProgress);
+    set("8. progress increments", /Q\s*2\s*\//.test(afterProgress), afterProgress);
 
     await page.evaluate(() => initGame("all"));
     await completeAllCorrect(page);

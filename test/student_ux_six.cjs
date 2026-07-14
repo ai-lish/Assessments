@@ -51,7 +51,9 @@ check('keypad keeps exactly three nine-slot rows', config && config.baseRows.len
 check('four operators occupy fixed rows for every keyboard question', config &&
   JSON.stringify(config.fixedRows.slice(0, 2)) === JSON.stringify([['+', '-'], ['×', '÷']]) &&
   JSON.stringify(config.constantOperators) === JSON.stringify(['+', '-', '×', '÷']));
-check('choice questions still hide the keypad', /if \(!q \|\| q\.type === "choice"\)[\s\S]{0,180}setKeypadVisible\(false\)/.test(template));
+check('choice questions hide keys while preserving the fixed keypad slot',
+  /if \(!q \|\| q\.type === "choice"\)[\s\S]{0,180}setKeypadVisible\(false\)/.test(template) &&
+  /\.keypad-area\.keypad-unavailable \.key-grid/.test(template));
 check('context symbols have nine reserved slots and are balanced across rows',
   /extras\.forEach\(\(key, index\) => extraSlots\[index % extraSlots\.length\]\.push\(key\)\)/.test(template) &&
   /extraSlots\[rowIndex\]\.length; i < 3/.test(template));
@@ -59,11 +61,23 @@ check('context symbols have nine reserved slots and are balanced across rows',
 check('check and next occupy one fixed-size grid slot',
   /class="btn-row answer-action-slot"[\s\S]{0,400}id="btn-check"[\s\S]{0,400}id="btn-next"/.test(template) &&
   /\.answer-action-slot \.main-btn\s*\{[^}]*grid-area:\s*1 \/ 1[^}]*min-height:\s*45px/.test(template));
-check('answer collapse preserves layout height instead of display none',
-  /setKeypadInputVisible\(false\)/.test(template) && /style\.visibility = "hidden"/.test(template) &&
+check('answer controls stay visible but locked after checking',
+  /setKeypadInputVisible\(false\)/.test(template) &&
+  /classList\.add\("answer-control-locked"\)/.test(template) &&
+  /setAttribute\("aria-disabled", "true"\)/.test(template) &&
+  !/function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,500}style\.visibility = "hidden"/.test(template) &&
   !/function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,500}style\.display = "none"/.test(template));
-check('feedback area reserves a stable height',
-  /\.feedback-area\s*\{[^}]*height:\s*100px[^}]*flex:\s*0 0 100px/.test(template));
+check('feedback and solution share a stable detail slot',
+  /\.answer-detail-slot\s*\{[^}]*height:\s*148px[^}]*display:\s*grid[^}]*grid-template-rows:[^}]*40px/.test(template) &&
+  /\.feedback-area\s*\{[^}]*grid-area:\s*1 \/ 1/.test(template) &&
+  /\.solution-box\s*\{[^}]*grid-area:\s*1 \/ 1/.test(template));
+check('bottom dock places fixed-height keypad before the fixed action slot',
+  /id="bottom-dock"[\s\S]*id="keypad-area"[\s\S]*id="action-area"/.test(template) &&
+  /\.keypad-area\s*\{[^}]*height:\s*122px[^}]*flex:\s*0 0 122px/.test(template) &&
+  /\.action-area\s*\{[^}]*min-height:\s*63px/.test(template));
+check('keypad raise state applies to the whole bottom dock',
+  /getElementById\("bottom-dock"\)[\s\S]{0,400}classList\.toggle\("keypad-raised", keypadRaised\)/.test(template) &&
+  /visualViewport\.height/.test(template));
 
 const sample = pdf.generateSnapshotFromSpecs([], 'ux-six-empty', { title: 'test' });
 const preview = pdf.renderPrintDocument(sample, {});
