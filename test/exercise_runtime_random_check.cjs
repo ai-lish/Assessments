@@ -95,6 +95,7 @@ function buildSandbox(seed, html) {
   elements.get('btn-next').style.display = 'none';
 
   const document = {
+    body: makeElement('body'),
     getElementById(id) {
       if (!elements.has(id)) elements.set(id, makeElement(id));
       return elements.get(id);
