@@ -101,8 +101,20 @@ function createServer() {
   });
 }
 
-async function waitForReady(page) {
-  await page.waitForFunction(() => typeof showQ === 'function' && document.getElementById('p-text').textContent.startsWith('Q'));
+async function waitForReady(page, autoStart = true) {
+  await page.waitForFunction(() => {
+    if (typeof showStudentStartScreen !== 'function') return false;
+    const start = document.getElementById('student-start-view');
+    const result = document.getElementById('result-view');
+    return (start && start.style.display === 'flex') ||
+      (result && result.style.display === 'flex') ||
+      document.getElementById('p-text').textContent.startsWith('Q');
+  });
+  if (autoStart) {
+    const startVisible = await page.locator('#student-start-view').evaluate((element) => element.style.display === 'flex');
+    if (startVisible) await page.locator('#btn-start-practice').click();
+    await page.waitForFunction(() => document.getElementById('p-text').textContent.startsWith('Q'));
+  }
   await page.evaluate(async () => {
     if (window.MathJax && MathJax.startup && MathJax.startup.promise) {
       await MathJax.startup.promise.catch(() => {});
@@ -144,7 +156,7 @@ async function clearAnnotations(page) {
   await page.evaluate(() => document.querySelectorAll('.manual-annotation').forEach((node) => node.remove()));
 }
 
-async function openExercise(browser, baseUrl, route, seed = 'student-manual-v1') {
+async function openExercise(browser, baseUrl, route, seed = 'student-manual-v1', options = {}) {
   const context = await browser.newContext({ viewport: PHONE, deviceScaleFactor: 1, locale: 'zh-HK' });
   if (mathJaxSource) {
     await context.route(MATHJAX_URL, (requestRoute) => requestRoute.fulfill({
@@ -162,7 +174,7 @@ async function openExercise(browser, baseUrl, route, seed = 'student-manual-v1')
     ? `${baseUrl}${route}?seed=${encodeURIComponent(seed)}`
     : `${baseUrl}${route}`;
   await page.goto(url, { waitUntil: 'domcontentloaded' });
-  await waitForReady(page);
+  await waitForReady(page, options.autoStart !== false);
   return { context, page };
 }
 
@@ -263,6 +275,13 @@ async function run() {
     let popup = await openPdfPreview(opened.context, opened.page, 'printSimilarPDF');
     await capture(popup, '11-similar-pdf-preview.png', [{ selector: '[data-pdf-scope="similar"]', label: '先題目，後答案及教學步驟' }]);
     await popup.close();
+    await opened.context.close();
+
+    opened = await openExercise(browser, baseUrl, PATHS.s1t3, 'student-manual-start', { autoStart: false });
+    await capture(opened.page, '21-student-id-start.png', [
+      { selector: '#student-id-input', label: '建議填寫；留空亦可開始' },
+      { selector: '#btn-start-practice', label: '撳「開始」進入第一題' },
+    ]);
     await opened.context.close();
 
     opened = await openExercise(browser, baseUrl, PATHS.s1t3);
@@ -428,7 +447,7 @@ async function run() {
     ]);
 
     const files = fs.readdirSync(IMAGE_ROOT).filter((file) => file.endsWith('.png')).sort();
-    if (files.length !== 20) throw new Error(`Expected 20 screenshots, found ${files.length}`);
+    if (files.length !== 21) throw new Error(`Expected 21 screenshots, found ${files.length}`);
     console.log(files.join('\n'));
     console.log(`Captured ${files.length} screenshots. PIN demo remains under ${DEMO_ROOT}`);
   } finally {

@@ -23,8 +23,8 @@ const includes = Array.from(text.matchAll(/\{\{\s*include:\s*([A-Z0-9_]+)\s*\}\}
 
 check('manual has 9 chapters', chapters.length === 9, String(chapters.length));
 check('manual has 28 numbered sections', sections.length === 28, String(sections.length));
-check('manual references exactly 20 screenshots', images.length === 20, String(images.length));
-check('all screenshot references are unique', new Set(images).size === 20);
+check('manual references exactly 21 screenshots', images.length === 21, String(images.length));
+check('all screenshot references are unique', new Set(images).size === 21);
 images.forEach((image) => check(`screenshot exists: ${image}`, fs.existsSync(path.join(IMAGE_ROOT, image))));
 
 const expectedIncludes = [
@@ -46,5 +46,8 @@ check('teacher enters the PIN', text.includes('請舉手請老師來輸入密碼
 check('student manual does not disclose test PIN', !text.includes('1234'));
 check('submission status is qualified', fs.readFileSync(path.join(ROOT, 'docs', 'manual', 'includes', 'INC_SUBMISSION_STATUS.md'), 'utf8').includes('不代表老師一定收到'));
 check('removed answer-export feature is absent', !text.includes('匯出學生答案') && !text.includes('exportStudentAnswers'));
+check('manual explains optional student ID before starting', text.includes('如暫時不想填，可留空跳過'));
+check('manual explains prefilled student ID confirmation on submit', text.includes('瀏覽器會預填該編號，請確認或修改'));
+check('manual explains session-only history retention', text.includes('關閉分頁或瀏覽器後，紀錄便會清除'));
 
 console.log(`Student manual contract: ${checks} checks passed`);

@@ -136,7 +136,7 @@ let bankHashBase = 'b' + bank.data.length;
 
 // Deterministic BANK_HASH: sha1(bank content + preset key + questions).
 // Avoids Date.now() random hash that would orphan existing students'
-// localStorage attempts on every regeneration. The hash only changes
+// sessionStorage attempts on every regeneration. The hash only changes
 // when bank content or preset questions actually change.
 function computeBankHash(presetKey, questions) {
   const payload = JSON.stringify({

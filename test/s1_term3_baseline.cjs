@@ -193,9 +193,10 @@ function buildSandbox(questions) {
       },
     },
     MathJax: null,
-    localStorage: {
+    sessionStorage: {
       getItem(key) { return storage.has(key) ? storage.get(key) : null; },
       setItem(key, value) { storage.set(key, String(value)); },
+      removeItem(key) { storage.delete(key); },
     },
     URL: {
       createObjectURL: () => "blob:baseline",
@@ -226,7 +227,7 @@ function buildSandbox(questions) {
     __printTargets: printTargets,
   };
   sandbox.window.document = document;
-  sandbox.window.localStorage = sandbox.localStorage;
+  sandbox.window.sessionStorage = sandbox.sessionStorage;
   sandbox.window.URL = sandbox.URL;
   sandbox.window.Blob = sandbox.Blob;
 
