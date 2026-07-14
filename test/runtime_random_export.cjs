@@ -167,6 +167,7 @@ function buildSandbox(seed, preset = s1Term3Preset, specs = questionSpecs) {
   elements.get("btn-next").style.display = "none";
 
   const document = {
+    body: makeElement("body"),
     getElementById(id) {
       if (!elements.has(id)) elements.set(id, makeElement(id));
       return elements.get(id);
@@ -202,9 +203,10 @@ function buildSandbox(seed, preset = s1Term3Preset, specs = questionSpecs) {
       },
     },
     MathJax: null,
-    localStorage: {
+    sessionStorage: {
       getItem(key) { return storage.has(key) ? storage.get(key) : null; },
       setItem(key, value) { storage.set(key, String(value)); },
+      removeItem(key) { storage.delete(key); },
     },
     URL: { createObjectURL: () => "blob:test", revokeObjectURL: () => {} },
     Blob: function Blob(parts, opts) { this.parts = parts; this.opts = opts; },
@@ -227,7 +229,7 @@ function buildSandbox(seed, preset = s1Term3Preset, specs = questionSpecs) {
     __printTargets: printTargets,
   };
   sandbox.window.document = document;
-  sandbox.window.localStorage = sandbox.localStorage;
+  sandbox.window.sessionStorage = sandbox.sessionStorage;
   sandbox.window.URL = sandbox.URL;
   sandbox.window.Blob = sandbox.Blob;
   sandbox.window.Math = sandbox.Math;
@@ -355,6 +357,7 @@ const similarPdfState = vm.runInContext(`
     similarCaptured.push({ snapshot, options });
     return { snapshot, html: AssessPDF.renderPrintDocument(snapshot, options || {}), target: null };
   };
+  initGame("all");
   currIdx = 0;
   answered = false;
   const currentFirst = JSON.stringify(qList[currIdx].paramsUsed);
@@ -401,6 +404,7 @@ const s1Term2Specs = buildInteractiveQuestionSpecs(s1Term2Preset);
 const zeroVariantLoad = buildSandbox(0x51515151, s1Term2Preset, s1Term2Specs);
 const zeroVariantState = vm.runInContext(`
   const fixedIndex = 0;
+  initGame("all");
   currIdx = fixedIndex;
   const originalVariantGenerator = AssessPDF.generateVariantSnapshot;
   AssessPDF.generateVariantSnapshot = function() { return { actualCount: 0, questions: [] }; };

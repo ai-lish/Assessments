@@ -89,9 +89,10 @@ function buildSandbox(html, seed) {
       print() {},
     },
     MathJax: null,
-    localStorage: {
+    sessionStorage: {
       getItem(key) { return storage.has(key) ? storage.get(key) : null; },
       setItem(key, value) { storage.set(key, String(value)); },
+      removeItem(key) { storage.delete(key); },
     },
     URL: { createObjectURL: () => 'blob:test', revokeObjectURL: () => {} },
     Blob: function Blob(parts, opts) { this.parts = parts; this.opts = opts; },
@@ -112,7 +113,7 @@ function buildSandbox(html, seed) {
     fetch: () => Promise.resolve({ ok: true }),
     __printTargets: printTargets,
   };
-  sandbox.window.localStorage = sandbox.localStorage;
+  sandbox.window.sessionStorage = sandbox.sessionStorage;
   sandbox.window.URL = sandbox.URL;
   sandbox.window.Blob = sandbox.Blob;
   sandbox.window.Math = sandbox.Math;

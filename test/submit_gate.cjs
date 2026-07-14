@@ -46,7 +46,19 @@ function makeElement(id = '') {
     appendChild(child) { this.children.push(child); return child; },
     setAttribute(name, value) { this[name] = value; },
     addEventListener() {},
+    focus() { this.focused = true; },
     click() { if (typeof this.onclick === 'function') this.onclick(); },
+  };
+}
+
+function makeStorage(initial = {}) {
+  const data = new Map(Object.entries(initial));
+  return {
+    getItem(key) { return data.has(key) ? data.get(key) : null; },
+    setItem(key, value) { data.set(key, String(value)); },
+    removeItem(key) { data.delete(key); },
+    clear() { data.clear(); },
+    __data: data,
   };
 }
 
@@ -68,12 +80,14 @@ function buildHtml({ grade = 's1', gasUrl = 'https://example.invalid/sheets', te
     .replace(/\{\{RUNTIME_SEED\}\}/g, JSON.stringify(null));
 }
 
-function buildSandbox(promptValues, htmlOptions = {}) {
+function buildSandbox(promptValues, htmlOptions = {}, sessionData = {}) {
   const elements = new Map();
   const fetchCalls = [];
+  const promptCalls = [];
   const prompts = promptValues.slice();
   const ids = [
-    'practice-title', 'quiz-view', 'result-view', 'p-text', 'q-text', 'q-feedback',
+    'practice-title', 'student-start-view', 'student-id-input', 'student-id-error',
+    'btn-start-practice', 'top-info', 'quiz-view', 'result-view', 'p-text', 'q-text', 'q-feedback',
     'btn-check', 'btn-next', 'btn-teach', 'solution-box', 'input-val', 'prefix',
     'suffix', 'q-hint', 'q-options', 'q-coord-hint', 'input-row', 'q-image',
     'toast', 'final-score', 'btn-retry-wrong', 'history-body', 'detail-modal',
@@ -100,12 +114,19 @@ function buildSandbox(promptValues, htmlOptions = {}) {
     addEventListener() {},
   };
 
+  const sessionStorage = makeStorage(sessionData);
+  const localStorage = {
+    getItem() { throw new Error('student runtime must not read localStorage'); },
+    setItem() { throw new Error('student runtime must not write localStorage'); },
+    removeItem() { throw new Error('student runtime must not remove localStorage'); },
+  };
   const sandbox = {
     console,
     document,
-    window: { MathJax: null, document, localStorage: null, URL: null, Blob: null, open: () => null },
+    window: { MathJax: null, document, localStorage: null, sessionStorage: null, URL: null, Blob: null, open: () => null },
     MathJax: null,
-    localStorage: { getItem: () => null, setItem() {}, removeItem() {} },
+    localStorage,
+    sessionStorage,
     URL: { createObjectURL: () => 'blob:submit', revokeObjectURL() {} },
     Blob: function Blob(parts, opts) { this.parts = parts; this.opts = opts; },
     Date,
@@ -124,15 +145,21 @@ function buildSandbox(promptValues, htmlOptions = {}) {
     crypto: webcrypto,
     setTimeout: (fn) => { if (typeof fn === 'function') fn(); return 1; },
     clearTimeout: () => {},
-    prompt: () => prompts.shift(),
+    prompt: (message, defaultValue) => {
+      promptCalls.push({ message, defaultValue });
+      return prompts.shift();
+    },
     fetch: (url, options) => {
       fetchCalls.push({ url, options });
       return Promise.resolve({ ok: true });
     },
     __elements: elements,
     __fetchCalls: fetchCalls,
+    __promptCalls: promptCalls,
+    __sessionStorage: sessionStorage,
   };
   sandbox.window.localStorage = sandbox.localStorage;
+  sandbox.window.sessionStorage = sandbox.sessionStorage;
   sandbox.window.URL = sandbox.URL;
   sandbox.window.Blob = sandbox.Blob;
   sandbox.window.crypto = sandbox.crypto;
@@ -177,7 +204,49 @@ async function waitFor(condition, maxTicks = 100) {
 async function main() {
 console.log('=== Submit Gate / Student ID / Payload ===');
 
+console.log('\n=== Optional Student ID Start / Session Storage ===');
+
 let sandbox = buildSandbox([]);
+check('fresh page shows optional student ID start screen', sandbox.__elements.get('student-start-view').style.display === 'flex');
+check('fresh page keeps quiz hidden until Start', sandbox.__elements.get('quiz-view').style.display === 'none');
+run('initGame = function(){ document.getElementById("student-start-view").style.display = "none"; document.getElementById("quiz-view").style.display = "flex"; };', sandbox);
+sandbox.__elements.get('student-id-input').value = '20255001f';
+run('startPractice();', sandbox);
+check('valid student ID enters practice', sandbox.__elements.get('quiz-view').style.display === 'flex');
+check('valid student ID is normalized and stored in sessionStorage',
+  sandbox.__sessionStorage.getItem('assess_student_id_submit_gate_hash') === '20255001F');
+
+sandbox = buildSandbox([]);
+run('initGame = function(){ document.getElementById("student-start-view").style.display = "none"; document.getElementById("quiz-view").style.display = "flex"; };', sandbox);
+sandbox.__elements.get('student-id-input').value = '';
+run('startPractice();', sandbox);
+check('blank student ID skips and enters practice', sandbox.__elements.get('quiz-view').style.display === 'flex');
+check('blank student ID is not stored', sandbox.__sessionStorage.getItem('assess_student_id_submit_gate_hash') === null);
+
+sandbox = buildSandbox([]);
+run('initGame = function(){ throw new Error("invalid ID must not start"); };', sandbox);
+sandbox.__elements.get('student-id-input').value = '20255001X';
+run('startPractice();', sandbox);
+check('invalid student ID stays on start screen', sandbox.__elements.get('student-start-view').style.display === 'flex');
+check('invalid student ID shows inline format error', /格式錯誤/.test(sandbox.__elements.get('student-id-error').textContent));
+
+const savedAttempt = {
+  n: 1, attemptNumber: 1, attemptType: 'initial', score: 1, total: 1,
+  remainingWrongCount: 0, completedAll: true, date: '7/7', time: '10:00', details: [],
+};
+sandbox = buildSandbox([], {}, {
+  assess_attempts_submit_gate_hash: JSON.stringify([savedAttempt]),
+  assess_student_id_submit_gate_hash: '20255001F',
+});
+check('same-session history opens result page without asking for student ID again',
+  sandbox.__elements.get('result-view').style.display === 'flex' && sandbox.__elements.get('student-start-view').style.display === 'none');
+check('same-session student ID is restored', run('currentStudentId', sandbox) === '20255001F');
+
+sandbox = buildSandbox([]);
+check('new browsing context starts with no prior history',
+  run('allAttempts.length', sandbox) === 0 && sandbox.__elements.get('student-start-view').style.display === 'flex');
+
+sandbox = buildSandbox([]);
 run(`
   allAttempts = [
     { attemptNumber: 1, attemptType: "initial", score: 5, total: 16, remainingWrongCount: 11, completedAll: false, date: "7/7", time: "10:00", details: [] }
@@ -191,6 +260,7 @@ run('handleExport();', sandbox);
 check('incomplete result does not send request', sandbox.__fetchCalls.length === 0);
 
 sandbox = buildSandbox(['20255001f']);
+run('saveStudentId("20255001F");', sandbox);
 run(`
   allAttempts = [
     { attemptNumber: 1, attemptType: "initial", score: 5, total: 16, remainingWrongCount: 11, completedAll: false, date: "7/7", time: "10:00", details: [] },
@@ -203,6 +273,8 @@ check('completedAll result enables submit button', sandbox.__elements.get('btn-e
 check('completedAll result shows ready hint', /可提交學習記錄/.test(sandbox.__elements.get('submit-hint').textContent));
 run('handleExport();', sandbox);
 check('lowercase f is normalized and request sent', sandbox.__fetchCalls.length === 1);
+check('completed submit asks to confirm the prefilled student ID',
+  sandbox.__promptCalls[0] && sandbox.__promptCalls[0].defaultValue === '20255001F');
 const payload = JSON.parse(sandbox.__fetchCalls[0].options.body);
 check('payload contains two attempt rows', payload.rows.length === 2);
 check('payload studentId uppercased', payload.rows.every((row) => row.studentId === '20255001F'));
@@ -289,6 +361,7 @@ check('wrong PIN rejects partial submit before fetch', sandbox.__fetchCalls.leng
 check('wrong PIN does not reset current question index', run('currIdx', sandbox) === 2);
 
 sandbox = buildSandbox(['1234', '20255001f'], { gasUrl: 'https://example.invalid/sheets', teacherPinHash: pinHash });
+run('saveStudentId("20255001F");', sandbox);
 run(`
   allAttempts = [];
   lastResult = null;
@@ -300,6 +373,9 @@ run(`
 `, sandbox);
 await waitFor(() => sandbox.__fetchCalls.length === 1);
 check('correct PIN and student ID sends partial submit request', sandbox.__fetchCalls.length === 1);
+check('partial submit asks for PIN before confirming prefilled student ID',
+  sandbox.__promptCalls.length === 2 && /老師 PIN/.test(sandbox.__promptCalls[0].message) &&
+  sandbox.__promptCalls[1].defaultValue === '20255001F');
 const partialPayload = JSON.parse(sandbox.__fetchCalls[0].options.body);
 const partialRow = partialPayload.rows[partialPayload.rows.length - 1];
 const payloadFields = [

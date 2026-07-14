@@ -47,6 +47,13 @@ check('template keeps four operators fixed and delete/clear controls',
   ['⌫', 'C'].every((label) => keypadConfig.controlKeys.includes(label)));
 check('template has keypad-area id for collapse control', /id="keypad-area"/.test(template));
 check('template has independent action-area id', /id="action-area"/.test(template));
+check('optional student ID screen stays outside the fixed answer action area',
+  /id="student-start-view"[\s\S]*class="top-info"[\s\S]*id="quiz-view"/.test(template) &&
+  !/id="action-area"[\s\S]{0,1200}id="student-start-view"/.test(template));
+check('student runtime uses sessionStorage and contains no localStorage calls',
+  /sessionStorage\.getItem\(storageKey\(\)\)/.test(template) &&
+  /sessionStorage\.setItem\(studentIdStorageKey\(\)/.test(template) &&
+  !/\blocalStorage\s*\./.test(template));
 check('template places both PDF controls between answer actions and keypad',
   /id="action-area"[\s\S]*id="pdf-action-area"[\s\S]*id="btn-similar-pdf"[\s\S]*id="btn-whole-pdf"[\s\S]*id="keypad-area"/.test(template));
 check('template places keypad shift with both PDF controls in one row',
@@ -94,6 +101,10 @@ for (const rel of exercisePaths) {
   check(`${rel} includes one dynamic keypad`, /id="keypad" aria-label="題型專用按鍵"/.test(html) && !/id="keypad-context"/.test(html));
   check(`${rel} includes per-question keypad configuration`, /const INPUT_KEYPAD_CONFIG = \{/.test(html));
   check(`${rel} includes independent action-area id`, /id="action-area"/.test(html));
+  check(`${rel} includes optional student ID screen before the quiz`,
+    /id="student-start-view"[\s\S]*id="quiz-view"/.test(html));
+  check(`${rel} uses sessionStorage with no localStorage calls`,
+    /sessionStorage\.getItem\(storageKey\(\)\)/.test(html) && !/\blocalStorage\s*\./.test(html));
   check(`${rel} includes adjacent in-progress PDF controls`,
     /id="pdf-action-area"[\s\S]*id="btn-similar-pdf"[\s\S]*id="btn-whole-pdf"/.test(html));
   check(`${rel} includes hidden partial submit outside action-area`,

@@ -49,7 +49,17 @@
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang HK", "Microsoft JhengHei", sans-serif; background: var(--bg-main); margin: 0; padding: 8px 8px max(8px, env(safe-area-inset-bottom)); display: flex; justify-content: center; height: 100dvh; min-height: -webkit-fill-available; box-sizing: border-box; overflow: hidden; }
   .container { width: 100%; max-width: 500px; background: #fff; border-radius: 12px; box-shadow: var(--card-shadow); display: flex; flex-direction: column; height: 100%; position: relative; }
   .practice-title { padding: 10px 14px 8px; text-align: center; font-size: 1.02em; font-weight: 800; color: var(--primary); border-bottom: 1px solid #f0f2f5; line-height: 1.35; flex-shrink: 0; }
+  .student-start-view { display: none; flex: 1; min-height: 0; padding: 28px 22px; align-items: center; justify-content: center; overflow-y: auto; }
+  .student-start-card { width: 100%; max-width: 390px; padding: 24px 20px; border: 1px solid #e3e8ed; border-radius: 14px; background: #fafbfc; text-align: left; }
+  .student-start-card h2 { margin: 0 0 8px; color: var(--primary); text-align: center; }
+  .student-start-help { margin: 0 0 18px; color: var(--text-muted); font-size: 0.92em; line-height: 1.55; text-align: center; }
+  .student-id-label { display: block; margin-bottom: 7px; color: var(--text-main); font-weight: 700; }
+  .student-id-input { width: 100%; min-height: 48px; border: 2px solid #bdc3c7; border-radius: 8px; padding: 9px 12px; font-size: 1.15em; text-transform: uppercase; }
+  .student-id-input:focus { border-color: var(--accent); outline: 3px solid rgba(52,152,219,0.15); }
+  .student-id-error { min-height: 22px; margin: 7px 0 9px; color: var(--danger); font-size: 0.86em; font-weight: 700; }
+  .student-start-btn { margin: 0; background: var(--accent); }
   .top-info { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 8px; padding: 10px 15px; font-size: 0.9em; font-weight: 600; color: var(--text-muted); background: #fff; border-bottom: 1px solid #f0f2f5; flex-shrink: 0; white-space: nowrap; }
+  body.student-start-active .top-info { display: none; }
   .progress-badge { background: #ecf0f1; color: var(--primary); padding: 4px 10px; border-radius: 20px; font-size: 0.85em; }
   .score-badge { color: var(--accent); font-size: 0.9em; }
   .top-code-wrap { min-width: 0; display: inline-flex; align-items: center; justify-content: center; gap: 5px; color: var(--text-muted); overflow: hidden; }
@@ -57,7 +67,7 @@
   .top-question-code { min-width: 0; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; letter-spacing: 0.01em; color: var(--primary); }
   .copy-code-btn { flex: 0 0 auto; border: 1px solid #d5dbdb; background: #fff; color: var(--primary); border-radius: 999px; padding: 2px 7px; font-size: 0.78em; font-weight: 700; cursor: pointer; }
   .copy-code-btn:active { transform: translateY(1px); }
-  #quiz-view { display: flex; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
+  #quiz-view { display: none; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
   .quiz-content { padding: 10px 15px; flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
   .pdf-action-area { background: #f8f9fa; border-top: 1px solid #e6e9ec; padding: 5px 8px; flex-shrink: 0; }
@@ -141,10 +151,21 @@
   }
 </style>
 </head>
-<body>
+<body class="student-start-active">
 
 <div class="container">
   <div id="practice-title" class="practice-title">2025-26 年度 中三第三學期(甲部)短答練習</div>
+  <div id="student-start-view" class="student-start-view">
+    <div class="student-start-card">
+      <h2>開始練習</h2>
+      <p class="student-start-help">建議先填寫學生證編號，提交成績時可直接確認。留空亦可開始。</p>
+      <label class="student-id-label" for="student-id-input">學生證編號（建議填寫）</label>
+      <input id="student-id-input" class="student-id-input" type="text" inputmode="text" maxlength="9" autocomplete="off" autocapitalize="characters" placeholder="例如 20255001F">
+      <div id="student-id-error" class="student-id-error" role="alert"></div>
+      <button type="button" id="btn-start-practice" class="main-btn student-start-btn" onclick="startPractice()">開始</button>
+    </div>
+  </div>
+
   <div class="top-info">
     <span id="p-text" class="progress-badge">載入中...</span>
     <span id="top-code-wrap" class="top-code-wrap" style="display:none;">
@@ -1520,7 +1541,7 @@ const TITLE = "2025-26 年度 中三第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"poly_add_sub","typeDef":{"key":"poly_add_sub","name":"多項式加減及去括號","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"第一個多項式 x^2 係數","b":"第一個多項式 x 係數","c":"第一個多項式常數項","d":"第二個多項式 x^2 係數","e":"第二個多項式 x 係數","f":"第二個多項式常數項","op":"+ 或 -"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"poly_add_sub","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-01-NA-16","source":""},"params":{}},{"qid":"q002","typeKey":"binomial_expand","typeDef":{"key":"binomial_expand","name":"兩個二項式展開","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)(cx+d) 的 a","b":"(ax+b)(cx+d) 的 b","c":"(ax+b)(cx+d) 的 c","d":"(ax+b)(cx+d) 的 d","square":"false"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-02-NA-17","source":""},"params":{}},{"qid":"q003","typeKey":"s3t3_square_expand","typeDef":{"key":"s3t3_square_expand","name":"完全平方公式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)^2 的 a","b":"(ax+b)^2 的 b","square":"固定 true"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","defaultParams":{"square":true},"answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-03-NA-17","source":""},"params":{}},{"qid":"q004","typeKey":"s3t3_zero_exp","typeDef":{"key":"s3t3_zero_exp","name":"零指數定律","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"zeroCase":"固定 true","base":"非零整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"exp_law","defaultParams":{"zeroCase":true},"code":"LSC-2526-S3-T3-04-NA-5","source":""},"params":{}},{"qid":"q005","typeKey":"factor_diff_sq","typeDef":{"key":"factor_diff_sq","name":"平方差因式分解","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"ax 的 a","b":"常數 b，題目為 (ax)^2-b^2"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_diff_sq","code":"LSC-2526-S3-T3-05-NA-18","source":""},"params":{}},{"qid":"q006","typeKey":"factor_cross","typeDef":{"key":"factor_cross","name":"十字相乘法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"第一個因式 x 係數","b":"第一個因式常數","c":"第二個因式 x 係數","d":"第二個因式常數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_cross","code":"LSC-2526-S3-T3-06-NA-19","source":""},"params":{}},{"qid":"q007","typeKey":"sci_notation","typeDef":{"key":"sci_notation","name":"科學記數法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"scientificNotation","params_schema":{"mantissa":"1 ≤ a < 10","exponent":"10 的指數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"scientificNotation","generator":"sci_notation","code":"LSC-2526-S3-T3-07-NA-20","source":""},"params":{}},{"qid":"q008","typeKey":"solve_ineq","typeDef":{"key":"solve_ineq","name":"一元一次不等式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"inequality","params_schema":{"a":"x 係數，可為負數","b":"常數項","boundary":"答案邊界值","op":"原不等式方向"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"inequality","generator":"solve_ineq","code":"LSC-2526-S3-T3-08-NA-21","source":""},"params":{}},{"qid":"q009","typeKey":"triangle_center","typeDef":{"key":"triangle_center","name":"三角形四心","category":"幾何","difficulty":2,"grade":"s3","term":"3","topicKey":"geometry","topicName":"幾何","type":"choice","checkType":"choiceKey","params_schema":{"center":"circumcenter / incenter / centroid / orthocenter","shapeKey":"acute-wide / acute-left / acute-right / acute-tall / acute-low-left / acute-low-right"},"options":[{"key":"circumcenter","label":"外心"},{"key":"incenter","label":"內心"},{"key":"centroid","label":"形心"},{"key":"orthocenter","label":"垂心"}],"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"triangle_center","figure":{"kind":"triangle-center-svg"},"code":"LSC-2526-S3-T3-09-GE-5","source":""},"params":{}},{"qid":"q010","typeKey":"solid_sphere","typeDef":{"key":"solid_sphere","name":"球體量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 sphere","r":"半徑"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"sphere"},"code":"LSC-2526-S3-T3-10-ME-5","source":""},"params":{}},{"qid":"q011","typeKey":"solid_cylinder","typeDef":{"key":"solid_cylinder","name":"圓柱量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cylinder","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cylinder"},"code":"LSC-2526-S3-T3-11-ME-5","source":""},"params":{}},{"qid":"q012","typeKey":"solid_cone","typeDef":{"key":"solid_cone","name":"圓錐量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cone","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cone"},"code":"LSC-2526-S3-T3-12-ME-5","source":""},"params":{}},{"qid":"q013","typeKey":"sector_measure","typeDef":{"key":"sector_measure","name":"扇形量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"r":"半徑","angle":"圓心角","ask":"arc 或 area"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"sector_measure","code":"LSC-2526-S3-T3-13-ME-6","source":""},"params":{}},{"qid":"q014","typeKey":"pyth_cone","typeDef":{"key":"pyth_cone","name":"畢氏定理配合圓錐高與斜高","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"mode":"findL 或 findH","r":"半徑","h":"垂直高","l":"斜高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"pyth_cone","code":"LSC-2526-S3-T3-14-ME-7","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-14T09:47:56.653Z";
+const GENERATED_AT = "2026-07-14T15:20:34.579Z";
 const BANK_HASH = "b63_14_23868787";
 const PRESET_KEY = "s3_term3_part_a";
 const GRADE = "s3";
@@ -1646,6 +1667,7 @@ let backup = null;             // 單題重做備份
 let currentAttemptType = "initial";  // 'initial' or 'wrong_retry'
 let allAttempts = [];           // 全部正式嘗試紀錄
 let lastResult = null;          // 上次完成嘅嘗試結果（供 UI 展示）
+let currentStudentId = "";      // 同一分頁期間保留的學生證編號
 
 function compactQuestionCode(code) {
   const s = String(code || "");
@@ -1725,15 +1747,29 @@ if (window.addEventListener) {
   });
 }
 
-/* === 工具：localStorage 載入 / 儲存 === */
+/* === 工具：sessionStorage 載入 / 儲存 === */
 function storageKey() { return "assess_attempts_" + BANK_HASH; }
+function studentIdStorageKey() { return "assess_student_id_" + BANK_HASH; }
 function loadAttempts() {
-  try { allAttempts = JSON.parse(localStorage.getItem(storageKey()) || "[]"); }
+  try { allAttempts = JSON.parse(sessionStorage.getItem(storageKey()) || "[]"); }
   catch (e) { allAttempts = []; }
 }
 function saveAttempts() {
-  try { localStorage.setItem(storageKey(), JSON.stringify(allAttempts)); }
+  try { sessionStorage.setItem(storageKey(), JSON.stringify(allAttempts)); }
   catch (e) {}
+}
+function loadStudentId() {
+  try {
+    const saved = String(sessionStorage.getItem(studentIdStorageKey()) || "").trim().toUpperCase();
+    currentStudentId = STUDENT_ID_PATTERN.test(saved) ? saved : "";
+  } catch (e) { currentStudentId = ""; }
+}
+function saveStudentId(studentId) {
+  currentStudentId = String(studentId || "").trim().toUpperCase();
+  try {
+    if (currentStudentId) sessionStorage.setItem(studentIdStorageKey(), currentStudentId);
+    else sessionStorage.removeItem(studentIdStorageKey());
+  } catch (e) {}
 }
 
 /* === 統一判分：調用共用 validator registry === */
@@ -1949,11 +1985,12 @@ function sha256Hex(text) {
 }
 
 function promptStudentId() {
-  const sid = (prompt("請輸入你的學生證編號（" + STUDENT_ID_RULE_TEXT + "）") || "").trim().toUpperCase();
+  const sid = (prompt("請確認你的學生證編號（" + STUDENT_ID_RULE_TEXT + "）", currentStudentId) || "").trim().toUpperCase();
   if (!STUDENT_ID_PATTERN.test(sid)) {
     showToast("⚠️ 學生證編號格式錯誤：" + STUDENT_ID_RULE_TEXT);
     return null;
   }
+  saveStudentId(sid);
   return sid;
 }
 
@@ -1964,6 +2001,32 @@ function promptTeacherPin() {
     return null;
   }
   return pin;
+}
+
+function showStudentStartScreen() {
+  const input = document.getElementById("student-id-input");
+  document.body.classList.add("student-start-active");
+  document.getElementById("student-start-view").style.display = "flex";
+  document.getElementById("quiz-view").style.display = "none";
+  document.getElementById("result-view").style.display = "none";
+  document.getElementById("student-id-error").textContent = "";
+  input.value = currentStudentId;
+  if (input.focus) setTimeout(() => input.focus(), 0);
+}
+
+function startPractice() {
+  const input = document.getElementById("student-id-input");
+  const error = document.getElementById("student-id-error");
+  const sid = String(input.value || "").trim().toUpperCase();
+  input.value = sid;
+  if (sid && !STUDENT_ID_PATTERN.test(sid)) {
+    error.textContent = "格式錯誤：" + STUDENT_ID_RULE_TEXT;
+    if (input.focus) input.focus();
+    return;
+  }
+  error.textContent = "";
+  saveStudentId(sid);
+  initGame("all");
 }
 
 /* === 開始遊戲 === */
@@ -1990,6 +2053,8 @@ function initGame(mode) {
   answered = false;
   isSingleRetry = false;
   backup = null;
+  document.body.classList.remove("student-start-active");
+  document.getElementById("student-start-view").style.display = "none";
   document.getElementById("quiz-view").style.display = "flex";
   document.getElementById("result-view").style.display = "none";
   updatePartialSubmitButton();
@@ -2486,6 +2551,8 @@ function restoreFromBackup() {
 
 /* === 結果頁 === */
 function showResult() {
+  document.body.classList.remove("student-start-active");
+  document.getElementById("student-start-view").style.display = "none";
   document.getElementById("quiz-view").style.display = "none";
   document.getElementById("result-view").style.display = "flex";
   if (lastResult) {
@@ -2582,6 +2649,8 @@ function retrySingle(qid) {
   currSelectedChoice = null;
   currSelectedPoint = null;
   answered = false;
+  document.body.classList.remove("student-start-active");
+  document.getElementById("student-start-view").style.display = "none";
   document.getElementById("quiz-view").style.display = "flex";
   document.getElementById("result-view").style.display = "none";
   showQ();
@@ -2772,6 +2841,7 @@ document.addEventListener("keydown", function(e) {
 
 /* === 啟動 === */
 loadAttempts();
+loadStudentId();
 if (allAttempts.length > 0) {
   // 直接顯示上次結果（用戶可以再玩或重做錯題）
   lastResult = allAttempts[allAttempts.length - 1];
@@ -2783,7 +2853,7 @@ if (allAttempts.length > 0) {
   }
   showResult();
 } else {
-  initGame("all");
+  showStudentStartScreen();
 }
 </script>
 </body>
