@@ -17,6 +17,8 @@ let mathJaxSource = '';
 const target = `${base}/2526/s1/t3/part-a-01.html`;
 const cuboidTarget = `${base}/2526/s1/t2/part-a-01.html`;
 const profiles = [
+  { name: 'landscape-1010x720', viewport: { width: 1010, height: 720 } },
+  { name: 'desktop-1280x800', viewport: { width: 1280, height: 800 } },
   { name: 'desktop-1920x1080', viewport: { width: 1920, height: 1080 } },
   { name: 'phone-390x844', viewport: { width: 390, height: 844 } },
   { name: 'phone-390x700', viewport: { width: 390, height: 700 } },
@@ -211,15 +213,85 @@ async function runProfile(browser, profile) {
     assert(ratio >= 0.99, `${profile.name} ${typeKey} answer visibility ratio ${ratio}`);
   });
 
-  const landscape = await page.evaluate(() => {
-    const question = document.getElementById('question-scroll').getBoundingClientRect();
-    const answer = document.getElementById('answer-dock').getBoundingClientRect();
-    const keypad = document.getElementById('keypad-area').getBoundingClientRect();
-    return { questionRight: question.right, answerRight: answer.right, keypadLeft: keypad.left };
+  const layout = await page.evaluate(async () => {
+    const frames = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+    const settleQuestionMath = async () => {
+      const question = document.getElementById('q-text');
+      for (let attempt = 0; attempt < 60; attempt += 1) {
+        if (!question || question.dataset.mathJaxRendered === 'true') return;
+        await new Promise((resolve) => setTimeout(resolve, 10));
+      }
+    };
+    if (keypadRaised) {
+      toggleKeypadPosition();
+      await new Promise((resolve) => setTimeout(resolve, 260));
+    }
+    const compact = QUESTIONS.find((question) => question.typeKey === 'neg_power') || QUESTIONS.find((question) => question.type === 'text');
+    qList = [compact]; currIdx = 0; showQ(); await settleQuestionMath(); await frames();
+    const rect = (id) => document.getElementById(id).getBoundingClientRect();
+    const quiz = rect('quiz-view');
+    const question = rect('question-scroll');
+    const card = document.querySelector('.question-card').getBoundingClientRect();
+    const answer = rect('answer-dock');
+    const control = rect('control-dock');
+    const keypad = rect('keypad-area');
+    const pdf = rect('pdf-action-area');
+    const actionBefore = rect('action-area').top;
+    currInput = String(compact.correctAnswer); renderInputDisplay(); checkAns(); await frames();
+    const actionAfter = rect('action-area');
+    const pdfAfter = rect('pdf-action-area');
+    const keypadHidden = getComputedStyle(document.getElementById('keypad')).visibility === 'hidden';
+
+    const longQuestion = QUESTIONS.find((question) => question.typeKey === 'congruence');
+    let longContent = null;
+    if (longQuestion) {
+      qList = [longQuestion]; currIdx = 0; showQ(); await settleQuestionMath(); await frames();
+      const longScroll = document.getElementById('question-scroll');
+      const longAnswer = rect('answer-dock');
+      longContent = {
+        clientHeight: longScroll.clientHeight,
+        scrollHeight: longScroll.scrollHeight,
+        overflowY: getComputedStyle(longScroll).overflowY,
+        answerWithinQuiz: longAnswer.bottom <= rect('quiz-view').bottom + 0.5,
+      };
+    }
+    return {
+      orientationLandscape: matchMedia('(orientation: landscape)').matches,
+      quizDisplay: getComputedStyle(document.getElementById('quiz-view')).display,
+      bottomDockDisplay: getComputedStyle(document.getElementById('bottom-dock')).display,
+      questionRight: question.right,
+      answerRight: answer.right,
+      keypadLeft: keypad.left,
+      cardToAnswer: answer.top - card.bottom,
+      questionToAnswer: answer.top - question.bottom,
+      controlToKeypad: keypad.top - control.top,
+      controlToPdf: pdf.top - control.top,
+      pdfToAction: actionAfter.top - pdfAfter.bottom,
+      actionDelta: actionAfter.top - actionBefore,
+      keypadHidden,
+      longContent,
+      quizTop: quiz.top,
+      pdfTop: pdf.top,
+    };
   });
-  if (profile.viewport.width > profile.viewport.height && profile.viewport.width >= 600) {
-    assert(landscape.questionRight < landscape.keypadLeft && landscape.answerRight < landscape.keypadLeft,
-      `${profile.name} is not left-question/right-keypad: ${JSON.stringify(landscape)}`);
+  if (profile.viewport.width > profile.viewport.height) {
+    assert(layout.orientationLandscape && layout.quizDisplay === 'grid', `${profile.name} did not use orientation landscape grid`);
+    assert(layout.questionRight < layout.keypadLeft && layout.answerRight < layout.keypadLeft,
+      `${profile.name} is not left-question/right-keypad: ${JSON.stringify(layout)}`);
+    assert(layout.cardToAnswer >= -0.5 && layout.cardToAnswer <= 30,
+      `${profile.name} compact question/answer gap ${layout.cardToAnswer}`);
+    assert(Math.abs(layout.questionToAnswer) < 0.5, `${profile.name} question row/answer gap ${layout.questionToAnswer}`);
+    assert(Math.abs(layout.controlToKeypad) < 0.5, `${profile.name} control top/keypad gap ${layout.controlToKeypad}`);
+    assert(layout.controlToPdf >= 121.5 && layout.controlToPdf <= 122.5,
+      `${profile.name} control top/PDF gap is not the single keypad slot: ${layout.controlToPdf}`);
+    assert(layout.keypadHidden && Math.abs(layout.pdfToAction) < 0.5,
+      `${profile.name} hidden keypad PDF/action gap ${JSON.stringify(layout)}`);
+    assert(Math.abs(layout.actionDelta) < 0.5, `${profile.name} action moved when keypad hid: ${layout.actionDelta}`);
+    assert(layout.longContent && layout.longContent.answerWithinQuiz && layout.longContent.overflowY === 'auto',
+      `${profile.name} long question scrolling failed: ${JSON.stringify(layout.longContent)}`);
+  } else {
+    assert(!layout.orientationLandscape && layout.quizDisplay === 'flex' && layout.bottomDockDisplay === 'flex',
+      `${profile.name} portrait bottom dock changed: ${JSON.stringify(layout)}`);
   }
 
   const answerRendering = await page.evaluate(async () => {
@@ -268,7 +340,7 @@ async function runProfile(browser, profile) {
   const popupState = null;
   assert(errors.length === 0, `${profile.name} console/page errors: ${errors.join(' | ')}`);
   await context.close();
-  return { profile: profile.name, controls, action, startCls, raisedVisibility, landscape, answerRendering, popupState, errors };
+  return { profile: profile.name, controls, action, startCls, raisedVisibility, layout, answerRendering, popupState, errors };
 }
 
 (async () => {

@@ -39,6 +39,16 @@ function readExercise(exercise) {
   return fs.readFileSync(abs, "utf8");
 }
 
+function hasCompactLandscapeContract(html) {
+  return /@media \(orientation: landscape\)\s*\{/.test(html) &&
+    !/@media \(orientation: landscape\)[^{]*(?:min-width|max-width|hover|pointer)/.test(html) &&
+    /grid-template-rows:\s*auto auto minmax\(0, 1fr\)/.test(html) &&
+    /\.control-dock\s*\{[^}]*justify-content:\s*flex-start/.test(html) &&
+    /\.keypad-area\s*\{[^}]*order:\s*1/.test(html) &&
+    /\.pdf-action-area\s*\{[^}]*order:\s*2/.test(html) &&
+    /\.action-area\s*\{[^}]*order:\s*3/.test(html);
+}
+
 function extractConstJson(html, name) {
   const re = new RegExp(`const\\s+${name}\\s*=\\s*([\\s\\S]*?);\\n`);
   const match = html.match(re);
@@ -407,6 +417,7 @@ async function collectStep0() {
       runtimeSeedRaw,
       answerKeyForm: "runtime-generated question object fields: correctAnswer/displayAnswer/answers",
       nextQuestionLimit: "showQ() calls finishGame() when currIdx >= qList.length; nextQ() increments currIdx then calls showQ()",
+      compactLandscapeContract: hasCompactLandscapeContract(html),
       questions: specs.map((spec, index) => ({
         number: index + 1,
         typeKey: spec.typeKey,
@@ -646,7 +657,8 @@ async function main() {
     step2,
   };
   console.log(JSON.stringify(report, null, 2));
-  if (step1.fail > 0 || step1.randomnessFailures.length > 0) process.exitCode = 1;
+  const landscapeFailures = step0.filter((item) => !item.compactLandscapeContract);
+  if (step1.fail > 0 || step1.randomnessFailures.length > 0 || landscapeFailures.length > 0) process.exitCode = 1;
 }
 
 main().catch((error) => {
