@@ -102,9 +102,19 @@ check('answer controls remain visible and become locked after checking',
 check('solution drawer has its own bounded scrolling area',
   /\.solution-box\s*\{[^}]*max-height:[^}]*overflow:\s*auto/.test(template));
 check('landscape uses a left question-answer column and right control column',
-  /@media \(orientation: landscape\)[\s\S]*\.question-scroll\s*\{[^}]*grid-column:\s*1/.test(template) &&
+  /@media \(orientation: landscape\)\s*\{[\s\S]*\.question-scroll\s*\{[^}]*grid-column:\s*1/.test(template) &&
   /\.answer-dock\s*\{[^}]*grid-column:\s*1/.test(template) &&
   /\.control-dock\s*\{[^}]*grid-column:\s*2/.test(template));
+check('landscape routing is orientation-only and keeps portrait base rules untouched',
+  /@media \(orientation: landscape\)\s*\{/.test(template) &&
+  !/@media \(orientation: landscape\)[^{]*(?:min-width|max-width|hover|pointer)/.test(template));
+check('landscape rows are content-driven and aligned to the top',
+  /#quiz-view\s*\{[^}]*grid-template-rows:\s*auto auto minmax\(0, 1fr\)[^}]*align-content:\s*start/.test(template));
+check('landscape control order is keypad, PDF, then fixed answer action',
+  /\.control-dock\s*\{[^}]*grid-row:\s*1 \/ -1[^}]*justify-content:\s*flex-start/.test(template) &&
+  /\.keypad-area\s*\{[^}]*order:\s*1/.test(template) &&
+  /\.pdf-action-area\s*\{[^}]*order:\s*2/.test(template) &&
+  /\.action-area\s*\{[^}]*order:\s*3/.test(template));
 check('layout avoids fixed and absolute positioning for dock elements',
   !/\.(?:bottom-dock|answer-dock|control-dock|action-area|keypad-area)\s*\{[^}]*position:\s*(?:fixed|absolute)/.test(template));
 check('result page routes all-retry through confirmation',
@@ -132,6 +142,12 @@ for (const rel of exercisePaths) {
     /env\(safe-area-inset-bottom\)/.test(html) && /id="btn-shift-keypad"/.test(html));
   check(`${rel} places action-area after keypad-area`,
     /id="keypad-area"[\s\S]{0,300}<\/div>\s*<div class="action-area" id="action-area">[\s\S]{0,500}id="btn-next"/.test(html));
+  check(`${rel} includes orientation-only compact landscape rows`,
+    /@media \(orientation: landscape\)\s*\{[\s\S]*grid-template-rows:\s*auto auto minmax\(0, 1fr\)/.test(html));
+  check(`${rel} orders landscape keypad before adjacent PDF and action areas`,
+    /\.keypad-area\s*\{[^}]*order:\s*1/.test(html) &&
+    /\.pdf-action-area\s*\{[^}]*order:\s*2/.test(html) &&
+    /\.action-area\s*\{[^}]*order:\s*3/.test(html));
   check(`${rel} includes fresh PDF seed path`, /const seed = AssessPDF\.createSnapshotSeed\(\)/.test(html));
   check(`${rel} includes collapse controls helper`, /function collapseAnswerControlsAfterCheck\(\)/.test(html));
 }

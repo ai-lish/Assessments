@@ -78,6 +78,16 @@ check('bottom dock places fixed-height keypad before the fixed action slot',
 check('keypad raise state applies to the whole bottom dock',
   /getElementById\("bottom-dock"\)[\s\S]{0,400}classList\.toggle\("keypad-raised", keypadRaised\)/.test(template) &&
   /visualViewport\.height/.test(template));
+check('landscape compact mode is selected by orientation only',
+  /@media \(orientation: landscape\)\s*\{/.test(template) &&
+  !/@media \(orientation: landscape\)[^{]*(?:min-width|max-width|hover|pointer)/.test(template));
+check('landscape compact mode top-aligns content-driven left rows',
+  /#quiz-view\s*\{[^}]*grid-template-rows:\s*auto auto minmax\(0, 1fr\)[^}]*align-content:\s*start/.test(template) &&
+  /\.control-dock\s*\{[^}]*justify-content:\s*flex-start/.test(template));
+check('landscape fixed keypad slot sits above adjacent PDF and action controls',
+  /\.keypad-area\s*\{[^}]*order:\s*1/.test(template) &&
+  /\.pdf-action-area\s*\{[^}]*order:\s*2/.test(template) &&
+  /\.action-area\s*\{[^}]*order:\s*3/.test(template));
 
 const sample = pdf.generateSnapshotFromSpecs([], 'ux-six-empty', { title: 'test' });
 const preview = pdf.renderPrintDocument(sample, {});
