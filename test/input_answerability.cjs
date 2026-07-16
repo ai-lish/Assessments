@@ -55,11 +55,43 @@ const sandbox = {};
 vm.runInNewContext(
   'const INPUT_KEYPAD_CONFIG = ' + JSON.stringify(keypadConfig) + ';\n' +
   extractFunction(template, 'keypadKeysForQuestion') + '\n' +
-  'globalThis.keypadKeysForQuestion = keypadKeysForQuestion;',
+  extractFunction(template, 'keypadVariableKeysForQuestion') + '\n' +
+  'globalThis.keypadKeysForQuestion = keypadKeysForQuestion;\n' +
+  'globalThis.keypadVariableKeysForQuestion = keypadVariableKeysForQuestion;',
   sandbox
 );
 const keypadKeysForQuestion = sandbox.keypadKeysForQuestion;
+const keypadVariableKeysForQuestion = sandbox.keypadVariableKeysForQuestion;
 const baseKeys = new Set(keypadConfig.baseRows.flat().filter((key) => key !== null));
+
+function makeButtonSandbox() {
+  const buttonSandbox = {
+    document: {
+      createElement(tagName) {
+        return {
+          tagName,
+          className: '',
+          style: {},
+          setAttribute() {},
+        };
+      },
+    },
+  };
+  vm.runInNewContext(
+    'let answered = false;\n' +
+    'let currInput = "";\n' +
+    'function renderInputDisplay() {}\n' +
+    'function del() {}\n' +
+    'function clearInput() {}\n' +
+    extractFunction(template, 'kp') + '\n' +
+    extractFunction(template, 'makeKeypadButton') + '\n' +
+    'globalThis.makeKeypadButton = makeKeypadButton;\n' +
+    'globalThis.readInput = () => currInput;\n' +
+    'globalThis.resetInput = () => { currInput = ""; };',
+    buttonSandbox
+  );
+  return buttonSandbox;
+}
 
 function buildQuestion(def) {
   const generatorKey = def.generator || def.key;
@@ -104,11 +136,18 @@ check('base keys include digits/decimal plus fixed operators and controls',
 check('template keeps raw slash for physical-keyboard fraction input', /else if \(k === "\/"\) \{ kp\("\/"\)/.test(template));
 check('template has structured preview helpers for fractions and radicals',
   /function topLevelSlashIndex\(/.test(template) && /function renderRadicals\(/.test(template) && /function expressionToLatex\(/.test(template));
+check('variable-key styling is display-only italic CSS',
+  /\.key\.key-variable\s*\{\s*font-style:\s*italic;\s*\}/.test(template));
+check('variable-key metadata covers the complete scanned algebra set',
+  JSON.stringify(keypadConfig.variableKeys) === JSON.stringify(['x', 'y', 'a', 'b', 'k']));
+check('multiplication-letter validators are explicitly non-variable contexts',
+  JSON.stringify(keypadConfig.nonVariableLetterValidators) === JSON.stringify(['primeFactor', 'scientificNotation']));
 
 let maximum = { key: '', count: 0, keys: [] };
 for (const def of bank.data) {
   const q = buildQuestion(def);
   const supplemental = Array.from(keypadKeysForQuestion(q));
+  const variableKeys = Array.from(keypadVariableKeysForQuestion(q));
   const availableKeys = new Set([...baseKeys, ...supplemental]);
   const answers = inputReadyAnswers(q);
 
@@ -127,6 +166,11 @@ for (const def of bank.data) {
     Boolean(typedAnswer), 'answers=' + JSON.stringify(answers) + ', keys=' + Array.from(availableKeys).join(''));
 
   const answerChars = new Set(charsNeeded(q.correctAnswer));
+  const expectedVariableKeys = keypadConfig.variableKeys.filter((letter) => answerChars.has(letter) &&
+    !['primeFactor', 'scientificNotation'].includes(q.validator));
+  check(def.key + ' variable styling matches answer semantics',
+    JSON.stringify(variableKeys) === JSON.stringify(expectedVariableKeys),
+    'actual=' + variableKeys.join('') + ', expected=' + expectedVariableKeys.join(''));
   if (['a', 'b', 'k'].some((letter) => answerChars.has(letter))) {
     check(def.key + ' a/b/k answer omits unrelated x/y keys', !availableKeys.has('x') && !availableKeys.has('y'));
   }
@@ -150,6 +194,30 @@ check('pi context exposes pi and slash', hasKeys('solid_cone', ['π', '/']));
 check('all non-choice contexts expose four fixed operators',
   bank.data.filter((def) => def.type !== 'choice').every((def) => hasKeys(def.key, ['+', '-', '×', '÷'])));
 check('maximum keypad remains within three rows', maximum.count <= 15, JSON.stringify(maximum));
+
+const buttonSandbox = makeButtonSandbox();
+for (const variableKey of keypadConfig.variableKeys) {
+  buttonSandbox.resetInput();
+  const button = buttonSandbox.makeKeypadButton(variableKey, new Set([variableKey]));
+  button.onclick();
+  check(variableKey + ' key face is italic-classed', button.className === 'key key-variable', button.className);
+  check(variableKey + ' key still inputs its original ASCII code point',
+    buttonSandbox.readInput() === variableKey && buttonSandbox.readInput().codePointAt(0) === variableKey.codePointAt(0),
+    JSON.stringify(buttonSandbox.readInput()));
+}
+for (const uprightKey of ['×', '÷', '+', '-', 'π', '√', '±', 'S', 'A', 'R', 'H']) {
+  const button = buttonSandbox.makeKeypadButton(uprightKey, new Set());
+  check(uprightKey + ' non-variable key face remains upright', button.className === 'key', button.className);
+}
+check('prime-factor multiplication x remains upright',
+  keypadVariableKeysForQuestion(byKey.prime_factor).size === 0 && hasKeys('prime_factor', ['x']));
+check('scientific-notation multiplication x remains upright',
+  keypadVariableKeysForQuestion(byKey.sci_notation).size === 0 && hasKeys('sci_notation', ['x', '×']));
+for (const typeKey of ['solve_ineq', 'alg_simplify_2var']) {
+  const question = byKey[typeKey];
+  check(typeKey + ' canonical variable answer remains accepted', validators.checkAnswer(question, question.correctAnswer));
+  check(typeKey + ' wrong answer remains rejected', !validators.checkAnswer(question, '0'));
+}
 
 console.log(`\nMost crowded keypad: ${maximum.key} (${maximum.count} supplemental keys: ${maximum.keys.join(' ')})`);
 console.log(`\n=== Summary: ${passed} passed, ${failures.length} failed ===`);
