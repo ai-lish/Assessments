@@ -109,6 +109,7 @@
   .keypad-area.keypad-unavailable .key-grid,
   .keypad-area.keypad-input-hidden .key-grid { visibility: hidden; pointer-events: none; }
   .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
+  .key.key-variable { font-style: italic; }
   .key-spacer { height: 34px; visibility: hidden; pointer-events: none; }
   .key:active { background: #eee; transform: translateY(2px); }
   .main-btn { width: 100%; padding: 11px; border: none; border-radius: 8px; font-size: 1.05em; font-weight: 600; color: white; cursor: pointer; margin-bottom: 6px; }
@@ -1574,7 +1575,7 @@ const TITLE = "2025-26 年度 中二第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"alg_simplify_2var","typeDef":{"key":"alg_simplify_2var","name":"代數化簡（兩變數）","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"a1":"第一組 a 係數 2..9","b1":"第一組 b 係數 2..9","a2":"第二組 a 係數 2..9","b2":"第二組 b 係數 2..9","op":"+/-"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"alg_simplify_2var","code":"LSC-2526-S2-T3-01-NA-22","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"-2a-4b"},"params":{}},{"qid":"q002","typeKey":"s2t3_square_expand_2var","typeDef":{"key":"s2t3_square_expand_2var","name":"完全平方公式（兩變數）","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"b":"(x+by)^2 的 b，整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"binomial_expand","defaultParams":{"twoVar":true},"code":"LSC-2526-S2-T3-02-NA-17","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"x^2+4xy+4y^2"},"params":{}},{"qid":"q003","typeKey":"solve_eq_fraction","typeDef":{"key":"solve_eq_fraction","name":"解一元一次方程（分式）","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numericOrFraction","params_schema":{"mode":"固定 fraction_mixed，隨機生成 D 或 B 形式","form":"D=ax=b；B=(ax)/b=c","a":"非零整數 x 係數","b":"D 的右側整數或 B 的非零分母","c":"B 的非零右側整數"},"prefix":"x = ","answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numericOrFraction","generator":"solve_eq","defaultParams":{"mode":"fraction_mixed"},"code":"LSC-2526-S2-T3-03-NA-7","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"x=3"},"params":{}},{"qid":"q004","typeKey":"solve_eq_bracket","typeDef":{"key":"solve_eq_bracket","name":"解一元一次方程（括號）","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numericOrFraction","params_schema":{"mode":"固定 bracket_mixed，隨機生成 bracket 或 C 形式","form":"bracket=k(m-x)=n；C=(x+a)/b=c","k":"括號外係數 2..6","m":"括號內常數 -5..6","xVal":"固定生成的解","a":"C 的非零整數常數","b":"C 的非零分母","c":"C 的非零右側整數"},"prefix":"x = ","answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numericOrFraction","generator":"solve_eq","defaultParams":{"mode":"bracket_mixed"},"code":"LSC-2526-S2-T3-04-NA-7","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"x=-3"},"params":{}},{"qid":"q005","typeKey":"factor_neg_common","typeDef":{"key":"factor_neg_common","name":"因式分解（負公因式）","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"k":"公因式係數 1..4","d1":"最高次項次數 2 或 3"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"factor_neg_common","code":"LSC-2526-S2-T3-05-NA-23","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"-x(x^2+1)"},"params":{}},{"qid":"q006","typeKey":"s2t3_factor_diff_sq","typeDef":{"key":"s2t3_factor_diff_sq","name":"平方差因式分解（中二）","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"ax 的 a","b":"常數 b，題目為 (ax)^2-b^2"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_diff_sq","code":"LSC-2526-S2-T3-06-NA-18","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"(2x+3)(2x-3)"},"params":{}},{"qid":"q007","typeKey":"s2t3_sig_fig","typeDef":{"key":"s2t3_sig_fig","name":"有效數字（中二）","category":"度量","difficulty":1,"grade":"s2","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"textExact","params_schema":{"baseNum":"示範數 9 選 1","sf":"2..3 位有效數字"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"sig_fig","code":"LSC-2526-S2-T3-07-ME-1","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"3"},"params":{}},{"qid":"q008","typeKey":"round_decimal","typeDef":{"key":"round_decimal","name":"捨入至指定小數位","category":"度量","difficulty":2,"grade":"s2","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"numeric","params_schema":{"coeff":"π 前係數 0.70..0.99","decimals":"小數位數 1..2","mode":"round_up / round_down / nearest"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"round_decimal","code":"LSC-2526-S2-T3-08-ME-8","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"3.0"},"params":{}},{"qid":"q009","typeKey":"combine_fractions","typeDef":{"key":"combine_fractions","name":"分式合併（分母含變數）","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"m":"第二個分母的 k 倍數 2..9","c":"第二個分子常數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"combine_fractions","code":"LSC-2526-S2-T3-09-NA-24","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"(6a+5)/(6k)"},"params":{}},{"qid":"q010","typeKey":"s2t3_exp_law","typeDef":{"key":"s2t3_exp_law","name":"指數律（中二）","category":"數與代數","difficulty":1,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"a":"整數 2..6","b":"整數 2..6"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"exp_law","code":"LSC-2526-S2-T3-10-NA-5","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"x^12"},"params":{}},{"qid":"q011","typeKey":"coef_exp_div","typeDef":{"key":"coef_exp_div","name":"係數與指數相除","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"expD":"分母指數 2..4","expN":"分子指數（大於 expD）","rNum":"約分後係數分子 1..9","rDen":"約分後係數分母 2..9","scale":"放大倍數 2..5"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"coef_exp_div","code":"LSC-2526-S2-T3-11-NA-25","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"3x^2/2"},"params":{}},{"qid":"q012","typeKey":"ratio_three","typeDef":{"key":"ratio_three","name":"三項比例","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"aB":"a:b 中 a 的值 2..9","bB":"a:b 中 b 的值 2..9","aC":"a:c 中 a 的值 2..9","cC":"a:c 中 c 的值 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"ratio_three","code":"LSC-2526-S2-T3-12-NA-26","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"9:21:4"},"params":{}},{"qid":"q013","typeKey":"discount","typeDef":{"key":"discount","name":"折扣售價","category":"度量","difficulty":1,"grade":"s2","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"numeric","params_schema":{"price":"原價 $5..$100","disTen":"折數（X 折）5..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"discount","code":"LSC-2526-S2-T3-13-ME-9","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"$5.4"},"params":{}},{"qid":"q014","typeKey":"profit_pct","typeDef":{"key":"profit_pct","name":"盈虧百分率","category":"度量","difficulty":2,"grade":"s2","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"numeric","params_schema":{"cost":"買入價（$100 倍數）","pct":"盈虧率（5 的倍數）","isProfit":"true=盈利, false=虧損"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"profit_pct","code":"LSC-2526-S2-T3-14-ME-10","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"20%"},"params":{}},{"qid":"q015","typeKey":"square_root_pm","typeDef":{"key":"square_root_pm","name":"平方根（正負兩根）","category":"數與代數","difficulty":2,"grade":"s2","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"textExact","params_schema":{"n":"整數 1..999，可為完全平方數或需化簡嘅根式"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"textExact","generator":"square_root_pm","code":"LSC-2526-S2-T3-15-NA-27","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"±10"},"params":{}},{"qid":"q016","typeKey":"cuboid_volume_cube","typeDef":{"key":"cuboid_volume_cube","name":"立方體體積","category":"度量","difficulty":1,"grade":"s2","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"side":"邊長 cm 2..10"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"cuboid_volume","defaultParams":{"cube":true},"answerSpec":{"unit":"cm^3","allowUnit":true},"code":"LSC-2526-S2-T3-16-ME-4","source":"s2-t3-marking-scheme-2026-07-05","referenceAnswer":"125 cm^3 或 125"},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-15T04:56:51.486Z";
+const GENERATED_AT = "2026-07-16T18:02:28.388Z";
 const BANK_HASH = "b63_16_b1e7896c";
 const PRESET_KEY = "s2_term3_part_a";
 const GRADE = "s2";
@@ -1588,6 +1589,8 @@ const INPUT_KEYPAD_CONFIG = {
   "fixedRows": [["+", "-"], ["×", "÷"], ["⌫", "C"]],
   "constantOperators": ["+", "-", "×", "÷"],
   "controlKeys": ["⌫", "C"],
+  "variableKeys": ["x", "y", "a", "b", "k"],
+  "nonVariableLetterValidators": ["primeFactor", "scientificNotation"],
   "keyOrder": ["+", "×", "÷", "^", "(", ")", "/", "%", "π", "√", "±", ",", ":", ">", "<", "=", "≥", "≤", "x", "y", "a", "b", "k", "S", "A", "R", "H", "*"],
   "validator": {
     "numericOrFraction": ["/"],
@@ -1961,7 +1964,16 @@ function keypadKeysForQuestion(q) {
   );
 }
 
-function makeKeypadButton(keyValue) {
+function keypadVariableKeysForQuestion(q) {
+  if (!q || q.type === "choice") return new Set();
+  const config = INPUT_KEYPAD_CONFIG;
+  const validator = q.validator || q.checkType;
+  if ((config.nonVariableLetterValidators || []).includes(validator)) return new Set();
+  const variableKeys = new Set(config.variableKeys || []);
+  return new Set(String(q.correctAnswer || "").split("").filter((character) => variableKeys.has(character)));
+}
+
+function makeKeypadButton(keyValue, variableKeys) {
   if (keyValue === null) {
     const spacer = document.createElement("span");
     spacer.className = "key-spacer";
@@ -1970,7 +1982,7 @@ function makeKeypadButton(keyValue) {
   }
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "key";
+  button.className = "key" + (variableKeys && variableKeys.has(keyValue) ? " key-variable" : "");
   button.textContent = keyValue === "-" ? "−" : keyValue;
   if (keyValue === "⌫" || keyValue === "C") {
     button.style.background = "#fee";
@@ -1994,11 +2006,12 @@ function renderQuestionKeypad(q) {
   const config = INPUT_KEYPAD_CONFIG;
   const fixedKeys = new Set(config.constantOperators.concat(config.controlKeys));
   const extras = keypadKeysForQuestion(q).filter((key) => !fixedKeys.has(key));
+  const variableKeys = keypadVariableKeysForQuestion(q);
   const extraSlots = [[], [], []];
   extras.forEach((key, index) => extraSlots[index % extraSlots.length].push(key));
   config.baseRows.forEach((baseRow, rowIndex) => {
-    baseRow.concat(config.fixedRows[rowIndex], extraSlots[rowIndex]).forEach((keyValue) => area.appendChild(makeKeypadButton(keyValue)));
-    for (let i = extraSlots[rowIndex].length; i < 3; i++) area.appendChild(makeKeypadButton(null));
+    baseRow.concat(config.fixedRows[rowIndex], extraSlots[rowIndex]).forEach((keyValue) => area.appendChild(makeKeypadButton(keyValue, variableKeys)));
+    for (let i = extraSlots[rowIndex].length; i < 3; i++) area.appendChild(makeKeypadButton(null, variableKeys));
   });
   setKeypadVisible(true);
 }

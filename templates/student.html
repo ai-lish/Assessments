@@ -109,6 +109,7 @@
   .keypad-area.keypad-unavailable .key-grid,
   .keypad-area.keypad-input-hidden .key-grid { visibility: hidden; pointer-events: none; }
   .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
+  .key.key-variable { font-style: italic; }
   .key-spacer { height: 34px; visibility: hidden; pointer-events: none; }
   .key:active { background: #eee; transform: translateY(2px); }
   .main-btn { width: 100%; padding: 11px; border: none; border-radius: 8px; font-size: 1.05em; font-weight: 600; color: white; cursor: pointer; margin-bottom: 6px; }
@@ -319,6 +320,8 @@ const INPUT_KEYPAD_CONFIG = {
   "fixedRows": [["+", "-"], ["×", "÷"], ["⌫", "C"]],
   "constantOperators": ["+", "-", "×", "÷"],
   "controlKeys": ["⌫", "C"],
+  "variableKeys": ["x", "y", "a", "b", "k"],
+  "nonVariableLetterValidators": ["primeFactor", "scientificNotation"],
   "keyOrder": ["+", "×", "÷", "^", "(", ")", "/", "%", "π", "√", "±", ",", ":", ">", "<", "=", "≥", "≤", "x", "y", "a", "b", "k", "S", "A", "R", "H", "*"],
   "validator": {
     "numericOrFraction": ["/"],
@@ -692,7 +695,16 @@ function keypadKeysForQuestion(q) {
   );
 }
 
-function makeKeypadButton(keyValue) {
+function keypadVariableKeysForQuestion(q) {
+  if (!q || q.type === "choice") return new Set();
+  const config = INPUT_KEYPAD_CONFIG;
+  const validator = q.validator || q.checkType;
+  if ((config.nonVariableLetterValidators || []).includes(validator)) return new Set();
+  const variableKeys = new Set(config.variableKeys || []);
+  return new Set(String(q.correctAnswer || "").split("").filter((character) => variableKeys.has(character)));
+}
+
+function makeKeypadButton(keyValue, variableKeys) {
   if (keyValue === null) {
     const spacer = document.createElement("span");
     spacer.className = "key-spacer";
@@ -701,7 +713,7 @@ function makeKeypadButton(keyValue) {
   }
   const button = document.createElement("button");
   button.type = "button";
-  button.className = "key";
+  button.className = "key" + (variableKeys && variableKeys.has(keyValue) ? " key-variable" : "");
   button.textContent = keyValue === "-" ? "−" : keyValue;
   if (keyValue === "⌫" || keyValue === "C") {
     button.style.background = "#fee";
@@ -725,11 +737,12 @@ function renderQuestionKeypad(q) {
   const config = INPUT_KEYPAD_CONFIG;
   const fixedKeys = new Set(config.constantOperators.concat(config.controlKeys));
   const extras = keypadKeysForQuestion(q).filter((key) => !fixedKeys.has(key));
+  const variableKeys = keypadVariableKeysForQuestion(q);
   const extraSlots = [[], [], []];
   extras.forEach((key, index) => extraSlots[index % extraSlots.length].push(key));
   config.baseRows.forEach((baseRow, rowIndex) => {
-    baseRow.concat(config.fixedRows[rowIndex], extraSlots[rowIndex]).forEach((keyValue) => area.appendChild(makeKeypadButton(keyValue)));
-    for (let i = extraSlots[rowIndex].length; i < 3; i++) area.appendChild(makeKeypadButton(null));
+    baseRow.concat(config.fixedRows[rowIndex], extraSlots[rowIndex]).forEach((keyValue) => area.appendChild(makeKeypadButton(keyValue, variableKeys)));
+    for (let i = extraSlots[rowIndex].length; i < 3; i++) area.appendChild(makeKeypadButton(null, variableKeys));
   });
   setKeypadVisible(true);
 }
