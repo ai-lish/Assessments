@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-ce523c58",
+  "snapshotId": "pdf-b0decd53",
   "seed": "pdf-a3-fixture:s1_term3_part_a",
   "title": "2025-26 年度 中一第三學期(甲部)短答練習",
   "presetKey": "s1_term3_part_a",
@@ -93,7 +93,9 @@
         "xCoeff": -3,
         "constTerm": -13
       },
-      "answerSpec": null,
+      "answerSpec": {
+        "order": "loose"
+      },
       "displayAnswer": "-3x-13"
     },
     {

@@ -87,11 +87,8 @@ const textExactBaselines = [
   ['area_circle', { radius: 3 }, '28.27', true],
   ['frac_arith', { factor: 2, bottom: -3, a: 5, b: 11, c: 4, d: 1 }, '2', true],
   ['exp_law', { a: 2, b: 5 }, 'x^7', false],
-  ['alg_simplify', { a: -3, b: -4, c: 5, d: -2 }, '2x-6', true],
   ['sig_fig', { baseNum: 184.62, sf: 3 }, '185', true],
   ['poly_desc', { b: 3, c: 5 }, 'x^2+3x-5', false],
-  ['alg_simplify_2var', { a1: 3, b1: 4, a2: 2, b2: 1, op: '-' }, 'a+3b', false],
-  ['s2t3_square_expand_2var', { a: 2, b: 3, c: 1, d: -4 }, 'x^2+6xy+9y^2', false],
   ['factor_neg_common', { k: 3, d1: 2 }, '-3x(x+1)', true],
   ['combine_fractions', { m: 5, c: 3 }, '(5a+3)/(5k)', false],
   ['coef_exp_div', { expD: 2, expN: 5, rNum: 3, rDen: 4, scale: 2 }, '3x^3/4', true],
@@ -100,7 +97,7 @@ const textExactBaselines = [
   ['s2t3_exp_law', { a: 2, b: 5 }, 'x^7', false],
 ];
 const remainingTextExact = bank.data.filter((item) => item.validator === 'textExact').map((item) => item.key);
-check('exactly the other 14 typeDefs remain on textExact', JSON.stringify(remainingTextExact) === JSON.stringify(textExactBaselines.map((item) => item[0])), JSON.stringify(remainingTextExact));
+check('exactly the other 11 typeDefs remain on textExact', JSON.stringify(remainingTextExact) === JSON.stringify(textExactBaselines.map((item) => item[0])), JSON.stringify(remainingTextExact));
 for (const [key, params, expectedAnswer, expectedTailResult] of textExactBaselines) {
   const def = bank.data.find((item) => item.key === key);
   const generated = generators.generateQuestion(def, params);

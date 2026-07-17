@@ -1,5 +1,5 @@
 {
-  "snapshotId": "pdf-ecc1b389",
+  "snapshotId": "pdf-470bfef1",
   "seed": "pdf-a3-fixture:s2_term3_part_a",
   "title": "2025-26 年度 中二第三學期(甲部)短答練習",
   "presetKey": "s2_term3_part_a",
@@ -19,7 +19,9 @@
         "resA": 7,
         "resB": 15
       },
-      "answerSpec": null,
+      "answerSpec": {
+        "order": "loose"
+      },
       "displayAnswer": "7a+15b"
     },
     {
@@ -31,7 +33,9 @@
         "b": 4,
         "twoVar": true
       },
-      "answerSpec": null,
+      "answerSpec": {
+        "order": "loose"
+      },
       "displayAnswer": "x^2+8xy+16y^2"
     },
     {

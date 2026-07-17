@@ -34,7 +34,7 @@
       "topicKey": "number_and_algebra",
       "topicName": "數與代數",
       "type": "text",
-      "checkType": "textExact",
+      "checkType": "polyTerms",
       "params_schema": {
         "a": "整數 -6..-2（x 係數）",
         "b": "整數 -8..-2（常數項）",
@@ -47,8 +47,11 @@
       "pdfText": "",
       "schemaVersion": 1,
       "part": "part_a",
-      "validator": "textExact",
+      "validator": "polyTerms",
       "generator": "alg_simplify",
+      "answerSpec": {
+        "order": "loose"
+      },
       "code": "LSC-2526-S1-T3-06-NA-6",
       "source": ""
     },

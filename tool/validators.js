@@ -100,28 +100,61 @@ function createAssessValidators() {
     if (!tokens || tokens.join("") !== s) return null;
     const coeffs = {};
     const order = [];
+    const degreeCounts = {};
+    const terms = [];
+    let hasExplicitZeroTerm = false;
     for (const token of tokens) {
       const sign = token[0] === "-" ? -1 : 1;
       const body = token.slice(1);
-      let coeff, degree;
+      let coeff, degree, coefficientText, explicitExponent;
       if (body.includes("x")) {
         const match = body.match(/^(\d*)x(?:\^(\d+))?$/);
         if (!match) return null;
-        coeff = match[1] === "" ? 1 : parseInt(match[1], 10);
+        coefficientText = match[1];
+        coeff = coefficientText === "" ? 1 : parseInt(coefficientText, 10);
+        explicitExponent = match[2] === undefined ? null : parseInt(match[2], 10);
         degree = match[2] ? parseInt(match[2], 10) : 1;
       } else {
         if (!/^\d+$/.test(body)) return null;
+        coefficientText = body;
         coeff = parseInt(body, 10);
         degree = 0;
+        explicitExponent = null;
       }
       const signedCoeff = sign * coeff;
+      degreeCounts[degree] = (degreeCounts[degree] || 0) + 1;
+      if (signedCoeff === 0) hasExplicitZeroTerm = true;
       coeffs[degree] = (coeffs[degree] || 0) + signedCoeff;
       if (signedCoeff !== 0) order.push(degree);
+      terms.push({
+        signedCoeff,
+        coefficient: coeff,
+        coefficientText,
+        hasVariable: body.includes("x"),
+        explicitExponent,
+      });
     }
     Object.keys(coeffs).forEach((degree) => {
       if (coeffs[degree] === 0) delete coeffs[degree];
     });
-    return { coeffs, order };
+    const isZeroLiteral = tokens.length === 1 && tokens[0] === "+0";
+    return { coeffs, order, degreeCounts, terms, hasExplicitZeroTerm, isZeroLiteral };
+  }
+
+  function isCombinedPolynomial(parsed) {
+    if (!parsed) return false;
+    if (parsed.hasExplicitZeroTerm && !parsed.isZeroLiteral) return false;
+    return Object.values(parsed.degreeCounts).every((count) => count === 1);
+  }
+
+  function hasCanonicalPolynomialNotation(parsed) {
+    if (!parsed) return false;
+    if (parsed.isZeroLiteral) return true;
+    return parsed.terms.every((term) => {
+      if (term.signedCoeff === 0) return false;
+      if (term.hasVariable && term.coefficient === 1 && term.coefficientText !== "") return false;
+      return term.explicitExponent !== 0 && term.explicitExponent !== 1;
+    });
   }
 
   function samePolynomial(a, b) {
@@ -134,6 +167,73 @@ function createAssessValidators() {
       if (a.coeffs[keysA[i]] !== b.coeffs[keysB[i]]) return false;
     }
     return true;
+  }
+
+  function parseMultivariablePolynomial(value) {
+    let s = normalizePolynomialInput(value);
+    if (s === "") return null;
+    if (s[0] !== "+" && s[0] !== "-") s = "+" + s;
+    const tokens = s.match(/[+-][^+-]+/g);
+    if (!tokens || tokens.join("") !== s) return null;
+    const coeffs = {};
+    const signatureCounts = {};
+    const terms = [];
+    for (const token of tokens) {
+      const sign = token[0] === "-" ? -1 : 1;
+      const body = token.slice(1);
+      const coefficientMatch = body.match(/^(\d*)/);
+      const coefficientText = coefficientMatch ? coefficientMatch[1] : "";
+      const variableText = body.slice(coefficientText.length);
+      if (coefficientText === "" && variableText === "") return null;
+      const coefficient = coefficientText === "" ? 1 : parseInt(coefficientText, 10);
+      const exponents = {};
+      let hasNonCanonicalExponent = false;
+      let rest = variableText;
+      while (rest !== "") {
+        const variableMatch = rest.match(/^([a-z])(?:\^(\d+))?/);
+        if (!variableMatch) return null;
+        const variable = variableMatch[1];
+        const exponent = variableMatch[2] === undefined ? 1 : parseInt(variableMatch[2], 10);
+        if (variableMatch[2] !== undefined && (exponent === 0 || exponent === 1)) hasNonCanonicalExponent = true;
+        exponents[variable] = (exponents[variable] || 0) + exponent;
+        rest = rest.slice(variableMatch[0].length);
+      }
+      const signature = Object.keys(exponents).sort()
+        .filter((variable) => exponents[variable] !== 0)
+        .map((variable) => variable + "^" + exponents[variable])
+        .join("*") || "#";
+      const signedCoefficient = sign * coefficient;
+      signatureCounts[signature] = (signatureCounts[signature] || 0) + 1;
+      coeffs[signature] = (coeffs[signature] || 0) + signedCoefficient;
+      terms.push({ coefficient, coefficientText, variableText, exponents, signature, signedCoefficient, hasNonCanonicalExponent });
+    }
+    Object.keys(coeffs).forEach((signature) => {
+      if (coeffs[signature] === 0) delete coeffs[signature];
+    });
+    return { coeffs, signatureCounts, terms };
+  }
+
+  function sameMultivariablePolynomial(a, b) {
+    if (!a || !b) return false;
+    const keysA = Object.keys(a.coeffs).sort();
+    const keysB = Object.keys(b.coeffs).sort();
+    if (keysA.length !== keysB.length) return false;
+    return keysA.every((key, index) => key === keysB[index] && a.coeffs[key] === b.coeffs[key]);
+  }
+
+  function isCombinedMultivariablePolynomial(parsed) {
+    return !!parsed && Object.values(parsed.signatureCounts).every((count) => count === 1);
+  }
+
+  function hasCanonicalMultivariableNotation(parsed) {
+    if (!parsed) return false;
+    const isZeroLiteral = parsed.terms.length === 1 && parsed.terms[0].variableText === "" && parsed.terms[0].signedCoefficient === 0;
+    if (isZeroLiteral) return true;
+    return parsed.terms.every((term) => {
+      if (term.signedCoefficient === 0) return false;
+      if (term.variableText !== "" && term.coefficient === 1 && term.coefficientText !== "") return false;
+      return !term.hasNonCanonicalExponent;
+    });
   }
 
   function parseLinearFactor(raw) {
@@ -396,12 +496,21 @@ function createAssessValidators() {
       const expected = parsePolynomial(q.correctAnswer);
       const user = parsePolynomial(userInput);
       if (!samePolynomial(user, expected)) return false;
+      if (!isCombinedPolynomial(user)) return false;
       const mode = (q.answerSpec && q.answerSpec.order) || "loose";
+      if (mode === "loose" && !hasCanonicalPolynomialNotation(user)) return false;
       if (mode === "strict") {
         if (user.order.length !== expected.order.length) return false;
         return user.order.every((degree, index) => degree === expected.order[index]);
       }
       return true;
+    },
+    multivariablePolyTerms(q, userInput) {
+      const expected = parseMultivariablePolynomial(q.correctAnswer);
+      const user = parseMultivariablePolynomial(userInput);
+      return sameMultivariablePolynomial(user, expected) &&
+        isCombinedMultivariablePolynomial(user) &&
+        hasCanonicalMultivariableNotation(user);
     },
     factorPair(q, userInput) {
       const expected = q.answerSpec;
@@ -438,6 +547,7 @@ function createAssessValidators() {
     congruenceReason: "congruenceReason",
     coordinatePoint: "coordinatePoint",
     polyTerms: "polyTerms",
+    multivariablePolyTerms: "multivariablePolyTerms",
     factorPair: "factorPair",
     scientificNotation: "scientificNotation",
     inequality: "inequality",

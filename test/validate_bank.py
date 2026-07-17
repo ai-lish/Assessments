@@ -15,7 +15,7 @@ SUPPORTED_TYPES = {"text", "choice", "coordinate", "congruence"}
 SUPPORTED_CHECKS = {
     "textExact", "principalRootExact", "numeric", "signedNumeric", "numericOrFraction", "unitNumeric", "fracPct",
     "primeFactor", "algebraQ8", "hcfLcm",
-    "polyTerms", "factorPair", "scientificNotation", "inequality",
+    "polyTerms", "multivariablePolyTerms", "factorPair", "scientificNotation", "inequality",
     "choiceKey", "congruenceReason", "coordinatePoint"
 }
 CODE_RE = re.compile(r"^(?:LSC-\d{4}-S\d+-T\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+|DSE-\d{4}-P\d+-[A-Z]\d+-\d{2}-(?:NA|ME|GE|DH|UC)-\d+)$")
