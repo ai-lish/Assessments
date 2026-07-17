@@ -169,9 +169,9 @@ function simplifyRootExpected(n) {
       break;
     }
   }
-  if (m === 1) return `±${k}`;
-  if (k === 1) return `±√${m}`;
-  return `±${k}√${m}`;
+  if (m === 1) return String(k);
+  if (k === 1) return `√${m}`;
+  return `${k}√${m}`;
 }
 
 function independentExpected(q) {

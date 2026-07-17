@@ -3458,20 +3458,20 @@
       },
       "result": {
         "questionHTML": "15. 求 \\( \\sqrt{36} \\) 的值。",
-        "correctAnswer": "±6",
+        "correctAnswer": "6",
         "paramsUsed": {
           "n": 36,
           "k": 6,
           "m": 1
         },
-        "solutionHTML": "<div>質因數分解，抽出完全平方因子：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 36 = 36 \\times 1 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{36} = \\pm 6 \\)（正負兩根）</div>",
+        "solutionHTML": "<div>質因數分解，抽出完全平方因子並取主平方根：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 36 = 36 \\times 1 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{36} = 6 \\)</div>",
         "pdfText": "15. 求 \\( \\sqrt{36} \\) 的值。",
         "answers": [
-          "±6"
+          "6"
         ],
-        "displayAnswer": "±6",
-        "steps": "<div>質因數分解，抽出完全平方因子：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 36 = 36 \\times 1 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{36} = \\pm 6 \\)（正負兩根）</div>",
-        "checkType": "textExact"
+        "displayAnswer": "6",
+        "steps": "<div>質因數分解，抽出完全平方因子並取主平方根：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 36 = 36 \\times 1 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{36} = 6 \\)</div>",
+        "checkType": "principalRootExact"
       }
     },
     {
@@ -3479,21 +3479,21 @@
         "n": 72
       },
       "result": {
-        "questionHTML": "15. 求 \\( \\sqrt{72} \\) 的值。",
-        "correctAnswer": "±6√2",
+        "questionHTML": "15. 求 \\( \\sqrt{72} \\) 的值（答案以根式表示）。",
+        "correctAnswer": "6√2",
         "paramsUsed": {
           "n": 72,
           "k": 6,
           "m": 2
         },
-        "solutionHTML": "<div>質因數分解，抽出完全平方因子：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 72 = 36 \\times 2 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{72} = \\pm 6\\sqrt{2} \\)（正負兩根）</div>",
-        "pdfText": "15. 求 \\( \\sqrt{72} \\) 的值。",
+        "solutionHTML": "<div>質因數分解，抽出完全平方因子並取主平方根：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 72 = 36 \\times 2 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{72} = 6\\sqrt{2} \\)</div>",
+        "pdfText": "15. 求 \\( \\sqrt{72} \\) 的值（答案以根式表示）。",
         "answers": [
-          "±6√2"
+          "6√2"
         ],
-        "displayAnswer": "±6√2",
-        "steps": "<div>質因數分解，抽出完全平方因子：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 72 = 36 \\times 2 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{72} = \\pm 6\\sqrt{2} \\)（正負兩根）</div>",
-        "checkType": "textExact"
+        "displayAnswer": "6√2",
+        "steps": "<div>質因數分解，抽出完全平方因子並取主平方根：</div><div style=\"font-size:1.05em;margin-top:5px;\">\\( 72 = 36 \\times 2 \\)</div><div style=\"font-weight:bold;margin-top:5px;\">\\( \\sqrt{72} = 6\\sqrt{2} \\)</div>",
+        "checkType": "principalRootExact"
       }
     }
   ],

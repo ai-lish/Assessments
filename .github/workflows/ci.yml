@@ -69,6 +69,9 @@ jobs:
       - name: Validator fixture test
         run: node test/test_validators.cjs
 
+      - name: Principal-root exact marking regression
+        run: node test/principal_root_exact.cjs
+
       - name: Math correctness contract regression
         run: node test/mathfix_contract.cjs
 

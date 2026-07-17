@@ -13,7 +13,7 @@ NODE = subprocess.run(["which", "node"], capture_output=True, text=True).stdout.
 
 SUPPORTED_TYPES = {"text", "choice", "coordinate", "congruence"}
 SUPPORTED_CHECKS = {
-    "textExact", "numeric", "signedNumeric", "numericOrFraction", "unitNumeric", "fracPct",
+    "textExact", "principalRootExact", "numeric", "signedNumeric", "numericOrFraction", "unitNumeric", "fracPct",
     "primeFactor", "algebraQ8", "hcfLcm",
     "polyTerms", "factorPair", "scientificNotation", "inequality",
     "choiceKey", "congruenceReason", "coordinatePoint"
