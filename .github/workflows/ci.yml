@@ -69,6 +69,9 @@ jobs:
       - name: Validator fixture test
         run: node test/test_validators.cjs
 
+      - name: Polynomial simplification marking regression
+        run: node test/polynomial_simplification_strict.cjs
+
       - name: Principal-root exact marking regression
         run: node test/principal_root_exact.cjs
 

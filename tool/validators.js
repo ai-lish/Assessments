@@ -100,6 +100,8 @@ function createAssessValidators() {
     if (!tokens || tokens.join("") !== s) return null;
     const coeffs = {};
     const order = [];
+    const degreeCounts = {};
+    let hasExplicitZeroTerm = false;
     for (const token of tokens) {
       const sign = token[0] === "-" ? -1 : 1;
       const body = token.slice(1);
@@ -115,13 +117,22 @@ function createAssessValidators() {
         degree = 0;
       }
       const signedCoeff = sign * coeff;
+      degreeCounts[degree] = (degreeCounts[degree] || 0) + 1;
+      if (signedCoeff === 0) hasExplicitZeroTerm = true;
       coeffs[degree] = (coeffs[degree] || 0) + signedCoeff;
       if (signedCoeff !== 0) order.push(degree);
     }
     Object.keys(coeffs).forEach((degree) => {
       if (coeffs[degree] === 0) delete coeffs[degree];
     });
-    return { coeffs, order };
+    const isZeroLiteral = tokens.length === 1 && tokens[0] === "+0";
+    return { coeffs, order, degreeCounts, hasExplicitZeroTerm, isZeroLiteral };
+  }
+
+  function isCombinedPolynomial(parsed) {
+    if (!parsed) return false;
+    if (parsed.hasExplicitZeroTerm && !parsed.isZeroLiteral) return false;
+    return Object.values(parsed.degreeCounts).every((count) => count === 1);
   }
 
   function samePolynomial(a, b) {
@@ -396,6 +407,7 @@ function createAssessValidators() {
       const expected = parsePolynomial(q.correctAnswer);
       const user = parsePolynomial(userInput);
       if (!samePolynomial(user, expected)) return false;
+      if (!isCombinedPolynomial(user)) return false;
       const mode = (q.answerSpec && q.answerSpec.order) || "loose";
       if (mode === "strict") {
         if (user.order.length !== expected.order.length) return false;
