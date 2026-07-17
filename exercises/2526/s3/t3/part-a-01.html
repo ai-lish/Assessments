@@ -384,28 +384,61 @@
     if (!tokens || tokens.join("") !== s) return null;
     const coeffs = {};
     const order = [];
+    const degreeCounts = {};
+    const terms = [];
+    let hasExplicitZeroTerm = false;
     for (const token of tokens) {
       const sign = token[0] === "-" ? -1 : 1;
       const body = token.slice(1);
-      let coeff, degree;
+      let coeff, degree, coefficientText, explicitExponent;
       if (body.includes("x")) {
         const match = body.match(/^(\d*)x(?:\^(\d+))?$/);
         if (!match) return null;
-        coeff = match[1] === "" ? 1 : parseInt(match[1], 10);
+        coefficientText = match[1];
+        coeff = coefficientText === "" ? 1 : parseInt(coefficientText, 10);
+        explicitExponent = match[2] === undefined ? null : parseInt(match[2], 10);
         degree = match[2] ? parseInt(match[2], 10) : 1;
       } else {
         if (!/^\d+$/.test(body)) return null;
+        coefficientText = body;
         coeff = parseInt(body, 10);
         degree = 0;
+        explicitExponent = null;
       }
       const signedCoeff = sign * coeff;
+      degreeCounts[degree] = (degreeCounts[degree] || 0) + 1;
+      if (signedCoeff === 0) hasExplicitZeroTerm = true;
       coeffs[degree] = (coeffs[degree] || 0) + signedCoeff;
       if (signedCoeff !== 0) order.push(degree);
+      terms.push({
+        signedCoeff,
+        coefficient: coeff,
+        coefficientText,
+        hasVariable: body.includes("x"),
+        explicitExponent,
+      });
     }
     Object.keys(coeffs).forEach((degree) => {
       if (coeffs[degree] === 0) delete coeffs[degree];
     });
-    return { coeffs, order };
+    const isZeroLiteral = tokens.length === 1 && tokens[0] === "+0";
+    return { coeffs, order, degreeCounts, terms, hasExplicitZeroTerm, isZeroLiteral };
+  }
+
+  function isCombinedPolynomial(parsed) {
+    if (!parsed) return false;
+    if (parsed.hasExplicitZeroTerm && !parsed.isZeroLiteral) return false;
+    return Object.values(parsed.degreeCounts).every((count) => count === 1);
+  }
+
+  function hasCanonicalPolynomialNotation(parsed) {
+    if (!parsed) return false;
+    if (parsed.isZeroLiteral) return true;
+    return parsed.terms.every((term) => {
+      if (term.signedCoeff === 0) return false;
+      if (term.hasVariable && term.coefficient === 1 && term.coefficientText !== "") return false;
+      return term.explicitExponent !== 0 && term.explicitExponent !== 1;
+    });
   }
 
   function samePolynomial(a, b) {
@@ -418,6 +451,73 @@
       if (a.coeffs[keysA[i]] !== b.coeffs[keysB[i]]) return false;
     }
     return true;
+  }
+
+  function parseMultivariablePolynomial(value) {
+    let s = normalizePolynomialInput(value);
+    if (s === "") return null;
+    if (s[0] !== "+" && s[0] !== "-") s = "+" + s;
+    const tokens = s.match(/[+-][^+-]+/g);
+    if (!tokens || tokens.join("") !== s) return null;
+    const coeffs = {};
+    const signatureCounts = {};
+    const terms = [];
+    for (const token of tokens) {
+      const sign = token[0] === "-" ? -1 : 1;
+      const body = token.slice(1);
+      const coefficientMatch = body.match(/^(\d*)/);
+      const coefficientText = coefficientMatch ? coefficientMatch[1] : "";
+      const variableText = body.slice(coefficientText.length);
+      if (coefficientText === "" && variableText === "") return null;
+      const coefficient = coefficientText === "" ? 1 : parseInt(coefficientText, 10);
+      const exponents = {};
+      let hasNonCanonicalExponent = false;
+      let rest = variableText;
+      while (rest !== "") {
+        const variableMatch = rest.match(/^([a-z])(?:\^(\d+))?/);
+        if (!variableMatch) return null;
+        const variable = variableMatch[1];
+        const exponent = variableMatch[2] === undefined ? 1 : parseInt(variableMatch[2], 10);
+        if (variableMatch[2] !== undefined && (exponent === 0 || exponent === 1)) hasNonCanonicalExponent = true;
+        exponents[variable] = (exponents[variable] || 0) + exponent;
+        rest = rest.slice(variableMatch[0].length);
+      }
+      const signature = Object.keys(exponents).sort()
+        .filter((variable) => exponents[variable] !== 0)
+        .map((variable) => variable + "^" + exponents[variable])
+        .join("*") || "#";
+      const signedCoefficient = sign * coefficient;
+      signatureCounts[signature] = (signatureCounts[signature] || 0) + 1;
+      coeffs[signature] = (coeffs[signature] || 0) + signedCoefficient;
+      terms.push({ coefficient, coefficientText, variableText, exponents, signature, signedCoefficient, hasNonCanonicalExponent });
+    }
+    Object.keys(coeffs).forEach((signature) => {
+      if (coeffs[signature] === 0) delete coeffs[signature];
+    });
+    return { coeffs, signatureCounts, terms };
+  }
+
+  function sameMultivariablePolynomial(a, b) {
+    if (!a || !b) return false;
+    const keysA = Object.keys(a.coeffs).sort();
+    const keysB = Object.keys(b.coeffs).sort();
+    if (keysA.length !== keysB.length) return false;
+    return keysA.every((key, index) => key === keysB[index] && a.coeffs[key] === b.coeffs[key]);
+  }
+
+  function isCombinedMultivariablePolynomial(parsed) {
+    return !!parsed && Object.values(parsed.signatureCounts).every((count) => count === 1);
+  }
+
+  function hasCanonicalMultivariableNotation(parsed) {
+    if (!parsed) return false;
+    const isZeroLiteral = parsed.terms.length === 1 && parsed.terms[0].variableText === "" && parsed.terms[0].signedCoefficient === 0;
+    if (isZeroLiteral) return true;
+    return parsed.terms.every((term) => {
+      if (term.signedCoefficient === 0) return false;
+      if (term.variableText !== "" && term.coefficient === 1 && term.coefficientText !== "") return false;
+      return !term.hasNonCanonicalExponent;
+    });
   }
 
   function parseLinearFactor(raw) {
@@ -680,12 +780,21 @@
       const expected = parsePolynomial(q.correctAnswer);
       const user = parsePolynomial(userInput);
       if (!samePolynomial(user, expected)) return false;
+      if (!isCombinedPolynomial(user)) return false;
       const mode = (q.answerSpec && q.answerSpec.order) || "loose";
+      if (mode === "loose" && !hasCanonicalPolynomialNotation(user)) return false;
       if (mode === "strict") {
         if (user.order.length !== expected.order.length) return false;
         return user.order.every((degree, index) => degree === expected.order[index]);
       }
       return true;
+    },
+    multivariablePolyTerms(q, userInput) {
+      const expected = parseMultivariablePolynomial(q.correctAnswer);
+      const user = parseMultivariablePolynomial(userInput);
+      return sameMultivariablePolynomial(user, expected) &&
+        isCombinedMultivariablePolynomial(user) &&
+        hasCanonicalMultivariableNotation(user);
     },
     factorPair(q, userInput) {
       const expected = q.answerSpec;
@@ -722,6 +831,7 @@
     congruenceReason: "congruenceReason",
     coordinatePoint: "coordinatePoint",
     polyTerms: "polyTerms",
+    multivariablePolyTerms: "multivariablePolyTerms",
     factorPair: "factorPair",
     scientificNotation: "scientificNotation",
     inequality: "inequality",
@@ -1600,8 +1710,8 @@ const TITLE = "2025-26 年度 中三第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"poly_add_sub","typeDef":{"key":"poly_add_sub","name":"多項式加減及去括號","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"第一個多項式 x^2 係數","b":"第一個多項式 x 係數","c":"第一個多項式常數項","d":"第二個多項式 x^2 係數","e":"第二個多項式 x 係數","f":"第二個多項式常數項","op":"+ 或 -"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"poly_add_sub","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-01-NA-16","source":""},"params":{}},{"qid":"q002","typeKey":"binomial_expand","typeDef":{"key":"binomial_expand","name":"兩個二項式展開","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)(cx+d) 的 a","b":"(ax+b)(cx+d) 的 b","c":"(ax+b)(cx+d) 的 c","d":"(ax+b)(cx+d) 的 d","square":"false"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-02-NA-17","source":""},"params":{}},{"qid":"q003","typeKey":"s3t3_square_expand","typeDef":{"key":"s3t3_square_expand","name":"完全平方公式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)^2 的 a","b":"(ax+b)^2 的 b","square":"固定 true"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","defaultParams":{"square":true},"answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-03-NA-17","source":""},"params":{}},{"qid":"q004","typeKey":"s3t3_zero_exp","typeDef":{"key":"s3t3_zero_exp","name":"零指數定律","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"zeroCase":"固定 true","base":"非零整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"exp_law","defaultParams":{"zeroCase":true},"code":"LSC-2526-S3-T3-04-NA-5","source":""},"params":{}},{"qid":"q005","typeKey":"factor_diff_sq","typeDef":{"key":"factor_diff_sq","name":"平方差因式分解","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"ax 的 a","b":"常數 b，題目為 (ax)^2-b^2"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_diff_sq","code":"LSC-2526-S3-T3-05-NA-18","source":""},"params":{}},{"qid":"q006","typeKey":"factor_cross","typeDef":{"key":"factor_cross","name":"十字相乘法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"第一個因式 x 係數","b":"第一個因式常數","c":"第二個因式 x 係數","d":"第二個因式常數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_cross","code":"LSC-2526-S3-T3-06-NA-19","source":""},"params":{}},{"qid":"q007","typeKey":"sci_notation","typeDef":{"key":"sci_notation","name":"科學記數法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"scientificNotation","params_schema":{"mantissa":"1 ≤ a < 10","exponent":"10 的指數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"scientificNotation","generator":"sci_notation","code":"LSC-2526-S3-T3-07-NA-20","source":""},"params":{}},{"qid":"q008","typeKey":"solve_ineq","typeDef":{"key":"solve_ineq","name":"一元一次不等式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"inequality","params_schema":{"a":"x 係數，可為負數","b":"常數項","boundary":"答案邊界值","op":"原不等式方向"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"inequality","generator":"solve_ineq","code":"LSC-2526-S3-T3-08-NA-21","source":""},"params":{}},{"qid":"q009","typeKey":"triangle_center","typeDef":{"key":"triangle_center","name":"三角形四心","category":"幾何","difficulty":2,"grade":"s3","term":"3","topicKey":"geometry","topicName":"幾何","type":"choice","checkType":"choiceKey","params_schema":{"center":"circumcenter / incenter / centroid / orthocenter","shapeKey":"acute-wide / acute-left / acute-right / acute-tall / acute-low-left / acute-low-right"},"options":[{"key":"circumcenter","label":"外心"},{"key":"incenter","label":"內心"},{"key":"centroid","label":"形心"},{"key":"orthocenter","label":"垂心"}],"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"triangle_center","figure":{"kind":"triangle-center-svg"},"code":"LSC-2526-S3-T3-09-GE-5","source":""},"params":{}},{"qid":"q010","typeKey":"solid_sphere","typeDef":{"key":"solid_sphere","name":"球體量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 sphere","r":"半徑"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"sphere"},"code":"LSC-2526-S3-T3-10-ME-5","source":""},"params":{}},{"qid":"q011","typeKey":"solid_cylinder","typeDef":{"key":"solid_cylinder","name":"圓柱量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cylinder","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cylinder"},"code":"LSC-2526-S3-T3-11-ME-5","source":""},"params":{}},{"qid":"q012","typeKey":"solid_cone","typeDef":{"key":"solid_cone","name":"圓錐量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cone","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cone"},"code":"LSC-2526-S3-T3-12-ME-5","source":""},"params":{}},{"qid":"q013","typeKey":"sector_measure","typeDef":{"key":"sector_measure","name":"扇形量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"r":"半徑","angle":"圓心角","ask":"arc 或 area"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"sector_measure","code":"LSC-2526-S3-T3-13-ME-6","source":""},"params":{}},{"qid":"q014","typeKey":"pyth_cone","typeDef":{"key":"pyth_cone","name":"畢氏定理配合圓錐高與斜高","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"mode":"findL 或 findH","r":"半徑","h":"垂直高","l":"斜高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"pyth_cone","code":"LSC-2526-S3-T3-14-ME-7","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-17T03:51:00.336Z";
-const BANK_HASH = "b63_14_d9f4c434";
+const GENERATED_AT = "2026-07-17T04:44:15.314Z";
+const BANK_HASH = "b63_14_4c416f5f";
 const PRESET_KEY = "s3_term3_part_a";
 const GRADE = "s3";
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzxgJ2SvMO0FeHqdjwiYc2AlCyRiIXVEVmP3-Xs0y_IDO9inGTXC4w0strgWH7WgH_A/exec";
