@@ -46,6 +46,7 @@ const stage1Cases = [
     canonical: '-3x-10',
     reordered: '-10-3x',
     uncombined: '-5x+2x-10',
+    nonCanonical: '-3x^1-10',
   },
   {
     key: 'expand_bracket',
@@ -53,6 +54,7 @@ const stage1Cases = [
     canonical: '-6x+12',
     reordered: '12-6x',
     uncombined: '-3x-3x+12',
+    nonCanonical: '-6x^1+12',
   },
   {
     key: 'poly_add_sub',
@@ -60,6 +62,7 @@ const stage1Cases = [
     canonical: '2x^2+2x+6',
     reordered: '6+2x+2x^2',
     uncombined: '3x^2-x^2-2x+4x+6',
+    nonCanonical: '2x^2+2x^1+6',
   },
   {
     key: 'binomial_expand',
@@ -67,6 +70,7 @@ const stage1Cases = [
     canonical: '4x^2+7x-2',
     reordered: '7x-2+4x^2',
     uncombined: '4x^2+8x-x-2',
+    nonCanonical: '4x^2+7x^1-2',
   },
   {
     key: 's3t3_square_expand',
@@ -74,6 +78,7 @@ const stage1Cases = [
     canonical: '4x^2-12x+9',
     reordered: '9+4x^2-12x',
     uncombined: '4x^2-6x-6x+9',
+    nonCanonical: '4x^2-12x^1+9',
   },
   {
     key: 'alg_simplify',
@@ -81,6 +86,7 @@ const stage1Cases = [
     canonical: '2x-6',
     reordered: '-6+2x',
     uncombined: '2x+x-x-6',
+    nonCanonical: '2x^1-6',
   },
 ];
 
@@ -92,6 +98,7 @@ for (const item of stage1Cases) {
   expectAnswer(question, item.canonical, true, `${item.key} accepts canonical combined answer`);
   expectAnswer(question, item.reordered, true, `${item.key} accepts combined reordered answer`);
   expectAnswer(question, item.uncombined, false, `${item.key} rejects uncombined like terms`);
+  expectAnswer(question, item.nonCanonical, false, `${item.key} rejects non-canonical x^1 notation`);
 }
 
 const zeroQuestion = {
@@ -112,6 +119,7 @@ const multiCases = [
     canonical: 'a+3b',
     reordered: '3b+a',
     uncombined: '3a-2a+4b-b',
+    nonCanonical: '1a+3b',
   },
   {
     key: 's2t3_square_expand_2var',
@@ -119,6 +127,7 @@ const multiCases = [
     canonical: 'x^2+6xy+9y^2',
     reordered: '9y^2+x^2+6xy',
     uncombined: 'x^2+3xy+3xy+9y^2',
+    nonCanonical: '1x^2+6xy+9y^2',
   },
 ];
 
@@ -130,6 +139,7 @@ for (const item of multiCases) {
   expectAnswer(question, item.canonical, true, `${item.key} accepts canonical combined answer`);
   expectAnswer(question, item.reordered, true, `${item.key} accepts combined reordered answer`);
   expectAnswer(question, item.uncombined, false, `${item.key} rejects repeated monomial signatures`);
+  expectAnswer(question, item.nonCanonical, false, `${item.key} rejects an explicit unit coefficient`);
 }
 
 const genericMultivariableQuestion = {
@@ -141,6 +151,45 @@ expectAnswer(genericMultivariableQuestion, 'a^2+ab+ab+b^2', false, 'multivariabl
 expectAnswer(genericMultivariableQuestion, 'a^2+2ab+b^2', true, 'multivariable validator accepts canonical signatures');
 expectAnswer(genericMultivariableQuestion, 'b^2+a^2+2ab', true, 'multivariable validator ignores term order');
 expectAnswer(genericMultivariableQuestion, 'a^2+3ab+b^2', false, 'multivariable validator compares coefficients exactly');
+
+console.log('\n=== Stage 3: canonical simplified notation ===');
+
+const genericUnivariateQuestion = {
+  checkType: 'polyTerms',
+  validator: 'polyTerms',
+  correctAnswer: 'x^2+x-2',
+  answerSpec: { order: 'loose' },
+};
+expectAnswer(genericUnivariateQuestion, '1x^2+x-2', false, 'univariate rejects explicit coefficient 1 on x^2');
+expectAnswer(genericUnivariateQuestion, 'x^2+1x-2', false, 'univariate rejects explicit coefficient 1 on x');
+expectAnswer({ ...genericUnivariateQuestion, correctAnswer: 'x^2-x-2' }, 'x^2-1x-2', false, 'univariate rejects explicit coefficient -1 on x');
+expectAnswer(genericUnivariateQuestion, 'x^2+x^1-2', false, 'univariate rejects explicit exponent 1');
+expectAnswer({ ...genericUnivariateQuestion, correctAnswer: 'x^2+x+1' }, 'x^2+x+x^0', false, 'univariate rejects explicit exponent 0');
+expectAnswer(genericUnivariateQuestion, 'x^2+x-2+0', false, 'univariate rejects an explicit zero constant');
+expectAnswer(genericUnivariateQuestion, '0x^3+x^2+x-2', false, 'univariate rejects an explicit zero variable term');
+expectAnswer(genericUnivariateQuestion, 'x^2+x-2', true, 'univariate accepts omitted unit coefficients');
+expectAnswer(genericUnivariateQuestion, '-2+x+x^2', true, 'univariate accepts reordered canonical terms');
+expectAnswer(genericUnivariateQuestion, ' x^2 + x − 2 ', true, 'univariate accepts spaces and Unicode minus');
+expectAnswer(genericUnivariateQuestion, 'x**2+x-2', true, 'univariate keeps the supported double-asterisk exponent form');
+
+expectAnswer(genericMultivariableQuestion, '1a^2+2ab+b^2', false, 'multivariable rejects explicit coefficient 1 on a^2');
+expectAnswer({ ...genericMultivariableQuestion, correctAnswer: '-a^2+2ab+b^2' }, '-1a^2+2ab+b^2', false, 'multivariable rejects explicit coefficient -1 on a^2');
+expectAnswer(genericMultivariableQuestion, 'a^2+2a^1b+b^2', false, 'multivariable rejects explicit exponent 1');
+expectAnswer({ ...genericMultivariableQuestion, correctAnswer: 'a^2+2ab+b^2+1' }, 'a^2+2ab+b^2+x^0', false, 'multivariable rejects explicit exponent 0');
+expectAnswer(genericMultivariableQuestion, 'a^2+2ab+b^2+0', false, 'multivariable rejects an explicit zero constant');
+expectAnswer(genericMultivariableQuestion, '0x+a^2+2ab+b^2', false, 'multivariable rejects an explicit zero variable term');
+expectAnswer(genericMultivariableQuestion, 'a^2+2ab+b^2', true, 'multivariable accepts omitted unit coefficients');
+expectAnswer(genericMultivariableQuestion, 'b^2 + a^2 + 2ab', true, 'multivariable accepts spaces and reordered terms');
+expectAnswer(genericMultivariableQuestion, 'b^2+a^2+2ab', true, 'multivariable accepts all legal canonical signatures');
+expectAnswer({ checkType: 'multivariablePolyTerms', validator: 'multivariablePolyTerms', correctAnswer: '0' }, '0', true, 'multivariable accepts zero as the whole polynomial');
+
+const strictOrderQuestion = {
+  checkType: 'polyTerms',
+  validator: 'polyTerms',
+  correctAnswer: 'x^2+3x-4',
+  answerSpec: { order: 'strict' },
+};
+expectAnswer(strictOrderQuestion, '1x^2+3x-4', true, 'notation tightening stays scoped away from strict poly_desc marking');
 
 console.log('\n' + '='.repeat(60));
 if (failures.length > 0) {
