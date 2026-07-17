@@ -1045,10 +1045,10 @@
   "solve_ineq": (function(){ var aPool=[-5,-4,-3,-2,2,3,4,5], boundaryPool=[-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6], bPool=[-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8], opPool=['>','<','>=','<='], combos=[]; function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){var t=y;y=x%y;x=t;}return x||1;} function simpleDenominator(a,b,boundary){var rhs=a*boundary+b;var num=rhs-b;var den=a;var g=gcd(num,den);return Math.abs(den/g);} function legal(a,b,boundary){return a!==0&&simpleDenominator(a,b,boundary)<=4;} for(var ai=0;ai<aPool.length;ai++){for(var bi=0;bi<bPool.length;bi++){for(var qi=0;qi<boundaryPool.length;qi++){for(var oi=0;oi<opPool.length;oi++){var aa=aPool[ai], bb=bPool[bi], bd=boundaryPool[qi], op=opPool[oi]; if(legal(aa,bb,bd)) combos.push({a:aa,b:bb,boundary:bd,op:op});}}}} function rand(pool){return pool[Math.floor(Math.random()*pool.length)];} return function solve_ineq(p) { var hasA=p.a!==undefined, hasB=p.b!==undefined, hasBoundary=p.boundary!==undefined, hasOp=p.op!==undefined; var pool=combos.filter(function(o){return (!hasA||o.a===p.a)&&(!hasB||o.b===p.b)&&(!hasBoundary||o.boundary===p.boundary)&&(!hasOp||o.op===p.op);}); var choice=rand(pool.length?pool:combos); var a=hasA?p.a:choice.a, b=hasB?p.b:choice.b, boundary=hasBoundary?p.boundary:choice.boundary, op0=hasOp?p.op:choice.op; var rhs=a*boundary+b; var invert={'>':'<','<':'>','>=':'<=','<=':'>='}; var finalOp=a<0?invert[op0]:op0; var text='8. 解不等式 \\( '+a+'x '+(b>=0?'+ '+b:'- '+Math.abs(b))+' '+op0+' '+rhs+' \\)。'; var steps='<div>先移項，再除以 \\('+a+'\\)。</div><div>因為除以負數時，不等號方向要相反。</div><div style="font-size:1.05em;margin-top:5px;">\\( x '+finalOp+' '+boundary+' \\)</div>'; return {questionHTML:text, correctAnswer:'x'+finalOp+boundary, paramsUsed:{a:a,b:b,rhs:rhs,boundary:boundary,op:finalOp}, solutionHTML:steps, pdfText:text, answers:['x'+finalOp+boundary], displayAnswer:'x '+finalOp+' '+boundary, steps:steps, checkType:'inequality', answerSpec:{variable:'x', op:finalOp, value:boundary}}; }; })(),
   "triangle_center": function triangle_center(p) {
     var centers=[
-      {key:'circumcenter',label:'外心',desc:'三邊垂直平分線的交點'},
-      {key:'incenter',label:'內心',desc:'三角形三條角平分線的交點'},
-      {key:'centroid',label:'形心',desc:'三條中線的交點'},
-      {key:'orthocenter',label:'垂心',desc:'三條高的交點'}
+      {key:'circumcenter',label:'外心',lineDesc:'三角形三邊的垂直平分線',desc:'三邊垂直平分線的交點'},
+      {key:'incenter',label:'內心',lineDesc:'三角形的三條角平分線',desc:'三角形三條角平分線的交點'},
+      {key:'centroid',label:'形心',lineDesc:'三角形的三條中線',desc:'三條中線的交點'},
+      {key:'orthocenter',label:'垂心',lineDesc:'三角形的三條高',desc:'三條高的交點'}
     ];
     var shapes=[
       {key:'acute-wide',label:'闊身',a:[32,132],b:[218,132],c:[118,24]},
@@ -1079,7 +1079,7 @@
     for(var i=0;i<segments.length;i++)svg+=line(segments[i]);
     svg+='<circle cx="'+pnt[0].toFixed(2)+'" cy="'+pnt[1].toFixed(2)+'" r="5" fill="#e74c3c"/><text x="'+(pnt[0]+8).toFixed(2)+'" y="'+(pnt[1]+4).toFixed(2)+'" font-size="12" fill="#e74c3c">P</text>';
     svg+='<text x="'+(a[0]-12)+'" y="'+(a[1]+5)+'" font-size="12">A</text><text x="'+(b[0]+5)+'" y="'+(b[1]+5)+'" font-size="12">B</text><text x="'+(c[0]-3)+'" y="'+(c[1]-7)+'" font-size="12">C</text></svg>';
-    var text='9. 下圖顯示一個'+shape.label+'三角形內三條線交於點 \\(P\\)。若這三條線是'+item.desc+'，點 \\(P\\) 是三角形的哪一個心？<br>'+svg;
+    var text='9. 下圖顯示一個'+shape.label+'三角形內三條線交於點 \\(P\\)。若這三條線分別是'+item.lineDesc+'，點 \\(P\\) 是三角形的哪一個心？<br>'+svg;
     var solutionDiagram='<div class="solution-diagram" data-solution-diagram="triangle_center" data-center="'+item.key+'" data-shape-key="'+shape.key+'"><div style="font-weight:bold;text-align:center;">'+item.desc+'</div>'+svg.replace('<svg ', '<svg role="img" aria-label="'+item.label+'構造線解說圖" ')+'</div>';
     var steps=solutionDiagram+'<div>'+item.label+'：'+item.desc+'。</div>';
     return {questionHTML:text,correctAnswer:item.key,paramsUsed:{center:item.key,shapeKey:shape.key,vertices:{a:a,b:b,c:c}},solutionHTML:steps,pdfText:'9. 判斷三角形四心（'+shape.label+'三角形）。',answers:[item.key],displayAnswer:item.label,steps:steps,checkType:'choiceKey',options:centers.map(function(center){return {key:center.key,label:center.label};}),imageSvg:svg};
@@ -1424,11 +1424,24 @@ function createAssessPDF() {
     return "\\(" + normalizeAnswerTex(raw) + "\\)";
   }
 
+  function strictFractionTex(value) {
+    const match = String(value == null ? "" : value).trim().match(/^([+-]?\d+)\/([+-]?\d+)$/);
+    if (!match || Number(match[2]) === 0) return null;
+    return "\\frac{" + match[1] + "}{" + match[2] + "}";
+  }
+
   function teacherAnswerText(q) {
     const raw = String(q.displayAnswer || q.correctAnswer || "");
     if (!SOLVE_EQ_TYPE_KEYS.has(q.typeKey)) return raw;
-    const withoutOpeningDelimiter = raw.trim().replace(/^(?:\\\(|\\\[|\$\$?|\s)+/, "");
-    return /^x\s*=/.test(withoutOpeningDelimiter) ? raw : "x = " + raw;
+    const trimmed = raw.trim();
+    const prefixed = trimmed.match(/^x\s*=\s*(.*)$/);
+    if (prefixed) {
+      const fraction = strictFractionTex(prefixed[1]);
+      return fraction ? "x = " + fraction : raw;
+    }
+    const withoutOpeningDelimiter = trimmed.replace(/^(?:\\\(|\\\[|\$\$?|\s)+/, "");
+    if (/^x\s*=/.test(withoutOpeningDelimiter)) return raw;
+    return "x = " + (strictFractionTex(trimmed) || raw);
   }
 
   function renderPDF(snapshot, mode, options) {
@@ -1563,7 +1576,7 @@ function createAssessPDF() {
     renderPDF,
     renderPrintDocument,
     printSnapshot,
-    _private: { hashString, printScript, printCss, answerHtml, teacherAnswerText, paramsSignature },
+    _private: { hashString, printScript, printCss, answerHtml, teacherAnswerText, strictFractionTex, paramsSignature },
   };
 }
 
@@ -1575,7 +1588,7 @@ const TITLE = "2025-26 年度 中一第二學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"s1t2_prime_factor","typeDef":{"key":"s1t2_prime_factor","name":"質因數連乘式及指數記數法","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"primeFactor","params_schema":{"n":"可分解為質因數指數式的正整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"primeFactor","generator":"prime_factor","code":"LSC-2526-S1-T2-01-NA-3","source":""},"params":{}},{"qid":"q002","typeKey":"s1t2_hcf","typeDef":{"key":"s1t2_hcf","name":"H.C.F.","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"hcfLcm","params_schema":{"n1":"正整數","n2":"正整數","askLCM":"固定 false，只問 H.C.F."},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"hcfLcm","generator":"hcf_or_lcm","defaultParams":{"askLCM":false},"code":"LSC-2526-S1-T2-02-NA-4","source":""},"params":{}},{"qid":"q003","typeKey":"directed_add","typeDef":{"key":"directed_add","name":"有向數加法","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"signedNumeric","params_schema":{"a":"整數 -9..9，不取 0","b":"整數 -9..9，不取 0"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"signedNumeric","generator":"directed_add","code":"LSC-2526-S1-T2-03-NA-12","source":""},"params":{}},{"qid":"q004","typeKey":"directed_mul","typeDef":{"key":"directed_mul","name":"有向數乘法","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"signedNumeric","params_schema":{"a":"整數 -8..8，不取 0","b":"整數 -8..8，不取 0"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"signedNumeric","generator":"directed_mul","code":"LSC-2526-S1-T2-04-NA-13","source":""},"params":{}},{"qid":"q005","typeKey":"s1t2_word_to_alg","typeDef":{"key":"s1t2_word_to_alg","name":"文字轉代數式","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"algebraQ8","params_schema":{"t":"現有 5 種語句模板","a":"整數 2..9","b":"整數 2..9"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"algebraQ8","generator":"word_to_alg","code":"LSC-2526-S1-T2-05-NA-8","source":""},"params":{}},{"qid":"q006","typeKey":"s1t2_solve_eq_fraction","typeDef":{"key":"s1t2_solve_eq_fraction","name":"一元一次方程","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numericOrFraction","params_schema":{"mode":"固定 fraction_mixed，隨機生成 D 或 B 形式","form":"D=ax=b；B=(ax)/b=c","a":"非零整數 x 係數","b":"D 的右側整數或 B 的非零分母","c":"B 的非零右側整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numericOrFraction","generator":"solve_eq","defaultParams":{"mode":"fraction_mixed"},"prefix":"x = ","code":"LSC-2526-S1-T2-06-NA-7","source":""},"params":{}},{"qid":"q007","typeKey":"s1t2_solve_eq_negative","typeDef":{"key":"s1t2_solve_eq_negative","name":"含負數解一元一次方程","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numericOrFraction","params_schema":{"coeff":"方程 ax=b 的 a","xVal":"固定生成負數解"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numericOrFraction","generator":"solve_eq","defaultParams":{"xVal":-3},"prefix":"x = ","code":"LSC-2526-S1-T2-07-NA-7","source":""},"params":{}},{"qid":"q008","typeKey":"cuboid_volume","typeDef":{"key":"cuboid_volume","name":"長方體體積","category":"度量","difficulty":1,"grade":"s1","term":"2","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"cube":"false=長方體模式","l":"長 cm","w":"闊 cm","h":"高 cm"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"cuboid_volume","defaultParams":{"cube":false},"answerSpec":{"unit":"cm^3","allowUnit":true},"code":"LSC-2526-S1-T2-08-ME-4","source":""},"params":{}},{"qid":"q009","typeKey":"s1t2_poly_desc","typeDef":{"key":"s1t2_poly_desc","name":"多項式降冪排列","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"b":"x 項係數","c":"常數項絕對值"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"poly_desc","answerSpec":{"order":"strict"},"code":"LSC-2526-S1-T2-09-NA-9","source":""},"params":{}},{"qid":"q010","typeKey":"poly_constant","typeDef":{"key":"poly_constant","name":"常數項","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"signedNumeric","params_schema":{"a":"二次項係數","b":"一次項係數","c":"常數項，可為負"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"signedNumeric","generator":"poly_constant","code":"LSC-2526-S1-T2-10-NA-14","source":""},"params":{}},{"qid":"q011","typeKey":"s1t2_alg_simplify","typeDef":{"key":"s1t2_alg_simplify","name":"合併同類項","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"第一個 x 項係數","b":"第一個常數項","c":"第二個 x 項係數","d":"第二個常數項"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"alg_simplify","answerSpec":{"order":"loose"},"code":"LSC-2526-S1-T2-11-NA-6","source":""},"params":{}},{"qid":"q012","typeKey":"expand_bracket","typeDef":{"key":"expand_bracket","name":"展開括號","category":"數與代數","difficulty":1,"grade":"s1","term":"2","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"k":"括號外係數，可為負","a":"括號內 x 項係數","b":"括號內常數項，可為負"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"expand_bracket","answerSpec":{"order":"loose"},"code":"LSC-2526-S1-T2-12-NA-15","source":""},"params":{}},{"qid":"q013","typeKey":"s1t2_coordinate","typeDef":{"key":"s1t2_coordinate","name":"坐標的 x/y 坐標","category":"幾何","difficulty":1,"grade":"s1","term":"2","topicKey":"geometry","topicName":"幾何","type":"coordinate","checkType":"coordinatePoint","params_schema":{"rx":"A 點 x 坐標","ry":"A 點 y 坐標","askAxis":"x 或 y"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"coordinatePoint","generator":"coordinate","answerSpec":{"coordinateMode":"axis-value","interaction":{"clickTolerance":0}},"code":"LSC-2526-S1-T2-13-GE-2","source":""},"params":{}},{"qid":"q014","typeKey":"quadrant","typeDef":{"key":"quadrant","name":"象限判斷","category":"幾何","difficulty":1,"grade":"s1","term":"2","topicKey":"geometry","topicName":"幾何","type":"choice","checkType":"choiceKey","options":[{"key":"I","label":"A. 第一象限"},{"key":"II","label":"B. 第二象限"},{"key":"III","label":"C. 第三象限"},{"key":"IV","label":"D. 第四象限"}],"params_schema":{"x":"非零整數","y":"非零整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"quadrant","code":"LSC-2526-S1-T2-14-GE-4","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-16T18:02:28.375Z";
+const GENERATED_AT = "2026-07-17T03:06:10.810Z";
 const BANK_HASH = "b63_14_5781d2fc";
 const PRESET_KEY = "s1_term2_part_a";
 const GRADE = "s1";

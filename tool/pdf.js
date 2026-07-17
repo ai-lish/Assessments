@@ -286,11 +286,24 @@ function createAssessPDF() {
     return "\\(" + normalizeAnswerTex(raw) + "\\)";
   }
 
+  function strictFractionTex(value) {
+    const match = String(value == null ? "" : value).trim().match(/^([+-]?\d+)\/([+-]?\d+)$/);
+    if (!match || Number(match[2]) === 0) return null;
+    return "\\frac{" + match[1] + "}{" + match[2] + "}";
+  }
+
   function teacherAnswerText(q) {
     const raw = String(q.displayAnswer || q.correctAnswer || "");
     if (!SOLVE_EQ_TYPE_KEYS.has(q.typeKey)) return raw;
-    const withoutOpeningDelimiter = raw.trim().replace(/^(?:\\\(|\\\[|\$\$?|\s)+/, "");
-    return /^x\s*=/.test(withoutOpeningDelimiter) ? raw : "x = " + raw;
+    const trimmed = raw.trim();
+    const prefixed = trimmed.match(/^x\s*=\s*(.*)$/);
+    if (prefixed) {
+      const fraction = strictFractionTex(prefixed[1]);
+      return fraction ? "x = " + fraction : raw;
+    }
+    const withoutOpeningDelimiter = trimmed.replace(/^(?:\\\(|\\\[|\$\$?|\s)+/, "");
+    if (/^x\s*=/.test(withoutOpeningDelimiter)) return raw;
+    return "x = " + (strictFractionTex(trimmed) || raw);
   }
 
   function renderPDF(snapshot, mode, options) {
@@ -425,6 +438,6 @@ function createAssessPDF() {
     renderPDF,
     renderPrintDocument,
     printSnapshot,
-    _private: { hashString, printScript, printCss, answerHtml, teacherAnswerText, paramsSignature },
+    _private: { hashString, printScript, printCss, answerHtml, teacherAnswerText, strictFractionTex, paramsSignature },
   };
 }

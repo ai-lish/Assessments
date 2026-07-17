@@ -57,16 +57,32 @@ for (const item of solveSnapshot.questions) {
   check(item.typeKey + ' PDF answer has x prefix', /x\s*=/.test(answer), answer);
   check(item.typeKey + ' PDF answer has one x prefix', (answer.match(/x\s*=/g) || []).length === 1, answer);
 }
-check('fraction solve_eq keeps fractional value after prefix', /x\s*=\s*3\/2/.test(teacherAnswer(solveTeacher, 's1t2_solve_eq_fraction')));
+check('fraction solve_eq renders a stacked fraction after prefix',
+  teacherAnswer(solveTeacher, 's1t2_solve_eq_fraction') === '\\(x = \\frac{3}{2}\\)');
+check('all fractional solve_eq typeKeys render stacked fractions',
+  teacherAnswer(solveTeacher, 'solve_eq_fraction') === '\\(x = \\frac{3}{2}\\)');
 
 const alreadyPrefixed = pdf._private.teacherAnswerText({ typeKey: 'solve_eq', displayAnswer: 'x = -8' });
 check('existing solve_eq x prefix is not duplicated', alreadyPrefixed === 'x = -8', alreadyPrefixed);
+check('negative solve_eq fraction keeps its sign in the numerator',
+  pdf._private.teacherAnswerText({ typeKey: 'solve_eq_fraction', displayAnswer: '-9/2' }) === 'x = \\frac{-9}{2}');
+check('already prefixed solve_eq fraction is converted without duplicate x prefix',
+  pdf._private.teacherAnswerText({ typeKey: 'solve_eq_fraction', displayAnswer: 'x = -9/2' }) === 'x = \\frac{-9}{2}');
+check('integer solve_eq answer does not become a fraction',
+  pdf._private.teacherAnswerText({ typeKey: 'solve_eq', displayAnswer: '9' }) === 'x = 9');
+check('decimal solve_eq answer does not become a fraction',
+  pdf._private.teacherAnswerText({ typeKey: 'solve_eq', displayAnswer: '1.5' }) === 'x = 1.5');
+check('existing TeX fraction is not nested',
+  pdf._private.teacherAnswerText({ typeKey: 'solve_eq_fraction', displayAnswer: '\\frac{-9}{2}' }) === 'x = \\frac{-9}{2}');
+check('strict fraction formatter rejects partial fractions', pdf._private.strictFractionTex('-9/2xyz') === null);
+check('strict fraction formatter rejects zero denominators', pdf._private.strictFractionTex('3/0') === null);
 
 const nonSolveSnapshot = {
   snapshotId: 'non-solve', title: 'Non solve', presetKey: 'test', questions: [
     { qid: 'n1', typeKey: 'formula_sub', displayAnswer: '-4', correctAnswer: '-4' },
     { qid: 'n2', typeKey: 'seq_nth', displayAnswer: '15', correctAnswer: '15' },
     { qid: 'n3', typeKey: 'round_decimal', displayAnswer: '3.14', correctAnswer: '3.14' },
+    { qid: 'n4', typeKey: 'numericOrFraction', displayAnswer: '3/2', correctAnswer: '3/2' },
   ],
 };
 const nonSolveTeacher = pdf.renderPDF(nonSolveSnapshot, 'teacher', { showCode: false });
@@ -74,6 +90,7 @@ for (const item of nonSolveSnapshot.questions) {
   const answer = teacherAnswer(nonSolveTeacher, item.typeKey);
   check(item.typeKey + ' does not receive x prefix', !/x\s*=/.test(answer), answer);
 }
+check('non-solve fraction remains slash notation', teacherAnswer(nonSolveTeacher, 'numericOrFraction') === '3/2');
 
 const q10 = pdf._private.answerHtml('20\\%');
 check('pre-escaped percent remains escaped exactly once', q10 === '\\(20\\%\\)', q10);
