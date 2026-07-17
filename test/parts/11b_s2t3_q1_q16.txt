@@ -9,7 +9,7 @@
           "topicKey": "number_and_algebra",
           "topicName": "數與代數",
           "type": "text",
-          "checkType": "textExact",
+          "checkType": "multivariablePolyTerms",
           "params_schema": {
                 "a1": "第一組 a 係數 2..9",
                 "b1": "第一組 b 係數 2..9",
@@ -23,8 +23,11 @@
           "pdfText": "",
           "schemaVersion": 1,
           "part": "part_a",
-          "validator": "textExact",
+          "validator": "multivariablePolyTerms",
           "generator": "alg_simplify_2var",
+          "answerSpec": {
+                "order": "loose"
+          },
           "code": "LSC-2526-S2-T3-01-NA-22",
           "source": "s2-t3-marking-scheme-2026-07-05",
           "referenceAnswer": "-2a-4b"
@@ -39,7 +42,7 @@
           "topicKey": "number_and_algebra",
           "topicName": "數與代數",
           "type": "text",
-          "checkType": "textExact",
+          "checkType": "multivariablePolyTerms",
           "params_schema": {
                 "b": "(x+by)^2 的 b，整數 2..9"
           },
@@ -49,10 +52,13 @@
           "pdfText": "",
           "schemaVersion": 1,
           "part": "part_a",
-          "validator": "textExact",
+          "validator": "multivariablePolyTerms",
           "generator": "binomial_expand",
           "defaultParams": {
                 "twoVar": true
+          },
+          "answerSpec": {
+                "order": "loose"
           },
           "code": "LSC-2526-S2-T3-02-NA-17",
           "source": "s2-t3-marking-scheme-2026-07-05",

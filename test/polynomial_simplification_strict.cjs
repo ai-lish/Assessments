@@ -103,6 +103,45 @@ const zeroQuestion = {
 expectAnswer(zeroQuestion, '0', true, 'polyTerms accepts zero as the whole polynomial');
 expectAnswer(assemble('binomial_expand', { a: 1, b: 2, c: 4, d: -1 }), '4x^2+7x-2+0', false, 'polyTerms rejects an explicit zero term');
 
+console.log('\n=== Stage 2: combined multivariable polynomial answers ===');
+
+const multiCases = [
+  {
+    key: 'alg_simplify_2var',
+    params: { a1: 3, b1: 4, a2: 2, b2: 1, op: '-' },
+    canonical: 'a+3b',
+    reordered: '3b+a',
+    uncombined: '3a-2a+4b-b',
+  },
+  {
+    key: 's2t3_square_expand_2var',
+    params: { b: 3, twoVar: true },
+    canonical: 'x^2+6xy+9y^2',
+    reordered: '9y^2+x^2+6xy',
+    uncombined: 'x^2+3xy+3xy+9y^2',
+  },
+];
+
+for (const item of multiCases) {
+  const def = typeDef(item.key);
+  const question = assemble(item.key, item.params);
+  check(`${item.key} uses multivariablePolyTerms metadata`, def.checkType === 'multivariablePolyTerms' && def.validator === 'multivariablePolyTerms');
+  check(`${item.key} generated canonical answer is stable`, question.correctAnswer === item.canonical, question.correctAnswer);
+  expectAnswer(question, item.canonical, true, `${item.key} accepts canonical combined answer`);
+  expectAnswer(question, item.reordered, true, `${item.key} accepts combined reordered answer`);
+  expectAnswer(question, item.uncombined, false, `${item.key} rejects repeated monomial signatures`);
+}
+
+const genericMultivariableQuestion = {
+  checkType: 'multivariablePolyTerms',
+  validator: 'multivariablePolyTerms',
+  correctAnswer: 'a^2+2ab+b^2',
+};
+expectAnswer(genericMultivariableQuestion, 'a^2+ab+ab+b^2', false, 'multivariable validator rejects a repeated ab signature');
+expectAnswer(genericMultivariableQuestion, 'a^2+2ab+b^2', true, 'multivariable validator accepts canonical signatures');
+expectAnswer(genericMultivariableQuestion, 'b^2+a^2+2ab', true, 'multivariable validator ignores term order');
+expectAnswer(genericMultivariableQuestion, 'a^2+3ab+b^2', false, 'multivariable validator compares coefficients exactly');
+
 console.log('\n' + '='.repeat(60));
 if (failures.length > 0) {
   console.log(`❌ ${failures.length} polynomial simplification failure(s):`);

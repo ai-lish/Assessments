@@ -147,6 +147,60 @@ function createAssessValidators() {
     return true;
   }
 
+  function parseMultivariablePolynomial(value) {
+    let s = normalizePolynomialInput(value);
+    if (s === "") return null;
+    if (s[0] !== "+" && s[0] !== "-") s = "+" + s;
+    const tokens = s.match(/[+-][^+-]+/g);
+    if (!tokens || tokens.join("") !== s) return null;
+    const coeffs = {};
+    const signatureCounts = {};
+    const terms = [];
+    for (const token of tokens) {
+      const sign = token[0] === "-" ? -1 : 1;
+      const body = token.slice(1);
+      const coefficientMatch = body.match(/^(\d*)/);
+      const coefficientText = coefficientMatch ? coefficientMatch[1] : "";
+      const variableText = body.slice(coefficientText.length);
+      if (coefficientText === "" && variableText === "") return null;
+      const coefficient = coefficientText === "" ? 1 : parseInt(coefficientText, 10);
+      const exponents = {};
+      let rest = variableText;
+      while (rest !== "") {
+        const variableMatch = rest.match(/^([a-z])(?:\^(\d+))?/);
+        if (!variableMatch) return null;
+        const variable = variableMatch[1];
+        const exponent = variableMatch[2] === undefined ? 1 : parseInt(variableMatch[2], 10);
+        exponents[variable] = (exponents[variable] || 0) + exponent;
+        rest = rest.slice(variableMatch[0].length);
+      }
+      const signature = Object.keys(exponents).sort()
+        .filter((variable) => exponents[variable] !== 0)
+        .map((variable) => variable + "^" + exponents[variable])
+        .join("*") || "#";
+      const signedCoefficient = sign * coefficient;
+      signatureCounts[signature] = (signatureCounts[signature] || 0) + 1;
+      coeffs[signature] = (coeffs[signature] || 0) + signedCoefficient;
+      terms.push({ coefficientText, variableText, exponents, signature, signedCoefficient });
+    }
+    Object.keys(coeffs).forEach((signature) => {
+      if (coeffs[signature] === 0) delete coeffs[signature];
+    });
+    return { coeffs, signatureCounts, terms };
+  }
+
+  function sameMultivariablePolynomial(a, b) {
+    if (!a || !b) return false;
+    const keysA = Object.keys(a.coeffs).sort();
+    const keysB = Object.keys(b.coeffs).sort();
+    if (keysA.length !== keysB.length) return false;
+    return keysA.every((key, index) => key === keysB[index] && a.coeffs[key] === b.coeffs[key]);
+  }
+
+  function isCombinedMultivariablePolynomial(parsed) {
+    return !!parsed && Object.values(parsed.signatureCounts).every((count) => count === 1);
+  }
+
   function parseLinearFactor(raw) {
     let s = normalizePolynomialInput(raw);
     if (s === "") return null;
@@ -415,6 +469,11 @@ function createAssessValidators() {
       }
       return true;
     },
+    multivariablePolyTerms(q, userInput) {
+      const expected = parseMultivariablePolynomial(q.correctAnswer);
+      const user = parseMultivariablePolynomial(userInput);
+      return sameMultivariablePolynomial(user, expected) && isCombinedMultivariablePolynomial(user);
+    },
     factorPair(q, userInput) {
       const expected = q.answerSpec;
       return sameFactorPair(parseFactorPairInput(userInput), expected);
@@ -450,6 +509,7 @@ function createAssessValidators() {
     congruenceReason: "congruenceReason",
     coordinatePoint: "coordinatePoint",
     polyTerms: "polyTerms",
+    multivariablePolyTerms: "multivariablePolyTerms",
     factorPair: "factorPair",
     scientificNotation: "scientificNotation",
     inequality: "inequality",
