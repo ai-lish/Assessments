@@ -296,10 +296,10 @@ function createAssessGenerators() {
   "solve_ineq": (function(){ var aPool=[-5,-4,-3,-2,2,3,4,5], boundaryPool=[-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6], bPool=[-8,-7,-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6,7,8], opPool=['>','<','>=','<='], combos=[]; function gcd(x,y){x=Math.abs(x);y=Math.abs(y);while(y){var t=y;y=x%y;x=t;}return x||1;} function simpleDenominator(a,b,boundary){var rhs=a*boundary+b;var num=rhs-b;var den=a;var g=gcd(num,den);return Math.abs(den/g);} function legal(a,b,boundary){return a!==0&&simpleDenominator(a,b,boundary)<=4;} for(var ai=0;ai<aPool.length;ai++){for(var bi=0;bi<bPool.length;bi++){for(var qi=0;qi<boundaryPool.length;qi++){for(var oi=0;oi<opPool.length;oi++){var aa=aPool[ai], bb=bPool[bi], bd=boundaryPool[qi], op=opPool[oi]; if(legal(aa,bb,bd)) combos.push({a:aa,b:bb,boundary:bd,op:op});}}}} function rand(pool){return pool[Math.floor(Math.random()*pool.length)];} return function solve_ineq(p) { var hasA=p.a!==undefined, hasB=p.b!==undefined, hasBoundary=p.boundary!==undefined, hasOp=p.op!==undefined; var pool=combos.filter(function(o){return (!hasA||o.a===p.a)&&(!hasB||o.b===p.b)&&(!hasBoundary||o.boundary===p.boundary)&&(!hasOp||o.op===p.op);}); var choice=rand(pool.length?pool:combos); var a=hasA?p.a:choice.a, b=hasB?p.b:choice.b, boundary=hasBoundary?p.boundary:choice.boundary, op0=hasOp?p.op:choice.op; var rhs=a*boundary+b; var invert={'>':'<','<':'>','>=':'<=','<=':'>='}; var finalOp=a<0?invert[op0]:op0; var text='8. 解不等式 \\( '+a+'x '+(b>=0?'+ '+b:'- '+Math.abs(b))+' '+op0+' '+rhs+' \\)。'; var steps='<div>先移項，再除以 \\('+a+'\\)。</div><div>因為除以負數時，不等號方向要相反。</div><div style="font-size:1.05em;margin-top:5px;">\\( x '+finalOp+' '+boundary+' \\)</div>'; return {questionHTML:text, correctAnswer:'x'+finalOp+boundary, paramsUsed:{a:a,b:b,rhs:rhs,boundary:boundary,op:finalOp}, solutionHTML:steps, pdfText:text, answers:['x'+finalOp+boundary], displayAnswer:'x '+finalOp+' '+boundary, steps:steps, checkType:'inequality', answerSpec:{variable:'x', op:finalOp, value:boundary}}; }; })(),
   "triangle_center": function triangle_center(p) {
     var centers=[
-      {key:'circumcenter',label:'外心',desc:'三邊垂直平分線的交點'},
-      {key:'incenter',label:'內心',desc:'三角形三條角平分線的交點'},
-      {key:'centroid',label:'形心',desc:'三條中線的交點'},
-      {key:'orthocenter',label:'垂心',desc:'三條高的交點'}
+      {key:'circumcenter',label:'外心',lineDesc:'三角形三邊的垂直平分線',desc:'三邊垂直平分線的交點'},
+      {key:'incenter',label:'內心',lineDesc:'三角形的三條角平分線',desc:'三角形三條角平分線的交點'},
+      {key:'centroid',label:'形心',lineDesc:'三角形的三條中線',desc:'三條中線的交點'},
+      {key:'orthocenter',label:'垂心',lineDesc:'三角形的三條高',desc:'三條高的交點'}
     ];
     var shapes=[
       {key:'acute-wide',label:'闊身',a:[32,132],b:[218,132],c:[118,24]},
@@ -330,7 +330,7 @@ function createAssessGenerators() {
     for(var i=0;i<segments.length;i++)svg+=line(segments[i]);
     svg+='<circle cx="'+pnt[0].toFixed(2)+'" cy="'+pnt[1].toFixed(2)+'" r="5" fill="#e74c3c"/><text x="'+(pnt[0]+8).toFixed(2)+'" y="'+(pnt[1]+4).toFixed(2)+'" font-size="12" fill="#e74c3c">P</text>';
     svg+='<text x="'+(a[0]-12)+'" y="'+(a[1]+5)+'" font-size="12">A</text><text x="'+(b[0]+5)+'" y="'+(b[1]+5)+'" font-size="12">B</text><text x="'+(c[0]-3)+'" y="'+(c[1]-7)+'" font-size="12">C</text></svg>';
-    var text='9. 下圖顯示一個'+shape.label+'三角形內三條線交於點 \\(P\\)。若這三條線是'+item.desc+'，點 \\(P\\) 是三角形的哪一個心？<br>'+svg;
+    var text='9. 下圖顯示一個'+shape.label+'三角形內三條線交於點 \\(P\\)。若這三條線分別是'+item.lineDesc+'，點 \\(P\\) 是三角形的哪一個心？<br>'+svg;
     var solutionDiagram='<div class="solution-diagram" data-solution-diagram="triangle_center" data-center="'+item.key+'" data-shape-key="'+shape.key+'"><div style="font-weight:bold;text-align:center;">'+item.desc+'</div>'+svg.replace('<svg ', '<svg role="img" aria-label="'+item.label+'構造線解說圖" ')+'</div>';
     var steps=solutionDiagram+'<div>'+item.label+'：'+item.desc+'。</div>';
     return {questionHTML:text,correctAnswer:item.key,paramsUsed:{center:item.key,shapeKey:shape.key,vertices:{a:a,b:b,c:c}},solutionHTML:steps,pdfText:'9. 判斷三角形四心（'+shape.label+'三角形）。',answers:[item.key],displayAnswer:item.label,steps:steps,checkType:'choiceKey',options:centers.map(function(center){return {key:center.key,label:center.label};}),imageSvg:svg};

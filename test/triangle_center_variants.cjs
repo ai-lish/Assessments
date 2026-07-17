@@ -7,6 +7,12 @@ const validators = require('../tool/validators.js');
 
 const CENTERS = ['circumcenter', 'incenter', 'centroid', 'orthocenter'];
 const SHAPES = ['acute-wide', 'acute-left', 'acute-right', 'acute-tall', 'acute-low-left', 'acute-low-right'];
+const CENTER_LINE_TEXT = {
+  circumcenter: '三角形三邊的垂直平分線',
+  incenter: '三角形的三條角平分線',
+  centroid: '三角形的三條中線',
+  orthocenter: '三角形的三條高',
+};
 const typeDef = bank.data.find((item) => item.key === 'triangle_center');
 let passed = 0;
 const failures = [];
@@ -55,6 +61,12 @@ for (const center of CENTERS) {
     check(`${center}/${shapeKey} keeps requested shape`, result.paramsUsed.shapeKey === shapeKey);
     check(`${center}/${shapeKey} answer accepted`, validators.checkAnswer(question, center));
     check(`${center}/${shapeKey} SVG is finite`, !/NaN|Infinity/.test(result.imageSvg));
+    check(`${center}/${shapeKey} names lines without calling them an intersection`,
+      result.questionHTML.includes(`若這三條線分別是${CENTER_LINE_TEXT[center]}，點 \\(P\\) 是三角形的哪一個心？`),
+      result.questionHTML);
+    check(`${center}/${shapeKey} removes old line-is-intersection wording`,
+      !/若這三條線(?:分別)?是[^，。？]*的交點/.test(result.questionHTML),
+      result.questionHTML);
   }
 }
 
