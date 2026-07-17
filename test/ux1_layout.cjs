@@ -54,10 +54,10 @@ check('student runtime uses sessionStorage and contains no localStorage calls',
   /sessionStorage\.getItem\(storageKey\(\)\)/.test(template) &&
   /sessionStorage\.setItem\(studentIdStorageKey\(\)/.test(template) &&
   !/\blocalStorage\s*\./.test(template));
-check('template uses question-scroll followed by a bottom-dock',
-  /id="question-scroll"[\s\S]*id="bottom-dock"/.test(template));
-check('bottom-dock orders answer, PDF, keypad, then answer actions',
-  /id="bottom-dock"[\s\S]*id="answer-dock"[\s\S]*id="control-dock"[\s\S]*id="pdf-action-area"[\s\S]*id="keypad-area"[\s\S]*id="action-area"/.test(template));
+check('template groups question and answer in a work scroll before the bottom dock',
+  /id="work-scroll"[\s\S]*id="question-scroll"[\s\S]*id="answer-dock"[\s\S]*id="bottom-dock"/.test(template));
+check('bottom dock contains PDF, keypad, then answer actions in its control dock',
+  /id="bottom-dock"[\s\S]*id="control-dock"[\s\S]*id="pdf-action-area"[\s\S]*id="keypad-area"[\s\S]*id="action-area"/.test(template));
 check('template places keypad shift with both PDF controls in one row',
   /class="pdf-action-row"[\s\S]{0,1500}id="btn-similar-pdf"[\s\S]{0,800}id="btn-whole-pdf"[\s\S]{0,800}id="btn-shift-keypad"/.test(template) &&
   !/class="keypad-tools"/.test(template));
@@ -84,6 +84,10 @@ check('check and next share one fixed action slot',
 check('template has collapseAnswerControlsAfterCheck()', /function collapseAnswerControlsAfterCheck\(\)/.test(template));
 check('checkAns collapses controls after answer', /checkAns\(\)[\s\S]*collapseAnswerControlsAfterCheck\(\)/.test(template));
 check('showQ restores keypad for next question', /showQ\(\)[\s\S]*setKeypadVisible\(true\)/.test(template));
+check('review state is entered after checking and reset for the next question',
+  /function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,250}classList\.add\("reviewed"\)/.test(template) &&
+  /function resetReviewedLayout\(\)[\s\S]{0,250}classList\.remove\("reviewed"\)/.test(template) &&
+  /function showQ\(\)[\s\S]{0,180}resetReviewedLayout\(\)/.test(template));
 check('template renders one per-question keypad when a new question is shown',
   /showQ\(\)[\s\S]*renderQuestionKeypad\(q\)/.test(template));
 check('template keypad configuration includes fraction, ratio, root, congruence, and inequality inputs',
@@ -99,10 +103,13 @@ check('answer controls remain visible and become locked after checking',
   /classList\.add\("answer-control-locked"\)/.test(template) &&
   /setAttribute\("aria-disabled", "true"\)/.test(template) &&
   !/function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,500}style\.visibility = "hidden"/.test(template));
-check('solution drawer has its own bounded scrolling area',
-  /\.solution-box\s*\{[^}]*max-height:[^}]*overflow:\s*auto/.test(template));
+check('portrait reviewed mode gives released keypad space to one work scroller',
+  /#quiz-view\.reviewed \.work-scroll\s*\{[^}]*overflow-y:\s*auto/.test(template) &&
+  /#quiz-view\.reviewed \.solution-box\s*\{[^}]*max-height:\s*none[^}]*overflow:\s*visible/.test(template) &&
+  /#quiz-view\.reviewed \.keypad-area\s*\{[^}]*display:\s*none !important/.test(template));
 check('landscape uses a left question-answer column and right control column',
-  /@media \(orientation: landscape\)\s*\{[\s\S]*\.question-scroll\s*\{[^}]*grid-column:\s*1/.test(template) &&
+  /@media \(orientation: landscape\)\s*\{[\s\S]*\.work-scroll\s*\{[^}]*display:\s*contents/.test(template) &&
+  /\.question-scroll\s*\{[^}]*grid-column:\s*1/.test(template) &&
   /\.answer-dock\s*\{[^}]*grid-column:\s*1/.test(template) &&
   /\.control-dock\s*\{[^}]*grid-column:\s*2/.test(template));
 check('landscape routing is orientation-only and keeps portrait base rules untouched',
@@ -150,6 +157,8 @@ for (const rel of exercisePaths) {
     /\.action-area\s*\{[^}]*order:\s*3/.test(html));
   check(`${rel} includes fresh PDF seed path`, /const seed = AssessPDF\.createSnapshotSeed\(\)/.test(html));
   check(`${rel} includes collapse controls helper`, /function collapseAnswerControlsAfterCheck\(\)/.test(html));
+  check(`${rel} includes reviewed work-scroll release`,
+    /id="work-scroll"/.test(html) && /#quiz-view\.reviewed \.keypad-area\s*\{[^}]*display:\s*none !important/.test(html));
 }
 
 console.log(`\n=== Summary: ${passed} passed, ${failures.length} failed ===`);

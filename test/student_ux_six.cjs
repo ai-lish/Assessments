@@ -67,17 +67,21 @@ check('answer controls stay visible but locked after checking',
   /setAttribute\("aria-disabled", "true"\)/.test(template) &&
   !/function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,500}style\.visibility = "hidden"/.test(template) &&
   !/function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,500}style\.display = "none"/.test(template));
-check('feedback and solution share a stable detail slot',
+check('portrait review releases the fixed solution and keypad slots',
   /\.answer-detail-slot\s*\{[^}]*height:\s*148px[^}]*display:\s*grid[^}]*grid-template-rows:[^}]*40px/.test(template) &&
-  /\.feedback-area\s*\{[^}]*grid-area:\s*1 \/ 1/.test(template) &&
-  /\.solution-box\s*\{[^}]*grid-area:\s*1 \/ 1/.test(template));
-check('bottom dock places fixed-height keypad before the fixed action slot',
-  /id="bottom-dock"[\s\S]*id="keypad-area"[\s\S]*id="action-area"/.test(template) &&
+  /#quiz-view\.reviewed \.answer-detail-slot\s*\{[^}]*height:\s*auto[^}]*overflow:\s*visible/.test(template) &&
+  /#quiz-view\.reviewed \.solution-box\s*\{[^}]*max-height:\s*none[^}]*overflow:\s*visible/.test(template) &&
+  /#quiz-view\.reviewed \.keypad-area\s*\{[^}]*display:\s*none !important/.test(template));
+check('work scroll keeps answer content above the fixed control dock',
+  /id="work-scroll"[\s\S]*id="question-scroll"[\s\S]*id="answer-dock"[\s\S]*id="bottom-dock"[\s\S]*id="control-dock"/.test(template) &&
   /\.keypad-area\s*\{[^}]*height:\s*122px[^}]*flex:\s*0 0 122px/.test(template) &&
   /\.action-area\s*\{[^}]*min-height:\s*63px/.test(template));
-check('keypad raise state applies to the whole bottom dock',
+check('keypad raise uses the action visibility boundary rather than question height',
   /getElementById\("bottom-dock"\)[\s\S]{0,400}classList\.toggle\("keypad-raised", keypadRaised\)/.test(template) &&
-  /visualViewport\.height/.test(template));
+  /getElementById\("action-area"\)/.test(template) &&
+  /visualViewport\.offsetTop/.test(template) &&
+  /baseActionBottom[\s\S]*viewportBottom/.test(template) &&
+  !/minimumQuestionHeight|questionHeight - 72/.test(template));
 check('landscape compact mode is selected by orientation only',
   /@media \(orientation: landscape\)\s*\{/.test(template) &&
   !/@media \(orientation: landscape\)[^{]*(?:min-width|max-width|hover|pointer)/.test(template));
@@ -116,7 +120,7 @@ check('showQ targets only the changed question node',
 const checkSection = template.slice(template.indexOf('function checkAns()'), template.indexOf('function toggleTeach()'));
 const teachSection = template.slice(template.indexOf('function toggleTeach()'), template.indexOf('function nextQ()'));
 check('hidden solution is not typeset during answer checking', !/typesetElementOnce\(solBox\)/.test(checkSection));
-check('solution is typeset once only when opened', /if \(opening\) typesetElementOnce\(solBox\)/.test(teachSection));
+check('solution is typeset once only when opened', /if \(opening\)[\s\S]*typesetElementOnce\(solBox\)/.test(teachSection));
 check('wrong-answer display targets only the answer span',
   /renderFeedbackAnswer\(fb, ans\)/.test(template) && /typesetElementOnce\(answerSpan\)/.test(template));
 check('pure numeric keypad input bypasses incremental MathJax',

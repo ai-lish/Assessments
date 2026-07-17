@@ -23,6 +23,9 @@ const profiles = [
   { name: 'phone-390x844', viewport: { width: 390, height: 844 } },
   { name: 'phone-390x700', viewport: { width: 390, height: 700 } },
   { name: 'phone-375x667', viewport: { width: 375, height: 667 } },
+  { name: 'short-phone-390x600', viewport: { width: 390, height: 600 } },
+  { name: 'short-phone-390x568', viewport: { width: 390, height: 568 } },
+  { name: 'short-phone-375x600', viewport: { width: 375, height: 600 } },
   { name: 'tablet-768x1024', viewport: { width: 768, height: 1024 } },
   { name: 'landscape-844x390', viewport: { width: 844, height: 390 } },
   { name: 'landscape-1024x768', viewport: { width: 1024, height: 768 } },
@@ -65,7 +68,7 @@ async function answerVisibility(page, typeKey) {
     let bottom = innerHeight;
     for (let parent = element.parentElement; parent; parent = parent.parentElement) {
       const style = getComputedStyle(parent);
-      if (/(auto|scroll|hidden|clip)/.test(style.overflow + style.overflowX + style.overflowY)) {
+      if (style.display !== 'contents' && /(auto|scroll|hidden|clip)/.test(style.overflow + style.overflowX + style.overflowY)) {
         const parentRect = parent.getBoundingClientRect();
         left = Math.max(left, parentRect.left);
         top = Math.max(top, parentRect.top);
@@ -148,58 +151,103 @@ async function runProfile(browser, profile) {
 
   await page.evaluate(() => {
     window.__uxShifts = [];
-    new PerformanceObserver((list) => list.getEntries().forEach((entry) => window.__uxShifts.push(entry.value)))
+    window.__uxAllShifts = [];
+    new PerformanceObserver((list) => list.getEntries().forEach((entry) => {
+      window.__uxAllShifts.push(entry.value);
+      if (!entry.hadRecentInput) window.__uxShifts.push(entry.value);
+    }))
       .observe({ type: 'layout-shift', buffered: false });
   });
-  const action = await page.evaluate(async () => {
-    const frames = () => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-    const top = () => document.getElementById('action-area').getBoundingClientRect().top;
-    const textQuestion = QUESTIONS.find((question) => question.type === 'text');
+  await page.evaluate(() => {
+    const textQuestion = QUESTIONS.filter((question) => question.type === 'text')
+      .sort((a, b) => String(b.solutionHTML || b.steps || '').length - String(a.solutionHTML || a.steps || '').length)[0];
     const choiceQuestion = QUESTIONS.find((question) => question.type === 'choice');
     qList = [textQuestion, choiceQuestion];
     currIdx = 0;
     showQ();
-    await frames();
     window.__uxShifts = [];
-    const before = top();
     currInput = String(qList[currIdx].correctAnswer);
     renderInputDisplay();
-    checkAns();
-    await frames();
-    const afterCheck = top();
-    toggleTeach();
-    await frames();
-    const afterSolution = top();
-    const solutionRect = document.getElementById('solution-box').getBoundingClientRect();
+  });
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const actionTop = () => page.locator('#action-area').evaluate((element) => element.getBoundingClientRect().top);
+  const before = await actionTop();
+  await page.click('#btn-check');
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const afterCheck = await actionTop();
+  await page.click('#btn-teach');
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const afterSolution = await actionTop();
+  const solutionState = await page.evaluate(() => {
+    const solution = document.getElementById('solution-box');
+    const solutionRect = solution.getBoundingClientRect();
     const answerRect = document.getElementById('answer-dock').getBoundingClientRect();
-    nextQ();
-    await frames();
-    const afterChoice = top();
-    const flowCls = (window.__uxShifts || []).reduce((sum, value) => sum + value, 0);
-    window.__uxShifts = [];
-    currIdx = 0;
-    showQ();
-    await frames();
-    toggleKeypadPosition();
-    await new Promise((resolve) => setTimeout(resolve, 260));
-    const raisedTop = top();
-    const raiseOffset = parseFloat(getComputedStyle(document.getElementById('bottom-dock')).getPropertyValue('--keypad-raise-offset')) || 0;
-    toggleKeypadPosition();
-    await new Promise((resolve) => setTimeout(resolve, 260));
     return {
-      before, afterCheck, afterSolution, afterChoice, raisedTop, raiseOffset,
-      solutionContained: solutionRect.bottom <= answerRect.bottom + 0.5,
-      cls: flowCls,
-      toggleCls: (window.__uxShifts || []).reduce((sum, value) => sum + value, 0),
+      contained: solutionRect.bottom <= answerRect.bottom + 0.5,
+      clientHeight: solution.clientHeight,
+      scrollHeight: solution.scrollHeight,
+      workOverflowY: getComputedStyle(document.getElementById('work-scroll')).overflowY,
     };
   });
+  await page.click('#btn-next');
+  await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+  const afterChoice = await actionTop();
+  const action = await page.evaluate(({ before, afterCheck, afterSolution, afterChoice, solutionState }) => ({
+    before,
+    afterCheck,
+    afterSolution,
+    afterChoice,
+    solutionContained: solutionState.contained,
+    solutionClientHeight: solutionState.clientHeight,
+    solutionScrollHeight: solutionState.scrollHeight,
+    workOverflowY: solutionState.workOverflowY,
+    cls: (window.__uxShifts || []).reduce((sum, value) => sum + value, 0),
+  }), { before, afterCheck, afterSolution, afterChoice, solutionState });
   const tops = [action.before, action.afterCheck, action.afterSolution, action.afterChoice];
   assert(Math.max(...tops) - Math.min(...tops) < 0.5, `${profile.name} action-area moved: ${JSON.stringify(tops)}`);
-  assert(action.solutionContained, `${profile.name} solution drawer escaped answer-dock`);
-  assert(Math.abs((action.before - action.raisedTop) - action.raiseOffset) < 1,
-    `${profile.name} raised dock mismatch ${JSON.stringify(action)}`);
+  if (profile.viewport.width > profile.viewport.height) {
+    assert(action.solutionContained, `${profile.name} landscape solution drawer escaped answer-dock`);
+  } else {
+    assert(action.workOverflowY === 'auto', `${profile.name} reviewed work area is not scrollable`);
+    assert(action.solutionClientHeight >= action.solutionScrollHeight - 1,
+      `${profile.name} solution kept an internal clamp: ${JSON.stringify(action)}`);
+  }
   assert(action.cls < 0.05, `${profile.name} interaction CLS ${action.cls}`);
   assert(startCls < 0.01, `${profile.name} student start CLS ${startCls}`);
+
+  let raiseState = null;
+  if (profile.viewport.width <= profile.viewport.height) {
+    await page.evaluate(() => {
+      if (keypadRaised) toggleKeypadPosition();
+      const textQuestion = QUESTIONS.find((question) => question.type === 'text');
+      qList = [textQuestion];
+      currIdx = 0;
+      showQ();
+    });
+    await page.waitForTimeout(30);
+    const raiseBefore = await page.locator('#action-area').evaluate((element) => element.getBoundingClientRect().top);
+    await page.evaluate(() => { window.__uxAllShifts = []; });
+    await page.click('#btn-shift-keypad');
+    await page.waitForTimeout(260);
+    raiseState = await page.evaluate(() => ({
+      actionTop: document.getElementById('action-area').getBoundingClientRect().top,
+      offset: parseFloat(getComputedStyle(document.getElementById('bottom-dock')).getPropertyValue('--keypad-raise-offset')) || 0,
+      activeLayoutShift: (window.__uxAllShifts || []).reduce((sum, value) => sum + value, 0),
+    }));
+    await page.evaluate(() => { window.__uxAllShifts = []; });
+    await page.click('#btn-shift-keypad');
+    await page.waitForTimeout(260);
+    const restored = await page.evaluate(() => ({
+      actionTop: document.getElementById('action-area').getBoundingClientRect().top,
+      activeLayoutShift: (window.__uxAllShifts || []).reduce((sum, value) => sum + value, 0),
+    }));
+    assert(raiseState.offset > 0, `${profile.name} real-click raise offset is not positive: ${JSON.stringify(raiseState)}`);
+    assert(Math.abs((raiseBefore - raiseState.actionTop) - raiseState.offset) < 1,
+      `${profile.name} real-click action movement mismatch: ${JSON.stringify({ raiseBefore, raiseState })}`);
+    assert(Math.abs(restored.actionTop - raiseBefore) < 1,
+      `${profile.name} second real click did not restore action: ${JSON.stringify({ raiseBefore, restored })}`);
+    raiseState.restoreLayoutShift = restored.activeLayoutShift;
+  }
 
   const coordinateRatio = await answerVisibility(page, 'coordinate');
   const congruenceRatio = await answerVisibility(page, 'congruence');
@@ -241,6 +289,8 @@ async function runProfile(browser, profile) {
     const actionAfter = rect('action-area');
     const pdfAfter = rect('pdf-action-area');
     const keypadHidden = getComputedStyle(document.getElementById('keypad')).visibility === 'hidden';
+    const keypadDisplay = getComputedStyle(document.getElementById('keypad-area')).display;
+    const workOverflowY = getComputedStyle(document.getElementById('work-scroll')).overflowY;
 
     const longQuestion = QUESTIONS.find((question) => question.typeKey === 'congruence');
     let longContent = null;
@@ -269,6 +319,8 @@ async function runProfile(browser, profile) {
       pdfToAction: actionAfter.top - pdfAfter.bottom,
       actionDelta: actionAfter.top - actionBefore,
       keypadHidden,
+      keypadDisplay,
+      workOverflowY,
       longContent,
       quizTop: quiz.top,
       pdfTop: pdf.top,
@@ -292,6 +344,14 @@ async function runProfile(browser, profile) {
   } else {
     assert(!layout.orientationLandscape && layout.quizDisplay === 'flex' && layout.bottomDockDisplay === 'flex',
       `${profile.name} portrait bottom dock changed: ${JSON.stringify(layout)}`);
+    assert(layout.cardToAnswer <= 30,
+      `${profile.name} portrait question/answer retained blank space ${layout.cardToAnswer}`);
+    assert(Math.abs(layout.questionToAnswer) < 0.5,
+      `${profile.name} portrait question-scroll/answer gap ${layout.questionToAnswer}`);
+    assert(layout.keypadDisplay === 'none' && layout.workOverflowY === 'auto',
+      `${profile.name} reviewed portrait did not release keypad/work scroll: ${JSON.stringify(layout)}`);
+    assert(Math.abs(layout.actionDelta) < 0.5,
+      `${profile.name} portrait action moved when keypad collapsed: ${layout.actionDelta}`);
   }
 
   const answerRendering = await page.evaluate(async () => {
@@ -340,7 +400,7 @@ async function runProfile(browser, profile) {
   const popupState = null;
   assert(errors.length === 0, `${profile.name} console/page errors: ${errors.join(' | ')}`);
   await context.close();
-  return { profile: profile.name, controls, action, startCls, raisedVisibility, layout, answerRendering, popupState, errors };
+  return { profile: profile.name, controls, action, raiseState, startCls, raisedVisibility, layout, answerRendering, popupState, errors };
 }
 
 (async () => {

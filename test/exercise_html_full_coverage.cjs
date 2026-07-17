@@ -566,11 +566,14 @@ async function runFunctionalPath(browser, exercise, viewport) {
     const keypadLocked = await page.evaluate(() => {
       const area = document.getElementById("keypad-area");
       const grid = document.getElementById("keypad");
-      return getComputedStyle(area).display !== "none"
-        && getComputedStyle(grid).visibility === "hidden"
+      const landscape = matchMedia("(orientation: landscape)").matches;
+      const displayMatches = landscape
+        ? getComputedStyle(area).display !== "none" && getComputedStyle(grid).visibility === "hidden"
+        : getComputedStyle(area).display === "none";
+      return displayMatches
         && document.getElementById("input-row").classList.contains("answer-control-locked");
     });
-    set("5. hide keyboard", keypadLocked, "fixed-height keypad slot remains while keys are hidden and answer is locked");
+    set("5. hide keyboard", keypadLocked, "portrait releases the keypad slot; landscape preserves its compact column slot");
     const beforeProgress = await page.locator("#p-text").evaluate((el) => el.textContent);
     await page.click("#btn-next");
     const keypadVisible = await page.evaluate(() => {
