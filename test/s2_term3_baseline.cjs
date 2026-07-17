@@ -89,7 +89,7 @@ const wrongInputs = {
   ratio_three: "14:56:6",
   discount: "42",
   profit_pct: "14%",
-  square_root_pm: "6",
+  square_root_pm: "±6",
   cuboid_volume_cube: "124",
 };
 
@@ -170,8 +170,10 @@ section("3. S2 marking notation compatibility");
 
   const rootType = bank.data.find((t) => t.key === "square_root_pm");
   const root = generators.generateQuestion(rootType, sampleParams.square_root_pm);
-  check("textExact accepts explicit ± answer form",
-    validators.checkAnswer(assemble(rootType, root), "±6"));
+  check("principalRootExact accepts the positive principal root",
+    validators.checkAnswer(assemble(rootType, root), "6"));
+  check("principalRootExact rejects the former ± answer form",
+    !validators.checkAnswer(assemble(rootType, root), "±6"));
 }
 
 if (failures.length) {

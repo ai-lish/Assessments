@@ -465,7 +465,7 @@ const QUESTION_TYPE_NAMES = Object.freeze({
   ratio_three: "三項比例",
   discount: "折扣售價",
   profit_pct: "盈虧百分率",
-  square_root_pm: "平方根（正負兩根）"
+  square_root_pm: "化簡平方根"
 });
 let bank = null;
 let tmpl = null;
@@ -827,7 +827,7 @@ function validateBank(b) {
   // 支援嘅 type/checkType 白名單
   const SUPPORTED_TYPES = new Set(["text", "choice", "coordinate", "congruence"]);
   const SUPPORTED_CHECKS = new Set([
-    "textExact", "numeric", "fracPct", "primeFactor",
+    "textExact", "principalRootExact", "numeric", "fracPct", "primeFactor",
     "algebraQ8", "hcfLcm", "choiceKey", "congruenceReason", "coordinatePoint",
     "signedNumeric", "numericOrFraction", "unitNumeric", "polyTerms",
     "factorPair", "scientificNotation", "inequality"

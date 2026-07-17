@@ -77,7 +77,7 @@ No current question-bank entry uses a `DSE` code. The format is reserved for lat
 | `NA-24` | 分式合併（分母含變數） | `combine_fractions` | `LSC-2526-S2-T3-09-NA-24` |
 | `NA-25` | 係數與指數相除 | `coef_exp_div` | `LSC-2526-S2-T3-11-NA-25` |
 | `NA-26` | 三項比例 | `ratio_three` | `LSC-2526-S2-T3-12-NA-26` |
-| `NA-27` | 平方根（正負兩根） | `square_root_pm` | `LSC-2526-S2-T3-15-NA-27` |
+| `NA-27` | 化簡平方根 | `square_root_pm` | `LSC-2526-S2-T3-15-NA-27` |
 | `ME-1` | 有效數字 | `sig_fig` | `LSC-2526-S1-T3-09-ME-1`, `LSC-2526-S2-T3-07-ME-1` |
 | `ME-2` | 分數化百分數 | `frac_to_pct` | `LSC-2526-S1-T3-10-ME-2` |
 | `ME-3` | 圓面積 | `area_circle` | `LSC-2526-S0-T0-01-ME-3` |

@@ -322,10 +322,21 @@ function createAssessValidators() {
     return normalize(value).replace(/\./g, "");
   }
 
+  function normalizePrincipalRoot(value) {
+    const normalized = String(value == null ? "" : value).trim().replace(/\s+/g, "");
+    return /^(?:\d+|(?:\d+)?√\d+)$/.test(normalized) ? normalized : null;
+  }
+
   const validators = Object.freeze({
     textExact(q, userInput) {
       const answers = q.answers && q.answers.length > 0 ? q.answers : [q.correctAnswer];
       return answers.some((answer) => equalAns(userInput, answer));
+    },
+    principalRootExact(q, userInput) {
+      const normalizedInput = normalizePrincipalRoot(userInput);
+      if (normalizedInput === null) return false;
+      const answers = q.answers && q.answers.length > 0 ? q.answers : [q.correctAnswer];
+      return answers.some((answer) => normalizePrincipalRoot(answer) === normalizedInput);
     },
     numeric(q, userInput) {
       const normalizeNumericInput = (value) => String(value || "").trim().replace(/−/g, "-").replace(/\$/g, "");
@@ -414,6 +425,7 @@ function createAssessValidators() {
 
   const aliases = Object.freeze({
     textExact: "textExact",
+    principalRootExact: "principalRootExact",
     numeric: "numeric",
     signedNumeric: "signedNumeric",
     numericOrFraction: "numericOrFraction",
