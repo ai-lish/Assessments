@@ -68,7 +68,8 @@
   .copy-code-btn { flex: 0 0 auto; border: 1px solid #d5dbdb; background: #fff; color: var(--primary); border-radius: 999px; padding: 2px 7px; font-size: 0.78em; font-weight: 700; cursor: pointer; }
   .copy-code-btn:active { transform: translateY(1px); }
   #quiz-view { display: none; flex-direction: column; flex: 1; min-height: 0; overflow: hidden; }
-  .question-scroll { padding: 10px 15px; flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
+  .work-scroll { flex: 1; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+  .question-scroll { padding: 10px 15px; flex: 0 1 auto; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
   .question-card { background: #fafbfc; border-radius: 12px; padding: 16px; width: 100%; box-sizing: border-box; margin-bottom: 15px; border: 1px solid #f0f2f5; }
   .bottom-dock { --keypad-raise-offset: 0px; flex: 0 0 auto; min-height: 0; display: flex; flex-direction: column; background: #fff; margin-bottom: 0; transition: margin-bottom 0.2s ease; }
   .bottom-dock.keypad-raised { margin-bottom: var(--keypad-raise-offset); }
@@ -108,6 +109,12 @@
   .key-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
   .keypad-area.keypad-unavailable .key-grid,
   .keypad-area.keypad-input-hidden .key-grid { visibility: hidden; pointer-events: none; }
+  #quiz-view.reviewed .work-scroll { overflow-y: auto; }
+  #quiz-view.reviewed .question-scroll { flex: 0 0 auto; overflow: visible; }
+  #quiz-view.reviewed .answer-detail-slot { height: auto; grid-template-rows: auto 40px; overflow: visible; }
+  #quiz-view.reviewed .feedback-area { overflow: visible; }
+  #quiz-view.reviewed .solution-box { max-height: none; overflow: visible; }
+  #quiz-view.reviewed .keypad-area { display: none !important; }
   .key { background: white; border: 1px solid #ccc; border-radius: 5px; height: 34px; display: flex; align-items: center; justify-content: center; font-size: 1.0em; font-weight: 600; cursor: pointer; user-select: none; }
   .key.key-variable { font-style: italic; }
   .key-spacer { height: 34px; visibility: hidden; pointer-events: none; }
@@ -154,6 +161,7 @@
     .container { max-width: 980px; }
     #quiz-view { display: none; grid-template-columns: minmax(0, 1fr) minmax(0, 0.95fr); grid-template-rows: auto auto minmax(0, 1fr); align-content: start; column-gap: 8px; }
     #quiz-view[style*="display: flex"] { display: grid !important; }
+    .work-scroll { display: contents; }
     .question-scroll { grid-column: 1; grid-row: 1; padding: 8px 12px; }
     .bottom-dock { display: contents; }
     .answer-dock { grid-column: 1; grid-row: 2; max-height: min(56dvh, 260px); padding: 6px 12px 0; transition: transform 0.2s ease; }
@@ -161,15 +169,20 @@
     .keypad-area { order: 1; }
     .pdf-action-area { order: 2; }
     .action-area { order: 3; }
-    .bottom-dock.keypad-raised > .answer-dock,
+    #quiz-view.keypad-raised .answer-dock,
     .bottom-dock.keypad-raised > .control-dock { transform: translateY(calc(-1 * var(--keypad-raise-offset))); }
     .answer-detail-slot { height: 130px; }
+    #quiz-view.reviewed .question-scroll { overflow-y: auto; }
+    #quiz-view.reviewed .answer-detail-slot { height: 130px; overflow: hidden; }
+    #quiz-view.reviewed .feedback-area { overflow: hidden; }
+    #quiz-view.reviewed .solution-box { max-height: 100%; overflow: auto; }
+    #quiz-view.reviewed .keypad-area { display: block !important; }
   }
   @media print {
     body { background: #fff; padding: 0; height: auto; overflow: visible; display: block; }
     .container { box-shadow: none; max-width: 100%; height: auto; }
     .top-info, .toolbar, .action-area, .pdf-action-area, .keypad-area, .feedback-area, .btn-teach, .solution-box, .btn-row, .toast { display: none !important; }
-    .question-scroll { overflow: visible; padding: 0; }
+    .work-scroll, .question-scroll { overflow: visible; padding: 0; }
     #quiz-view, #result-view { display: block !important; height: auto; overflow: visible; }
     .question-text { page-break-inside: avoid; }
   }
@@ -201,15 +214,15 @@
   </div>
 
   <div id="quiz-view">
-    <div class="question-scroll" id="question-scroll">
-      <div class="question-card">
-        <div id="q-text" class="question-text">題目載入中...</div>
+    <div class="work-scroll" id="work-scroll">
+      <div class="question-scroll" id="question-scroll">
+        <div class="question-card">
+          <div id="q-text" class="question-text">題目載入中...</div>
+        </div>
+        <div id="q-image" class="geo-image" style="display:none;"></div>
+        <div id="q-hint" class="hint-text" style="display:none;"></div>
+        <div id="q-coord-hint" class="hint-text" style="display:none;">請於下方坐標平面點擊 A 點位置</div>
       </div>
-      <div id="q-image" class="geo-image" style="display:none;"></div>
-      <div id="q-hint" class="hint-text" style="display:none;"></div>
-      <div id="q-coord-hint" class="hint-text" style="display:none;">請於下方坐標平面點擊 A 點位置</div>
-    </div>
-    <div class="bottom-dock" id="bottom-dock">
       <div class="answer-dock" id="answer-dock">
         <div id="q-options" class="options-row" style="display:none;"></div>
         <div class="input-container" id="input-row">
@@ -227,6 +240,8 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="bottom-dock" id="bottom-dock">
       <div class="control-dock" id="control-dock">
         <div class="pdf-action-area" id="pdf-action-area">
           <div class="pdf-action-row">
@@ -1710,7 +1725,7 @@ const TITLE = "2025-26 年度 中三第三學期(甲部)短答練習";
 const PREBUILT_QUESTIONS = [];
 const QUESTION_SPECS = [{"qid":"q001","typeKey":"poly_add_sub","typeDef":{"key":"poly_add_sub","name":"多項式加減及去括號","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"第一個多項式 x^2 係數","b":"第一個多項式 x 係數","c":"第一個多項式常數項","d":"第二個多項式 x^2 係數","e":"第二個多項式 x 係數","f":"第二個多項式常數項","op":"+ 或 -"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"poly_add_sub","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-01-NA-16","source":""},"params":{}},{"qid":"q002","typeKey":"binomial_expand","typeDef":{"key":"binomial_expand","name":"兩個二項式展開","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)(cx+d) 的 a","b":"(ax+b)(cx+d) 的 b","c":"(ax+b)(cx+d) 的 c","d":"(ax+b)(cx+d) 的 d","square":"false"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-02-NA-17","source":""},"params":{}},{"qid":"q003","typeKey":"s3t3_square_expand","typeDef":{"key":"s3t3_square_expand","name":"完全平方公式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"polyTerms","params_schema":{"a":"(ax+b)^2 的 a","b":"(ax+b)^2 的 b","square":"固定 true"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"polyTerms","generator":"binomial_expand","defaultParams":{"square":true},"answerSpec":{"order":"loose"},"code":"LSC-2526-S3-T3-03-NA-17","source":""},"params":{}},{"qid":"q004","typeKey":"s3t3_zero_exp","typeDef":{"key":"s3t3_zero_exp","name":"零指數定律","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"numeric","params_schema":{"zeroCase":"固定 true","base":"非零整數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"numeric","generator":"exp_law","defaultParams":{"zeroCase":true},"code":"LSC-2526-S3-T3-04-NA-5","source":""},"params":{}},{"qid":"q005","typeKey":"factor_diff_sq","typeDef":{"key":"factor_diff_sq","name":"平方差因式分解","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"ax 的 a","b":"常數 b，題目為 (ax)^2-b^2"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_diff_sq","code":"LSC-2526-S3-T3-05-NA-18","source":""},"params":{}},{"qid":"q006","typeKey":"factor_cross","typeDef":{"key":"factor_cross","name":"十字相乘法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"factorPair","params_schema":{"a":"第一個因式 x 係數","b":"第一個因式常數","c":"第二個因式 x 係數","d":"第二個因式常數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"factorPair","generator":"factor_cross","code":"LSC-2526-S3-T3-06-NA-19","source":""},"params":{}},{"qid":"q007","typeKey":"sci_notation","typeDef":{"key":"sci_notation","name":"科學記數法","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"scientificNotation","params_schema":{"mantissa":"1 ≤ a < 10","exponent":"10 的指數"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"scientificNotation","generator":"sci_notation","code":"LSC-2526-S3-T3-07-NA-20","source":""},"params":{}},{"qid":"q008","typeKey":"solve_ineq","typeDef":{"key":"solve_ineq","name":"一元一次不等式","category":"數與代數","difficulty":2,"grade":"s3","term":"3","topicKey":"number_and_algebra","topicName":"數與代數","type":"text","checkType":"inequality","params_schema":{"a":"x 係數，可為負數","b":"常數項","boundary":"答案邊界值","op":"原不等式方向"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"inequality","generator":"solve_ineq","code":"LSC-2526-S3-T3-08-NA-21","source":""},"params":{}},{"qid":"q009","typeKey":"triangle_center","typeDef":{"key":"triangle_center","name":"三角形四心","category":"幾何","difficulty":2,"grade":"s3","term":"3","topicKey":"geometry","topicName":"幾何","type":"choice","checkType":"choiceKey","params_schema":{"center":"circumcenter / incenter / centroid / orthocenter","shapeKey":"acute-wide / acute-left / acute-right / acute-tall / acute-low-left / acute-low-right"},"options":[{"key":"circumcenter","label":"外心"},{"key":"incenter","label":"內心"},{"key":"centroid","label":"形心"},{"key":"orthocenter","label":"垂心"}],"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"choiceKey","generator":"triangle_center","figure":{"kind":"triangle-center-svg"},"code":"LSC-2526-S3-T3-09-GE-5","source":""},"params":{}},{"qid":"q010","typeKey":"solid_sphere","typeDef":{"key":"solid_sphere","name":"球體量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 sphere","r":"半徑"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"sphere"},"code":"LSC-2526-S3-T3-10-ME-5","source":""},"params":{}},{"qid":"q011","typeKey":"solid_cylinder","typeDef":{"key":"solid_cylinder","name":"圓柱量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cylinder","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cylinder"},"code":"LSC-2526-S3-T3-11-ME-5","source":""},"params":{}},{"qid":"q012","typeKey":"solid_cone","typeDef":{"key":"solid_cone","name":"圓錐量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"solidType":"固定 cone","r":"半徑","h":"高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"solid_mensuration","defaultParams":{"solidType":"cone"},"code":"LSC-2526-S3-T3-12-ME-5","source":""},"params":{}},{"qid":"q013","typeKey":"sector_measure","typeDef":{"key":"sector_measure","name":"扇形量度","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"r":"半徑","angle":"圓心角","ask":"arc 或 area"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"sector_measure","code":"LSC-2526-S3-T3-13-ME-6","source":""},"params":{}},{"qid":"q014","typeKey":"pyth_cone","typeDef":{"key":"pyth_cone","name":"畢氏定理配合圓錐高與斜高","category":"度量","difficulty":2,"grade":"s3","term":"3","topicKey":"measurement","topicName":"度量","type":"text","checkType":"unitNumeric","params_schema":{"mode":"findL 或 findH","r":"半徑","h":"垂直高","l":"斜高"},"answers":[],"displayAnswer":"","steps":"","pdfText":"","schemaVersion":1,"part":"part_a","validator":"unitNumeric","generator":"pyth_cone","code":"LSC-2526-S3-T3-14-ME-7","source":""},"params":{}}];
 const RUNTIME_SEED = null;
-const GENERATED_AT = "2026-07-17T04:44:15.314Z";
+const GENERATED_AT = "2026-07-17T09:12:18.768Z";
 const BANK_HASH = "b63_14_4c416f5f";
 const PRESET_KEY = "s3_term3_part_a";
 const GRADE = "s3";
@@ -2034,38 +2049,66 @@ let keypadRaised = false;
 
 function updateKeypadRaiseOffset() {
   const dock = document.getElementById("bottom-dock");
-  const questionScroll = document.getElementById("question-scroll");
+  const quiz = document.getElementById("quiz-view");
+  const actionArea = document.getElementById("action-area");
+  const answerDock = document.getElementById("answer-dock");
   if (!dock) return 0;
   const setOffset = value => {
     if (dock.style.setProperty) dock.style.setProperty("--keypad-raise-offset", value);
     else dock.style["--keypad-raise-offset"] = value;
+    if (quiz && quiz.style.setProperty) quiz.style.setProperty("--keypad-raise-offset", value);
+    else if (quiz) quiz.style["--keypad-raise-offset"] = value;
   };
   if (!keypadRaised) {
     setOffset("0px");
     return 0;
   }
-  const viewportHeight = window.visualViewport && window.visualViewport.height
-    ? window.visualViewport.height
+  const visualViewport = window.visualViewport;
+  const viewportTop = visualViewport && Number.isFinite(visualViewport.offsetTop)
+    ? visualViewport.offsetTop
+    : 0;
+  const viewportHeight = visualViewport && visualViewport.height
+    ? visualViewport.height
     : (window.innerHeight || 0);
+  const viewportBottom = viewportTop + viewportHeight;
   const currentValue = dock.style.getPropertyValue
     ? dock.style.getPropertyValue("--keypad-raise-offset")
     : dock.style["--keypad-raise-offset"];
   const currentOffset = parseFloat(currentValue) || 0;
-  const questionHeight = questionScroll && questionScroll.getBoundingClientRect
-    ? questionScroll.getBoundingClientRect().height
-    : 0;
-  const minimumQuestionHeight = 72;
-  const desiredOffset = Math.min(viewportHeight * 0.22, 180);
-  const maxOffset = Math.max(0, currentOffset + questionHeight - minimumQuestionHeight);
-  const offset = Math.max(0, Math.min(desiredOffset, maxOffset));
+  const actionRect = actionArea && actionArea.getBoundingClientRect
+    ? actionArea.getBoundingClientRect()
+    : null;
+  const safeGap = 12;
+  const baseActionTop = actionRect && Number.isFinite(actionRect.top)
+    ? actionRect.top + currentOffset
+    : viewportTop + safeGap;
+  const baseActionBottom = actionRect && Number.isFinite(actionRect.bottom)
+    ? actionRect.bottom + currentOffset
+    : viewportBottom;
+  const occlusionOffset = Math.max(0, baseActionBottom + safeGap - viewportBottom);
+  const manualOffset = Math.min(viewportHeight * 0.22, 180);
+  let maxOffset = Math.max(0, baseActionTop - viewportTop - safeGap);
+  const landscape = typeof window.matchMedia === "function" && window.matchMedia("(orientation: landscape)").matches;
+  if (landscape && answerDock && answerDock.getBoundingClientRect) {
+    const answerRect = answerDock.getBoundingClientRect();
+    const baseAnswerTop = Number.isFinite(answerRect.top) ? answerRect.top + currentOffset : viewportTop + safeGap;
+    const quizRect = quiz && quiz.getBoundingClientRect ? quiz.getBoundingClientRect() : null;
+    const answerVisibleTop = quizRect && Number.isFinite(quizRect.top)
+      ? Math.max(viewportTop, quizRect.top)
+      : viewportTop;
+    maxOffset = Math.min(maxOffset, Math.max(0, baseAnswerTop - answerVisibleTop - safeGap));
+  }
+  const offset = Math.max(0, Math.min(Math.max(occlusionOffset, manualOffset), maxOffset));
   setOffset(offset.toFixed(2) + "px");
   return offset;
 }
 
 function applyKeypadPosition() {
   const dock = document.getElementById("bottom-dock");
+  const quiz = document.getElementById("quiz-view");
   const button = document.getElementById("btn-shift-keypad");
   if (dock) dock.classList.toggle("keypad-raised", keypadRaised);
+  if (quiz) quiz.classList.toggle("keypad-raised", keypadRaised);
   updateKeypadRaiseOffset();
   if (button) {
     button.setAttribute("aria-pressed", keypadRaised ? "true" : "false");
@@ -2152,6 +2195,8 @@ function renderQuestionKeypad(q) {
 }
 
 function collapseAnswerControlsAfterCheck() {
+  const quiz = document.getElementById("quiz-view");
+  if (quiz) quiz.classList.add("reviewed");
   setKeypadInputVisible(false);
   [document.getElementById("input-row"), document.getElementById("q-options")].forEach((element) => {
     if (!element || element.style.display === "none") return;
@@ -2159,6 +2204,30 @@ function collapseAnswerControlsAfterCheck() {
     element.classList.add("answer-control-locked");
     element.setAttribute("aria-disabled", "true");
   });
+}
+
+function resetReviewedLayout() {
+  const quiz = document.getElementById("quiz-view");
+  const workScroll = document.getElementById("work-scroll");
+  const questionScroll = document.getElementById("question-scroll");
+  if (quiz) quiz.classList.remove("reviewed");
+  if (workScroll) workScroll.scrollTop = 0;
+  if (questionScroll) questionScroll.scrollTop = 0;
+}
+
+function scrollReviewedWorkAreaTo(element) {
+  const quiz = document.getElementById("quiz-view");
+  const workScroll = document.getElementById("work-scroll");
+  if (!quiz || !quiz.classList.contains("reviewed") || !workScroll || !element) return;
+  if (typeof window.matchMedia === "function" && window.matchMedia("(orientation: landscape)").matches) return;
+  if (!workScroll.getBoundingClientRect || !element.getBoundingClientRect) return;
+  const scrollToElement = () => {
+    const workRect = workScroll.getBoundingClientRect();
+    const elementRect = element.getBoundingClientRect();
+    workScroll.scrollTop = Math.max(0, workScroll.scrollTop + elementRect.top - workRect.top - 8);
+  };
+  if (typeof requestAnimationFrame === "function") requestAnimationFrame(scrollToElement);
+  else scrollToElement();
 }
 
 /* === 顯示提示 === */
@@ -2286,6 +2355,7 @@ function initGame(mode) {
 /* === 顯示題目 === */
 function showQ() {
   if (currIdx >= qList.length) { finishGame(); return; }
+  resetReviewedLayout();
   const q = qList[currIdx];
   currInput = "";
   currSelectedChoice = null;
@@ -2684,6 +2754,7 @@ function checkAns() {
   collapseAnswerControlsAfterCheck();
   const solBox = document.getElementById("solution-box");
   solBox.innerHTML = "<h4>教學步驟</h4>" + (q.solutionHTML || q.steps || "");
+  scrollReviewedWorkAreaTo(document.getElementById("answer-dock"));
   sessionLog.push({ qid: q.qid, user: userAns, correct: isCorrect });
   sessionAnswers.push(userAns);
   const correctCount = sessionLog.filter(s => s.correct).length;
@@ -2700,7 +2771,11 @@ function toggleTeach() {
   feedback.style.display = opening ? "none" : "block";
   button.textContent = opening ? "收起教學步驟" : "💡 查看教學步驟";
   button.setAttribute("aria-expanded", opening ? "true" : "false");
-  if (opening) typesetElementOnce(solBox);
+  if (opening) {
+    typesetElementOnce(solBox).then(() => scrollReviewedWorkAreaTo(solBox));
+  } else {
+    scrollReviewedWorkAreaTo(document.getElementById("answer-dock"));
+  }
   updateKeypadRaiseOffset();
 }
 

@@ -459,6 +459,12 @@ const keypadPositionState = vm.runInContext(`
 check("keypad position toggle raises and restores the keypad", !keypadPositionState.before && keypadPositionState.raised && keypadPositionState.restored);
 check("keypad raised state survives question changes", keypadPositionState.keptAfterQuestionChange);
 check("keypad position toggle maintains aria-pressed", keypadPositionState.raisedPressed === "true" && keypadPositionState.restoredPressed === "false");
+check("keypad raise calculation follows the action visibility boundary",
+  /getElementById\("action-area"\)/.test(template) &&
+  /visualViewport\.offsetTop/.test(template) &&
+  /baseActionBottom[\s\S]*viewportBottom/.test(template));
+check("keypad raise calculation no longer clamps against question height",
+  !/minimumQuestionHeight|questionHeight - 72/.test(template));
 
 const retryState = vm.runInContext(`
   const before = JSON.stringify(QUESTIONS.find(q => q.qid === "q001").paramsUsed);

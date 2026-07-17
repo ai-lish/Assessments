@@ -403,6 +403,7 @@ const collapseState = evalInStudent(`
   currInput = String(qList[0].correctAnswer || qList[0].displayAnswer || "1");
   checkAns();
   const afterCheck = {
+    reviewed: document.getElementById("quiz-view").classList.contains("reviewed"),
     keypad: document.getElementById("keypad-area").style.display,
     keypadHidden: document.getElementById("keypad-area").classList.contains("keypad-input-hidden"),
     input: document.getElementById("input-row").style.display,
@@ -413,6 +414,7 @@ const collapseState = evalInStudent(`
   };
   nextQ();
   const afterNext = {
+    reviewed: document.getElementById("quiz-view").classList.contains("reviewed"),
     keypad: document.getElementById("keypad-area").style.display,
     keypadHidden: document.getElementById("keypad-area").classList.contains("keypad-input-hidden"),
     input: document.getElementById("input-row").style.display,
@@ -433,10 +435,10 @@ const collapseState = evalInStudent(`
   };
   ({ afterCheck, afterNext, choiceOptions });
 `);
-check("checkAns visually hides keypad while preserving its layout slot", collapseState.afterCheck.keypad === "block" && collapseState.afterCheck.keypadHidden);
+check("checkAns enters reviewed layout and hides keypad input", collapseState.afterCheck.reviewed && collapseState.afterCheck.keypad === "block" && collapseState.afterCheck.keypadHidden);
 check("checkAns keeps text input visible but locks it", collapseState.afterCheck.input === "flex" && collapseState.afterCheck.inputVisibility === "visible" && collapseState.afterCheck.inputLocked && collapseState.afterCheck.inputPointerEvents === "none");
 check("checkAns shows next button after answer", collapseState.afterCheck.next === "block");
-check("nextQ restores keypad", collapseState.afterNext.keypad === "block" && !collapseState.afterNext.keypadHidden && collapseState.afterNext.inputVisibility === "visible");
+check("nextQ leaves reviewed layout and restores keypad", !collapseState.afterNext.reviewed && collapseState.afterNext.keypad === "block" && !collapseState.afterNext.keypadHidden && collapseState.afterNext.inputVisibility === "visible");
 check("nextQ clears input display", collapseState.afterNext.inputText === "");
 check("choice answer keeps options visible but locks them", collapseState.choiceOptions.display === "flex" && collapseState.choiceOptions.visibility === "visible" && collapseState.choiceOptions.locked && collapseState.choiceOptions.pointerEvents === "none");
 
