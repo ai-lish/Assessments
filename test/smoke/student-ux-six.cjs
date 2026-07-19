@@ -20,12 +20,12 @@ const profiles = [
   { name: 'landscape-1010x720', viewport: { width: 1010, height: 720 } },
   { name: 'desktop-1280x800', viewport: { width: 1280, height: 800 } },
   { name: 'desktop-1920x1080', viewport: { width: 1920, height: 1080 } },
-  { name: 'phone-390x844', viewport: { width: 390, height: 844 } },
-  { name: 'phone-390x700', viewport: { width: 390, height: 700 } },
-  { name: 'phone-375x667', viewport: { width: 375, height: 667 } },
-  { name: 'short-phone-390x600', viewport: { width: 390, height: 600 } },
+  { name: 'phone-390x844', viewport: { width: 390, height: 844 }, preCheckQuestionMin: 450 },
+  { name: 'phone-390x700', viewport: { width: 390, height: 700 }, preCheckQuestionMin: 306 },
+  { name: 'phone-375x667', viewport: { width: 375, height: 667 }, preCheckQuestionMin: 273 },
+  { name: 'short-phone-390x600', viewport: { width: 390, height: 600 }, preCheckQuestionMin: 206 },
   { name: 'short-phone-390x568', viewport: { width: 390, height: 568 } },
-  { name: 'short-phone-375x600', viewport: { width: 375, height: 600 } },
+  { name: 'short-phone-375x600', viewport: { width: 375, height: 600 }, preCheckQuestionMin: 206 },
   { name: 'tablet-768x1024', viewport: { width: 768, height: 1024 } },
   { name: 'landscape-844x390', viewport: { width: 844, height: 390 } },
   { name: 'landscape-1024x768', viewport: { width: 1024, height: 768 } },
@@ -274,7 +274,7 @@ async function runProfile(browser, profile) {
       toggleKeypadPosition();
       await new Promise((resolve) => setTimeout(resolve, 260));
     }
-    const compact = QUESTIONS.find((question) => question.typeKey === 'neg_power') || QUESTIONS.find((question) => question.type === 'text');
+    const compact = QUESTIONS.find((question) => question.typeKey === 'frac_arith') || QUESTIONS.find((question) => question.type === 'text');
     qList = [compact]; currIdx = 0; showQ(); await settleQuestionMath(); await frames();
     const rect = (id) => document.getElementById(id).getBoundingClientRect();
     const quiz = rect('quiz-view');
@@ -284,6 +284,21 @@ async function runProfile(browser, profile) {
     const control = rect('control-dock');
     const keypad = rect('keypad-area');
     const pdf = rect('pdf-action-area');
+    const input = rect('input-wrap');
+    const answerDetail = rect('answer-detail-slot');
+    const questionElement = document.getElementById('question-scroll');
+    const work = rect('work-scroll');
+    const preCheck = {
+      questionClientHeight: questionElement.clientHeight,
+      questionScrollHeight: questionElement.scrollHeight,
+      questionNeedsScroll: questionElement.scrollHeight > questionElement.clientHeight,
+      answerHeight: answer.height,
+      inputHeight: input.height,
+      inputVisible: input.top >= work.top - 0.5 && input.bottom <= work.bottom + 0.5,
+      answerDetailDisplay: getComputedStyle(document.getElementById('answer-detail-slot')).display,
+      answerDetailHeight: answerDetail.height,
+      answerBelowInput: answer.bottom - input.bottom,
+    };
     const actionBefore = rect('action-area').top;
     currInput = String(compact.correctAnswer); renderInputDisplay(); checkAns(); await frames();
     const actionAfter = rect('action-area');
@@ -322,6 +337,7 @@ async function runProfile(browser, profile) {
       keypadDisplay,
       workOverflowY,
       longContent,
+      preCheck,
       quizTop: quiz.top,
       pdfTop: pdf.top,
     };
@@ -344,10 +360,18 @@ async function runProfile(browser, profile) {
   } else {
     assert(!layout.orientationLandscape && layout.quizDisplay === 'flex' && layout.bottomDockDisplay === 'flex',
       `${profile.name} portrait bottom dock changed: ${JSON.stringify(layout)}`);
-    assert(layout.cardToAnswer <= 30,
-      `${profile.name} portrait question/answer retained blank space ${layout.cardToAnswer}`);
     assert(Math.abs(layout.questionToAnswer) < 0.5,
       `${profile.name} portrait question-scroll/answer gap ${layout.questionToAnswer}`);
+    assert(layout.preCheck.answerDetailDisplay === 'none' && layout.preCheck.answerDetailHeight < 0.5,
+      `${profile.name} portrait pre-check detail slot still occupies space: ${JSON.stringify(layout.preCheck)}`);
+    assert(layout.preCheck.answerBelowInput >= 7.5 && layout.preCheck.answerBelowInput <= 8.5,
+      `${profile.name} portrait pre-check input trailing space ${layout.preCheck.answerBelowInput}`);
+    assert(layout.preCheck.inputVisible && !layout.preCheck.questionNeedsScroll,
+      `${profile.name} portrait short question/input visibility failed: ${JSON.stringify(layout.preCheck)}`);
+    if (profile.preCheckQuestionMin) {
+      assert(layout.preCheck.questionClientHeight >= profile.preCheckQuestionMin,
+        `${profile.name} portrait question viewport too short: ${JSON.stringify(layout.preCheck)}`);
+    }
     assert(layout.keypadDisplay === 'none' && layout.workOverflowY === 'auto',
       `${profile.name} reviewed portrait did not release keypad/work scroll: ${JSON.stringify(layout)}`);
     assert(Math.abs(layout.actionDelta) < 0.5,

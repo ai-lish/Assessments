@@ -49,6 +49,11 @@ function hasCompactLandscapeContract(html) {
     /\.action-area\s*\{[^}]*order:\s*3/.test(html);
 }
 
+function hasPortraitPreCheckQuestionSpaceContract(html) {
+  return /@media \(orientation: portrait\)\s*\{[\s\S]*#quiz-view:not\(\.reviewed\) \.question-scroll\s*\{[^}]*flex:\s*1 1 auto/.test(html) &&
+    /@media \(orientation: portrait\)\s*\{[\s\S]*#quiz-view:not\(\.reviewed\) \.answer-detail-slot\s*\{[^}]*display:\s*none/.test(html);
+}
+
 function extractConstJson(html, name) {
   const re = new RegExp(`const\\s+${name}\\s*=\\s*([\\s\\S]*?);\\n`);
   const match = html.match(re);
@@ -418,6 +423,7 @@ async function collectStep0() {
       answerKeyForm: "runtime-generated question object fields: correctAnswer/displayAnswer/answers",
       nextQuestionLimit: "showQ() calls finishGame() when currIdx >= qList.length; nextQ() increments currIdx then calls showQ()",
       compactLandscapeContract: hasCompactLandscapeContract(html),
+      portraitPreCheckQuestionSpaceContract: hasPortraitPreCheckQuestionSpaceContract(html),
       questions: specs.map((spec, index) => ({
         number: index + 1,
         typeKey: spec.typeKey,
@@ -661,7 +667,8 @@ async function main() {
   };
   console.log(JSON.stringify(report, null, 2));
   const landscapeFailures = step0.filter((item) => !item.compactLandscapeContract);
-  if (step1.fail > 0 || step1.randomnessFailures.length > 0 || landscapeFailures.length > 0) process.exitCode = 1;
+  const portraitPreCheckFailures = step0.filter((item) => !item.portraitPreCheckQuestionSpaceContract);
+  if (step1.fail > 0 || step1.randomnessFailures.length > 0 || landscapeFailures.length > 0 || portraitPreCheckFailures.length > 0) process.exitCode = 1;
 }
 
 main().catch((error) => {

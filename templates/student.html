@@ -109,6 +109,10 @@
   .key-grid { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 3px; }
   .keypad-area.keypad-unavailable .key-grid,
   .keypad-area.keypad-input-hidden .key-grid { visibility: hidden; pointer-events: none; }
+  @media (orientation: portrait) {
+    #quiz-view:not(.reviewed) .question-scroll { flex: 1 1 auto; }
+    #quiz-view:not(.reviewed) .answer-detail-slot { display: none; }
+  }
   #quiz-view.reviewed .work-scroll { overflow-y: auto; }
   #quiz-view.reviewed .question-scroll { flex: 0 0 auto; overflow: visible; }
   #quiz-view.reviewed .answer-detail-slot { height: auto; grid-template-rows: auto 40px; overflow: visible; }
