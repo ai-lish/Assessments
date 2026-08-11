@@ -8,12 +8,16 @@ const examRoot = path.resolve(here, '..');
 const repositoryRoot = path.resolve(examRoot, '..');
 const catalogPath = path.join(examRoot, 'data', 'catalog.json');
 const catalog = JSON.parse(await readFile(catalogPath, 'utf8'));
+const catalogIndex = await readFile(path.join(examRoot, 'index.html'), 'utf8');
 
 assert.equal(catalog.schemaVersion, 1, 'catalog schemaVersion must be 1');
 assert.equal(catalog.source?.repository, 'ai-lish/ai-learning');
 assert.match(catalog.source?.commit ?? '', /^[0-9a-f]{40}$/i, 'catalog source commit must be a full SHA');
 assert.equal(catalog.source?.root, 'exam/');
 assert.ok(Array.isArray(catalog.entries) && catalog.entries.length > 0, 'catalog must contain entries');
+assert.match(catalogIndex, /entries\.filter\(\(entry\)\s*=>\s*entry\.status\s*===\s*['"]ready['"]\)/, 'student index must render ready entries separately');
+assert.match(catalogIndex, /entries\.filter\(\(entry\)\s*=>\s*entry\.status\s*!==\s*['"]ready['"]\)/, 'student index must render pending entries separately');
+assert.match(catalogIndex, /if\s*\(entry\.status\s*===\s*['"]ready['"]\)[\s\S]*?const link\s*=\s*document\.createElement\(['"]a['"]\)/, 'pending entries must not receive student links');
 
 const ids = new Set();
 const sourceFiles = [];

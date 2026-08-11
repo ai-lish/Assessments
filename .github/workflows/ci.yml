@@ -183,6 +183,9 @@ jobs:
       - name: HKDSE A2 tests
         run: npm --prefix hkdse run test:a2
 
+      - name: School exam migration validators
+        run: npm --prefix exam test
+
       - name: HKDSE path guard
         env:
           BASE_REF: ${{ github.base_ref || 'main' }}
