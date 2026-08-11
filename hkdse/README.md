@@ -7,6 +7,13 @@ PR A1 contains data import, image allowlists, disposition reports, and validatio
 It intentionally contains no student or teacher HTML. Those interfaces belong to later
 PR A2 and PR A4. Mimic-template runtime belongs to PR A3.
 
+## Standalone mimic tool
+
+`mimic/p1-q17-generator.html` is an independent, no-login, no-API-key browser tool
+for generating and checking HKDSE P1 Q17-style arithmetic-sequence questions. It is
+formula-verified but does not claim to migrate or auto-grade the unverified A3
+template bank. Its deterministic validator is `test/validate-q17.mjs`.
+
 ## Layout
 
 - `data/`: generated student runtime JSON.

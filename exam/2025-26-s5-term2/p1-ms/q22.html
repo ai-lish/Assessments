@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DSE 數學 - 圓形幾何 (公式摺疊證明版)</title>
+    <!-- Tailwind CSS 用於排版 -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax 用於渲染 LaTeX 數學公式 -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                tags: 'ams'
+            },
+            svg: { fontCache: 'global' },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        setStep(4); // 預設打開第四步
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+        
+        body { 
+            font-family: 'Noto Sans TC', sans-serif; 
+            background-color: #f8fafc; 
+            color: #1e293b;
+        }
+        
+        .math-text {
+            font-family: 'Noto Serif TC', serif;
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        /* 確保長數學公式可以橫向滑動，不會被裁切 */
+        mjx-container[display="true"] {
+            overflow-x: auto;
+            overflow-y: hidden;
+            max-width: 100%;
+            padding: 0.5em 0;
+        }
+
+        /* 摺疊卡片樣式 */
+        .step-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            border-left: 4px solid transparent;
+        }
+        
+        .step-card.active {
+            border-left-color: #3b82f6;
+            background-color: #eff6ff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .step-card:not(.active):hover {
+            background-color: #f1f5f9;
+        }
+
+        .step-content {
+            display: grid;
+            grid-template-rows: 0fr;
+            transition: grid-template-rows 0.3s ease-out;
+        }
+        
+        .step-card.active .step-content {
+            grid-template-rows: 1fr;
+        }
+        
+        .step-content-inner {
+            overflow: hidden;
+            padding-top: 0;
+            transition: padding 0.3s ease;
+        }
+
+        .step-card.active .step-content-inner {
+            padding-top: 1rem;
+            padding-bottom: 0.5rem;
+        }
+
+        /* 中央分隔線拖拉器 */
+        .resizer {
+            width: 12px; 
+            background-color: #e2e8f0;
+            cursor: col-resize;
+            transition: background-color 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 50;
+            touch-action: none; 
+        }
+        
+        .resizer:hover, .resizer.active {
+            background-color: #60a5fa;
+        }
+        
+        .resizer::after {
+            content: "⋮";
+            color: #475569;
+            font-size: 24px;
+        }
+
+        canvas {
+            background-color: #ffffff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border-radius: 0.75rem;
+            border: 1px solid #cbd5e1;
+        }
+
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f8fafc; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        
+        /* 隱藏 details 預設箭頭 */
+        details summary::-webkit-details-marker {
+            display: none;
+        }
+    </style>
+</head>
+<body class="h-screen flex flex-col overflow-hidden">
+
+    <!-- 頂部導航 -->
+    <header class="bg-blue-600 text-white p-3 shadow-md z-20 flex-shrink-0">
+        <div class="w-full px-4 flex justify-between items-center">
+            <h1 class="text-lg md:text-xl font-bold flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" /></svg>
+                DSE 圓形幾何 - 公式摺疊證明版
+            </h1>
+            <span class="text-xs bg-blue-800 px-2 py-1 rounded hidden sm:block">代數完美修正 | 支援左右拖拉</span>
+        </div>
+    </header>
+
+    <!-- 可拖拉佈局容器 -->
+    <div class="flex-1 flex flex-row overflow-hidden w-full relative" id="split-container">
+        
+        <!-- 左側：答案區 -->
+        <div id="left-pane" class="h-full overflow-y-auto overflow-x-auto bg-white p-4 md:p-6 pb-20 flex-none" style="width: 55%;">
+            
+            <div class="min-w-[400px]">
+                <div class="bg-slate-50 border border-slate-200 p-4 rounded-lg mb-6 math-text text-sm">
+                    <h2 class="font-bold text-slate-800 mb-2 border-b pb-2 font-sans">題目</h2>
+                    <p>圓 $C$ 的方程為 $x^2 + y^2 - 24x - 32y - 276 = 0$。設 $G$ 為 $C$ 的圓心，原點記為 $O$。</p>
+                    <ol class="list-[lower-alpha] pl-5 mt-2 space-y-1">
+                        <li>求 $G$ 的坐標。</li>
+                        <li>求 $OG$ 的長度。</li>
+                        <li>設 $P$ 為動點使得 $OP = GP$，軌跡為 $\Gamma$。<br>$\Gamma$ 與 $C$ 交於 $M$ 及 $N$。求四邊形 $OMGN$ 的面積。</li>
+                        <li>若過 $A(0, -10)$ 的直線 $L$ 是圓 $C$ 的切線，求 $L$ 的所有可能之方程。</li>
+                    </ol>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- 步驟 (a) -->
+                    <div class="step-card bg-white rounded-lg p-4" onclick="setStep(1)" id="step-1">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-blue-700 text-lg">(a) 尋找圓心 $G$</h3>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-content-inner math-text">
+                                $$ G = \left( -\frac{-24}{2}, -\frac{-32}{2} \right) = (12, 16) $$
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步驟 (b) -->
+                    <div class="step-card bg-white rounded-lg p-4" onclick="setStep(2)" id="step-2">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-blue-700 text-lg">(b) 求 $OG$ 的長度</h3>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-content-inner math-text">
+                                $$ OG = \sqrt{12^2 + 16^2} = 20 \text{ 單位} $$
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步驟 (c) -->
+                    <div class="step-card bg-white rounded-lg p-4" onclick="setStep(3)" id="step-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-blue-700 text-lg">(c) 軌跡與四邊形面積</h3>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-content-inner math-text">
+                                <p>半徑 $r = \sqrt{12^2 + 16^2 - (-276)} = 26$。<br>
+                                $\Gamma$ 是 $OG$ 的垂直平分線。面積為 $480 \text{ 平方單位}$。</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 步驟 (d) -->
+                    <div class="step-card bg-white rounded-lg p-4" onclick="setStep(4)" id="step-4">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-blue-700 text-lg">(d) 求切線 $L$ 的方程</h3>
+                            <span class="text-xs font-mono bg-blue-100 text-blue-800 px-2 py-1 rounded">4 分</span>
+                        </div>
+                        <div class="step-content">
+                            <div class="step-content-inner math-text">
+                                
+                                <h4 class="font-bold text-slate-800 border-l-4 border-blue-500 pl-2 mb-3 mt-2">方法一：傳統代入法 ($\Delta = 0$)</h4>
+                                <p>設切線 $L$ 的斜率為 $m$，過 $A(0, -10)$ 的直線方程為：<br>
+                                $y - (-10) = m(x - 0) \implies y = mx - 10$</p>
+                                
+                                <p>將 $y = mx - 10$ 代入圓 $C$ 的方程，整理成一元二次方程：</p>
+                                $$
+                                \begin{aligned}
+                                x^2 + (mx - 10)^2 - 24x - 32(mx - 10) - 276 &= 0 \\
+                                % 中間整理省略以突顯核心步驟
+                                (1 + m^2)x^2 - (52m + 24)x + 144 &= 0
+                                \end{aligned}
+                                $$
+
+                                <p class="text-blue-700 font-semibold mt-2">► 判別式展開詳細步驟：</p>
+                                <p>因 $L$ 是切線，判別式 $\Delta = 0$：</p>
+                                $$
+                                \begin{aligned}
+                                \Delta &= b^2 - 4ac = 0 \\[8pt]
+                                \big( -(52m + 24) \big)^2 - 4(1 + m^2)(144) &= 0 \\[8pt]
+                                % 負號平方後變正，並將 4*144=576 乘開
+                                (52m + 24)^2 - 576(1 + m^2) &= 0 \\[8pt]
+                                % 展開完全平方 (a+b)^2 = a^2 + 2ab + b^2
+                                (52m)^2 + 2(52m)(24) + (24)^2 - 576 - 576m^2 &= 0 \\[8pt]
+                                2704m^2 + 2496m + 576 - 576 - 576m^2 &= 0 \\[8pt]
+                                2128m^2 + 2496m &= 0 \\[8pt]
+                                16m(133m + 156) &= 0
+                                \end{aligned}
+                                $$
+                                <p>解得 $m = 0$ 或 $m = -\frac{156}{133}$。</p>
+                                
+                                <div class="my-8 border-t-2 border-slate-200"></div>
+
+                                <h4 class="font-bold text-slate-800 border-l-4 border-green-500 pl-2 mb-3">方法二：圓心距離公式 ($d = r$) 捷徑</h4>
+                                
+                                <!-- 點到直線公式的短證明 (預設摺疊) -->
+                                <details class="group bg-amber-50 border border-amber-200 rounded-lg mb-4 font-sans overflow-hidden">
+                                    <summary class="flex justify-between items-center font-bold text-amber-800 p-3 cursor-pointer hover:bg-amber-100/70 transition-colors list-none">
+                                        <div class="flex items-center flex-wrap gap-2 md:gap-3">
+                                            <span class="text-[0.95rem]">💡 原理短證：點到直線距離</span>
+                                            <span class="math-text bg-white border border-amber-200 px-2 py-0.5 rounded text-[0.9rem] font-normal shadow-sm">
+                                                \( d = \frac{|Ax_1 + By_1 + C|}{\sqrt{A^2 + B^2}} \)
+                                            </span>
+                                            <span class="text-xs text-amber-600 font-normal hidden lg:inline-block group-open:hidden">(點擊展開詳細證明)</span>
+                                        </div>
+                                        <span class="transition-transform duration-300 group-open:-rotate-180 text-amber-600 flex-shrink-0 ml-2">
+                                            <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24" width="20"><path d="M19 9l-7 7-7-7"></path></svg>
+                                        </span>
+                                    </summary>
+                                    
+                                    <div class="p-4 border-t border-amber-200 bg-white/40 overflow-x-auto">
+                                        <div class="math-text text-[0.95rem]">
+                                            <p>設點 $P(x_1, y_1)$ 及直線 $L: Ax + By + C = 0$。斜率 $m_L = -\frac{A}{B}$。</p>
+                                            <p>從 $P$ 點作一直線 $L'$ 垂直於 $L$ 交於點 $Q(x_2, y_2)$，該距離 $d = PQ$。</p>
+                                            <p>因 $L' \perp L$，所以 $L'$ 的斜率為 $\frac{B}{A}$。由此可得：</p>
+                                            $$ \frac{y_2 - y_1}{x_2 - x_1} = \frac{B}{A} \implies \frac{x_2 - x_1}{A} = \frac{y_2 - y_1}{B} = k $$
+                                            <p>即 $x_2 = x_1 + Ak$ 及 $y_2 = y_1 + Bk$。將 $Q(x_2, y_2)$ 代入 $L$ 的方程：</p>
+                                            $$
+                                            \begin{aligned}
+                                            A(x_1 + Ak) + B(y_1 + Bk) + C &= 0 \\
+                                            Ax_1 + A^2k + By_1 + B^2k + C &= 0 \\
+                                            k(A^2 + B^2) &= -(Ax_1 + By_1 + C) \\
+                                            k &= \frac{-(Ax_1 + By_1 + C)}{A^2 + B^2}
+                                            \end{aligned}
+                                            $$
+                                            <p>最後利用兩點距離公式計算 $d = PQ$：</p>
+                                            $$
+                                            \begin{aligned}
+                                            d &= \sqrt{(x_2 - x_1)^2 + (y_2 - y_1)^2} \\
+                                            &= \sqrt{(Ak)^2 + (Bk)^2} \\
+                                            &= \sqrt{k^2(A^2 + B^2)} = |k|\sqrt{A^2 + B^2} \\
+                                            &= \left| \frac{-(Ax_1 + By_1 + C)}{A^2 + B^2} \right| \times \sqrt{A^2 + B^2} \\
+                                            d &= \frac{|Ax_1 + By_1 + C|}{\sqrt{A^2 + B^2}} \quad \text{(證畢)}
+                                            \end{aligned}
+                                            $$
+                                        </div>
+                                    </div>
+                                </details>
+
+                                <p>將切線 $L: y = mx - 10$ 寫成一般式：<strong>$mx - y - 10 = 0$</strong>。<br>
+                                圓心 $G(12, 16)$ 至切線的垂直距離 $d$ 等於半徑 $r = 26$：</p>
+                                $$
+                                \begin{aligned}
+                                \frac{|Ax_1 + By_1 + C|}{\sqrt{A^2 + B^2}} &= 26 \\
+                                \frac{|m(12) - (1)(16) - 10|}{\sqrt{m^2 + (-1)^2}} &= 26 \\
+                                \frac{|12m - 26|}{\sqrt{m^2 + 1}} &= 26 \\
+                                |12m - 26| &= 26\sqrt{m^2 + 1}
+                                \end{aligned}
+                                $$
+                                <p>左右兩邊同時取平方 (Squaring both sides)：</p>
+                                $$
+                                \begin{aligned}
+                                (12m - 26)^2 &= 26^2(m^2 + 1) \\
+                                144m^2 - 624m + 676 &= 676m^2 + 676 \\
+                                -532m^2 - 624m &= 0 \\
+                                -4m(133m + 156) &= 0
+                                \end{aligned}
+                                $$
+                                <p>同樣解得 $m = 0$ 或 $m = -\frac{156}{133}$。</p>
+
+                                <div class="my-6 border-t border-dashed border-slate-300"></div>
+
+                                <h4 class="font-bold text-slate-800 mb-2">最終結論：</h4>
+                                <p>將 $m$ 代回 $y = mx - 10$，切線的所有可能方程為：<br>
+                                當 $m = 0$ 時：<strong>$y = -10$</strong><br>
+                                當 $m = -\frac{156}{133}$ 時：$y = -\frac{156}{133}x - 10 \implies$ <strong>$156x + 133y + 1330 = 0$</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 拖拉分隔線 -->
+        <div id="resizer" class="resizer flex-none" title="左右拖拉以調整版面"></div>
+
+        <!-- 右側：動態圖形區 -->
+        <div id="right-pane" class="flex-1 min-w-[150px] h-full bg-slate-100 flex flex-col items-center justify-center p-2 md:p-4 relative">
+            
+            <div class="absolute top-4 left-4 bg-white/90 p-2 rounded shadow-sm text-xs z-10 font-sans border border-slate-200 pointer-events-none">
+                <div class="font-bold border-b pb-1 mb-1 text-slate-700">圖例</div>
+                <div class="flex items-center gap-1"><span class="w-3 h-3 rounded-full border border-blue-500 bg-blue-100"></span> 圓 $C$</div>
+                <div class="flex items-center gap-1" id="legend-locus" style="display:none;"><span class="w-3 h-1 bg-red-500"></span> 軌跡 $\Gamma$</div>
+                <div class="flex items-center gap-1" id="legend-tangent" style="display:none;"><span class="w-3 h-1 bg-green-500"></span> 切線 $L$</div>
+            </div>
+
+            <div id="canvas-container" class="w-full h-full flex items-center justify-center relative overflow-hidden">
+                <canvas id="mathCanvas" class="block"></canvas>
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        // --- 拖拉版面 ---
+        const resizer = document.getElementById('resizer');
+        const leftPane = document.getElementById('left-pane');
+        const splitContainer = document.getElementById('split-container');
+        let isResizing = false;
+
+        resizer.addEventListener('pointerdown', (e) => {
+            isResizing = true;
+            resizer.setPointerCapture(e.pointerId);
+            resizer.classList.add('active');
+            document.body.style.cursor = 'col-resize';
+            document.body.style.userSelect = 'none';
+        });
+
+        resizer.addEventListener('pointermove', (e) => {
+            if (!isResizing) return;
+            const containerRect = splitContainer.getBoundingClientRect();
+            let newWidth = e.clientX - containerRect.left;
+            const minWidth = 150;
+            const maxWidth = containerRect.width - 150;
+            if (newWidth < minWidth) newWidth = minWidth;
+            if (newWidth > maxWidth) newWidth = maxWidth;
+            leftPane.style.width = `${newWidth}px`;
+        });
+
+        resizer.addEventListener('pointerup', (e) => endResize(e));
+        resizer.addEventListener('pointercancel', (e) => endResize(e));
+
+        function endResize(e) {
+            if (!isResizing) return;
+            isResizing = false;
+            resizer.releasePointerCapture(e.pointerId);
+            resizer.classList.remove('active');
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        }
+
+        // --- 摺疊選單 ---
+        let currentStep = 4;
+        function setStep(stepNumber) {
+            currentStep = stepNumber;
+            document.querySelectorAll('.step-card').forEach((card, index) => {
+                const cardStep = index + 1;
+                if (cardStep === stepNumber) {
+                    card.classList.add('active');
+                    setTimeout(() => {
+                        card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }, 300);
+                } else {
+                    card.classList.remove('active');
+                }
+            });
+            renderScene();
+        }
+
+        // --- Canvas 繪圖 ---
+        const canvas = document.getElementById('mathCanvas');
+        const ctx = canvas.getContext('2d');
+        const canvasContainer = document.getElementById('canvas-container');
+
+        const G = { x: 12, y: 16 }, O = { x: 0, y: 0 }, radius = 26;
+        const A = { x: 0, y: -10 }, K = { x: 6, y: 8 };
+        const N = { x: 25.2, y: -6.4 }, M = { x: -13.2, y: 22.4 };
+
+        const logicMinX = -25, logicMaxX = 45, logicMinY = -20, logicMaxY = 35;
+        const logicWidth = logicMaxX - logicMinX, logicHeight = logicMaxY - logicMinY;
+        let dynamicScale = 1, originX = 0, originY = 0, sizeRef = 500;
+
+        function tx(x) { return originX + x * dynamicScale; }
+        function ty(y) { return originY - y * dynamicScale; }
+
+        function updateCanvasSizeAndScale(containerWidth, containerHeight) {
+            const size = Math.min(containerWidth, containerHeight) - 20;
+            if (size <= 0) return;
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = size * dpr; canvas.height = size * dpr;
+            canvas.style.width = `${size}px`; canvas.style.height = `${size}px`;
+            ctx.scale(dpr, dpr);
+            const padding = size * 0.05, drawableSize = size - padding * 2;
+            dynamicScale = Math.min(drawableSize / logicWidth, drawableSize / logicHeight);
+            originX = padding + (-logicMinX * dynamicScale);
+            originY = padding + (logicMaxY * dynamicScale);
+            sizeRef = size;
+        }
+
+        function drawPoint(x, y, label, color = '#2563eb', align = 'bottom') {
+            const cx = tx(x), cy = ty(y), pointSize = Math.max(3, dynamicScale * 0.4);
+            ctx.beginPath(); ctx.arc(cx, cy, pointSize, 0, Math.PI * 2);
+            ctx.fillStyle = color; ctx.fill();
+            const fontSize = Math.max(10, Math.min(16, sizeRef * 0.03));
+            ctx.font = `bold ${fontSize}px "Noto Sans TC"`; ctx.fillStyle = '#0f172a';
+            if (align === 'bottom') ctx.fillText(label, cx + pointSize + 4, cy + fontSize + 2);
+            else if (align === 'top') ctx.fillText(label, cx + pointSize + 4, cy - 4);
+            else if (align === 'left') ctx.fillText(label, cx - fontSize * 3.5, cy + 4);
+        }
+
+        function drawLine(x1, y1, x2, y2, color, dashed = false) {
+            ctx.beginPath(); ctx.moveTo(tx(x1), ty(y1)); ctx.lineTo(tx(x2), ty(y2));
+            ctx.strokeStyle = color; ctx.lineWidth = Math.max(1.5, sizeRef * 0.005);
+            if (dashed) ctx.setLineDash([5, 5]); else ctx.setLineDash([]);
+            ctx.stroke(); ctx.setLineDash([]);
+        }
+
+        function renderScene() {
+            if (canvas.width === 0) return;
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.lineWidth = 1; ctx.strokeStyle = '#f1f5f9';
+            for (let i = Math.floor(logicMinX/10)*10; i <= logicMaxX; i += 10) {
+                ctx.beginPath(); ctx.moveTo(tx(i), 0); ctx.lineTo(tx(i), sizeRef); ctx.stroke();
+            }
+            for (let i = Math.floor(logicMinY/10)*10; i <= logicMaxY; i += 10) {
+                ctx.beginPath(); ctx.moveTo(0, ty(i)); ctx.lineTo(sizeRef, ty(i)); ctx.stroke();
+            }
+            ctx.lineWidth = Math.max(1.5, sizeRef * 0.004); ctx.strokeStyle = '#94a3b8';
+            ctx.beginPath(); ctx.moveTo(0, ty(0)); ctx.lineTo(sizeRef, ty(0)); ctx.stroke(); 
+            ctx.beginPath(); ctx.moveTo(tx(0), 0); ctx.lineTo(tx(0), sizeRef); ctx.stroke(); 
+            drawPoint(O.x, O.y, 'O(0,0)', '#334155', 'top');
+
+            if (currentStep >= 1) {
+                ctx.beginPath(); ctx.arc(tx(G.x), ty(G.y), radius * dynamicScale, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(59, 130, 246, 0.6)'; ctx.fillStyle = 'rgba(59, 130, 246, 0.05)';
+                ctx.lineWidth = Math.max(1.5, sizeRef * 0.004); ctx.fill(); ctx.stroke();
+                drawPoint(G.x, G.y, 'G(12,16)', '#2563eb', 'top');
+            }
+            if (currentStep >= 2) drawLine(O.x, O.y, G.x, G.y, '#8b5cf6', true);
+            if (currentStep >= 3) {
+                document.getElementById('legend-locus').style.display = 'flex';
+                drawLine(logicMinX, -0.75 * logicMinX + 12.5, logicMaxX, -0.75 * logicMaxX + 12.5, '#ef4444');
+                drawPoint(M.x, M.y, 'M', '#ef4444', 'top'); drawPoint(N.x, N.y, 'N', '#ef4444', 'bottom');
+                drawPoint(K.x, K.y, 'K', '#64748b', 'bottom');
+                ctx.beginPath(); ctx.moveTo(tx(O.x), ty(O.y)); ctx.lineTo(tx(M.x), ty(M.y));
+                ctx.lineTo(tx(G.x), ty(G.y)); ctx.lineTo(tx(N.x), ty(N.y)); ctx.closePath();
+                ctx.fillStyle = 'rgba(139, 92, 246, 0.15)'; ctx.fill();
+                ctx.strokeStyle = '#8b5cf6'; ctx.stroke();
+            } else document.getElementById('legend-locus').style.display = 'none';
+
+            if (currentStep >= 4) {
+                document.getElementById('legend-tangent').style.display = 'flex';
+                drawPoint(A.x, A.y, 'A(0,-10)', '#10b981', 'left');
+                drawLine(logicMinX, -10, logicMaxX, -10, '#10b981'); 
+                drawLine(logicMinX, (-156/133)*logicMinX - 10, logicMaxX, (-156/133)*logicMaxX - 10, '#10b981'); 
+            } else document.getElementById('legend-tangent').style.display = 'none';
+        }
+
+        const resizeObserver = new ResizeObserver(entries => {
+            for (let entry of entries) {
+                updateCanvasSizeAndScale(entry.contentRect.width, entry.contentRect.height);
+                renderScene();
+            }
+        });
+        resizeObserver.observe(canvasContainer);
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>中三級 第三學期 數學科考試 - 卷一</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        startup: { ready: function() { MathJax.startup.defaultReady(); } }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: #f5f5f5; color: #333; padding-top: 70px; }
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; background: #3498db; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; }
+        .nav-left, .nav-right { display: flex; align-items: center; gap: 15px; }
+        .hamburger { cursor: pointer; padding: 5px; }
+        .hamburger span { display: block; width: 25px; height: 3px; background: white; margin: 5px 0; border-radius: 2px; }
+        .back-btn { color: white; text-decoration: none; font-size: 0.95em; padding: 6px 12px; background: rgba(255,255,255,0.15); border-radius: 5px; }
+        .back-btn:hover { background: rgba(255,255,255,0.25); }
+        .nav-title { font-size: 1.1em; font-weight: bold; }
+        .check-btn { background: #27ae60; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.95em; }
+        .check-btn:hover { background: #219a52; }
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        .header { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        .header h1 { color: #2c3e50; margin-bottom: 10px; }
+        .header-info { color: #666; margin-top: 10px; }
+        .section-title { background: #2c3e50; color: white; padding: 12px 15px; border-radius: 5px; margin: 20px 0 15px 0; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; align-items: center; }
+        .section-title::after { content: '▼'; font-size: 0.8em; }
+        .section-title.open::after { content: '▲'; }
+        .section-content { display: none; }
+        .section-content.open { display: block; }
+        h2 { text-align: center; margin: 20px 0; font-size: 1.3em; color: #2c3e50; }
+        .question { margin-bottom: 20px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .question-num { font-weight: bold; color: #3498db; margin-bottom: 10px; font-size: 1.1em; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; }
+        .question-text { margin-bottom: 15px; line-height: 1.6; font-size: 1.05em; }
+        .answer-input { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 6px; font-size: 1.05em; font-family: inherit; }
+        .answer-input:focus { border-color: #3498db; outline: none; }
+        .answer-box { display: none; margin-top: 15px; padding: 15px; background: #e8f5e9; border-radius: 6px; border-left: 4px solid #4caf50; }
+        .answer-box.show { display: block; }
+        .answer-box .label { font-weight: bold; color: #2e7d32; margin-bottom: 8px; }
+        .answer-box .answer-text { color: #1b5e20; font-size: 1.05em; line-height: 1.6; }
+        .sub-question { margin: 10px 0 10px 20px; padding: 10px; background: #f8f9fa; border-radius: 5px; }
+        .sub-question-label { font-weight: bold; color: #666; margin-bottom: 5px; }
+        .marks { float: right; color: #999; font-size: 0.9em; }
+        .menu-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; }
+        .menu-overlay.open { display: block; }
+        .side-menu { visibility: hidden; position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 1002; transition: left 0.3s; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+        .side-menu.open { visibility: visible; left: 0; }
+        .side-menu-header { padding: 20px; background: #3498db; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .close-btn { cursor: pointer; font-size: 1.5em; }
+        .side-menu-content { padding: 10px; }
+        .menu-btn { display: block; width: 100%; padding: 15px; margin: 5px 0; border: none; border-radius: 8px; background: #f5f7fa; cursor: pointer; text-align: left; font-size: 1em; }
+        .menu-btn:hover { background: #e1e8ed; }
+        .diagram-placeholder { background: #f0f0f0; border: 2px dashed #ccc; border-radius: 8px; padding: 30px; text-align: center; color: #999; margin: 15px 0; }
+        .diagram-container { margin: 15px 0; text-align: center; }
+        .diagram-container img { max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 5px; }
+        table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
+        th { background: #f5f5f5; }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="nav-left">
+            <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+            <a href="./index.html" class="back-btn">← 返回主頁</a>
+        </div>
+        <div class="nav-title">卷一 | 答題紙</div>
+        <div class="nav-right">
+            <button class="check-btn" onclick="showAllAnswers()">顯示答案</button>
+        </div>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <h2>選單</h2>
+            <span class="close-btn" onclick="closeMenu()">✕</span>
+        </div>
+        <div class="side-menu-content">
+            <button class="menu-btn" onclick="goToPage('./index.html')">考試主頁</button>
+            <button class="menu-btn" onclick="goToPage('p2.html')">卷二</button>
+            <button class="menu-btn" onclick="goToPage('p3.html')">卷三</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>📝 中三級 第三學期 數學科考試 - 卷一</h1>
+            <div class="header-info">
+                <p>時限：一小時（上午八時三十分至上午九時三十分）</p>
+                <p>總分：70分</p>
+            </div>
+        </div>
+
+        <!-- 甲部 -->
+        <div class="section-title open" onclick="toggleSection('甲部')">
+            甲部：只須在橫線上填上答案。<span class="marks">(每題 1 分，共 14 分)</span>
+        </div>
+        <div id="甲部" class="section-content open">
+
+            <div class="question">
+                <div class="question-num">1.</div>
+                <div class="question-text">化簡 $x + 2y - 5 - (y + 3x - 1)$。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$-2x + y - 4$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">2.</div>
+                <div class="question-text">展開 $(2x + 1)(x - 5)$。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$2x^2 - 9x - 5$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">3.</div>
+                <div class="question-text">展開 $(x - 3y)^2$。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$x^2 - 6xy + 9y^2$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">4.</div>
+                <div class="question-text">化簡 $\left(\dfrac{7a^2}{2a^{-7}}\right)^0$，以正指數表示答案。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$1$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">5.</div>
+                <div class="question-text">因式分解 $16x^2 - y^2$。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$(4x + y)(4x - y)$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">6.</div>
+                <div class="question-text">因式分解 $x^2 + 3x + 2$。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$(x + 1)(x + 2)$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">7.</div>
+                <div class="question-text">以科學記數法表示 $2{,}026{,}000$。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$2.026 \times 10^6$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">8.</div>
+                <div class="question-text">解不等式 $2 - 5x < 17$。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$x > -3$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">9.</div>
+                <div class="question-text">下圖中，點 $G$ 是三角形 $ABC$ 的哪一個心？請圈出答案。</div>
+                <div class="diagram-container"><img src="data:image/jpeg;base64,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O0XlrLb7um3ehXPf19K4VfHmp29jD4fbSHl8btGI47OTPkSrg/v/ADB8rRYBJ5znK8HJr0w9DTQox2PvimBjeEtEXw34YsdMMhkljTdNITnfKxLO34sSa28isrxDp8uqeH9RsLeZoZrm0lhjkXqjMpUH8M+orgNF1jxZo2hadpcngnVJHsraO3Z0ngIYooUkHPTigD1WkbpS01u1IB1FFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAmB6UYB60tFABijAoooAMUmBS0UAJgUFFPUZx60tFACbVznAzRtU9Rn60tFAFK+0jTdTjMd/p9rdoRgrPCrgjOcYI9azP+EF8I4x/wAItouP+vCL/wCJroKKAOVm+Gvgqfdv8M6aNxBISEJ2xxjGPwqA/CvwMRj/AIRuy9ejf412NFAHDSfB/wAByNuOgqpOOY7mZOmcdHHr/nFXbb4eeH7IYtBqdseOYdXu1/lLXWUUAcLcfDWOa5kli8XeLrYM2Vjj1ZmVOnA3hieh6k9aavw5u4YdsPjvxVuUHaZbpJPzymT+dd5RQB5rP8PfGJuC1p8TdSih42pNZrI34ncoP5U4eC/iFHynxNYkcgNo0OO/+0fWvSKKAPNbbQfiraXImfxppt5Gv/LGfTkUN9dgB/I1faP4oRptjvPCsrAnLPBcLnn2PoT+Q967ukIzQB50l78V4L0R3GmeGLqJsAyW800apnccndk4G3B4z864zhsX7XW/HiQIlx4SsJJlcRu6aqI0cAHMgGxiqkgYBJPzDIGDXbAcUtAHBxeMPGLRh5vh1eLhcuE1KBsHnpkgnof0qnJ8R9dileN/AGvF0Yq2zYy5Hoe4969IooAKa3UfWnU09RQA6iiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKSgBTQKSgGgLi0UUlAC0UgOaWgAopM0ZoAWiikznvQAtFIM96KAFpp6inU0/eH40AOooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACkzzilpMUAFFLRQFgpKWigAooooASilooAO1JilooAQDFIetOpKAFpP4qWk/i/CgBaKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAA9DXK31741ttTu2tNN0e+0/Ki3Q3UlvOP7xYlHU+3T+g6qigDih4k8aK0nm+CEbY4VfI1aJvMGCSw3KuMYAwSCSRxjJED+M/FttEhuvh5qAZmCH7PfwTYJIGeO2SOSBxk8AGu8ooA85/4Wbqq20M03gDxQqyqzHZbBmQA4+7nI5yfmA455HNQH4yW0KRtd+EfFcG/ON1gNpx1wSwJwfavTaKAPPIvi9obuqHT9eVcPmRtOfA2/dPGT83UcfXbT4vjH4QwxvLy6sCqRsyXdnIrKXz8uADkjackcehPOO/x3o2g9aAOVh+JHg24iSRfEumqroJFD3CocEHGQ2CDx0PI4yBkVcj8aeGZ+YvEmkOCCRtvYzwOv8VbcsMcyFJEV0PVWGRWXe+FtB1KWSS+0TTrl5GDu09qjliAAM5B7DH0oAk/4STRNu7+2NPx7XKH+tTw6tp9wQsGoWsrHskyt/I1jzfD7wfMEB8L6Qux1cbLONTkHIzgDI9jwe+ayJvg14CuJN8nh6MN/sXMqD8lYCgDuQ4IHzKfoadmvPX+CPw/ccaCyH1W8n/q9Fv8HPDVm6vaTavbOudhhv3XbnPTn/aP5mgD0OiuHk+G0Dwsq+J/FkZ5GU1mT+uabD8N5YEmRPG/i8rLjO/UEcjByMFoyV/DGe9AHdUVyN34X8RNCRZeOdVjlHKNNa2sgDYOCQIlyPbPPqO1ePw748jzjx1bSA/89NFQkf8AfMgoA7aiuEn0X4jqp+z+LNKlPYSaXsH6OapwW/xgjHz3HhCXkn959oOPbgDpQB6PRXnTT/F+EhjZ+Ebhc8pE86k/ix4q5DrHxCVR5/hDTHODnZq23nt1Q/8A16AO5orhG8R+O0zu+H0brkgeVrURPHGcMo4Pbvjrir6+KNdWMGbwPqwPAAS6tG/9q0AdXS1xEnxAnt0BuPBfidQQTmG0SbHT+45Pde3r6HCr8Rrbdj/hGPFgA7/2LLigDtqK8+ufi/4bsVLX9prNmg43XOmyIPpnFNT43fD5xzrzLzjDWc/9EoA9DorgF+NPw+YM39vYwM82c4JH/fHPWthfiL4NYxj/AISbS8yHaM3C8HBPP93gHrjsOpFAHT0Vj23izw7eR+Zba7psqZxuS6QjOVGOvq6j/gQ9RWlFeW0yb4p45E3FdyMGGRwRx3oAmopNw4560ZHqKAFopjSov3mAwMnPp607cMZzxQAtFN3r6+9LuHrQAtFJketIHB9fyoAdRRmk3A0ALRSbh/8ArFLmgAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKb/EadTR940AOooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigApMZpaKAG7ec0pANLRQAmM0mzj1p1FAFF9G06Xb5tjayBegeBTj9Pp+QqBvDeiMVJ0jTzt6f6KnH04rVooAwG8D+FHI3eGtGbChQDYRcD0Hy+9Vz8OvB32fyR4a0kLtKgi0TcMgj72M559ffrXT0UAefy/BfwQwkaHTbi2lZNqyw3swaP0K5cjI4xkEcDill+D/hp5/Mjm1aEYXKJqMuDhtx6knkZB56E4wea7+igDzMfBfTY5zLb+KfFULE5ATUAMDOcD5M9QPyBpX+Etz/y7+P/ABZETyd18WBPrgY7V6XRQB58vw/8RxxJHH8RdZ2pyu+GNznfv5J5POOp6fL93irMXhjxxBdLL/wn63EKkHybjRoiG9mKMpx9CD713FBAPWgDg1034kWlr+717RL6cYOLixaIMRxjKNxnqTimhvikiplPCbsFww3XA3EMOQccErnjBwRnviu9wKNooEedz678TreWQDwjpF7HGVA8jUAnmArnKl8YAPByAT2GOarx+LPiXFEoufh3EzAjc0WrRAY78cn+eK9M2gHOOaCAeooGebR+PvGXllpPhrfq4UsVF4uOny4O31IBGOBk9sG+vxCv4ypuvA/iSOPJy8dukmB2OA2fXj27k4rutoznvRsUEnHWgDiI/iVCwPm+FfFcJDBf3mkyEYIJLZXPAIAPfJ4BGTUMXxe8MLbxyagNR07cuWFzYTAIc4IJCkcN8pPrXebFyeOvX3o2LnO0Z9aAOHj+MPgOTYRr8ahiR88Mq4I9crx+PXB9KtL8U/BL52eIrE4IHLkcn8OnvXXeWmQdo46e1Zl74Y0DUmDX2iabdEAAGe1R8AZx1H+0fzPrQBmr8RfBrRLIPE+kYY4AN2gOfoTkfU1YXxx4VcN5fiXRXKqWIF/FwB1zzwKa3gLwe4OfC2i89SLGMH9Fqm/ww8EO+8+GrAH/AGUwPyBxQB0NtqtjePKlreW87Rbd4ilVim4ArnHTIII9RUwuYmXcJEK4znd29f0P5VyTfCfwKxJ/4Ry1BPozj+R46U22+E/g2zcPa6ZcW7hCgaHULlCFPVciTOPagDshIrNgMpPsaVXDAEcggEYPauZl8Daayny9Q16Fsg7k1u6yP++pCKzl+G7I7tH428XAMc7W1BXA9huQmgDtw2RnFLu6elee3PgDXgskdj8QdeiARViM+yYqcncWPBbI24+7jH8WarQ+A/Hlu+5fifcMefv6VG/X/ef/APVQB6WDS15w3hL4jx5MXxKD+z6PCP8AGp7XS/ida7RJ4l0S72k/6+xZd/y4AOzH147+3FAHoFFcNKvxQQP5F14SkO47RLDcLkZ9Qx6cDpU0Fx8SI4T9qsvC0soHBivJ0B/Axn+dAHZ0Vx82seOoA2PCmmXOO0GrEE/TfEKqf8Jd4zUnzPh5dDqfk1O3bgYzxnr1wB1oA7uivPbr4g+IrJHab4d602wBj5MkcvB6Y25yfUDkVXHxV1DHPw98Vg9x9i6UAelU0ffanU1fvN9aAHUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFJS0UAFFFFABTV7mnUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFIKWkX7tAC0UUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFZmuaheaZpU91ZadJqNwm0R2sTBWkJYDqeBgEn8K4o/EXxGth9sb4c64U4woZS/Iz9wDd+n68UAekUV5rH8VNQKgz+APFcRbslluwM8nBx2yfcgDvUR+M9nEAZ/CnihC3Kr9hXkdOMsO/H1z6UAen0V5w3xj0aO0eWTSPECTqqMLY6ed77jjA52g4AbkgYYYycgSx/GfwazRq9/cqzuy7TZyk/KWGcBSRkAHHXDDOKAPQqK4mx+K/gu/QtHr9vCAUyLpWhPzHaMbwMgHqRkDnJFXbP4i+EL23juIvE2mCF1JBmuEibg45VyGH4j+lAHU0ViweLvDdyhe38QaVMoOCUvIyAfwNWRr+jnkarYn6XKf40AaNFVYdQtZpvKjuoHk279iSKSV6ZwO2e9WA4PQ5oAdRTc9s8078aACikNFAri0UmaWgdwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAENA6ChuhoHQUALRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABSbRS0UAQzW0VwmyaJJEzkKygjI6daxn8EeFZZWkk8MaM7sSWdrGIkn1ztrfooA5K4+Gfgy5heF/DOmhHGCY4RGwHsVwR+BFZh+Cnw/Zsnw+B9Lucf+z16BRQB5zL8D/AjpiHS5rd85DxXcu4fmxqez+Emh6fG6WV/rlojtvZLfU5EDH1OOp967+igDhJvhlC4Cw+KvFtuo4Hlaw/T/AIEDU3/CAXKxQxJ428U7YmBG+4hbOD3Pl5P45rtaKAOFufCPjDzibD4g3UUTYLLc6dBMSeOhUJtBwOB7+tOHhzx8q/8AI92xOcknRI/m56f6z04/zmu4ooCx5xNo3xTSXzYPEWhTEZASa0ZF68N8uecAewyetKsfxfQ53+DH59Ln/wCtXo1FFwPN1u/i3E4Euj+GrgB/vRTyICvHTcSRxnn36Vqf2348VRu8F2LEnqNaA/8AaVdpQelCA4qHxH4y3lb3wFIqHb81tqsEnGeeGKcgcjnB9RU0/jK/tIi0/gzxGSrBW8pbZ+ScDAWY9z+Fdfimlec575oA4T/hZSjIk8H+MUIxwdJLE/8AfJI7evcY74kn+J2mWUJlu9F8SW8WcF5tJlUZ/Ee1dxigqD1oQHnP/C7PBKzSRXF/d20kf3lmspQR7EBTz9fUVOPjX8PSR/xUHtzZzj/2Su7EEayNIqIrOcsQoyxxjJ/DH5CiW3imTZJGjrnOHXI/WgDlrT4oeCb0ExeJLFAFVj57GHhicffA546du+KvL478Iu21fFGis3oL+I/+zVebQNJf72mWJPf/AEZOf0qKTwvoEqssmiaa6tnIa1Q56+3uaWwFqLWNMmcJFqNo7EEhVmUkgYz37blz/vD1FWxIhxhgc9Md6wW8C+EnYs3hjRSScnNhFz/47VWX4beDZWL/APCN6YjbGTCQBRhsE5C4yflGD1AJAwGOWB1KsHUMM4IzyMH8qNw/yK4mL4SeDLcYg025i+UL8mo3I4HQf6yqN18GtCnmaSLV/ENqpXHlw6ixUH1+cMc/jj2oA9EyKNw556V50nwihjz5XjXxhHnrs1IAdMdlpB8LNRjl3Q/EPxUACCgkuzJj1zng/l+dAHoxYD1/KjcK4ePwX4ot4gkPxC1LKqQpmsbeT065XJ6Dv/Omjw148gnRovHyTLvGY7jSIcbe/wB0gk/iP0oA7rIo3DOO9ck1h47jR2TXtDnkx8kculyIv5rNn+dVgvxLjkfcvhOUAgoQbiMtyOvDY7+ucjpjkA7bIo3CvPJNX+J0V5DAfDWiypK20zx3jhIsAcvkZIyewJ4Ptms3ir4l25jMngS1n8xQwEWoKCpycq2e+BnjgA96APTMj1pa81g8eeNQIZLn4a3awv1aHUEkfHXhdo/Ikfzq/B8QtREQ+1+BPEiy5O5beKOVQMnHO4HOADjAxnHPGQR3eaM1wA+KUAkeO48J+K7Zg21PN03hz2AIY/n096sy/FXwrbXos7u4vra4aQRrHNptwrMxAIAGzJOGU464YHpQM7aiuKHxZ8EAKTr0S71LJuikAYAkEg7eRlTz7VMvxQ8EusjDxLp+EGSDJgn6Z6n2FAHX0VzQ8f8AhEuVHiXR+DjP26MD8yeeKnXxt4Wbp4j0fv8A8v0fYZPf05+lAG9RUEd5bzZ8uaN8Eg7WB5BwRx7ipBICO2fY5oAfRTQ4OenpSF8HGD1oAfRSE4+lIHB7UAOoozRQAUUUUAFFFFABRRRQAUUUUAI3Q0DoKG+6aUdKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKTnPagBaKKKACiik59KAFopPzoz+FAC0Um4HvS0AFFFFABSZ5paSgBaKKKACiiigAooooAKKKKACiiigAooooAKKKKAG5OeKU8Cig8igQA5FLSAYGKWgYUYoooATaKXFFFACbRRtFLRQA3YvpS7RjpS0UANKKeCM/WjYvPHXrTqKAImtoHkSRoUZ0GFYrkr9D2rKfwh4aktIrR/D2lNbRMWjhNnHsQnqVGMAn2raooA5i5+HPg27kaSbw1pu9upSAJnkn+HHc/5xULfDDwQ3/MtWA5J+VCP5Hp7V1tFAHCTfBvwDO5Z/D6Ak5wlzMoH0AfA/Cp7f4W+FLBFWwtr6z25CmDVLlNuc9P3nHWu0opAcD/AMKxTIMXjXxlEoAwqascADtyppZfh1frAyWnjzxNHJj5WmuElGeOo2jPT1Fd7RTA8xb4deNAx8n4n6iqdg9kGP57xTm8HfEW1hC2vxJMjDJAl0mHryepJ7/lXplFAHmUXhv4rJIjN46sJVBy0cmnx4PtkIP0rTMHxPityseo+FpnUcNLazqW69cN/Su6ooA4S3b4qrNGblPBskIPzrFJcoxHoGKsB+Rqf+1PiBAQJPDmi3OOpg1RkB69N0fH8P8Ak8dpRSA8+t/F3j1ndJvh03yk/MmsQYPpwcdu/t+Utx448T2mwTfDzVSznA8m6hlx9dpOPxrvKKYHmsfxV1HzWS4+Hni1NpwTFZGT+gFLJ8YILYH7T4N8XREHo+nAY5Pq4r0migDz2y+MOgXIbz9P12zIOMT6ezZ/743D9at/8LW8Kd7y8B9Dplzx/wCOV29FACEZFLSH60tABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAGKTFLRQAmKWiigAooooAKKKKACiiigAooooAKKKKACiiigBKKWigBBS0UUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAIe1LSN2+tLQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQA1s5GPWnU0/eFO7UAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFAHJa14o17TdUlt7Twff6hbqBtuIbmIK2fYnI75z7HvWPP8S9ZsrkxXfw78ScdWto1nGfYrx+tei0UAedv8WFiUGXwP40jHq2lgfzbmi1+MOjTn/SNG8RWSn7rXGmtg/TYWr0SigDij8VPCaoGkvb2PPZ9Muf8A4371PbfE/wAF3KFh4jsoiOCtwxhb8nANdaRkYprIGxnOB2zwaBGAnjzwlIMr4p0U8Zx9ujz/AOhVah8V+HrgAw67pkoPQpdxkH8jVh9F054Ftzp9sYVYuE8pdu4nJOMdz1rM/wCEC8IkYPhbRjzkk2ERP57aBmh/b+kf9Bex/wDAhP8AGrMN9bXDEQXMMhADEI4PBJAP44Irl9R+FngnUmjaXw1YoYwwX7Mpg+9jOfLK56cZzjtiqUnwW8ASyNI3h9QzHJAupgPyD4pgd9n3pa84f4IeCxzBZXdu5kDlob2UHA6L8zHjPzeuR1xxV8/DSzGWi8QeJ4pCAu5dXlzgHOOvTk4pAdv+NFcKvw3khZ2g8Z+LlLZxv1ISBePR0Pv789aln8H+JfsKR2njvU1uVZGMk9tA6HBBbKhAxBwcDd7HINAmdtRXBv4Z8fL5Zh8dxH5Qsgl0mE845bjGTnp04xnkZMf9j/E0QO48T6M85QlY2sCEDcgDcDkDhTnB5J4wOQZ6B3orzQr8YIrYSA+FZpS+TFiYEDjjOQMcn8u+aBefF3YyjSPDYk8z/WGZ9u3gYC7s++c9ulAHpdFcCmt/EWLzzP4NsZfmJiEOqKmF+XAyVOT9/JwOMdKkHi/xJaWMc194C1QSExoy21zBMNxyOAHyBnbzjgEk428gHdUVwa/EW4Qfv/BHilCy7lCWQkBGBnJVvlP3uD1wPXFNl+Kul24zcaH4kgHAzJpbgBiM7frjmgDvqK81n+NvhC0LRXZ1G1mjAzBPZOrjIJHGOOPpwR74mtvjX4BnCg628ZK5Ie1mGOM4ztxmgD0SiuJtfi14Eukd4vEMA2KGPmRSRkgttGAyjJz2GcDnpWlafEHwdfRQyQeJ9JPnAFFe6RH59VYgg+xGaAOkorMsfEWian/x4avYXXIH7i4R+ucdD7H8jV5bqBkR1mjZZPuEMCG78etAEtFJkUFgOufyoAWik3Ad6AwPQ+1AC0Um4etG4Hoc0ALRSbhn/wCtS5oAKKTP1/KgkDrQAtFJuGMg5+lLmgAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigBp+8B9adTT98fQ06gAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACk7UpooAKKKKACmlAevJ96dRQAxU2jg980rJu706igBuwelQz2VvcqVmhjkUjBDoDkfjViigDNbQNIYY/sux6Y/wCPZP8ACq0nhDw7MCJtC0yQEgnfZxnkfhzW3RQBzp8B+EW+94Y0Un1+wRf/ABNUrz4XeCr05k8PWaHGMwAwkc5z8hHOe/WuvooA4mH4SeDLZNkGm3MSYwFTUbkAd/8Anp71UuPg/oMv+o1HXLX/AK5ai59P72e2R+Jr0GigDzqP4Q20P+q8Y+L4/l2nZqQXI59E9zx0pv8Awqm6Q7ovH/i1W9Wvy3TpmvR6KAOJTwf4piQJH8QtQAGfv2Fux/Mrmmf8Ir42iKmL4hO2BtKz6PAwIx/slTn8a7migDkINH8bwIiv4s024KnJaXRiDJ167ZgB17AVBInxMjc+VJ4TmTJxujuYiR+bV22BSAAdBQBxX2j4lKOdP8LscE/LdT89eOU9v1rKl8R/FKKXb/wgljPHx80Wpxr3/wBo56e3+FelYFGBnOOaAPOR4v8AiNErNL8NA6gfwazDkfkDn/PWpbbx94l+cX/w71aJgMqLeeOYHp1J29yRxnpXoOBRtXOcUAcW3xBukOW8D+KduByttEevt5lIvxJt96CXwx4qhDDJZ9IkwvIHbOevau1wKMDOaAORuPiV4bs0ke7k1G3EQzIZtKukCfUmPiq0Xxf8ByoGXxDAAW2/NFIv81rt9o9KTy03btoz60CORHxU8Dn/AJmSyH1Y/wCFWE+Ivg+R3UeJdJBTIO+7ReR9f6f0rYvdC0jUkZL7S7K6RzuZZ4FcE+pBFZreAvCDAg+GNHOcn/jyjzz74oGKPHfhFiAvijRST6ahF/8AFVqwanZXSB7e7t5lKeYGjlDAr65Hb3rnn+GPglwAfDVgADnCpj+VQv8ACfwNIwY+HLT5egBYfng8/jQB14mU5wRx156fWgSjdtOM+gPOOP8AGuGPwc8CrM00WjNC5GMxXk6YHcDD9KW5+GFjIqCy8ReJ9OVWZyttqrkM7EsXIfdySxORjJOe9AHdBs/X0pd1cEPhxcxKWg8d+LVlGQpkvlkUDOR8pTmqc/w+8Wt5i23xK1SOEqAomtEdgRj+LI9OwH1oA9I3H0/OlBrzL/hBfHkCZX4m3LhQSA2moST167vb/PSpofD/AMUIbjzP+E50+4jByI5dMQKfY7RnHJ754FAHpFFeey2nxSF1JIms+HDGyKFiNtIArB8nHU8rwSSeBwM81atZPidHOsl1B4UuISozHFNcQtn6lX6fTt2oA7iiuHl174gW9y8X/CH2FyirxJBqoVXOV/voCOpPIpkfivxuZcSfD248vJ2suq2+4jnGVJGO3f8AwoA7uivO7r4i67YOFuvh7r5J5AtlSbjjuhP94fr6HES/Fa53qJfAfi+MHHTTsn8s/wCHSgD0mivN4vjDp4ZheeHPE1mdpYedpx7duCef8O1aFt8VfDc0aNM2pWzMoYpLps/ykgEglUIyORxxweSMEgHcUVxafFTwe7Rq2srCZA2DPBJGFwdp3FlAHOOCR1FW4PiN4Pmt45R4m0pQ6hgJLpFYZHcE8H2oA6j+KlpO9LQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFACGlpDS0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFACUUtFACEZpMe1OooATvS00feanUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRQaAEpaSloAKKKKACiiigAooooAKKKKACiiigAooooAKKKQ9qAFooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKAEHU0tIvf60tABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRVHV9ROlaZPfC1u7vyV3/Z7SMSSyeyr3NAF6ivO2+LCxLmXwR40X3bSgPT/AG6Wz+MGh3IJuNO16xO7aVuNOckcdfk3cdvX2pXA9DpMn0rif+Fr+FVVmlub6IA4+fTLgfj9z8Pwp1t8WPBN1u2eIrdMEDEyPEeSB/Eo/vD9T2OGB2hJ9KTJ9K51fH3hGQ4XxPo5P/X9EP5mrMfi7w3MAYvEOlOGzjbexnOOuMHt3oA2gT6UtZq6/o7DjVrH/wACU/xqeHUrKeURQ3lvLIV3bElVjjpnAPTPegC3RTQc96X8aAFooooAKDRRQAlGaKMCgXUAaWkFLQMKKSloAKKKKACiiigAooooAKKKKAA03NLS4FACCilxRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUU0mgLjqKKKACkJOeBmlpKAFooFFACClpq9Pxp1ABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFJS0UAU7zTLLUI/JvbK3uYSclZo1cE4xnBHpxWT/wgfhE/wDMq6IPcWEQP/oNdFRQByF98L/BOoW4hn8Naeqg8GCPyG/76Qg/rWb/AMKS+Hv/AEL/AP5OXH/xyvQaKAPOW+CHgdHEltptzbuDkNFeSbl9wSx5/wATVu0+FWkWKqtpqviC2CgKoh1SVAAOgAB6V3dFAHCT/DMSvuj8Y+MIR/dTVmI/8eBq9F4O1GFEWPxn4hGzHLtbPnAx3h549f5811tFAHEXXhXxm1xusviFPDH/AHZ9JtpT37gL2wOnY+vCpoHj5Isf8JrYyPu/j0YdM+0n9K7aigDzebTPi3HIpt9b8NzrjkTQSR/wj+6p/i3D6AHvgO2fGCJD83g2Y4PH+kDP8hXo1FAHnEd58W4Zv9I0bw1cpgH9xcSRn6ZYn+VaSaz4+3KH8GacQeMjWRx7/wCrrtaKAOItvE3jNmxd/D24iXbn9zq1tIc+nJXt3qNviBeWkaLd+BfFCzLHudbW0jmUYIBClZOee3XHOMV3dNC4oA4g/EeFSM+FvFy8BudHk6+n1/Sq118XPDunb1v7XWbJkXcwuNOkTAyBk5HA+dfzHqM+ggYppTJzmgDzpPjh4CdFc6tKjHGVa0lJH1wuP51dX4xeAjj/AIqBFyGI3W0wyFGTjKfl6ngZNdq9tFJ99FPBXlR0PUfTH8hVM6DpbO7Pp1m5dizFrdDz+X+c0AZ1n4+8JX8cb2/iPTG8wAqrXCq3OTgqSCDweDyK0h4g0Zm2rqtkzecbfaLhSfNDKpTr94M6AjqCwHcVFJ4Z0OVSsmj6e68fK1qhHBz3FUj4C8IspH/CMaKMgjiwiHX6CgDfE8ZAO8YOMe+emKcJFZQytkEZBFcre/DPwZfx7JfDmnRjBH+jw+QeevKYP61VHwl8Gr5ZTTblTGMR41G5+TjHH7zjjigDtAwPQ+1BdQMk8fSuJk+F2k73a01fxDZbg3FvqsowT3+Ynn659881WX4VCPJi8ceM1bnGdUBGc56bKAPQMigsoIBPWuGTwDrNtIjWnj3XVCZx9oWKY5JOcll568ZzjHpgCwPCvitHRh49un2tnbJplsVYcZBwoPbsRQB2IZT0Io3D1rk4tE8ZQuxXxbYyITkLNo+do9AVmB+v6Y6VLJZeNEjHl61ocrAjhtLlTdz6ic4/I0AdPuGcUuRXFK/xHUlhF4WnD4IHmzx7OORna27knnjIAOOcBHu/iRFydI8NygDO2K+mBPsC0eM/XigDtqM150PFXxHjZlk+HEUuDgNHrUCg/nVqLxl4vjdTffDu8SMk5NrqMMzDjjj5f5/nQB3dFcavjy8KgnwN4pz7W8JH/o2rMHjVXOLjw74gtPlB/eWDP1JBH7styAM/SgDqaK53/hNdLH3rTXFHqdDvf/jVV7r4jeGbBgL+9msieP8AS7SaHtno6An8KAOqorjv+FqeB8ceJLHPpuP+FW4viJ4NmTcvijSAM4+a8Rf5kUAdNRWAvjjwpI4SPxNoru3AUX8RJPp96ta31C1u4kltriGaJwCrxyBgR7EH6UAWaKZ5ik8EH6GlDZHGKAHUUm7ikDAntQA6ikLAUbvagBaKKKACikyKD0oACaB0pvalB+XpTELkZxS0gGO9LSGFBooNACClptLQAoGKKQdBS0AFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUmBS0UAJgUYBpaKADFJtApaKADFJgZpaKAEwKAijjHtS0UANKKV2lQR6Vn3vh7RdSULf6RYXQXoJ7ZHx+YrSooA55vAfg9v+ZW0UY9LCIfyWqknwx8ESszN4Z08Fjk7Y9o/IdOldZRQByCfC7wVFIssOgW8MiEFXhd42Ug5BBVgQQQCD1GKsJ4D0SEN5L6tEGxxFrF2g4AA4EuOgA/CunooA5WXwPZkQtDq3iC3aNgzbNYuH8wDqpDuwAPtg1TPgK5Uu0XjfxUvB2q13G4HU948nr6121FAHBz+BddVi1h8QNcibbhftKxTgN6kbVyPbj61XHg74gIxMfxNfbgDDaLCx4+pr0SigDgINA+I9lL5v8AwnFjqAPHlXekpGg98xsD+tWkh+JKYT+0fC0gA5d7OcE/lJiu1ooA4qJ/iRHOnmx+FbiLJLGN7iEkdhyHx65/D3q+174zSMs2haJIQPupq8gz+dt/WumooA4pfEfjRZGWTwKGUR7g0Orwtlvl+TDBeeSCeny8dRVKfx54iguvIf4fa0XCl8xyxOpADdWUlc/IcDOTlcZ3Ln0KigDzMfFqeC28++8CeLIFAy3+g5VR65JH64/GrUXxXtHijlm8OeJ7aJmUM8ulthFJPzEgn5Rt5wCeRgV6FRQBwMXxb8NvLOs39p2/lAMfN06bpjPZTjAB61M3xa8GKkjvrDxKjBGM1lOnJ6DlBzg5+nPSu3pMelMDjoPif4MvAPI8S2ILBwBI4iztKj+MAA5YYzwRuIyFJGgPHXhPH/I06J/4MIh/7NWtfaXZalCYb2zt7mNhgrNGrjHTGD7E1k/8IH4Tz/yKuhf+C6L/AOJpCOiHSlpF6UtAwooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACikHXmigBaKKTNAC0UUw5Bzk4+lAD6KTPHWgdKAFopKWgAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACkpaKAA0UUUAFJS0UAJS9qKKAEA5paSloAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiigAooooAKKKKACiiuF+IXxKs/AMVss9nc3NzdJI0CR7QhKbch2Jyo+YdAf8QDuqKzNM1ePUtAsdWRXEV3apcqrABgrKG55xnBrhvC3xl0vxb4rXQrLTb2IujMk0xQAleoIBOB15yaAPTKKYjFgfrin0AFFFZV7rcNpr1jo7JJ597DNKjqBtUR7c59zvGPpQBq0VAJwWA556fqf6Uye6+zW8szZKxgseOeM/4UBctUUyNi6Bj3GaZJL5bIDn522jHbgn+lArk1FJ82e2KWgYUUUUAFFFFABRRRQAUUlLQAUUUmaAFooooAKKKKACigUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAFFFFABRRRQAUUUUAf/Z" alt="Q9 圖像"></div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">內心</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">10.</div>
+                <div class="question-text">若半球體的半徑為 $9$ cm，求體積。（答案以 $\pi$ 表示。）</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$486\pi$ cm$^3$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">11.</div>
+                <div class="question-text">一個袋裝有 8 個橙、10 個蘋果和 7 個梨。若從袋中隨意抽取出一個水果，求抽出一個蘋果的概率。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$\dfrac{2}{5}$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">12.</div>
+                <div class="question-text">求 8 個數據 22, 21, 19, 19, 22, 45, 23, 19 的眾數。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$19$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">13.</div>
+                <div class="question-text">求 $B(6, 1)$ 和 $C(10, -2)$ 的距離。</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$5$</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">14.</div>
+                <div class="question-text">Given that the slope of $AB$ is $3$. If $AB \perp CG$, find the slope of $CG$.</div>
+                <input type="text" class="answer-input" placeholder="答案">
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">$-\dfrac{1}{3}$</div></div>
+            </div>
+        </div>
+
+        <!-- 乙部 -->
+        <div class="section-title" onclick="toggleSection('乙部')">
+            乙部：需寫出完整計算過程。<span class="marks">(35 分)</span>
+        </div>
+        <div id="乙部" class="section-content">
+
+            <div class="question">
+                <div class="question-num">15. <span class="marks">(3 分)</span></div>
+                <div class="question-text">化簡 $\left(\dfrac{-3mn^3}{2m^{-2}n^4}\right)^2$，以正指數表示答案。</div>
+                <textarea class="answer-input" rows="4" placeholder="計算過程"></textarea>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">
+                        $= \dfrac{9m^2n^6}{4m^{-4}n^8}$ (1A)<br>
+                        $= \dfrac{9m^2m^4n^6}{4n^8}$ (1M)<br>
+                        $= \dfrac{9m^6}{4n^2}$ (1A)<br>
+                        <strong>答案：$\dfrac{9m^6}{4n^2}$</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">16. <span class="marks">(3 分)</span></div>
+                <div class="question-text">（需要圖像）</div>
+                <textarea class="answer-input" rows="4" placeholder="計算過程"></textarea>
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">（需要圖像）</div></div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">17. <span class="marks">(3 分)</span></div>
+                <div class="question-text">小敏把 $30 000 存入銀行，銀行以複利息計算，每半年計算複利息一次，年利率為 6%，存款年期 5 年，求複利息。(答案準確至最接近的元)</div>
+                <textarea class="answer-input" rows="4" placeholder="計算過程"></textarea>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">
+                        複利息 $= 30000 \left(1 + \dfrac{6\%}{2}\right)^{2 \times 5} - 30000$<br>
+                        $= \$10{,}317$<br>
+                        <strong>答案：$\$10{,}317$</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">18. <span class="marks">(2 分)</span></div>
+                <div class="question-text">圖中，一個氣球距離水平地面的高度是 8 m。一個女孩站在水平地面上，她與氣球的水平距離是 10 m。若該女孩的眼睛距離水平地面 1.5 m，求由該女孩測得該氣球的仰角。</div>
+                <div class="diagram-placeholder">需要圖像</div>
+                <textarea class="answer-input" rows="4" placeholder="計算過程"></textarea>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">仰角 $\approx 33.4^\circ$</div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">19. <span class="marks">(6 分)</span></div>
+                <div class="question-text">圖中所示為一個直立角錐 $VPQRS$，它的底是一個正方形。$\triangle VQR$ 的高是 8 cm。</div>
+                <div class="diagram-placeholder">需要圖像</div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(a) 求該角錐的總表面面積。(3 分)</div>
+                    <textarea class="answer-input" rows="3" placeholder="計算過程"></textarea>
+                </div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(b) 求該角錐的體積。(3 分)</div>
+                    <textarea class="answer-input" rows="3" placeholder="計算過程"></textarea>
+                </div>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">
+                        (a) 總表面面積 $= 6 \times 6 + \left(\dfrac{6 \times 8}{2}\right) \times 4 = 132$ cm$^2$<br>
+                        (b) 體積 $= \dfrac{1}{3} \times 6 \times 6 \times \sqrt{8^2 - 3^2} = 12\sqrt{55}$ cm$^3 \approx 89.0$ cm$^3$
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">20. <span class="marks">(5 分)</span></div>
+                <div class="question-text">以下的幹葉圖顯示一些幼蟲的長度。</div>
+                <table>
+                    <tr><th>幹 (10 mm)</th><td>1</td><td>2</td><td>3</td></tr>
+                    <tr><th>葉 (1 mm)</th><td>7 7 8 9 9</td><td>0 0 $x$ 2 4 6</td><td>$x$ 1 1 3 5</td></tr>
+                </table>
+                <div class="question-text">已知幼蟲的平均長度是 24 mm。</div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(a) 求 $x$ 的值。(2 分)</div>
+                    <textarea class="answer-input" rows="3" placeholder="計算過程"></textarea>
+                </div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(b) 求該分佈的中位數和眾數。(3 分)</div>
+                    <textarea class="answer-input" rows="3" placeholder="計算過程"></textarea>
+                </div>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">
+                        (a) $x = 1$<br>
+                        (b) 中位數 $= 21.5$ mm，眾數 $= 20$ mm
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">21. <span class="marks">(4 分)</span></div>
+                <div class="question-text">（需要圖像）</div>
+                <textarea class="answer-input" rows="4" placeholder="計算過程"></textarea>
+                <div class="answer-box"><div class="label">答案：</div><div class="answer-text">（需要圖像）</div></div>
+            </div>
+        </div>
+
+        <!-- 丙部 -->
+        <div class="section-title" onclick="toggleSection('丙部')">
+            丙部：需寫出完整計算過程。<span class="marks">(21 分)</span>
+        </div>
+        <div id="丙部" class="section-content">
+
+            <div class="question">
+                <div class="question-num">22. <span class="marks">(8 分)</span></div>
+                <div class="question-text">投擲兩枚勻稱骰子，</div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(a) 完成下列樣本空間。(2 分)</div>
+                    <table>
+                        <tr><th></th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th><th>6</th></tr>
+                        <tr><th>1</th><td>(1,1)</td><td>(1,2)</td><td>(1,3)</td><td>(1,4)</td><td>(1,5)</td><td>(1,6)</td></tr>
+                        <tr><th>2</th><td>(2,1)</td><td>(2,2)</td><td>(2,3)</td><td>(2,4)</td><td>(2,5)</td><td>(2,6)</td></tr>
+                        <tr><th>3</th><td>(3,1)</td><td>(3,2)</td><td>(3,3)</td><td>(3,4)</td><td>(3,5)</td><td>(3,6)</td></tr>
+                        <tr><th>4</th><td>(4,1)</td><td>(4,2)</td><td>(4,3)</td><td>(4,4)</td><td>(4,5)</td><td>(4,6)</td></tr>
+                        <tr><th>5</th><td>(5,1)</td><td>(5,2)</td><td>(5,3)</td><td>(5,4)</td><td>(5,5)</td><td>(5,6)</td></tr>
+                        <tr><th>6</th><td>(6,1)</td><td>(6,2)</td><td>(6,3)</td><td>(6,4)</td><td>(6,5)</td><td>(6,6)</td></tr>
+                    </table>
+                </div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(b) 求其中一個點數是 2 的倍數的概率。(2 分)</div>
+                    <textarea class="answer-input" rows="2" placeholder="計算過程"></textarea>
+                </div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(c) 求兩個點數的和大於 8 的概率。(2 分)</div>
+                    <textarea class="answer-input" rows="2" placeholder="計算過程"></textarea>
+                </div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(d) 兩個點數的和不大於 8 的概率。(2 分)</div>
+                    <textarea class="answer-input" rows="2" placeholder="計算過程"></textarea>
+                </div>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">
+                        (b) $\dfrac{3}{4}$<br>
+                        (c) $\dfrac{5}{18}$<br>
+                        (d) $\dfrac{13}{18}$
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">23. <span class="marks">(4 分)</span></div>
+                <div class="question-text">某數學比賽分為三個回合。下表顯示小嘉和小權在各回合所得的分數（以分為單位），每一部分的得分均為整數。</div>
+                <table>
+                    <tr><th></th><th>第一回合</th><th>第二回合</th><th>第三回合</th></tr>
+                    <tr><th>小嘉</th><td>75</td><td>87</td><td>66</td></tr>
+                    <tr><th>小權</th><td>$x$</td><td>72</td><td>80</td></tr>
+                </table>
+                <div class="question-text">已知三個回合的權分別是 2、3 和 4。</div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(a) 求小嘉的加權平均分。(2 分)</div>
+                    <textarea class="answer-input" rows="2" placeholder="計算過程"></textarea>
+                </div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(b) 若小權在是次比賽表現較小嘉好，小權甲部最少要多少分？試解釋你的答案。(2 分)</div>
+                    <textarea class="answer-input" rows="3" placeholder="計算過程"></textarea>
+                </div>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">
+                        (a) 加權平均分 $= \dfrac{75 \times 2 + 87 \times 3 + 66 \times 4}{9} = 75$ 分<br>
+                        (b) $\dfrac{2x + 72 \times 3 + 80 \times 4}{9} > 75$ ⟹ $x > 69.5$，最少 70 分
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">24. <span class="marks">(4 分)</span></div>
+                <div class="question-text">圖中所示為一個斜靠於牆壁的長方形盒子 $ABCD$ 的鉛垂截面。該盒子的長和高分別是 2.2 m 和 0.9 m。$BC$ 與水平地面成 $34^\circ$，小權宣稱 $A$ 距離地面的鉛垂高度超過 2 m。你是否同意？試解釋你的答案。</div>
+                <div class="diagram-placeholder">需要圖像</div>
+                <textarea class="answer-input" rows="5" placeholder="計算過程"></textarea>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">
+                        不同意。<br>
+                        $AC = \sqrt{2.2^2 + 0.9^2} = \sqrt{5.65}$ m<br>
+                        $\angle ACM \approx 56.2^\circ$<br>
+                        $AM = AC \sin \angle ACM \approx 1.98$ m $< 2$<br>
+                        $\therefore$ 不同意該宣稱
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">25. <span class="marks">(4 分)</span></div>
+                <div class="question-text">圖中所示為一個密封直立圓錐體的容器，其底半徑及高分別為 12 cm 及 27 cm。容器內裝了一些液體，水深為 9 cm。</div>
+                <div class="diagram-placeholder">需要圖像</div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(a) 求 $DN$ 的長度。(2 分)</div>
+                    <textarea class="answer-input" rows="2" placeholder="計算過程"></textarea>
+                </div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(b) 求該液體的體積，答案以 $\pi$ 表示。(2 分)</div>
+                    <textarea class="answer-input" rows="3" placeholder="計算過程"></textarea>
+                </div>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">
+                        (a) $\dfrac{DN}{12} = \dfrac{27-9}{27}$ ⟹ $DN = 8$ cm<br>
+                        (b) 體積 $= \dfrac{1}{3}\pi(8)^2 \times 18 = 384\pi$ cm$^3$
+                    </div>
+                </div>
+            </div>
+
+            <div class="question">
+                <div class="question-num">26. <span class="marks">(6 分)</span></div>
+                <div class="question-text">點 $A(9, 10)$、$B(-7, 0)$ 和 $C$ 是 $\triangle ABC$ 的頂點，其中 $C$ 位於 $x$ 軸上。已知 $AB$ 的斜率是 $AC$ 的一半。</div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(a) 求 $C$ 的座標。(3 分)</div>
+                    <textarea class="answer-input" rows="3" placeholder="計算過程"></textarea>
+                </div>
+                <div class="sub-question">
+                    <div class="sub-question-label">(b) $D$ 是 $BC$ 上的一點使 $\triangle ACD$ 的面積是 $\triangle ABC$ 的一半。求 $AD$ 的斜率。(3 分)</div>
+                    <textarea class="answer-input" rows="3" placeholder="計算過程"></textarea>
+                </div>
+                <div class="answer-box">
+                    <div class="label">答案：</div>
+                    <div class="answer-text">
+                        (a) 設 $C : (c, 0)$<br>
+                        $\dfrac{10-0}{9-(-7)} = \dfrac{1}{2} \left(\dfrac{10-0}{9-c}\right)$ ⟹ $C = (1, 0)$<br><br>
+                        (b) $D = (-3, 0)$，$AD$ 的斜率 $= \dfrac{10-0}{9-(-3)} = \dfrac{5}{6}$
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('menuOverlay').classList.toggle('open');
+            document.getElementById('sideMenu').classList.toggle('open');
+        }
+        function closeMenu() {
+            document.getElementById('menuOverlay').classList.remove('open');
+            document.getElementById('sideMenu').classList.remove('open');
+        }
+        function goToPage(url) {
+            window.location.href = url;
+        }
+        function toggleSection(id) {
+            const section = document.getElementById(id);
+            const title = section.previousElementSibling;
+            section.classList.toggle('open');
+            title.classList.toggle('open');
+        }
+        function showAllAnswers() {
+            document.querySelectorAll('.answer-box').forEach(box => {
+                box.classList.toggle('show');
+            });
+        }
+    </script>
+</body>
+</html>

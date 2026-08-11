@@ -1,0 +1,139 @@
+<!DOCTYPE html><html lang="zh-HK"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>中三級 第三學期 數學科考試 - 卷三</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet"><script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},startup:{typeset:true}};</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script><style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Sans TC', sans-serif; background: #f5f5f5; color: #333; padding-top: 70px; }
+.top-nav { position: fixed; top: 0; left: 0; width: 100%; background: #3498db; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; }
+.nav-left, .nav-right { display: flex; align-items: center; gap: 15px; }
+.hamburger { cursor: pointer; padding: 5px; }
+.hamburger span { display: block; width: 25px; height: 3px; background: white; margin: 5px 0; border-radius: 2px; }
+.back-btn { color: white; text-decoration: none; font-size: 0.95em; padding: 6px 12px; background: rgba(255,255,255,0.15); border-radius: 5px; }
+.nav-title { font-size: 1.1em; font-weight: bold; }
+.check-btn { background: #27ae60; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.95em; }
+.container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+.section-title { background: #2c3e50; color: white; padding: 12px 15px; border-radius: 5px; margin: 20px 0 15px 0; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; }
+.section-title::after { content: '▼'; font-size: 0.8em; }
+.section-title.open::after { content: '▲'; }
+.section-content { display: none; }
+.section-content.open { display: block; }
+h1 { text-align: center; margin: 20px 0; font-size: 1.5em; }
+.question { margin-bottom: 25px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.question-num { font-weight: bold; color: #3498db; margin-bottom: 10px; font-size: 1.1em; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
+.page-tag { font-size: 0.85em; color: #999; font-weight: normal; }
+.question-text { margin-bottom: 15px; line-height: 1.6; font-size: 1.05em; }
+.options-container { display: flex; flex-direction: column; gap: 8px; }
+.option { padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; background: #fafafa; transition: 0.2s; line-height: 1.4; }
+.option:hover { background: #f0f7ff; border-color: #3498db; }
+.option.selected { background: #e1f0fa; border-color: #3498db; border-width: 2px; padding: 11px 14px; }
+.option.correct { background: #d4edda; border-color: #28a745; color: #155724; border-width: 2px; padding: 11px 14px; }
+.option.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; border-width: 2px; padding: 11px 14px; }
+.answer { display: none; color: #e74c3c; font-weight: bold; margin-top: 15px; padding: 10px; background: #fdf2f2; border-radius: 5px; }
+.answer.show-answer { display: block; }
+.show-answer { display: block !important; }
+.menu-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; }
+.menu-overlay.open { display: block; }
+.side-menu { visibility: hidden; position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 1002; transition: left 0.3s; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+.side-menu.open { visibility: visible; left: 0; }
+.side-menu-header { padding: 20px; background: #3498db; color: white; display: flex; justify-content: space-between; align-items: center; }
+.close-btn { cursor: pointer; font-size: 1.5em; }
+.side-menu-content { padding: 10px; }
+.menu-btn { display: block; width: 100%; padding: 15px; margin: 5px 0; border: none; border-radius: 8px; background: #f5f7fa; cursor: pointer; text-align: left; font-size: 1em; }
+.menu-btn:hover { background: #e1e8ed; }</style></head><body><div class="top-nav"><div class="nav-left"><div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div><a href="./index.html" class="back-btn">← 返回主頁</a></div><div class="nav-title" id="scoreDisplay">卷三選擇題 | 得分: 0 / 31</div><div class="nav-right"><button class="check-btn" onclick="checkAnswers()">核對答案</button></div></div><div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div><div class="side-menu" id="sideMenu"><div class="side-menu-header"><h2>選單</h2><span class="close-btn" onclick="closeMenu()">✕</span></div><div class="side-menu-content"><button class="menu-btn" onclick="goToPage('./index.html')">考試主頁</button><button class="menu-btn" onclick="goToPage('p1.html')">卷一</button><button class="menu-btn" onclick="goToPage('p2.html')">卷二</button></div></div><div class="container"><h1>中三級 第三學期 數學科考試 - 卷三</h1><div class="section-title open" onclick="toggleSection('p3-a')">甲部 (20分)</div><div id="p3-a" class="section-content open"><div class="question" data-correct=""><div class="question-num">1<span class="page-tag">頁2</span></div><div class="question-text">某商店有 48 件蛋糕，其中 12 件是芒果蛋糕，其餘的則是朱古力蛋糕。求芒果蛋糕的數量和朱古力蛋糕的數量之比。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 1:3</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 1:4</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 3:1</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 3:4</div></div></div><div class="question" data-correct=""><div class="question-num">2<span class="page-tag">頁2</span></div><div class="question-text">王太太有 M 隻雞蛋，她棄掉其中 3 隻壞了的雞蛋後，可把餘下的雞蛋全平均放入盒子內。現有 5 盒雞蛋，問每盒有多少隻雞蛋？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. (M-3)/5</div>
+            <div class="option" onclick="selectOption(this,'B')">B. M/5 - 3</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 5M - 3</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 5(M-3)</div></div></div><div class="question" data-correct=""><div class="question-num">3<span class="page-tag">頁2</span></div><div class="question-text">化簡 (x^2)^6 / x^7 。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. x</div>
+            <div class="option" onclick="selectOption(this,'B')">B. x^2</div>
+            <div class="option" onclick="selectOption(this,'C')">C. x^5</div>
+            <div class="option" onclick="selectOption(this,'D')">D. x^30</div></div></div><div class="question" data-correct=""><div class="question-num">4<span class="page-tag">頁3</span></div><div class="question-text">判斷以下步驟是因式分解或是展開：
+(i) 3x^3+7x^2-2x-8 = (3x+4)(x+2)(x-1)
+(ii) (3x+4)(x+2)(x-1) = 3x^3+7x^2-2x-8</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. (i)展開 (ii)因式分解</div>
+            <div class="option" onclick="selectOption(this,'B')">B. (i)展開 (ii)展開</div>
+            <div class="option" onclick="selectOption(this,'C')">C. (i)因式分解 (ii)因式分解</div>
+            <div class="option" onclick="selectOption(this,'D')">D. (i)因式分解 (ii)展開</div></div></div><div class="question" data-correct=""><div class="question-num">5<span class="page-tag">頁3</span></div><div class="question-text">下列哪點在直線 4x - y + 12 = 0 上？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. (-3, 12)</div>
+            <div class="option" onclick="selectOption(this,'B')">B. (12, -3)</div>
+            <div class="option" onclick="selectOption(this,'C')">C. (3, 0)</div>
+            <div class="option" onclick="selectOption(this,'D')">D. (0, 12)</div></div></div><div class="question" data-correct=""><div class="question-num">6<span class="page-tag">頁3</span></div><div class="question-text">天穎用 $49 購買了 3 枝原子筆和 2 件擦膠，子華用 $77 購買了 4 枝原子筆和 5 件擦膠。已知一枝原子筆和一件擦膠的價錢分別為 $x 和 $y，下列哪一組聯立方程可表示 x 和 y 的關係？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 2x+3y=49, 5x+4y=77</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 3x+2y=49, 4x+5y=77</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 3x+2y=49, 5x+4y=77</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 2x+3y=49, 4x+5y=77</div></div></div><div class="question" data-correct=""><div class="question-num">7<span class="page-tag">頁3</span></div><div class="question-text">下列哪個是恆等式？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 2(x+8) = 2x+8</div>
+            <div class="option" onclick="selectOption(this,'B')">B. (2x-1)/3 = 8</div>
+            <div class="option" onclick="selectOption(this,'C')">C. x-1 = -(1-x)</div>
+            <div class="option" onclick="selectOption(this,'D')">D. x^2+2 = (x+2)(x-2)</div></div></div><div class="question" data-correct=""><div class="question-num">8<span class="page-tag">頁4</span></div><div class="question-text">若 x > y，下列哪個不等式是正確的？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. x/(-6) < y/(-6)</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 6x < 6y</div>
+            <div class="option" onclick="selectOption(this,'C')">C. x-6 < y-6</div>
+            <div class="option" onclick="selectOption(this,'D')">D. x+6 < y+6</div></div></div><div class="question" data-correct=""><div class="question-num">9<span class="page-tag">頁4</span></div><div class="question-text">圖中所示為方程 x-2y-6=0 及 3x+2y-2=0 的圖像。下列哪一點表示聯立方程的解？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. (-2, 2)</div>
+            <div class="option" onclick="selectOption(this,'B')">B. (0, -3)</div>
+            <div class="option" onclick="selectOption(this,'C')">C. (2, -2)</div>
+            <div class="option" onclick="selectOption(this,'D')">D. (6, 0)</div></div></div><div class="question" data-correct=""><div class="question-num">10<span class="page-tag">頁4</span></div><div class="question-text">一條裙子的售價是 $x，一條頸巾的售價是一條裙子的 1/4。海盈用 $1540 買了一條裙子和三條頸巾。下列哪方程可用來求得 x 的值？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. x+3(4x)=1540</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 3x+4x=1540</div>
+            <div class="option" onclick="selectOption(this,'C')">C. x+3(x/4)=1540</div>
+            <div class="option" onclick="selectOption(this,'D')">D. x/4+3x=1540</div></div></div><div class="question" data-correct=""><div class="question-num">11<span class="page-tag">頁5</span></div><div class="question-text">右圖中是一個邊長 5 cm 的實心正方體。求它的總表面面積。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 25 cm^2</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 60 cm^2</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 125 cm^2</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 150 cm^2</div></div></div><div class="question" data-correct=""><div class="question-num">12<span class="page-tag">頁5</span></div><div class="question-text">下列哪幅圖可表示 x > 8？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 0 ──●──→</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 0 ─●───→</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 0 ───●─→</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 0 ────●→</div></div></div><div class="question" data-correct=""><div class="question-num">13<span class="page-tag">頁5</span></div><div class="question-text">在圖中，角錐 A 和角錐 B 是相似的立體，它們的高分別是 28 cm 和 14 cm。角錐 A 的體積是 3024 cm^3，求角錐 B 的體積。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 189 cm^3</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 378 cm^3</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 756 cm^3</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 1512 cm^3</div></div></div><div class="question" data-correct=""><div class="question-num">14<span class="page-tag">頁5</span></div><div class="question-text">下列哪一項表示右圖的平行四邊形的命名？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. PQRS</div>
+            <div class="option" onclick="selectOption(this,'B')">B. PQR</div>
+            <div class="option" onclick="selectOption(this,'C')">C. PQ</div>
+            <div class="option" onclick="selectOption(this,'D')">D. P</div></div></div><div class="question" data-correct=""><div class="question-num">15<span class="page-tag">頁6</span></div><div class="question-text">在圖中，PBR 和 QACR 均是直線。考慮 △PQR，PB=BR，PR⊥BC 和 PA⊥QR。以下哪一個必定是 △PQR 的一條高線？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. BC</div>
+            <div class="option" onclick="selectOption(this,'B')">B. PA</div>
+            <div class="option" onclick="selectOption(this,'C')">C. PQ</div>
+            <div class="option" onclick="selectOption(this,'D')">D. PR</div></div></div><div class="question" data-correct=""><div class="question-num">16<span class="page-tag">頁6</span></div><div class="question-text">A(13,-10) 和 B(-8,7) 是直角坐標平面上的兩點，AB 的中點的坐標是</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. (13-(-8), (-10)-7)</div>
+            <div class="option" onclick="selectOption(this,'B')">B. (13+(-8), (-10)+7)</div>
+            <div class="option" onclick="selectOption(this,'C')">C. ((13-(-8))/2, ((-10)-7)/2)</div>
+            <div class="option" onclick="selectOption(this,'D')">D. ((13+(-8))/2, ((-10)+7)/2)</div></div></div><div class="question" data-correct=""><div class="question-num">17<span class="page-tag">頁7</span></div><div class="question-text">根據附圖，求 θ。(準確至 3 位有效數字)</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 22.6°</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 42.7°</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 62.9°</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 67.4°</div></div></div><div class="question" data-correct=""><div class="question-num">18<span class="page-tag">頁7</span></div><div class="question-text">已知直線 L 的斜率是 4/7，下列哪條直線垂直於 L？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. L1: 斜率 -4/7</div>
+            <div class="option" onclick="selectOption(this,'B')">B. L2: 斜率 4/7</div>
+            <div class="option" onclick="selectOption(this,'C')">C. L3: 斜率 -7/4</div>
+            <div class="option" onclick="selectOption(this,'D')">D. L4: 斜率 7/4</div></div></div><div class="question" data-correct=""><div class="question-num">19<span class="page-tag">頁7</span></div><div class="question-text">下表所示為某商店上月售賣 6 款機器的數量。下列哪項能最適當地表達以上數據？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 幹葉圖</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 棒形圖</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 直方圖</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 累積頻數多邊形</div></div></div><div class="question" data-correct=""><div class="question-num">20<span class="page-tag">頁7</span></div><div class="question-text">以下累積頻數多邊形顯示 40 輛賽車的最高速率。求該 40 輛賽車最高速率的中位數。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 383 km/h</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 386 km/h</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 388 km/h</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 397 km/h</div></div></div></div><div class="section-title open" onclick="toggleSection('p3-b')">乙部 (10分)</div><div id="p3-b" class="section-content open"><div class="question" data-correct=""><div class="question-num">31<span class="page-tag">頁8</span></div><div class="question-text">把公式 R = K/5 + 2 的主項變換為 K。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. K = 5(R-2)</div>
+            <div class="option" onclick="selectOption(this,'B')">B. K = 5R - 2</div>
+            <div class="option" onclick="selectOption(this,'C')">C. K = R/5 - 2</div>
+            <div class="option" onclick="selectOption(this,'D')">D. K = R - 10</div></div></div><div class="question" data-correct=""><div class="question-num">32<span class="page-tag">頁8</span></div><div class="question-text">在圖中，△ABC ≅ △PQR。求 (a) x 的值；(b) y 的值。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. x=43, y=25</div>
+            <div class="option" onclick="selectOption(this,'B')">B. x=25, y=43</div>
+            <div class="option" onclick="selectOption(this,'C')">C. x=60, y=35</div>
+            <div class="option" onclick="selectOption(this,'D')">D. x=35, y=60</div></div></div><div class="question" data-correct=""><div class="question-num">33<span class="page-tag">頁8</span></div><div class="question-text">圖中所示為五邊形 ABCDE 的內角，求 m。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 120°</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 140°</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 180°</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 240°</div></div></div><div class="question" data-correct=""><div class="question-num">34<span class="page-tag">頁9</span></div><div class="question-text">在圖中，FBD 和 CDE 是直線，BA // EC 和 ∠FBA = 128°。求 x。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 52°</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 38°</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 128°</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 232°</div></div></div><div class="question" data-correct=""><div class="question-num">35<span class="page-tag">頁9</span></div><div class="question-text">在圖中，扇形 OAB 的半徑是 9 cm，∠AOB = 120°。求該扇形的面積，答案須準確至三位有效數字。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 8.48 cm^2</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 84.8 cm^2</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 254 cm^2</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 27 cm^2</div></div></div><div class="question" data-correct=""><div class="question-num">36<span class="page-tag">頁9</span></div><div class="question-text">根據附圖，求由 C 測得 D 的羅盤方位。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. N 25° E</div>
+            <div class="option" onclick="selectOption(this,'B')">B. N 40° E</div>
+            <div class="option" onclick="selectOption(this,'C')">C. N 65° E</div>
+            <div class="option" onclick="selectOption(this,'D')">D. N 90° E</div></div></div><div class="question" data-correct=""><div class="question-num">37<span class="page-tag">頁10</span></div><div class="question-text">(a) 求直角坐標平面上兩點 A(20,19) 和 B(0,4) 之間的距離。(b) 若直線 L 垂直 AB，求 L 的斜率。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 17, -4/5</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 17, 4/5</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 15, -4/5</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 15, 5/4</div></div></div><div class="question" data-correct=""><div class="question-num">38<span class="page-tag">頁10</span></div><div class="question-text">在圖中，C(-4,3) 向右平移 6 單位至 C'，求 C' 的坐標。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. (2,3)</div>
+            <div class="option" onclick="selectOption(this,'B')">B. (-4,9)</div>
+            <div class="option" onclick="selectOption(this,'C')">C. (2,-3)</div>
+            <div class="option" onclick="selectOption(this,'D')">D. (-10,3)</div></div></div><div class="question" data-correct=""><div class="question-num">39<span class="page-tag">頁10</span></div><div class="question-text">以下幹葉圖顯示某展覽中一組遊客的年齡分佈(歲)。該展覽有多少名遊客？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 15</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 17</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 19</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 20</div></div></div><div class="question" data-correct=""><div class="question-num">40<span class="page-tag">頁10</span></div><div class="question-text">以下幹葉圖顯示某展覽中一組遊客的年齡分佈(歲)。若該展覽向 52 歲以上的遊客提供優惠，有多少名遊客可獲得該優惠？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 1</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 2</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 3</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 4</div></div></div></div><div class="section-title open" onclick="toggleSection('p3-c')">丙部 (1分)</div><div id="p3-c" class="section-content open"><div class="question" data-correct=""><div class="question-num">41<span class="page-tag">頁11</span></div><div class="question-text">綺琪參加了一次鋼琴考試，下表顯示各評分項目的權和她獲得的分數。求綺琪的加權平均分數。
+評分項目：曲目/分數76/權40%；音階/分數90/權30%；視奏/分數88/權20%；聆聽/分數72/權10%。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 79.2</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 80.6</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 81.5</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 82.5</div></div></div></div></div><script>var scoreTitle="卷三選擇題 | 得分: 0 / 31";function toggleMenu(){document.getElementById('menuOverlay').classList.add('open');document.getElementById('sideMenu').classList.add('open');}
+function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.getElementById('sideMenu').classList.remove('open');}
+function goToPage(url){window.location.href=url;}
+function toggleSection(id){var el=document.getElementById(id);el.classList.toggle('open');el.previousElementSibling.classList.toggle('open');}
+function selectOption(element,answerValue){var q=element.closest('.question');var opts=q.querySelectorAll('.option');opts.forEach(function(o){o.classList.remove('selected');});element.classList.add('selected');q.dataset.selected=answerValue;}
+function checkAnswers(){var qs=document.querySelectorAll('.question');var score=0,total=0;qs.forEach(function(q){var c=q.dataset.correct;if(!c||c==='')return;total++;if(q.dataset.selected===c){score++;q.querySelectorAll('.option').forEach(function(o){if(o.classList.contains('selected'))o.classList.add('correct');});}else{q.querySelectorAll('.option').forEach(function(o){if(o.classList.contains('selected'))o.classList.add('wrong');});}var a=q.querySelector('.answer');if(a)a.classList.add('show-answer');});document.getElementById('scoreDisplay').innerText='卷三選擇題 | 得分: '+score+' / '+total;}</script></body></html>

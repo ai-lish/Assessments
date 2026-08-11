@@ -1,0 +1,35 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Q26: 平行四邊形底面棱柱 -->
+  <text x="200" y="25" font-size="14" text-anchor="middle">Q26: 平行四邊形棱柱</text>
+  
+  <!-- 3D Prism representation -->
+  <!-- Front face (parallelogram) -->
+  <polygon points="100,200 180,200 220,250 140,250" fill="none" stroke="black" stroke-width="2"/>
+  <polygon points="100,200 180,200 220,250 140,250" fill="#e0e0e0" stroke="black" stroke-width="2"/>
+  
+  <!-- Back face -->
+  <polygon points="160,120 240,120 280,170 200,170" fill="none" stroke="black" stroke-width="2" stroke-dasharray="5,5"/>
+  
+  <!-- Connecting lines -->
+  <line x1="100" y1="200" x2="160" y2="120" stroke="black" stroke-width="2"/>
+  <line x1="180" y1="200" x2="240" y2="120" stroke="black" stroke-width="2"/>
+  <line x1="220" y1="250" x2="280" y2="170" stroke="black" stroke-width="2"/>
+  <line x1="140" y1="250" x2="200" y2="170" stroke="black" stroke-width="2"/>
+  
+  <!-- Labels - dimensions -->
+  <text x="140" y="215" font-size="12" text-anchor="middle">10cm</text>
+  <text x="200" y="270" font-size="12" text-anchor="middle">4cm (高)</text>
+  <text x="320" y="180" font-size="12">18cm (長度)</text>
+  
+  <!-- Front face labels -->
+  <text x="95" y="195" font-size="12" fill="blue">A</text>
+  <text x="185" y="195" font-size="12" fill="blue">B</text>
+  <text x="225" y="255" font-size="12" fill="blue">C</text>
+  <text x="135" y="255" font-size="12" fill="blue">D</text>
+  
+  <!-- Back face labels -->
+  <text x="155" y="115" font-size="12" fill="red">A'</text>
+  <text x="245" y="115" font-size="12" fill="red">B'</text>
+  <text x="285" y="165" font-size="12" fill="red">C'</text>
+  <text x="205" y="165" font-size="12" fill="red">D'</text>
+</svg>

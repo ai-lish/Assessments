@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卷一 Q8 - 2025-26 S5 Term2</title>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Noto Sans TC", sans-serif; padding-bottom: 80px; }
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; background: #2c3e50; color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .menu-btn { cursor: pointer; font-size: 20px; }
+        .back-btn { color: white; text-decoration: none; }
+        .sidebar { position: fixed; left: -250px; top: 0; bottom: 0; width: 250px; background: #34495e; color: white; transition: left 0.3s; z-index: 1001; padding: 20px; }
+        .sidebar.open { left: 0; }
+        .container { margin-top: 60px; padding: 20px; }
+        .question { background: white; padding: 20px; margin-bottom: 20px; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .answer { margin-top: 15px; padding: 15px; background: #d5f5e3; border-radius: 8px; }
+        .review-bar { position: fixed; bottom: 0; left: 0; right: 0; background: white; padding: 15px; display: flex; gap: 15px; justify-content: center; box-shadow: 0 -2px 10px rgba(0,0,0,0.1); }
+        .review-btn { padding: 12px 30px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
+        .correct { background: #27ae60; color: white; }
+        .wrong { background: #e74c3c; color: white; }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+        <a href="../p1.html" class="back-btn">← 返回</a>
+        <span>Q8</span>
+    </div>
+    <div class="sidebar" id="sidebar"><span onclick="toggleSidebar()">×</span></div>
+    <div class="container">
+        <div class="question">
+            <h2>第 8 題</h2>
+            <p>（題目待OCR提取）</p>
+            <div class="answer">
+                <h3>答案：</h3>
+                <p>（待填入）</p>
+            </div>
+        </div>
+    </div>
+    <div class="review-bar">
+        <button class="review-btn correct">✅ 正確</button>
+        <button class="review-btn wrong">❌ 錯誤</button>
+    </div>
+    <script>function toggleSidebar(){document.getElementById("sidebar").classList.toggle("open");}</script>
+</body>
+</html>

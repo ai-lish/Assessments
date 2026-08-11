@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-26 中一 第二學期 數學科考試 - 卷二</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+        startup: { typeset: true }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: #f5f5f5; color: #333; padding-top: 70px; }
+        
+        /* 頂部導覽列 */
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; background: #2c3e50; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; }
+        .nav-left, .nav-right { display: flex; align-items: center; gap: 15px; }
+        .hamburger { cursor: pointer; padding: 5px; }
+        .hamburger span { display: block; width: 25px; height: 3px; background: white; margin: 5px 0; border-radius: 2px; }
+        .back-btn { color: white; text-decoration: none; font-size: 0.95em; padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 5px; }
+        .back-btn:hover { background: rgba(255,255,255,0.2); }
+        .nav-title { font-size: 1.1em; font-weight: bold; }
+        .check-btn { background: #27ae60; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.95em; transition: 0.2s; }
+        .check-btn:hover { background: #219a52; }
+
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        .section-title { background: #34495e; color: white; padding: 12px 15px; border-radius: 5px; margin: 20px 0 15px 0; cursor: pointer; font-weight: bold; }
+        .section-content { display: none; }
+        .section-content.open { display: block; }
+        
+        .question { margin-bottom: 25px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .question-num { font-weight: bold; color: #3498db; margin-bottom: 10px; font-size: 1.1em; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; }
+        .question-text { margin-bottom: 15px; line-height: 1.6; font-size: 1.05em; word-wrap: break-word; overflow-wrap: break-word; }
+        
+        .svg-container { width: 100%; max-width: 320px; margin: 0 auto 15px auto; display: block; }
+        
+        .options-container { display: flex; flex-direction: column; gap: 8px; }
+        .option { padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; background: #fafafa; transition: 0.2s; line-height: 1.4; display: flex; align-items: center; word-wrap: break-word; }
+        .option:hover { background: #f0f7ff; border-color: #3498db; }
+        .option.selected { background: #e1f0fa; border-color: #3498db; border-width: 2px; padding: 11px 14px; }
+        .option.correct { background: #d4edda; border-color: #28a745; color: #155724; border-width: 2px; padding: 11px 14px; }
+        .option.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; border-width: 2px; padding: 11px 14px; }
+        
+        .answer { display: none; color: #e74c3c; font-weight: bold; margin-top: 15px; }
+        .solution { display: none; color: #2c3e50; margin-top: 10px; padding: 15px; background: #e8f6f3; border-radius: 5px; border-left: 4px solid #1abc9c; font-size: 0.95em; line-height: 1.6; }
+        .show-answer { display: block !important; }
+
+        .menu-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; }
+        .menu-overlay.open { display: block; }
+        .side-menu { visibility: hidden; position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 1002; transition: left 0.3s; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+        .side-menu.open { visibility: visible; left: 0; }
+        .side-menu-header { padding: 20px; background: #2c3e50; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .close-btn { cursor: pointer; font-size: 1.5em; }
+        .side-menu-content { padding: 10px; }
+        .menu-btn { display: block; width: 100%; padding: 15px; margin: 5px 0; border: none; border-radius: 8px; background: #f5f7fa; cursor: pointer; text-align: left; font-size: 1em; }
+        .menu-btn:hover { background: #e1e8ed; }
+        .currency { font-family: Arial, sans-serif; }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <div class="nav-left">
+            <div class="hamburger" onclick="toggleMenu()">
+                <span></span><span></span><span></span>
+            </div>
+            <a href="./index.html" class="back-btn">← 返回考試主頁</a>
+        </div>
+        <div class="nav-title" id="scoreDisplay">卷二選擇題 | 得分: 0 / 40</div>
+        <div class="nav-right">
+            <button class="check-btn" onclick="checkAnswers()">核對答案</button>
+        </div>
+    </div>
+
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <h2>選單</h2>
+            <span class="close-btn" onclick="closeMenu()">✕</span>
+        </div>
+        <div class="side-menu-content">
+            <button class="menu-btn" onclick="goToPage('index.html')">首頁</button>
+            <button class="menu-btn" onclick="goToPage('exam-2025-26-s1-term2.html')">考試主頁</button>
+            <button class="menu-btn" onclick="goToPage('exam-2025-26-s1-term2-p1.html')">卷一</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="section-title" onclick="toggleSection('p2-a')">甲部 (28分) ▼</div>
+        <div id="p2-a" class="section-content open">
+            
+            <div class="question" data-correct="B">
+                <div class="question-num">Q1</div>
+                <div class="question-text">計算 $\frac{5}{2}+\frac{4}{3}$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $\frac{20}{6}$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $\frac{23}{6}$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $\frac{9}{5}$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $\frac{10}{3}$</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">通分計算：$\frac{5 \times 3}{6} + \frac{4 \times 2}{6} = \frac{15}{6} + \frac{8}{6} = \frac{23}{6}$</div>
+            </div>
+            
+            <div class="question" data-correct="A">
+                <div class="question-num">Q2</div>
+                <div class="question-text">以下哪一些句子是對的？<br>I. 2026 是質數。<br>II. 2026 可被 2 整除。<br>III. 2026 和 4 的最大公因數是 4。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. 只有 II</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. II 和 III</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. I 和 III</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. I、II 和 III</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">I錯誤（2026可被2整除，非質數），II正確，III錯誤（2026不是4的倍數，最大公因數為2）</div>
+            </div>
+            
+            <div class="question" data-correct="B">
+                <div class="question-num">Q3</div>
+                <div class="question-text">計算 $-4-(-3)$ 的值。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. -7</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. -1</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. 1</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. 7</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">$-4 - (-3) = -4 + 3 = -1$</div>
+            </div>
+            
+            <div class="question" data-correct="D">
+                <div class="question-num">Q4</div>
+                <div class="question-text">計算 $-5^2$ 的值。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. 25</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. 10</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. -10</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. -25</div>
+                </div>
+                <div class="answer">正確答案：D</div>
+                <div class="solution">注意負號不在括號內：$-5^2 = -(5 \times 5) = -25$</div>
+            </div>
+            
+            <div class="question" data-correct="D">
+                <div class="question-num">Q5</div>
+                <div class="question-text">試以代數式表示「$x$與$y$之和的平方」。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $2(x+y)$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $2(x-y)$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $x^2-y^2$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $(x+y)^2$</div>
+                </div>
+                <div class="answer">正確答案：D</div>
+                <div class="solution">$x$與$y$之和為 $(x+y)$，其平方為 $(x+y)^2$</div>
+            </div>
+
+            <div class="question" data-correct="D">
+                <div class="question-num">Q6</div>
+                <div class="question-text">若 $y=-2$，求 $7-y$ 的值。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. -9</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. -5</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. 5</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. 9</div>
+                </div>
+                <div class="answer">正確答案：D</div>
+                <div class="solution">代入 $y=-2$：$7 - (-2) = 7 + 2 = 9$</div>
+            </div>
+
+            <div class="question" data-correct="B">
+                <div class="question-num">Q7</div>
+                <div class="question-text">考慮數列 $a_n = \frac{3n}{10}$，求數列的 $a_2$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $\frac{5}{3}$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $\frac{3}{5}$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $\frac{6}{5}$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. 15</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">代入 $n=2$：$a_2 = \frac{3(2)}{10} = \frac{6}{10} = \frac{3}{5}$</div>
+            </div>
+
+            <div class="question" data-correct="C">
+                <div class="question-num">Q8</div>
+                <div class="question-text">解方程 $x-5=10$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $x=-2$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $x=3$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $x=15$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $x=50$</div>
+                </div>
+                <div class="answer">正確答案：C</div>
+                <div class="solution">$x = 10 + 5 = 15$</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q9</div>
+                <div class="question-text">解方程 $-4x=8$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $x=-2$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $x=-4$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $x=2$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $x=4$</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">$x = 8 \div (-4) = -2$</div>
+            </div>
+
+            <div class="question" data-correct="C">
+                <div class="question-num">Q10</div>
+                <div class="question-text">若按右圖中所示方向把長方錐切開，其截面（即陰影部分）是甚麼形狀？</div>
+                <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 400 300">
+   <defs>
+     
+     <pattern id="hatch" width="10" patternTransform="rotate(15)" patternUnits="userSpaceOnUse">
+       <line x1="0" y1="0" x2="0" y2="10" stroke="#999999" stroke-width="2" />
+     </pattern>
+    
+     
+     <linearGradient id="bladeGrad" x1="0" y1="0" x2="0" y2="1">
+       <stop offset="0%" stop-color="#ffffff" />
+       <stop offset="100%" stop-color="#cccccc" />
+     </linearGradient>
+   </defs>
+
+
+   
+   <polygon points="168,126 273,196 320,145 202,97" fill="#f8f8f8" />
+   <polygon points="168,126 273,196 320,145 202,97" fill="url(#hatch)" stroke="#333333" stroke-width="1.5" />
+
+
+   
+   <g stroke="#000000" stroke-width="3" stroke-dasharray="6,5" stroke-linejoin="round" fill="none">
+     
+     <line x1="80" y1="266" x2="166" y2="193" />
+     <line x1="166" y1="193" x2="360" y2="193" />
+     
+     <line x1="226" y1="33" x2="166" y2="193" />
+     
+     <line x1="202" y1="97" x2="168" y2="126" />
+     <line x1="320" y1="145" x2="202" y2="97" />
+   </g>
+
+
+   
+   <g stroke="#000000" stroke-width="3" stroke-linejoin="round" fill="none">
+     
+     <line x1="226" y1="33" x2="80" y2="266" />
+     <line x1="226" y1="33" x2="293" y2="266" />
+     <line x1="226" y1="33" x2="360" y2="193" />
+     
+     <line x1="80" y1="266" x2="293" y2="266" />
+     <line x1="293" y1="266" x2="360" y2="193" />
+     
+     <line x1="168" y1="126" x2="273" y2="196" />
+     <line x1="273" y1="196" x2="320" y2="145" />
+   </g>
+
+
+   
+   <g transform="translate(86, 72) rotate(34)">
+     
+     <rect x="0" y="-5" width="40" rx="3" fill="#e0e0e0" stroke="#999999" stroke-width="1" />
+     
+     <path d="M 40,-4 L 90,-4 Q 100,-4 100,0 Q 85,5 40,5 Z" fill="url(#bladeGrad)" stroke="#aaaaaa" stroke-width="1" />
+     <path d="M 40,-3 L 85,-3" stroke="#ffffff" stroke-width="1" fill="none" />
+   </g>
+ </svg>
+                </div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">
+                        <span style="margin-right:15px;">A.</span>
+                        <svg viewBox="0 0 100 60" width="60" height="40"><rect x="10" y="10" width="80" height="40" fill="none" stroke="#333" stroke-width="2"/></svg>
+                    </div>
+                    <div class="option" onclick="selectOption(this, 'B')">
+                        <span style="margin-right:15px;">B.</span>
+                        <svg viewBox="0 0 100 60" width="60" height="40"><polygon points="50,10 90,50 10,50" fill="none" stroke="#333" stroke-width="2"/></svg>
+                    </div>
+                    <div class="option" onclick="selectOption(this, 'C')">
+                        <span style="margin-right:15px;">C.</span>
+                        <svg viewBox="0 0 100 60" width="60" height="40"><polygon points="30,10 70,10 90,50 10,50" fill="none" stroke="#333" stroke-width="2"/></svg>
+                    </div>
+                    <div class="option" onclick="selectOption(this, 'D')">
+                        <span style="margin-right:15px;">D.</span>
+                        <svg viewBox="0 0 100 60" width="60" height="40"><polygon points="20,50 90,50 80,10 10,10" fill="none" stroke="#333" stroke-width="2"/></svg>
+                    </div>
+                </div>
+                <div class="answer">正確答案：C</div>
+                <div class="solution">斜切長方錐的相對兩面，所得到的截面形狀為梯形。</div>
+            </div>
+
+            <div class="question" data-correct="D">
+                <div class="question-num">Q11</div>
+                <div class="question-text">求右圖三角形的面積。</div>
+                <div class="svg-container"><svg width="100%" viewBox="0 0 600 450" xmlns="http://www.w3.org/2000/svg">
+       <defs
+       <defs>
+           
+           <marker id="arrowStart" markerWidth="12" markerHeight="10" refX="0" refY="5" orient="auto">
+               <path d="M 10 2 L 0 5 L 10 8 Z" fill="#333333" />
+           </marker>
+           <marker id="arrowEnd" markerWidth="12" markerHeight="10" refX="10" refY="5" orient="auto">
+               <path d="M 0 2 L 10 5 L 0 8 Z" fill="#333333" />
+           </marker>
+       </defs>
+
+
+       
+       <g transform="translate(-40, 0)">
+           
+           <g stroke="#000000" stroke-width="3" stroke-linejoin="round" fill="none">
+               
+               <polygon points="244,219 300,80 420,409" />
+              
+               
+               <line x1="244" y1="219" x2="338" y2="185" stroke-dasharray="6,5" />
+           </g>
+
+
+           
+           
+           <polygon points="338,185 332.7,170 317.7,175.5 323.2,190.5" fill="rgba(130, 190, 130, 0.3)" stroke="#528e30" stroke-width="1.5" stroke-linejoin="round" />
+
+
+           
+           <g stroke="#333333" stroke-width="1.5">
+               <line x1="300" y1="80" x2="345" y2="63.4" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+               <line x1="420" y1="409" x2="465" y2="392.4" stroke-width="1" stroke-dasharray="4,4" opacity="0.6"/>
+               <line x1="338" y1="66" x2="458" y2="395" marker-start="url(#arrowStart)" marker-end="url(#arrowEnd)" />
+           </g>
+
+
+           
+           <circle cx="244" cy="219" r="4.5" fill="#000000" />
+           <circle cx="300" cy="80" r="4.5" fill="#000000" />
+           <circle cx="420" cy="409" r="4.5" fill="#000000" />
+
+
+           
+           <g font-family="Arial, Helvetica, sans-serif" font-size="20" fill="#000000">
+               
+               <text x="215" y="228" font-weight="bold">A</text>
+               <text x="432" y="425" font-weight="bold">B</text>
+               <text x="290" y="62" font-weight="bold">C</text>
+              
+               
+               
+               <text x="235" y="140" font-weight="bold">3cm</text>
+               
+               <text x="310" y="225" font-weight="bold">2cm</text>
+               
+               <text x="415" y="235" font-weight="bold">7cm</text>
+           </g>
+       </g>
+   </svg>
+                </div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $21~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $14~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $10.5~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $7~cm^2$</div>
+                </div>
+                <div class="answer">正確答案：D</div>
+                <div class="solution">三角形面積 = (底 $\times$ 高) $\div 2 = (7 \times 2) \div 2 = 7~cm^2$。AC 長度為干擾資訊。</div>
+            </div>
+
+            <div class="question" data-correct="B">
+                <div class="question-num">Q12</div>
+                <div class="question-text">求右圖中陰影區域的面積。</div>
+                <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 400 300">
+ <polygon points="80,35 305,35 305,80 192.5,80 192.5,215 305,215 305,260 80,260" fill="#e8e8e8" stroke="#000000" stroke-width="3" stroke-linejoin="round" />
+ <path d="M 80,45 L 90,45 L 90,35 M 305,45 L 295,45 L 295,35 M 305,70 L 295,70 L 295,80 M 192.5,90 L 202.5,90 L 202.5,80 M 192.5,205 L 202.5,205 L 202.5,215 M 305,225 L 295,225 L 295,215 M 305,250 L 295,250 L 295,260 M 80,250 L 90,250 L 90,260" fill="none" stroke="#333333" stroke-width="1.5" stroke-linejoin="round" />
+ <g font-family="sans-serif" font-size="16" fill="#333333" dominant-baseline="middle">
+ <g font-weight="bold" text-anchor="middle">
+ <text x="65" y="20">A</text>
+ <text x="320" y="20">H</text>
+ <text x="325" y="90">G</text>
+ <text x="175" y="65">F</text>
+ <text x="175" y="230">E</text>
+ <text x="325" y="205">D</text>
+ <text x="320" y="275">C</text>
+ <text x="65" y="275">B</text>
+ </g>
+ <g text-anchor="middle">
+ <text x="192.5" y="20">10 cm</text>
+ <text x="248.75" y="98">5 cm</text>
+ <text x="248.75" y="197">5 cm</text>
+ <text x="192.5" y="280">10 cm</text>
+ </g>
+ <g text-anchor="start">
+ <text x="315" y="57.5">2 cm</text>
+ <text x="205" y="147.5">6 cm</text>
+ <text x="315" y="237.5">2 cm</text>
+ </g>
+ </g>
+</svg>
+                </div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $70\text{ cm}^2$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $80\text{ cm}^2$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $90\text{ cm}^2$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $100\text{ cm}^2$</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">利用大面積減去空白小面積：$(10 \times 8) - (4 \times 3) = 80 - 12 = 68~cm^2$。</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q13</div>
+                <div class="question-text">求右圖中直立角柱的體積。</div>
+                <div class="svg-container"><svg width="100%" viewBox="0 0 310 310" xmlns="http://www.w3.org/2000/svg">
+       
+       <g stroke-linejoin="round"
+                        <path d="M50,170 L130,130" fill="none" stroke="#999" stroke-dasharray="5,5" />
+                        <path d="M190,170 L270,130" fill="none" stroke="black" stroke-width="2" />
+                        <path d="M170,50 L250,10" fill="none" stroke="black" stroke-width="2" />
+                        <path d="M70,50 L150,10" fill="none" stroke="black" stroke-width="2" />
+                        <polygon points="190,170 270,130 250,10 170,50" fill="#e8eaed" stroke="black" stroke-width="2" />
+                        <polygon points="70,50 150,10 250,10 170,50" fill="#f4f5f7" stroke="black" stroke-width="2" />
+                        <polygon points="50,170 190,170 170,50 70,50" fill="#d5dbdf" stroke="black" stroke-width="2" />
+                        <path d="M120,50 L120,170" fill="none" stroke="black" stroke-dasharray="5,5" />
+                        <path d="M120,160 L130,160 L130,170" fill="none" stroke="black" />
+                        <text x="125" y="115" text-anchor="start">6 cm</text>
+                        
+                        <path d="M50,190 L190,190" fill="none" stroke="black" />
+                        <polygon points="50,190 58,186 58,194" />
+                        <polygon points="190,190 182,186 182,194" />
+                        <text x="120" y="205" text-anchor="middle">7 cm</text>
+                        
+                        <text x="135" y="45" text-anchor="middle">5 cm</text>
+                        <text x="240" y="165" text-anchor="start">10 cm</text>
+                        
+                        <polygon points="120,50 115,45 115,55" fill="black" />
+                        <polygon points="150,170 145,165 145,175" fill="black" />
+                    </svg>
+                </div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $180~cm^3$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $270~cm^3$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $360~cm^3$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $720~cm^3$</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">體積 = 底面積 $\times$ 高 = $36 \times 5 = 180~cm^3$</div>
+            </div>
+
+            <div class="question" data-correct="D">
+                <div class="question-num">Q14</div>
+                <div class="question-text">右圖中，直立角柱的總表面面積是：</div>
+                <div class="svg-container"><svg width="100%" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+      
+       
+       
+       <g stroke="#000000" stroke-width="2" stroke-linejoin="round"
+                        <path d="M50,180 L90,140" fill="none" stroke="#999" stroke-dasharray="5,5" />
+                        <path d="M170,180 L210,140" fill="none" stroke="black" stroke-width="2" />
+                        <path d="M170,40 L210,0" fill="none" stroke="black" stroke-width="2" />
+                        <path d="M130,40 L170,0" fill="none" stroke="black" stroke-width="2" />
+                        <path d="M130,140 L170,100" fill="none" stroke="black" stroke-width="2" />
+                        <path d="M50,140 L90,100" fill="none" stroke="black" stroke-width="2" />
+                        <polygon points="170,180 210,140 210,0 170,40" fill="#f0f2f5" stroke="black" stroke-width="2" />
+                        <polygon points="130,40 170,0 210,0 170,40" fill="#e2e6ea" stroke="black" stroke-width="2" />
+                        <polygon points="50,140 90,100 170,100 130,140" fill="#e2e6ea" stroke="black" stroke-width="2" />
+                        <polygon points="50,180 170,180 170,40 130,40 130,140 50,140" fill="#d5dbdf" stroke="black" stroke-width="2" />
+                        
+                        <text x="110" y="200" text-anchor="middle">6 cm</text>
+                        <text x="180" y="115" text-anchor="start">7 cm</text>
+                        <text x="205" y="175" text-anchor="start">4 cm</text>
+                        <path d="M50,130 L130,130" fill="none" stroke="black" />
+                        <polygon points="50,130 55,127 55,133" />
+                        <polygon points="130,130 125,127 125,133" />
+                        <text x="90" y="125" text-anchor="middle" font-size="12">4 cm</text>
+                        
+                        <path d="M150,40 L150,140" fill="none" stroke="black" stroke-dasharray="3,3" />
+                        <polygon points="150,40 147,45 153,45" />
+                        <polygon points="150,140 147,135 153,135" />
+                        <text x="145" y="95" text-anchor="end" font-size="12">5 cm</text>
+                    </svg>
+                </div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $88~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $104~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $126~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $148~cm^2$</div>
+                </div>
+                <div class="answer">正確答案：D (示範數值)</div>
+                <div class="solution">底面積 = $(3 \times 4)/2 = 6$。總表面積 = 2個底面積 + 三個側面矩形 = $2(6) + 10(3+4+5) = 12 + 120 = 132~cm^2$</div>
+            </div>
+
+            <div class="question" data-correct="C">
+                <div class="question-num">Q15</div>
+                <div class="question-text">下列何者是一對同類項？<br>I. $-3y$<br>II. $-3x$<br>III. $x$<br>IV. $xy$</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. I及II</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. I及IV</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. II及III</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. III及IV</div>
+                </div>
+                <div class="answer">正確答案：C</div>
+                <div class="solution">$-3x$ 與 $x$ 的未知數部分完全相同（都是 $x$），故為同類項。</div>
+            </div>
+
+            <div class="question" data-correct="C">
+                <div class="question-num">Q16</div>
+                <div class="question-text">化簡 $-5y+2y-y$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $-2y$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $-3y$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $-4y$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $-8y$</div>
+                </div>
+                <div class="answer">正確答案：C</div>
+                <div class="solution">$-5 + 2 - 1 = -4$，故答案為 $-4y$。</div>
+            </div>
+
+            <div class="question" data-correct="B">
+                <div class="question-num">Q17</div>
+                <div class="question-text">化簡 $9x-8-(7x-6)$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $2x$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $2x-2$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $2x-14$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $2x^2+2$</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">去括號要注意變號：$9x - 8 - 7x + 6 = 2x - 2$</div>
+            </div>
+
+            <div class="question" data-correct="D">
+                <div class="question-num">Q18</div>
+                <div class="question-text">化簡 $x^2-3x+4-3x+2x^2-5$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $-x^2-6x-1$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $-x^2-6x+9$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $-2x^2-x-1$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $3x^2-6x-1$</div>
+                </div>
+                <div class="answer">正確答案：D</div>
+                <div class="solution">同類項合併：$(1+2)x^2 + (-3-3)x + (4-5) = 3x^2 - 6x - 1$</div>
+            </div>
+
+            <div class="question" data-correct="D">
+                <div class="question-num">Q19</div>
+                <div class="question-text">化簡 $3y(4xy)$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $7xy^2$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $12xy$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $12y(x+1)$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $12xy^2$</div>
+                </div>
+                <div class="answer">正確答案：D</div>
+                <div class="solution">$3 \times 4 \times x \times y \times y = 12xy^2$</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q20</div>
+                <div class="question-text">化簡 $k^4 \times k^5 \times k^6 =$</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $k^{15}。$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $k^{26}。$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $k^{34}。$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $k^{120}。$</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">同底相乘，指數相加：$k^{4+5+6} = k^{15}$</div>
+            </div>
+
+            <div class="question" data-correct="B">
+                <div class="question-num">Q21</div>
+                <div class="question-text">化簡 $\frac{x^6}{x^3}$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $x^2$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $x^3$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $\frac{1}{x^2}$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $\frac{1}{x^3}$</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">同底相除，指數相減：$x^{6-3} = x^3$</div>
+            </div>
+
+            <div class="question" data-correct="C">
+                <div class="question-num">Q22</div>
+                <div class="question-text">展開 $(-5)(2p-1)$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $-10p+1$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $-10p-5$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $-10p+5$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $10p+5$</div>
+                </div>
+                <div class="answer">正確答案：C</div>
+                <div class="solution">$(-5)(2p) - (-5)(-1) = -10p + 5$</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q23</div>
+                <div class="question-text">解方程 $\frac{x+4}{3}=-1$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $x=-7$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $x=-6$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $x=-4$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $x=1$</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">兩邊乘3：$x + 4 = -3 \Rightarrow x = -7$</div>
+            </div>
+
+            <div class="question" data-correct="C">
+                <div class="question-num">Q24</div>
+                <div class="question-text">解方程 $5p-4=-p$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $p=\frac{3}{2}$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $p=1$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $p=\frac{2}{3}$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $p=-1$</div>
+                </div>
+                <div class="answer">正確答案：C</div>
+                <div class="solution">移項：$5p + p = 4 \Rightarrow 6p = 4 \Rightarrow p = \frac{4}{6} = \frac{2}{3}$</div>
+            </div>
+
+            <div class="question" data-correct="B">
+                <div class="question-num">Q25</div>
+                <div class="question-text">解方程 $2(9-a)=5a+4$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $a=-7$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $a=2$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $a=14$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $a=74$</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">展開：$18 - 2a = 5a + 4 \Rightarrow 14 = 7a \Rightarrow a = 2$</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q26</div>
+                <div class="question-text">右圖中，哪一點表示 $(-2, 4)$？</div>
+                <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 400 400">
+  
+   <defs>
+     
+     <marker id="axisArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+       <path d="M 0 2 L 8 5 L 0 8 Z" fill="#333333" />
+     </marker>
+    
+     
+     <g id="crossMark" stroke="#000000" stroke-width="1.5" stroke-linecap="round">
+       <line x1="-4" y1="-4" x2="4" y2="4" />
+       <line x1="-4" y1="4" x2="4" y2="-4" />
+     </g>
+   </defs>
+
+
+   
+   
+   <g stroke="#999999" stroke-width="1.5" fill="none">
+     
+     <rect x="50" y="50" width="100%" />
+    
+     
+     <path d="M 80 50 L 80 350 M 110 50 L 110 350 M 140 50 L 140 350 M 170 50 L 170 350
+              M 230 50 L 230 350 M 260 50 L 260 350 M 290 50 L 290 350 M 320 50 L 320 350
+              M 50 80 L 350 80 M 50 110 L 350 110 M 50 140 L 350 140 M 50 170 L 350 170
+              M 50 230 L 350 230 M 50 260 L 350 260 M 50 290 L 350 290 M 50 320 L 350 320" />
+   </g>
+
+
+   
+   
+   <path d="M 40 200 L 360 200 M 200 360 L 200 40" stroke="#000000" stroke-width="2" marker-end="url(#axisArrow)" />
+
+
+   
+   <path d="M 50 197 L 50 203 M 80 197 L 80 203 M 110 197 L 110 203 M 140 197 L 140 203 M 170 197 L 170 203
+            M 230 197 L 230 203 M 260 197 L 260 203 M 290 197 L 290 203 M 320 197 L 320 203 M 350 197 L 350 203
+            M 197 50 L 203 50 M 197 80 L 203 80 M 197 110 L 203 110 M 197 140 L 203 140 M 197 170 L 203 170
+            M 197 230 L 203 230 M 197 260 L 203 260 M 197 290 L 203 290 M 197 320 L 203 320 M 197 350 L 203 350"
+         stroke="#000000" stroke-width="1.5" fill="none" />
+
+
+   
+   <g font-family="sans-serif" font-size="12" fill="#555555">
+    
+     
+     <text x="186" y="216" font-style="italic" font-weight="bold">O</text>
+     <text x="365" y="195" font-style="italic" font-size="16" fill="#333333" font-weight="bold">x</text>
+     <text x="208" y="35" font-style="italic" font-size="16" fill="#333333" font-weight="bold">y</text>
+
+
+     
+     <g text-anchor="middle">
+       <text x="50" y="218">−5</text>
+       <text x="80" y="218">−4</text>
+       <text x="110" y="218">−3</text>
+       <text x="140" y="218">−2</text>
+       <text x="170" y="218">−1</text>
+       <text x="230" y="218">1</text>
+       <text x="260" y="218">2</text>
+       <text x="290" y="218">3</text>
+       <text x="320" y="218">4</text>
+       <text x="350" y="218">5</text>
+     </g>
+
+
+     
+     <g text-anchor="end" dominant-baseline="central">
+       <text x="192" y="50">5</text>
+       <text x="192" y="80">4</text>
+       <text x="192" y="110">3</text>
+       <text x="192" y="140">2</text>
+       <text x="192" y="170">1</text>
+       <text x="192" y="230">−1</text>
+       <text x="192" y="260">−2</text>
+       <text x="192" y="290">−3</text>
+       <text x="192" y="320">−4</text>
+       <text x="192" y="350">−5</text>
+     </g>
+   </g>
+
+
+   
+   
+   <g font-family="sans-serif" font-style="italic" font-weight="bold" font-size="16" fill="#111111">
+    
+     
+     <use href="#crossMark" x="140" y="80" />
+     <text x="125" y="75" text-anchor="end">P</text>
+
+
+     
+     <use href="#crossMark" x="320" y="140" />
+     <text x="330" y="135" text-anchor="start">Q</text>
+
+
+     
+     <use href="#crossMark" x="320" y="260" />
+     <text x="330" y="275" text-anchor="start">R</text>
+
+
+     
+     <use href="#crossMark" x="80" y="260" />
+     <text x="65" y="275" text-anchor="end">S</text>
+
+
+   </g>
+ </svg></div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. P</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. Q</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. R</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. S</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">在第二象限 (x為負，y為正) 中尋找對應點 P。</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q27</div>
+                <div class="question-text">下列哪點在 $x$ 軸上？</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. (5, 0)</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. (5, 5)</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. (0, 5)</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. (-5, -5)</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">在 $x$ 軸上的點，其 $y$ 坐標必定為 0，故為 (5, 0)。</div>
+            </div>
+
+            <div class="question" data-correct="B">
+                <div class="question-num">Q28</div>
+                <div class="question-text">若點 A(4, -3) 與 B 之間的距離是 5 單位，下列哪點是 B 的可能坐標？<br>I. (9, -3)<br>II. (1, -3)<br>III. (4, -8)</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. 只有 I 及 II</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. 只有 I 及 III</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. 只有 II 及 III</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. I、II 及 III</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">I. 距離 $= |9 - 4| = 5$（正確）<br>II. 距離 $= |4 - 1| = 3$（錯誤）<br>III. 距離 $= |-3 - (-8)| = 5$（正確）</div>
+            </div>
+
+        </div> <div class="section-title" onclick="toggleSection('p2-b')">乙部 (12分) ▼</div>
+        <div id="p2-b" class="section-content open">
+            
+            <div class="question" data-correct="A">
+                <div class="question-num">Q29</div>
+                <div class="question-text">求右圖中陰影區域的面積。</div>
+                <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 400 300">
+  
+   <defs>
+     
+     
+     <marker id="arrowStart" markerWidth="10" markerHeight="10" refX="0" refY="5" orient="auto">
+       <path d="M 10 2 L 0 5 L 10 8 Z" fill="#555555" />
+     </marker>
+     
+     <marker id="arrowEnd" markerWidth="10" markerHeight="10" refX="10" refY="5" orient="auto">
+       <path d="M 0 2 L 10 5 L 0 8 Z" fill="#555555" />
+     </marker>
+
+
+     
+     <g id="parallelArrow" fill="#333333">
+       <polygon points="-8,-6 6,0 -8,6" />
+     </g>
+   </defs>
+
+
+   
+   <g transform="translate(-40, -60) scale(0.7)">
+    
+     
+     
+     <polygon points="180,150 100,430 260,310 500,430 420,150" fill="#e6e6e6" stroke="#333333" stroke-width="2.5" stroke-linejoin="round" />
+
+
+     
+     <g stroke="#333333" stroke-width="100%" stroke-dasharray="8,6">
+       <line x1="100" y1="430" x2="500" y2="430" />
+       <line x1="260" y1="310" x2="260" y2="430" />
+     </g>
+
+
+     
+     <polyline points="260,415 275,415 275,430" fill="none" stroke="#333333" stroke-width="100%" stroke-linejoin="round" />
+
+
+     
+     <use href="#parallelArrow" x="300" y="150" />
+     <use href="#parallelArrow" x="380" y="430" />
+
+
+     
+     <g stroke="#555555" stroke-width="100%">
+       
+       <line x1="100" y1="440" x2="100" y2="495" />
+       <line x1="500" y1="440" x2="500" y2="495" />
+       
+       <line x1="100" y1="480" x2="245" y2="480" marker-start="url(#arrowStart)" />
+       <line x1="355" y1="480" x2="500" y2="480" marker-end="url(#arrowEnd)" />
+      
+       
+       <line x1="430" y1="150" x2="550" y2="150" stroke-dasharray="4,4" />
+       <line x1="510" y1="430" x2="550" y2="430" stroke-dasharray="4,4" />
+       
+       <line x1="535" y1="150" x2="535" y2="255" marker-start="url(#arrowStart)" />
+       <line x1="535" y1="325" x2="535" y2="430" marker-end="url(#arrowEnd)" />
+     </g>
+
+
+     
+     <g font-family="sans-serif" font-style="italic" font-weight="bold" font-size="26" fill="#111111">
+       <text x="160" y="140">A</text>
+       <text x="430" y="140">E</text>
+       <text x="75" y="440">B</text>
+       <text x="515" y="440">D</text>
+       <text x="245" y="295">C</text>
+       
+       <text x="250" y="460">F</text>
+     </g>
+
+
+     
+     <g font-family="sans-serif" font-weight="bold" font-size="24" fill="#333333" text-anchor="middle">
+       
+       <text x="300" y="135">6 cm</text>
+       
+       <text x="280" y="380" text-anchor="start">3 cm</text>
+       
+       <text x="300" y="488">10 cm</text>
+       
+       <text x="535" y="298">7 cm</text>
+     </g>
+
+
+   </g>
+ </svg></div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $26~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $41~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $56~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $71~cm^2$</div>
+                </div>
+                <div class="answer">正確答案：需核對原卷圖形</div>
+                <div class="solution">切割多邊形或用相減法計算面積。</div>
+            </div>
+
+            <div class="question" data-correct="D">
+                <div class="question-num">Q30</div>
+                <div class="question-text">圖中所示為一間小屋模型，它是由一個長方體和一個直立三角柱組成。若陰影區域的面積是 $30~cm^2$，求製造該小屋模型（不包括屋內地面）所需卡紙的面積。</div>
+                <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 400 300">
+  
+   
+   <g transform="translate(11.5, -6) scale(0.65)">
+    
+     
+     
+     <g stroke="#333333" stroke-width="100%" stroke-linejoin="round" stroke-linecap="round">
+      
+       
+       
+       <polygon points="260,450 480,360 480,160 260,250" fill="#d9d9d9" />
+      
+       
+       
+       <polygon points="180,120 400,30 480,160 260,250" fill="#f4f4f4" />
+      
+       
+       
+       <polygon points="100,450 260,450 260,250 180,120 100,250" fill="#e6e6e6" />
+      
+     </g>
+
+
+     
+     
+     <g font-family="sans-serif" font-size="28" font-weight="bold" fill="#333333">
+      
+       
+       <text x="130" y="180" text-anchor="end">8 cm</text>
+      
+       
+       <text x="230" y="180" text-anchor="start">8 cm</text>
+      
+       
+       
+       <text x="180" y="350" text-anchor="middle">30 cm<tspan dy="-10" font-size="20">2</tspan></text>
+      
+       
+       <text x="495" y="270" text-anchor="start">9 cm</text>
+      
+       
+       <text x="385" y="425" text-anchor="start">12 cm</text>
+      
+     </g>
+   </g>
+  
+ </svg></div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $234~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $300~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $408~cm^2$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $468~cm^2$</div>
+                </div>
+                <div class="answer">正確答案：D (範例答案)</div>
+                <div class="solution">前後兩面五邊形：$30 \times 2 = 60$。屋頂兩個矩形：$8 \times 12 \times 2 = 192$。牆壁側面兩個矩形：先找出高度，若不計算底部地面，加總表面外露面積。</div>
+            </div>
+
+            <div class="question" data-correct="C">
+                <div class="question-num">Q31</div>
+                <div class="question-text">圖中沒有頂蓋的盒子是用一張卡紙摺成。盒子長 18cm、闊 16cm、高 h cm，該張卡紙的面積為 $764~cm^2$。求盒子的容量。</div>
+                <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 600 300">
+  
+   
+   <g transform="translate(-20, -50) scale(0.75)">
+    
+     
+     
+     
+     <g stroke="#333333" stroke-linejoin="round">
+      
+       
+       <polygon points="100,100 300,100 300,140 340,140 340,300 300,300 300,340 100,340 100,300 60,300 60,140 100,140" fill="#fafafa" stroke-width="2.5" />
+      
+       
+       <g stroke-width="1.5" stroke-dasharray="8,6">
+         
+         <line x1="100" y1="140" x2="300" y2="140" />
+         <line x1="100" y1="300" x2="300" y2="300" />
+         
+         <line x1="100" y1="140" x2="100" y2="300" />
+         <line x1="300" y1="140" x2="300" y2="300" />
+       </g>
+     </g>
+
+
+     
+     
+     
+     <g fill="#777777">
+       <polygon points="400,210 440,210 440,195 470,220 440,245 440,230 400,230" />
+     </g>
+
+
+     
+     
+     
+     
+     <g stroke="#333333" stroke-width="2.5" stroke-linejoin="round">
+      
+       
+       <polygon points="520,240 640,180 800,260 680,320" fill="#c4c4c4" />
+      
+       
+       <polygon points="520,200 640,140 640,180 520,240" fill="#a8a8a8" />
+      
+       
+       <polygon points="640,140 800,220 800,260 640,180" fill="#b8b8b8" />
+      
+       
+       <polygon points="520,240 680,320 680,280 520,200" fill="#f4f4f4" />
+      
+       
+       <polygon points="680,320 800,260 800,220 680,280" fill="#e6e6e6" />
+      
+     </g>
+
+
+     
+     
+     
+     
+     <g font-family="sans-serif" font-weight="bold" font-size="24" fill="#333333" text-anchor="middle">
+      
+       
+       <g transform="translate(600, 280) rotate(26.5)">
+         <text x="0" y="28">18 cm</text>
+       </g>
+      
+       
+       <g transform="translate(740, 290) rotate(-26.5)">
+         <text x="0" y="28">16 cm</text>
+       </g>
+      
+     </g>
+
+
+   </g>
+ </svg></div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $1440~cm^3$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $1728~cm^3$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $2016~cm^3$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $2304~cm^3$</div>
+                </div>
+                <div class="answer">正確答案：C</div>
+                <div class="solution">面積 $= 底面積 + 四面側面積$。<br>$18 \times 16 + 2(18h) + 2(16h) = 764$<br>$288 + 36h + 32h = 764 \Rightarrow 68h = 476 \Rightarrow h = 7$<br>容量 $= 18 \times 16 \times 7 = 2016~cm^3$</div>
+            </div>
+
+            <div class="question" data-correct="D">
+                <div class="question-num">Q32</div>
+                <div class="question-text">把一個邊長為 20cm 的正方體鉛塊熔掉後，重新鑄成 1 個長方體，其底面積為 $125~cm^2$。求長方體的高。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. 8 cm</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. 16 cm</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. 32 cm</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. 64 cm</div>
+                </div>
+                <div class="answer">正確答案：D</div>
+                <div class="solution">正方體體積 $= 20^3 = 8000~cm^3$。<br>重新鑄造體積不變，長方體的高 $= 體積 \div 底面積 = 8000 \div 125 = 64~cm$。</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q33</div>
+                <div class="question-text">考慮多項式 $3x^2+y-4x+1$。問以下哪些是正確的？<br>I. $x^2$ 的係數是 3。<br>II. $x$ 的係數是 4。<br>III. 多項式的常數項是 1。<br>IV. 多項式的項數是 2。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. I 和 III</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. I、III 和 IV</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. II 和 III</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. I、II 和 IV</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">II錯誤（$x$ 的係數為 -4），IV錯誤（項數應為 4項）。</div>
+            </div>
+
+            <div class="question" data-correct="C">
+                <div class="question-num">Q34</div>
+                <div class="question-text">展開 $(x-3)(x-5)$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $x^2-2x-15$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $x^2-2x+15$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $x^2-8x+15$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $x^2+8x+15$</div>
+                </div>
+                <div class="answer">正確答案：C</div>
+                <div class="solution">$(x-3)(x-5) = x^2 - 5x - 3x + 15 = x^2 - 8x + 15$</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q35</div>
+                <div class="question-text">解方程 $\frac{3x-1}{2} = 4x + 1$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $x = -\frac{3}{5}$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $x = \frac{3}{5}$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $x = -\frac{4}{5}$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $x = \frac{4}{5}$</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">兩邊同乘 2 得：$3x - 1 = 8x + 2$<br>移項：$-3 = 5x \Rightarrow x = -\frac{3}{5}$</div>
+            </div>
+
+            <div class="question" data-correct="B">
+                <div class="question-num">Q36</div>
+                <div class="question-text">解方程 $\frac{x+2}{3} - 1 = \frac{x-1}{2}$。</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $x = 0$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $x = 1$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $x = \frac{1}{2}$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $x = \frac{1}{3}$</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">兩邊同乘公倍數 6：$2(x+2) - 6 = 3(x-1)$<br>展開：$2x + 4 - 6 = 3x - 3$<br>化簡並移項：$2x - 2 = 3x - 3 \Rightarrow 1 = x$</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q37</div>
+                <div class="question-text">文熙花了 <span class="currency">$</span>26 購買蘋果和橙共 7 個。一個蘋果和一個橙的售價分別為 <span class="currency">$</span>4 和 <span class="currency">$</span>3.5。假設他買了 $x$ 個蘋果。下列哪個方程可用來求 $x$？</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. $4x + 3.5x = 26$</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. $4x + 3.5(7-x) = 26$</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. $4x + 3.5(x-7) = 26$</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. $4(7-x) + 3.5x = 26$</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">蘋果花費為 $4x$，橙數量為 $7-x$，橙花費為 $3.5(7-x)$。總花費方程式應為 $4x + 3.5(7-x) = 26$。</div>
+            </div>
+
+            <div class="question" data-correct="C">
+                <div class="question-num">Q38</div>
+                <div class="question-text">文傑每天花 <span class="currency">$</span>100 用膳。已知文傑午餐比早餐多花 <span class="currency">$</span>20，且晚餐比午餐多花一倍，問文傑午餐的花費是多少？</div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. <span class="currency">$</span>10</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. <span class="currency">$</span>20</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. <span class="currency">$</span>30</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. <span class="currency">$</span>60</div>
+                </div>
+                <div class="answer">正確答案：C</div>
+                <div class="solution">設午餐為 L。早餐為 L - 20。晚餐為 2L（多花一倍即為兩倍）。<br>總和：(L - 20) + L + 2L = 100<br>4L - 20 = 100 $\Rightarrow$ 4L = 120 $\Rightarrow$ L = 30</div>
+            </div>
+
+            <div class="question" data-correct="B">
+                <div class="question-num">Q39</div>
+                <div class="question-text">右圖中點 G 繞原點順時針旋轉 90° 後，其影像的坐標為</div>
+                <div class="svg-container"><svg xmlns="http://www.w3.org/2000/svg" width="100%" viewBox="0 0 350 350">
+  
+   <defs>
+     
+     <marker id="axisArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+       <path d="M 0 2 L 8 5 L 0 8 Z" fill="#333333" />
+     </marker>
+    
+     
+     <g id="crossMark" stroke="#111111" stroke-width="100%" stroke-linecap="round">
+       <line x1="-5" y1="-5" x2="5" y2="5" />
+       <line x1="-5" y1="5" x2="5" y2="-5" />
+     </g>
+   </defs>
+
+
+   
+   
+   
+   <g stroke="#e6e6e6" stroke-width="1.5">
+     
+     <path d="M 40 60 L 40 300 M 80 60 L 80 300 M 120 60 L 120 300 M 160 60 L 160 300
+              M 200 60 L 200 300 M 240 60 L 240 300 M 280 60 L 280 300" />
+     
+     <path d="M 40 60 L 280 60 M 40 100 L 280 100 M 40 140 L 280 140 M 40 180 L 280 180
+              M 40 220 L 280 220 M 40 260 L 280 260 M 40 300 L 280 300" />
+   </g>
+
+
+   
+   <g stroke="#333333" stroke-width="100%">
+     
+     <line x1="30" y1="260" x2="310" y2="260" marker-end="url(#axisArrow)" />
+     
+     <line x1="80" y1="310" x2="80" y2="30" marker-end="url(#axisArrow)" />
+   </g>
+
+
+   
+   <g stroke="#333333" stroke-width="1.5">
+     
+     <line x1="240" y1="260" x2="240" y2="266" />
+     
+     <line x1="74" y1="100" x2="80" y2="100" />
+   </g>
+
+
+   
+   <g font-family="sans-serif" font-size="14" fill="#333333">
+     
+     <text x="240" y="282" text-anchor="middle">20</text>
+     
+     <text x="68" y="105" text-anchor="end">20</text>
+   </g>
+
+
+   
+   
+   <g font-family="sans-serif" font-style="italic" font-weight="bold" font-size="18" fill="#111111">
+    
+     
+     <text x="62" y="280">O</text>
+    
+     
+     <text x="315" y="255">x</text>
+     <text x="65" y="35">y</text>
+    
+     
+     
+     <use href="#crossMark" x="240" y="140" />
+     <text x="252" y="132">G</text>
+    
+   </g>
+
+
+ </svg></div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. (4, 3)</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. (3, -4)</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. (20, 15)</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. (15, -20)</div>
+                </div>
+                <div class="answer">正確答案：B</div>
+                <div class="solution">點 $(x, y)$ 順時針旋轉 90° 的新坐標為 $(y, -x)$。原點為 (20, 15)，旋轉後為 (15, -20)。</div>
+            </div>
+
+            <div class="question" data-correct="A">
+                <div class="question-num">Q40</div>
+                <div class="question-text">求右圖中四邊形 ABOC 的面積。</div>
+                <div class="svg-container">
+ <svg xmlns="http://www.w3.org/2000/svg" width="100%"  viewBox="0 0 400 340">
+  
+   <defs>
+     
+     <marker id="axisArrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto">
+       <path d="M 0 2 L 8 5 L 0 8 Z" fill="#333333" />
+     </marker>
+   </defs>
+
+
+   
+   
+   
+   
+   <g stroke="#ececec" stroke-width="1.5">
+     
+     <path d="M 50 20 V 320 M 80 20 V 320 M 110 20 V 320 M 140 20 V 320 M 170 20 V 320 M 200 20 V 320 M 230 20 V 320 M 290 20 V 320 M 320 20 V 320 M 350 20 V 320" />
+     
+     <path d="M 20 50 H 380 M 20 80 H 380 M 20 110 H 380 M 20 140 H 380 M 20 170 H 380 M 20 230 H 380 M 20 260 H 380 M 20 290 H 380" />
+   </g>
+
+
+   
+   
+   <polygon points="80,80 260,80 260,200 170,260" fill="none" stroke="#111111" stroke-width="2.5" stroke-linejoin="round" />
+
+
+   
+   <g stroke="#333333" stroke-width="2">
+     
+     <line x1="20" y1="200" x2="380" y2="200" marker-end="url(#axisArrow)" />
+     
+     <line x1="260" y1="320" x2="260" y2="20" marker-end="url(#axisArrow)" />
+   </g>
+
+
+   
+   <g stroke="#333333" stroke-width="1.5">
+     
+     <path d="M 50 200 v 6 M 80 200 v 6 M 110 200 v 6 M 140 200 v 6 M 170 200 v 6 M 200 200 v 6 M 230 200 v 6 M 290 200 v 6 M 320 200 v 6 M 350 200 v 6" />
+     
+     <path d="M 254 50 h 6 M 254 80 h 6 M 254 110 h 6 M 254 140 h 6 M 254 170 h 6 M 254 230 h 6 M 254 260 h 6 M 254 290 h 6" />
+   </g>
+
+
+   
+   <g font-family="sans-serif" font-size="12" fill="#555555">
+     
+     <g text-anchor="middle">
+       <text x="50" y="222">-7</text>
+       <text x="80" y="222">-6</text>
+       <text x="110" y="222">-5</text>
+       <text x="140" y="222">-4</text>
+       <text x="170" y="222">-3</text>
+       <text x="200" y="222">-2</text>
+       <text x="230" y="222">-1</text>
+       <text x="290" y="222">1</text>
+       <text x="320" y="222">2</text>
+       <text x="350" y="222">3</text>
+     </g>
+     
+     <g text-anchor="end">
+       <text x="248" y="54">5</text>
+       <text x="248" y="114">3</text>
+       <text x="248" y="144">2</text>
+       <text x="248" y="174">1</text>
+       <text x="248" y="234">-1</text>
+       <text x="248" y="264">-2</text>
+       <text x="248" y="294">-3</text>
+     </g>
+   </g>
+
+
+   
+   <g fill="#111111">
+     <circle cx="80" cy="80" r="4" />   
+     <circle cx="260" cy="80" r="4" />  
+     <circle cx="170" cy="260" r="4" /> 
+     <circle cx="260" cy="200" r="4" /> 
+   </g>
+
+
+   
+   <g font-family="sans-serif" font-style="italic" font-weight="bold" font-size="20" fill="#111111">
+     
+     <text x="60" y="70">A</text>
+     <text x="275" y="70">B</text>
+     <text x="145" y="285">C</text>
+     <text x="275" y="225">O</text>
+    
+     
+     <text x="375" y="190">x</text>
+     <text x="275" y="25">y</text>
+   </g>
+
+
+ </svg>
+</div></div>
+                <div class="options-container">
+                    <div class="option" onclick="selectOption(this, 'A')">A. 24 平方單位</div>
+                    <div class="option" onclick="selectOption(this, 'B')">B. 28 平方單位</div>
+                    <div class="option" onclick="selectOption(this, 'C')">C. 32 平方單位</div>
+                    <div class="option" onclick="selectOption(this, 'D')">D. 36 平方單位</div>
+                </div>
+                <div class="answer">正確答案：A</div>
+                <div class="solution">根據圖形可將多邊形拆解為常見幾何形狀（如梯形與直角三角形）並相加。</div>
+            </div>
+            
+        </div> </div> <script>
+    function toggleMenu() { 
+        document.getElementById('sideMenu').classList.toggle('open'); 
+        document.getElementById('menuOverlay').classList.toggle('open'); 
+    }
+    function closeMenu() { 
+        document.getElementById('sideMenu').classList.remove('open'); 
+        document.getElementById('menuOverlay').classList.remove('open'); 
+    }
+    function goToPage(page) { window.location.href = page; }
+    
+    function toggleSection(id) { 
+        document.getElementById(id).classList.toggle('open'); 
+    }
+    
+    function selectOption(element, answerValue) {
+        let questionDiv = element.closest('.question');
+        let options = questionDiv.querySelectorAll('.option');
+        options.forEach(opt => {
+            opt.classList.remove('selected', 'correct', 'wrong');
+        });
+        
+        element.classList.add('selected');
+        questionDiv.dataset.selected = answerValue;
+    }
+
+    function checkAnswers() {
+        let questions = document.querySelectorAll('.question');
+        let currentScore = 0;
+        
+        questions.forEach(q => {
+            let selectedAns = q.dataset.selected;
+            let correctAns = q.dataset.correct;
+            
+            if (selectedAns) {
+                let options = q.querySelectorAll('.option');
+                options.forEach(opt => {
+                    opt.classList.remove('correct', 'wrong');
+                    
+                    if (opt.classList.contains('selected')) {
+                        if (selectedAns === correctAns) {
+                            opt.classList.add('correct'); 
+                            currentScore++;
+                        } else {
+                            opt.classList.add('wrong'); 
+                        }
+                    }
+                });
+                
+                let answerDiv = q.querySelector('.answer');
+                let solutionDiv = q.querySelector('.solution');
+                if (answerDiv) answerDiv.classList.add('show-answer');
+                if (solutionDiv) solutionDiv.classList.add('show-answer');
+            }
+        });
+        
+        document.getElementById('scoreDisplay').innerText = `卷二選擇題 | 得分: ${currentScore} / 40`;
+    }
+    </script>
+</body>
+</html>

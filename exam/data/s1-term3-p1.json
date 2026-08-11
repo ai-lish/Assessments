@@ -1,0 +1,161 @@
+{
+  "info": {
+    "year": "2024-25",
+    "grade": "s1",
+    "term": "term3",
+    "paper": "p1",
+    "total": 30,
+    "type": "long_answer",
+    "note": "OCR 需要人工審核"
+  },
+  "2025S1Q01": {
+    "question": "−11 + 5 − 1 =",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q02": {
+    "question": "(+23) − (−19) =",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q03": {
+    "question": "45 = −9",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q04": {
+    "question": "化 簡 7r − 8 − 4r + 3 。",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q05": {
+    "question": "化 簡 x6  x 2 。",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q06": {
+    "question": "解 方 程 5x + 3 = 8 。",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q07": {
+    "question": "以 代 數 式 表 示 15 減 去 t 與 z 之積。",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q08": {
+    "question": "寫 出 多 項 式 9b2 + 6 − 4a2b − 7a 的 次 數 。",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q09": {
+    "question": "以 降 冪 排 列 5a4 + 8a − 9a2 −1 + a3 。",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q10": {
+    "question": "已知 x = 9 y −13 。若 y = −2 ，求 x 的值。 x= 中一級 數學科（卷一）/ 頁3",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q11": {
+    "question": "寫出下圖中 ABC  DEF 的理由。 A F C B E D",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q12": {
+    "question": "寫出 50 的質因數連乘式。",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q13": {
+    "question": "求 12 和 18 的最小公倍數(L.C.M.)。",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q14": {
+    "question": "把 3 化為百分數。 20",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q15": {
+    "question": "寫出 A ( 5, −8 ) 的 y 坐標。",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q16": {
+    "question": "圈出以下數據是離散數據或連續數據。 香港市民的總人數 乙部 離散數據 / 連續數據 （40 分） 3 2",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q17": {
+    "question": "化簡 (5b ) 。 (2 分) 中一級 數學科（卷一）/ 頁4 (8 分)",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q18": {
+    "question": "解下列各方程。 (a) 7 − 3x = −8 (b) (c) 9 + 2 x = 18 − x (d) −4( x −10) = 7 x − 4 4x = 16 −9",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q19": {
+    "question": "展開下列各題。 (a) 8(3a − b) （3 分） (b) ( x + 7 y)( x − y) 中一級 數學科（卷一）/ 頁5",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q20": {
+    "question": "化簡下列各題。 (a) （4 分） ( x − 6 y) − (3x − 5 y) (b) x 2 + 3x − (2 x 2 − 5 x)",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q21": {
+    "question": "完成下表。 多項式 （4 分） 各項的係數 x2 常數項 多項式的次數 x −11x5 + 71x3 − 30 x2 + 2",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q22": {
+    "question": "參看右圖，ACD 和 BCE 為直綫，求圖中的未知數。 （4 分） E D y C z 104 x A 47 B 中一級 數學科（卷一）/ 頁6",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q23": {
+    "question": "下圖所示為一柱體，求 28 cm 21 cm 35 cm 54 cm (a) 此柱體的體積； （2 分） (b) 此柱體的總表面面積。 （2 分）",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q24": {
+    "question": "下圖中，已知 ABC  FDE ，求未知量。 A （3 分） D 58 14 cm 62 13 cm y C z cm E x B F 中一級 數學科（卷一）/ 頁7",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q25": {
+    "question": "在一平面直角坐標上， O(0, 0) 為原點，設 A(1, 4) 及 B(−4, 2) 。 (a) 在圖中標示 A 點和 B 點。 (b) （2 分） A 沿 x 軸反射至 A ' ， B 向下平移 6 個單位至 B ' ，求 A ' 和 B ' 的坐標。 （2 分） (c) 求 A ' 與 B ' 之間的距離。 （1 分） 中一級 數學科（卷一）/ 頁8",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q26": {
+    "question": "以下直方圖顯示某同學由一月至六月花在娛樂上的開銷。 (a) 問此同學在哪一月份娛樂上的開銷最多？求該銷費的金額。 （2 分） (b) 你預測此同學在七月花在娛樂上的開銷會上升還是下降？試解釋你的答案。（1 分） 中一級 數學科（卷一）/ 頁9 丙部 （24 分）",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q27": {
+    "question": "以下幹葉圖顯示某健身教室成員在一分鐘内做掌上壓的次數。 某健身教室成員在一分鐘内做掌上壓的次數 幹（10 次） 葉（1 次） 0 3 3 6 1 0 5 5 6 9 9 2 3 4 7 8 3 1 2 4 a 2 2 5 7 8 9 9 2 (a) 問該健身教室共有多少成員？ （1 分） (b) 求 a 的可能值。 （1 分） (c) 問最高次數與最低次數相差多少？ （1 分） (d) 已知一分鐘内能做掌上壓 35 次以上的成員才可達標，問達標成員佔全部成員的百分 之幾？ （2 分） 中一級 數學科（卷一）/ 頁10",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q28": {
+    "question": "寧寧想要買五盒原價一盒$18 的牛奶。已知現時 A 超級市場中舉辦減價 30%的活動，而 B 超級市場中首四盒牛奶可享六折優惠。 (a) 如果寧寧在 A 超級市場中購買牛奶，問她需要付多少錢？ （2 分） (b) 問哪一間超級市場購買牛奶較為便宜？試解釋你的答案。 （3 分） (c) 承上題，寧寧在較便宜的超級市場買了牛奶。某店員表示此五盒牛奶盈利百分率為 2%，求一盒牛奶的成本。 （3 分） 中一級 數學科（卷一）/ 頁11",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q29": {
+    "question": "In the figure，D and E are points on AB and BC respectively。AE and CD intersect at F。It is given that AC // DE、ABE = AEB、BAE = 79 and ACB = 30. B E D 79 F C A 30 (a) Find ABE。 （2 分） (b) Find AED。 （3 分） (c) If ACD = x, express AFC by x。 （2 分） 中一級 數學科（卷一）/ 頁12",
+    "answer": null,
+    "topic": ""
+  },
+  "2025S1Q30": {
+    "question": "已知 A(8, −6) ，B 點繞原點逆時針方向旋轉 90 至 B'。已知 AB' 是一條鉛垂線段，且 其長度為 3 單位。 (a) 在圖中標示 B' 的其中一個可能坐標，並由此標示對應的 B 的坐標。 （2 分） (b) 求  ABB’ 的面積。 （2 分） （全卷完）",
+    "answer": null,
+    "topic": ""
+  }
+}

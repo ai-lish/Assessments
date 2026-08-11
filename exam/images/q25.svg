@@ -1,0 +1,30 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <!-- Q25: L型六邊形 ABCDEG -->
+  <text x="200" y="30" font-size="14" text-anchor="middle">Q25: 六邊形 ABCDEG</text>
+  
+  <!-- L-shaped hexagon -->
+  <!-- Left rectangle: G-A-B-F (4cm x 5cm) -->
+  <rect x="100" y="80" width="80" height="100" fill="none" stroke="black" stroke-width="2"/>
+  <text x="140" y="130" font-size="12" text-anchor="middle">4cm</text>
+  <text x="70" y="135" font-size="12" text-anchor="middle">5cm</text>
+  
+  <!-- Right rectangle: F-B-C-D-E (6cm x 7cm) -->
+  <rect x="180" y="50" width="120" height="130" fill="none" stroke="black" stroke-width="2"/>
+  <text x="240" y="120" font-size="12" text-anchor="middle">6cm</text>
+  <text x="245" y="45" font-size="12" text-anchor="middle">7cm</text>
+  
+  <!-- Labels -->
+  <text x="95" y="75" font-size="12" fill="blue">G</text>
+  <text x="175" y="75" font-size="12" fill="blue">A</text>
+  <text x="175" y="45" font-size="12" fill="blue">B</text>
+  <text x="305" y="45" font-size="12" fill="blue">C</text>
+  <text x="305" y="185" font-size="12" fill="blue">D</text>
+  <text x="185" y="185" font-size="12" fill="blue">E</text>
+  <text x="140" y="190" font-size="12" fill="blue">F</text>
+  
+  <!-- Right angle markers -->
+  <path d="M100 180 L100 170 L110 180" fill="none" stroke="black" stroke-width="1"/>
+  <path d="M180 50 L180 60 L190 50" fill="none" stroke="black" stroke-width="1"/>
+  <path d="M300 50 L300 60 L290 50" fill="none" stroke="black" stroke-width="1"/>
+  <path d="M180 180 L180 170 L190 180" fill="none" stroke="black" stroke-width="1"/>
+</svg>

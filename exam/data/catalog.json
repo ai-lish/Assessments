@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "source": {
+    "repository": "ai-lish/ai-learning",
+    "commit": "c277d3f927e51e8348fdcd1177363af23afbf473",
+    "root": "exam/"
+  },
+  "entries": [
+    {
+      "id": "2024-25-s1-term2",
+      "year": "2024-25",
+      "grade": "s1",
+      "term": "term2",
+      "label": "2024-25 中一 第二學期",
+      "status": "needs-review",
+      "studentEntry": null,
+      "papers": ["p1", "p2"],
+      "reason": "來源頁面仍引用未核對的 s1_q*.png 圖片；完成資產核對後才公開入口。"
+    },
+    {
+      "id": "2024-25-s1-term3",
+      "year": "2024-25",
+      "grade": "s1",
+      "term": "term3",
+      "label": "2024-25 中一 第三學期",
+      "status": "ready",
+      "studentEntry": "2024-25-s1-term3/index.html",
+      "papers": ["p1", "p2"]
+    },
+    {
+      "id": "2024-25-s3-term3",
+      "year": "2024-25",
+      "grade": "s3",
+      "term": "term3",
+      "label": "2024-25 中三 第三學期",
+      "status": "ready",
+      "studentEntry": "2024-25-s3-term3/index.html",
+      "papers": ["p1", "p2", "p3"]
+    },
+    {
+      "id": "2024-25-s5-term3",
+      "year": "2024-25",
+      "grade": "s5",
+      "term": "term3",
+      "label": "2024-25 中五 第三學期",
+      "status": "ready",
+      "studentEntry": "2024-25-s5-term3/index.html",
+      "papers": ["p2"]
+    },
+    {
+      "id": "2025-26-s1-term2",
+      "year": "2025-26",
+      "grade": "s1",
+      "term": "term2",
+      "label": "2025-26 中一 第二學期",
+      "status": "ready",
+      "studentEntry": "2025-26-s1-term2/index.html",
+      "papers": ["p1", "p2"]
+    },
+    {
+      "id": "2025-26-s3-term2",
+      "year": "2025-26",
+      "grade": "s3",
+      "term": "term2",
+      "label": "2025-26 中三 第二學期",
+      "status": "ready",
+      "studentEntry": "2025-26-s3-term2/index.html",
+      "papers": ["p1", "p2"]
+    },
+    {
+      "id": "2025-26-s5-term2",
+      "year": "2025-26",
+      "grade": "s5",
+      "term": "term2",
+      "label": "2025-26 中五 第二學期",
+      "status": "ready",
+      "studentEntry": "2025-26-s5-term2/index.html",
+      "papers": ["p1", "p2"],
+      "notes": "學生頁面保留可選的公開自學答案／解題頁；教師審核及寫回流程不在本 runtime。"
+    }
+  ]
+}

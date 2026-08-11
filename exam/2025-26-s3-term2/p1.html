@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-26 中三 第二學期 數學科考試 - 卷一</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+        startup: { ready: function() { MathJax.startup.defaultReady(); } }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: #f5f5f5; color: #333; padding-top: 70px; }
+        
+        /* 頂部導覽列 */
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; background: #2c3e50; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; }
+        .nav-left, .nav-right { display: flex; align-items: center; gap: 15px; }
+        .back-btn { color: white; text-decoration: none; font-size: 0.95em; padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 5px; }
+        .back-btn:hover { background: rgba(255,255,255,0.2); }
+        .nav-title { font-size: 1.1em; font-weight: bold; }
+
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        
+        .section-info { background: #ecf0f1; padding: 10px 15px; border-radius: 5px; margin-bottom: 20px; text-align: center; }
+        
+        .part-section { margin-bottom: 20px; }
+        .part-header { background: #34495e; color: white; padding: 12px 15px; border-radius: 5px; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; }
+        .part-content { display: none; padding: 15px 0; }
+        .part-content.show { display: block; }
+        
+        .question { margin-bottom: 20px; padding: 15px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .question-header { font-weight: bold; margin-bottom: 10px; display: flex; justify-content: space-between; }
+        .question-num { color: #3498db; }
+        .question-score { color: #e74c3c; }
+        .question-content { line-height: 1.8; margin: 10px 0; }
+        
+        .answer-section { margin-top: 10px; }
+        .answer-label, .marking-label { cursor: pointer; padding: 8px 12px; background: #f8f9fa; border-radius: 5px; display: inline-block; margin-right: 10px; font-size: 0.9em; }
+        .answer-label:hover, .marking-label:hover { background: #e9ecef; }
+        .answer-content, .marking-content { display: none; margin-top: 10px; padding: 10px; background: #e8f6f3; border-radius: 5px; }
+        .marking-title { font-weight: bold; margin-bottom: 5px; }
+        .marking-item { margin: 5px 0; }
+    </style>
+</head>
+<body>
+
+    <div class="top-nav">
+        <div class="nav-left">
+            <a href="./index.html" class="back-btn">← 返回考試主頁</a>
+        </div>
+        <div class="nav-title">卷一 (100分)</div>
+        <div class="nav-right"></div>
+    </div>
+
+    <div class="container">
+        <h2>2025-26 中三 第二學期 數學科考試 - 卷一</h2>
+        <div class="section-info">時限：一小時</div>
+        
+        <!-- 甲部 -->
+        <div class="part-section">
+            <div class="part-header" onclick="togglePart(this)">
+                <span>甲部 (Q1-Q13) - 只須在橫線上填上答案</span>
+                <span>▼</span>
+            </div>
+            <div class="part-content show">
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q1</span>計算 $-3^2 - (-4)^2$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: -25</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q2</span>化簡 $(4x - 5x^2) - (-3x + x^2)$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $7x - 6x^2$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q3</span>展開 $(3x - 1)(x + 3)$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $3x^2 + 8x - 3$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q4</span>展開 $(x - 5y)^2$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $x^2 - 10xy + 25y^2$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q5</span>因式分解 $2a^2b + 4b^2$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $2b(a^2 + 2b)$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q6</span>因式分解 $y(x - 5) - 7(x - 5)$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $(x-5)(y-7)$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q7</span>因式分解 $36x^2 - y^2$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $(6x-y)(6x+y)$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q8</span>因式分解 $x^2 - 3x - 4$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $(x-4)(x+1)$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q9</span>化簡 $(a^{-3}b^2)^4$，並以正指數表示</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $b^8/a^{12}$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q10</span>解不等式 $2 - 3x < 11$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $x > -3$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q11</span>解方程 $4x + 6 = -5x - 3$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $x = -1$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q12</span>把 $a$ 成為公式 $3a - 5 = b$ 的主項</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $a = (b+5)/3$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q13</span>以科學記數法表示 $23\,400\,000$</span>
+                        <span class="question-score">1分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $2.34 \times 10^7$</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 乙部 -->
+        <div class="part-section">
+            <div class="part-header" onclick="togglePart(this)">
+                <span>乙部 (Q14-Q21) - 長答題</span>
+                <span>▼</span>
+            </div>
+            <div class="part-content">
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q14</span>考慮公式 $p = \frac{q}{q + 3r}$。若 $q = 4$ 和 $r = 3$，求 $p$ 的值</span>
+                        <span class="question-score">2分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $4/13$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q15</span>首飾盒的標價是 $\$700$，現六折出售，求售價</span>
+                        <span class="question-score">2分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $\$420$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q16</span>將 $\$10,000$ 存入銀行 $3$ 年，年利率 $2\%$，求單利息</span>
+                        <span class="question-score">2分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $\$600$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q17</span>令 $x$ 成為公式 $\frac{4y + 5x}{3} = w + x$ 的主項</span>
+                        <span class="question-score">3分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $x = \frac{3w - 4y}{2}$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q18</span>化簡下列各式，答案以正指數表示<br>(a) $\frac{(ab^{-3})^4}{a^{-4}b^3}$<br>(b) $\frac{(3x^4y^0)^{-2}}{-9x^4}$</span>
+                        <span class="question-score">6分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a) $a^8/b^{15}$ (b) $-1/81x^{12}$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q19</span>因式分解 $ax - 3x - ay^2 + 3y^2$</span>
+                        <span class="question-score">2分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $(a-3)(x-y^2)$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q20</span>某背包的成本為 $\$600$，而標價則比成本高 $40\%$。該背包以其標價八折出售。求背包價值的百分變化。</span>
+                        <span class="question-score">3分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: 賺12%</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q21</span>下表顯示一些雜誌的售價。求(a)完成上表 (b)平均售價 (c)眾數組</span>
+                        <span class="question-score">4分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a) 17, 22, 27, 32 / (b) $26.4 / (c) $30-$34</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 丙部 -->
+        <div class="part-section">
+            <div class="part-header" onclick="togglePart(this)">
+                <span>丙部 (Q22-Q34) - 長答題</span>
+                <span>▼</span>
+            </div>
+            <div class="part-content">
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q22</span>小晴存款 $\$40,000$ 入銀行，年利率為 $6\%$，以複利息計算，每半年結算一次，求 $4$ 年後的利息。（準確至最接近的元）</span>
+                        <span class="question-score">3分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $10,637$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q23</span>若 $15, 15, 18, 28, 39, k, 3k+5$ 和 $72$ 的平均值是 $32$，求未知量 $k$ 的值。</span>
+                        <span class="question-score">2分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $k = 40$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q24</span>某個球體的表面面積為 $144\pi$ cm²。(a)求該球體的半徑 (b)求該球體的體積（答案準確至三位有效數字）</span>
+                        <span class="question-score">4分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a) 6cm (b) $904.78$ cm³</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q25</span>右圖中顯示一個直立圓錐，其高、底半徑和斜高分別是 21cm、20cm 和 29cm。求直立圓錐的體積。（答案以 $\pi$ 表示。）</span>
+                        <span class="question-score">2分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: $2800\pi$ cm³</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q26</span>右圖中顯示一個倒置直立圓錐 (a)曲面面積 (b)總表面面積（答案以 $\pi$ 表示。）</span>
+                        <span class="question-score">4分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a) $65\pi$ cm² (b) $90\pi$ cm²</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q27</span>右圖中顯示一個角錐 $VABCD$，其底是一個邊長為 5cm 的正方形。若角錐的體積是 75cm³，求角錐的高。</span>
+                        <span class="question-score">2分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: 9cm</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q28</span>以下是 6 個住宅單位的月租：$23,000, $5,100, $5,500, $7,000, $6,800, $6,600<br>(a)(i)平均數 (ii)中位數 (b)邊個較適合？</span>
+                        <span class="question-score">5分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a)(i) $8,833.3$ (ii) $6,700$ (b)中位數</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q29</span>右圖中，$ABCD$ 是一個平行四邊形。$E$ 是 $BC$ 上的一點使得 $AB = AE$。$\angle ABE = 58°$ 及 $\angle AED = 90°$。求(a) $\angle ECD$ (b) $x$ 的值</span>
+                        <span class="question-score">3分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a) $32°$ (b) $x=32$</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q30</span>右方的棒形圖顯示某補習中心內的學生年齡 (a)總人數 (b)中位數 (c)加入16歲新生後的中位數改變</span>
+                        <span class="question-score">3分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a) 40人 (b) 15.5歲 (c) 不變</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q31</span>下表顯示柏翰和芷頤在英文科考試既分數同權。已知柏翰既加權平均分係77分，芷頤既加權平均分較柏翰高1.3分 (a)求x (b)芷頤試卷三分數必定高過柏翰？</span>
+                        <span class="question-score">5分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a) $x=3$ (b) 不同意</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q32</span>右圖中顯示一個直立平截頭體 $PQRS$。上底和下底的半徑分別為 4cm 和 10cm。求(a)$VR:VQ$ (b)體積比 (c)$VQ$</span>
+                        <span class="question-score">5分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a) 3:5 (b) 27:125 (c) 12.5cm</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q33</span>右圖中，卡紙由一個正方形和四個相同的等腰三角形組成。$AB = 14$cm，$PA = 25$cm。求(a)$\triangle VBC$面積 (b)總表面面積 (c)體積</span>
+                        <span class="question-score">6分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: (a) $98$ cm² (b) $1162$ cm² (c) $1372$ cm³</strong></div>
+                    </div>
+                </div>
+                
+                <div class="question">
+                    <div class="question-header">
+                        <span><span class="question-num">Q34</span>Match the appropriate English name to the 3D Shapes.</span>
+                        <span class="question-score">2分</span>
+                    </div>
+                    <div class="answer-section">
+                        <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                        <div class="answer-content"><strong>答案: 1-Sphere, 2-Cone</strong></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function togglePart(element) {
+        var content = element.nextElementSibling;
+        content.classList.toggle('show');
+        var arrow = element.querySelector('span:last-child');
+        arrow.textContent = content.classList.contains('show') ? '▲' : '▼';
+    }
+    
+    function toggleAnswer(element) {
+        var content = element.nextElementSibling;
+        content.style.display = content.style.display === 'block' ? 'none' : 'block';
+    }
+    </script>
+</body>
+</html>

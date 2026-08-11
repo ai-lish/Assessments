@@ -1,0 +1,1246 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>2024-25 中一 第二學期 數學科考試</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+    window.MathJax = {
+        tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']],
+            displayMath: [['$$', '$$'], ['\\[', '\\]']]
+        },
+        startup: {
+            ready: function() {
+                MathJax.startup.defaultReady();
+            }
+        }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #2C3E50;
+            padding-bottom: 40px;
+        }
+        .header {
+            background: rgba(255,255,255,0.95);
+            padding: 15px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .header-content {
+            max-width: 1000px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5px;
+            flex-wrap: wrap;
+        }
+        .back-btn {
+            padding: 10px 15px;
+            background: #3498DB;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 500;
+        }
+        .back-btn:hover { background: #2980B9; }
+        .container {
+            max-width: 1000px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        
+        /* Paper Selection */
+        .paper-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .paper-tab {
+            flex: 1;
+            padding: 15px;
+            background: white;
+            border-radius: 12px;
+            text-align: center;
+            text-decoration: none;
+            color: #333;
+            font-weight: 600;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            display: block;
+        }
+        .paper-tab:hover {
+            background: #3498DB;
+            color: white;
+        }
+        
+        /* Collapsible Part */
+        .part-section { margin-bottom: 25px; }
+        .part-header {
+            background: #3498DB;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+        .part-header:hover { background: #2980B9; }
+        .part-content {
+            display: none;
+            padding: 20px;
+            background: #ECF0F1;
+            border-radius: 0 0 12px 12px;
+            margin-top: -12px;
+            padding-top: 32px;
+        }
+        .part-content.show { display: block; }
+        
+        /* Question */
+        .question {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            border-left: 4px solid #3498DB;
+        }
+        .question-num { 
+            font-weight: 700; 
+            color: #3498DB; 
+            margin-right: 10px; 
+        }
+        .question-score {
+            background: #F39C12;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.85rem;
+            float: right;
+        }
+        .question-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        .question-content {
+            line-height: 1.8;
+        }
+        .sub-question {
+            margin-left: 20px;
+            padding: 8px 0;
+            border-bottom: 1px dashed #eee;
+        }
+        .sub-question:last-child {
+            border-bottom: none;
+        }
+        
+        /* Image */
+        .question-image {
+            max-width: 100%;
+            margin: 10px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Answer - Collapsible */
+        .answer-section {
+            background: #f0f7ff;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .answer-label {
+            font-weight: 600;
+            color: #27AE60;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .answer-label:hover { color: #219A52; }
+        .answer-content {
+            display: none;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            margin-top: 10px;
+            line-height: 1.8;
+        }
+        .answer-content.show { display: block; }
+        
+        /* Marking Criteria */
+        .marking-label { background: #9B59B6; color: white; padding: 8px 15px; border-radius: 20px; display: inline-block; cursor: pointer; font-size: 0.9rem; margin-left: 10px; }
+        .marking-label:hover { background: #8E44AD; }
+        .marking-content { display: none; background: #E8DAEF; padding: 15px; border-radius: 8px; margin-top: 10px; border-left: 4px solid #9B59B6; }
+        .marking-content.show { display: block; }
+        .marking-title { font-weight: 700; color: #6C3483; margin-bottom: 8px; }
+        .marking-item { margin: 5px 0; font-size: 0.9rem; }
+        .marking-m { color: #E67E22; font-weight: 600; }
+        .marking-a { color: #27AE60; font-weight: 600; }
+        .marking-ft { color: #3498DB; font-weight: 600; }
+        
+        /* Section Info */
+        .section-info {
+            background: #2C3E50;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+        }
+        
+        .paper-content { display: none; }
+        .paper-content.active { display: block; }
+        
+        /* Ensure paper2 stays hidden when not active */
+        /* Paper display control */
+        #paper1 { display: none; }
+        #paper1.active { display: block; }
+        #paper2 { display: none; }
+        #paper2.active { display: block; }
+        
+        /* MathJax fix */
+        .MathJax { overflow-x: auto; }
+    
+/* 漢堡包 */
+.hamburger { position: fixed; top: 15px; left: 15px; cursor: pointer; padding: 8px; z-index: 100; background: rgba(0,0,0,0.3); border-radius: 5px; }
+.hamburger span { display: block; width: 25px; height: 3px; background: white; margin: 5px 0; border-radius: 2px; }
+.menu-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99; }
+.menu-overlay.open { display: block; }
+.side-menu { visibility: hidden; position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: white; z-index: 100; transition: right 0.3s; }
+.side-menu.open { visibility: visible; right: 0; }
+.side-menu-header { padding: 20px; background: #2c3e50; color: white; display: flex; justify-content: space-between; align-items: center; }
+.side-menu-header h2 { font-size: 1.2rem; }
+.close-menu { cursor: pointer; font-size: 1.5rem; }
+.side-menu-content { padding: 10px; }
+.menu-section { margin-bottom: 15px; }
+.menu-btn { display: block; width: 100%; padding: 12px 15px; margin: 5px 0; border: none; border-radius: 8px; background: #f5f7fa; cursor: pointer; text-align: left; font-size: 1rem; }
+.menu-btn:hover { background: #e0e0e0; }
+</style>
+</head>
+<body>
+    <!-- 漢堡包 -->
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <h2>選單</h2>
+            <span class="close-menu" onclick="closeMenu()">✕</span>
+        </div>
+        <div class="side-menu-content">
+            <div class="menu-section">
+                <button class="menu-btn" onclick="goToPage('index.html'); closeMenu();">首頁</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="header">
+        <div class="header-content">
+            <a href="../../" class="back-btn">← 返回主頁</a>
+            <h2>📝 2024-25 中一 第二學期 數學科考試</h2>
+            <div></div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <div class="paper-tabs">
+            <a href="p1.html" class="paper-tab">📋 卷一 (70分)</a>
+            <a href="p2.html" class="paper-tab">📋 卷二 (40分)</a>
+        </div>
+        
+        <!-- 卷一 -->
+        <div id="paper1" class="paper-content active">
+            <div class="section-info">[學校名稱] | 日期：2025年3月5日 | 時限：一小時</div>
+            
+            <!-- 甲部 -->
+            <div class="part-section">
+                <div class="part-header" onclick="togglePart(this)">
+                    <span>甲部：在橫線上寫上答案</span>
+                    <span>▼</span>
+                </div>
+                <div class="part-content">
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q1</span>以指數記數法寫出 $3^6$ 的質因數連乘式</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$2^2 \times 2^2 \times 3$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：寫出正確質因數連乘式</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q2</span>求 $18$ 和 $27$ 的最小公倍數 (L.C.M.)</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$54$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：寫出正確 LCM = 54</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q3</span>展開 $(3x - 1)(x + 3)$</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)">
+                                <span>👁️ 答案</span>
+                            </div>
+                            <div class="answer-content">
+                                $3x^2 + 8x - 3$
+                            </div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：寫出正確答案 $3x^2 + 8x - 3$</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q4</span>$3 + 4(-5) = $</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$-17$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 -17</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q5</span>$(x - 2)^4 = $</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$16$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 16</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q6</span>以代數式表示「A與4之和乘以k」</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$k(A+4)$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確代數式 $k(A+4)$</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q7</span>考慮公式 $k = 2h - y$。求當 $h = 3$ 及 $y = -4$ 時，$k$ 的值</span>
+                            <span class="question-score">2分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$k = 10$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-m">1M</span>：代入正確數值</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 $k = 10$</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q8</span>化簡 $a^6 \cdot a^2$</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$a^8$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 $a^8$</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q9</span>考慮多項式 $4x^3y + 3x^2y^2 - 2xy^2 - 1$，寫出多項式的次數</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$4$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確次數 4</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q10</span>寫出多項式中 $xy^2$ 項的係數</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$-2$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確係數 -2</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q11</span>寫出多項式中的常數項</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$-1$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確常數項 -1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q12</span>解方程 $2x + 8 = 4$</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$x = -2$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 $x = -2$</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q13</span>求右圖中三角形的面積</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <img src="s1_q13.png" alt="Q13 圖片" class="question-image" onerror="this.style.display='none'">
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$24$ cm²</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 (需看圖)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q14</span>下圖為一直立角柱，求直立角柱的體積</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <img src="s1_q14.png" alt="Q14 圖片" class="question-image" onerror="this.style.display='none'">
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$72$ cm³</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 (需看圖)</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 乙部 -->
+            <div class="part-section">
+                <div class="part-header" onclick="togglePart(this)">
+                    <span>乙部 (Q15-Q23)：於題目下方的空白處作答</span>
+                    <span>▼</span>
+                </div>
+                <div class="part-content">
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q15</span>計算以下各題</span>
+                            <span class="question-score">4分</span>
+                        </div>
+                        <div class="sub-question">(a) $12 - 2 \times (4 + 1)$</div>
+                        <div class="sub-question">(b) $\frac{3}{4} + \frac{5}{12}$</div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">
+                                (a) 2<br>(b) 7/6
+                            </div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item">(a) <span class="marking-m">1M</span>：先乘除後加減 + <span class="marking-a">1A</span>：正確答案 2</div>
+                                <div class="marking-item">(b) <span class="marking-m">1M</span>：通分 + <span class="marking-a">1A</span>：正確答案 7/6</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q16</span>由小至大排列：$+5$、$-4$、$-7$（以 $>$ 或 $<$ 連接）</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$-7 < -4 < +5$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確排列 -7 < -4 < +5</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q17</span>計算下列各題</span>
+                            <span class="question-score">6分</span>
+                        </div>
+                        <div class="sub-question">(a) $(-14) + (-8)$</div>
+                        <div class="sub-question">(b) $\frac{-9}{-6} \times (-8)$</div>
+                        <div class="sub-question">(c) $(-4)(-7) + (-15) \div (+3)$</div>
+                        <div class="sub-question">(d) $(-1.7) - (-2.3) - 3.7$</div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">
+                                (a) -22<br>(b) -12<br>(c) 23<br>(d) -3.1
+                            </div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item">(a) <span class="marking-a">1A</span>：-22</div>
+                                <div class="marking-item">(b) <span class="marking-a">1A</span>：-12</div>
+                                <div class="marking-item">(c) <span class="marking-m">1M</span>：先乘除後加减 + <span class="marking-a">1A</span>：23</div>
+                                <div class="marking-item">(d) <span class="marking-a">1A</span>：-3.1</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q18</span>考慮公式 $r = 2(3 - s) - s$。當 $s = 5$ 時，求 $r$ 的值</span>
+                            <span class="question-score">2分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$r = -9$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-m">1M</span>：代入並化簡</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 $r = -9$</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q19</span>某數列的通項 $a_n = 8 - 3n$。求該數列的 $a_2$ 及 $a_5$</span>
+                            <span class="question-score">2分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$a_2 = 2, a_5 = -7$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-m">1M</span>：代入 n=2 及 n=5</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 $a_2=2, a_5=-7$</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q20</span>解以下各方程</span>
+                            <span class="question-score">5分</span>
+                        </div>
+                        <div class="sub-question">(a) $-2x = 12$</div>
+                        <div class="sub-question">(b) $-8 + 3y = -2$</div>
+                        <div class="sub-question">(c) $4(p+2) = -10$</div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">
+                                (a) $x = -6$<br>(b) $y = 2$<br>(c) $p = -4.5$
+                            </div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item">(a) <span class="marking-a">1A</span>：$x = -6$</div>
+                                <div class="marking-item">(b) <span class="marking-a">1A</span>：$y = 2$</div>
+                                <div class="marking-item">(c) <span class="marking-m">1M</span>：展開括號 + <span class="marking-a">1A</span>：$p = -4.5$</div>
+                                <div class="marking-item">另外1分：其中兩題正確</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q21</span>求右圖中陰影部分的面積</span>
+                            <span class="question-score">3分</span>
+                        </div>
+                        <img src="s1_q21.png" alt="Q21 圖片" class="question-image" onerror="this.style.display='none'">
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$18$ cm²</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-m">1M</span>：計算兩個圖形面積</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：相減得正確答案</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q22</span>求右圖中柱體的總表面面積</span>
+                            <span class="question-score">3分</span>
+                        </div>
+                        <img src="s1_q22.png" alt="Q22 圖片" class="question-image" onerror="this.style.display='none'">
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$1240$ cm²</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：計算長方形面積</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：計算圓形面積</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：總表面積</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q23</span>化簡以下各式</span>
+                            <span class="question-score">6分</span>
+                        </div>
+                        <div class="sub-question">(a) $4k - 6 - k + 2$</div>
+                        <div class="sub-question">(b) $(a^3)(a^2)$</div>
+                        <div class="sub-question">(c) $(4x-2y) - (3x+5y)$</div>
+                        <div class="sub-question">(d) $7x(x-1) + 2x^2$</div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">
+                                (a) $3k - 4$<br>(b) $a^5$<br>(c) $x - 7y$<br>(d) $9x^2 - 7x$
+                            </div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item">(a) <span class="marking-a">1A</span>：$3k - 4$</div>
+                                <div class="marking-item">(b) <span class="marking-a">1A</span>：$a^5$</div>
+                                <div class="marking-item">(c) <span class="marking-m">1M</span>：去括號 + <span class="marking-a">1A</span>：$x - 7y$</div>
+                                <div class="marking-item">(d) <span class="marking-m">1M</span>：展開 + <span class="marking-a">1A</span>：$9x^2 - 7x$</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 丙部 -->
+            <div class="part-section">
+                <div class="part-header" onclick="togglePart(this)">
+                    <span>丙部 (Q24-Q29)：須詳列步驟</span>
+                    <span>▼</span>
+                </div>
+                <div class="part-content">
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q24</span>展開 $(x+1)(x-2)$</span>
+                            <span class="question-score">2分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$x^2 - x - 2$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-m">1M</span>：兩項乘兩項</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 $x^2 - x - 2$</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q25</span>展開 $(-1+2x^2)(4x+8)$，並以降冪排列</span>
+                            <span class="question-score">2分</span>
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$8x^3 + 16x^2 - 4x - 8$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-m">1M</span>：兩項乘兩項</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案並以降冪排列</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q26</span>解方程</span>
+                            <span class="question-score">3分</span>
+                        </div>
+                        <div class="sub-question">$\frac{7x}{12} + \frac{11}{12} - \frac{1}{6} = \frac{x}{3} + 6$</div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">$x = 5$</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-m">1M</span>：通分</div>
+                                <div class="marking-item"><span class="marking-m">1M</span>：展開括號</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：正確答案 $x = 5$</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q27</span>右圖為一個沒有蓋的長方體容器</span>
+                            <span class="question-score">7分</span>
+                        </div>
+                        <div class="sub-question">(a) 求該容器的體積</div>
+                        <div class="sub-question">(b) 已知水的高度為 6 cm。求水的體積</div>
+                        <div class="sub-question">(c) 右圖為一個邊長為 6 cm 的實心立方體，求該立方體的體積</div>
+                        <div class="sub-question">(d) 小可希望將實心立方體填入長方體容器內，使水位達至容器頂端。小可最少用多少個實心立方體才能做到？</div>
+                        <img src="s1_q27.png" alt="Q27 圖片" class="question-image" onerror="this.style.display='none'">
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">
+                                (a) 1536 cm³<br>(b) 576 cm³<br>(c) 216 cm³<br>(d) 5個
+                            </div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item">(a) <span class="marking-a">1A</span>：$8 \times 12 \times 16 = 1536$ cm³</div>
+                                <div class="marking-item">(b) <span class="marking-a">1A</span>：$8 \times 12 \times 6 = 576$ cm³</div>
+                                <div class="marking-item">(c) <span class="marking-a">1A</span>：$6^3 = 216$ cm³</div>
+                                <div class="marking-item">(d) <span class="marking-m">1M</span>：計算差額 + <span class="marking-a">1A</span>：$(1536-576)/216 ≈ 4.44$，所以要5個</div>
+                                <div class="marking-item"><span class="marking-ft">1f.t.</span>：最終答案 (最少5個)</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q28</span>某比賽計分方法如下：勝出可得8分，和局可得5分而落敗則扣4分</span>
+                            <span class="question-score">7分</span>
+                        </div>
+                        <div class="sub-question">(a) 小洛勝出了3局，和局了11局以及落敗了8局。求小洛最後的分數</div>
+                        <div class="sub-question">(b) 小祺在比賽中最後獲得了48分，已知小祺比賽總局數的1/4局勝出，另外1/3局和局，其餘局數均落敗。求小祺在比賽中的總局數</div>
+                        <div class="sub-question">(c) 比賽後，小洛認為自己比賽的總分比小祺多。你同意嗎？試解釋你的答案</div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">
+                                (a) 47分<br>(b) 24局<br>(c) 不同意 (小祺48分 > 小洛47分)
+                            </div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item">(a) <span class="marking-m">1M</span>：列出算式 + <span class="marking-a">1A</span>：47分</div>
+                                <div class="marking-item">(b) <span class="marking-m">1M</span>：設未知數 + 解方程 + <span class="marking-a">1A</span>：24局</div>
+                                <div class="marking-item">(c) <span class="marking-ft">1f.t.</span>：比較並解釋</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q29</span>Isaac parks his car in the car park and takes a lift to the food court. How many floors does he go up / down to reach the food court?</span>
+                            <span class="question-score">2分</span>
+                        </div>
+                        <img src="s1_q29.png" alt="Q29 圖片" class="question-image" onerror="this.style.display='none'">
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div>
+                            <div class="answer-content">Go down 7 floors</div>
+                            <div class="marking-label" onclick="toggleMarking(this)"><span>📝 評分準則</span></div>
+                            <div class="marking-content">
+                                <div class="marking-title">評分重點：</div>
+                                <div class="marking-item"><span class="marking-m">1M</span>：計算樓層差</div>
+                                <div class="marking-item"><span class="marking-a">1A</span>：向下7層</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 卷二 -->
+
+        <div id="paper2" class="paper-content" style="display: none;">
+            <div class="section-info">[學校名稱] | 日期：2025年3月5日 | 時限：四十分鐘</div>
+            
+            <!-- 甲部 -->
+            <div class="part-section">
+                <div class="part-header" onclick="togglePart(this)">
+                    <span>甲部 (Q1-Q28)</span>
+                    <span>▼</span>
+                </div>
+                <div class="part-content show">
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q1</span>計算 $2(-3) - 5$ 的值。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">
+                            A. $-11$<br>
+                            B. $-10$<br>
+                            C. $-1$<br>
+                            D. $1$
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)">
+                                <span>👁️ 答案</span>
+                            </div>
+                            <div class="answer-content">
+                                <strong>答案: A</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q2</span>以下哪一些句子是對的？</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">
+                            I. 49 是質數<br>
+                            II. 2 是唯一的偶質數<br>
+                            III. 1 是質數<br>
+                            <br>
+                            A. 僅 I<br>
+                            B. 僅 II<br>
+                            C. I 和 II<br>
+                            D. II 和 III
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)">
+                                <span>👁️ 答案</span>
+                            </div>
+                            <div class="answer-content">
+                                <strong>答案: A</strong> (僅 II 正確，因為 49 = 7² 不是質數，1 不是質數)
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q3</span>以下哪一個排列是錯的？</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">
+                            A. $2, 4, 6, 8, \ldots$ (偶數)<br>
+                            B. $1, 3, 5, 7, \ldots$ (奇數)<br>
+                            C. $1, 4, 9, 16, \ldots$ (平方數)<br>
+                            D. $2, 3, 5, 7, \ldots$ (質數)
+                        </div>
+                        <div class="answer-section">
+                            <div class="answer-label" onclick="toggleAnswer(this)">
+                                <span>👁️ 答案</span>
+                            </div>
+                            <div class="answer-content">
+                                <strong>答案: C</strong>
+                            </div>
+                        </div>
+                    </div>
+                    
+                            <span><span class="question-num">Q4</span>以代數式表示 $P$ 的平方加上 $y$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $P + y$<br>B. $P^2 + y$<br>C. $P^3 + y$<br>D. $P + y^2$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: B</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q5</span>若 $a = -7$ 和 $b = 5$，求 $2 - 3a + b$ 的值。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $-14$<br>B. $-3$<br>C. $17$<br>D. $28$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: D</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q6</span>考慮數列 $a_n = \frac{n}{4n + 1}$，求數列的 $a_7$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $\frac{7}{29}$<br>B. $\frac{7}{12}$<br>C. $\frac{1}{5}$<br>D. $7$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q7</span>計算 $\frac{1}{5} - \frac{2}{3}$ 的值。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $-\frac{1}{2}$<br>B. $\frac{7}{15}$<br>C. $-\frac{7}{15}$<br>D. $\frac{13}{15}$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: C</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q8</span>以下各組數字中，何者是數列 $a_n = 5 - 4n$ 的其中一項？</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. 只有 I<br>B. 只有 I 及 II<br>C. 只有 II 及 III<br>D. I、II 及 III</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: B</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q9</span>解方程 $5 - x = 6$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $1$<br>B. $-1$<br>C. $-11$<br>D. $11$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: B</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q10</span>解方程 $2(x + 5) = -8$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $x = -15$<br>B. $x = -9$<br>C. $x = -5$<br>D. $x = -1$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: B</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q11</span>解方程 $-10x = -5$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $x = -2$<br>B. $x = -\frac{1}{2}$<br>C. $x = \frac{1}{2}$<br>D. $x = 2$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: C</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q12</span>解方程 $\frac{3x - 2}{4} = -5$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $6$<br>B. $-54$<br>C. $-6$<br>D. $-\frac{22}{3}$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: C</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q13</span>解方程 $2x = 10$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $\frac{1}{5}$<br>B. $5$<br>C. $8$<br>D. $12$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: B</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q14</span>化簡 $17 - 11k + 7s - 9 - 9k + 3s$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $8 - 2k + 10s$<br>B. $8 - 20k + 10s$<br>C. $8 + 2k + 4s$<br>D. $8 - 2k + 4s$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q15</span>化簡 $6x - 2y + 5y$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $6x + 3y$<br>B. $6x - 7y$<br>C. $4x + 3y$<br>D. $6x + 7y$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q16</span>化簡 $x^2 - 5x + 3 - (3x - x^2 + 1)$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $2x^2 - 8x + 2$<br>B. $2x^2 - 2x + 2$<br>C. $-2x^2 - 8x + 2$<br>D. $2x^2 - 8x + 4$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q17</span>展開 $-5(a - 3)$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $-5a - 15$<br>B. $-5a + 15$<br>C. $5a - 15$<br>D. $5a + 15$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: B</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q18</span>化簡 $(2p^3)(4p^6)$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $8p^9$<br>B. $6p^9$<br>C. $8p^{18}$<br>D. $6p^{18}$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q19</span>求多項式 $5a^3 + 6ab^4 - 8a^3b^4 - 1$ 的次數。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $3$<br>B. $4$<br>C. $5$<br>D. $7$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: D</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q20</span>解方程 $19p - 8 = -p$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $p = \frac{8}{20}$<br>B. $p = \frac{8}{18}$<br>C. $p = -\frac{8}{20}$<br>D. $p = -\frac{8}{18}$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: D</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q21</span>解方程 $7(a - 10) = -3a$。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. $a = 7$<br>B. $a = \frac{70}{10}$<br>C. $a = 70$<br>D. $a = \frac{70}{4}$</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q22</span>當圖中的立體沿線段 AB 鉛垂切開時，下列哪個是所得的橫切面？</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. 圓形<br>B. 三角形<br>C. 長方形<br>D. 平行四邊形</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: C (長方形)</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q23</span>下列哪一個摺紙圖樣不可摺成一個三角稜柱？</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. 圖樣 A<br>B. 圖樣 B<br>C. 圖樣 C<br>D. 圖樣 D</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q24</span>以下哪個立體有均勻截面？</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">A. 圓柱<br>B. 圓錐<br>C. 棱錐<br>D. 三角稜柱</div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A (圓柱)</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q25</span>求圖中六邊形 ABCDEG 的面積。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">
+                            <img src="../images/q25.svg" alt="Q25 圖片" class="question-image" style="max-width:100%; height:auto;">
+                        </div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q26</span>圖中為一個棱柱。求它的體積。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">
+                            <img src="../images/q26.svg" alt="Q26 圖片" class="question-image" style="max-width:100%; height:auto;">
+                        </div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q27</span>圖中是一個正方形棱柱。求棱柱的體積。</span>
+                            <span class="question-score">1分</span>
+                        </div>
+                        <div class="question-content">
+                            <img src="../images/q27.svg" alt="Q27 圖片" class="question-image" style="max-width:100%; height:auto;">
+                        </div>
+                        <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                    </div>
+                    
+                    <div class="question">
+                        <div class="question-header">
+                            <span><span class="question-num">Q28</span>圖中所示為一個棱柱...</span>
+                    
+                    <!-- 乙部 -->
+                    <div class="part-section">
+                        <div class="part-header" onclick="togglePart(this)">
+                            <span>乙部 (Q29-Q40)</span>
+                            <span>▼</span>
+                        </div>
+                        <div class="part-content show">
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q29</span>考慮多項式 $5x^2 + 6y - x + 3$。問以下哪一些是正確的？</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q30</span>展開 $(x - 4)(x - 2)$。</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q31</span>展開 $(x + 5)^2$。</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q32</span>求 $(3x-3)(4x+5)$ 的常數項。</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: A (-15)</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q33</span>一隻雞翼和一個漢堡包的售價分別是...</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q34</span>解方程...</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q35</span>解方程 = -5x。</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q36</span>求圖中陰影區域的面積。</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q37</span>圖中，ABC是直角三角形。求 $h$ 的值。</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q38</span>求圖中棱柱的總表面面積。</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q39</span>圖中所示為一個棱柱形的糖果盒...</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                            </div>
+                            <div class="question">
+                                <div class="question-header">
+                                    <span><span class="question-num">Q40</span>圖中長方體的體積是 648 cm³，求長方體的總表面面積。</span>
+                                    <span class="question-score">1分</span>
+                                </div>
+                                <div class="answer-section"><div class="answer-label" onclick="toggleAnswer(this)"><span>👁️ 答案</span></div><div class="answer-content"><strong>答案: (需要看圖)</strong></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+            
+    </div>
+    
+    <script>
+    
+    <script>
+    function switchPaper(num) {
+        document.getElementById('tab1').classList.remove('active');
+        document.getElementById('tab2').classList.remove('active');
+        document.getElementById('paper1').classList.remove('active');
+        document.getElementById('paper2').classList.remove('active');
+        document.getElementById('tab' + num).classList.add('active');
+        document.getElementById('paper' + num).classList.add('active');
+    }
+    
+    function togglePart(header) {
+        const content = header.nextElementSibling;
+        content.classList.toggle('show');
+    }
+    
+    function toggleAnswer(label) {
+        const content = label.nextElementSibling;
+        content.classList.toggle('show');
+    }
+    
+    function toggleMarking(label) {
+        const content = label.nextElementSibling;
+        content.classList.toggle('show');
+    }
+    
+    if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+        MathJax.typesetPromise();
+    }
+    </script>
+<script>
+function toggleMenu() { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('menuOverlay').classList.toggle('open'); }
+function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('menuOverlay').classList.remove('open'); }
+function goToPage(page) { window.location.href = page; }
+</script>
+</body>
+</html>

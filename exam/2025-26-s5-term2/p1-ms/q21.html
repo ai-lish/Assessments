@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q21 詳解 - 5A00</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>MathJax = {tex: {inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']]}};</script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .step-content { transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out; overflow: hidden; }
+        .step-content.collapsed { max-height: 0; opacity: 0; }
+        .step-content.expanded { max-height: 1500px; opacity: 1; }
+        .mark-badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; margin-left: 8px; }
+        .mark-m { background: #fef08a; color: #854d0e; border: 1px solid #eab308; }
+        .mark-a { background: #bbf7d0; color: #166534; border: 1px solid #22c55e; }
+        .side-menu.open { visibility: visible; right: 0; }
+    </style>
+</head>
+<body style="padding-top:60px;">
+<!-- 漢堡包選單 -->
+<div class="hamburger" onclick="toggleMenu()" style="position:fixed;top:15px;left:15px;cursor:pointer;padding:8px;z-index:100;background:rgba(0,0,0,0.3);border-radius:5px;">
+    <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;border-radius:2px;"></span>
+    <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;border-radius:2px;"></span>
+    <span style="display:block;width:25px;height:3px;background:white;margin:5px 0;border-radius:2px;"></span>
+</div>
+<div class="menu-overlay" id="menuOverlay" onclick="closeMenu()" style="display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);z-index:99;"></div>
+<div class="side-menu" id="sideMenu" style="visibility:hidden;position:fixed;top:0;right:-280px;width:280px;height:100%;background:white;z-index:100;transition:right 0.3s;">
+    <div style="padding:20px;background:#2c3e50;color:white;display:flex;justify-content:space-between;align-items:center;">
+        <h2 style="font-size:1.2rem;">選單</h2>
+        <span onclick="closeMenu()" style="cursor:pointer;font-size:1.5rem;">✕</span>
+    </div>
+    <div style="padding:10px;">
+        <div style="margin-bottom:15px;">
+            <button onclick="window.history.back()" style="display:block;width:100%;padding:12px 15px;margin:5px 0;border:none;border-radius:8px;background:#f5f7fa;cursor:pointer;text-align:left;">← 返回上一頁</button>
+            <button onclick="location.href='../p1.html'" style="display:block;width:100%;padding:12px 15px;margin:5px 0;border:none;border-radius:8px;background:#f5f7fa;cursor:pointer;text-align:left;">卷一主頁</button>
+        </div>
+    </div>
+</div>
+
+<!-- 班別學號 -->
+<div style="position:fixed;top:15px;right:15px;z-index:100;background:#3498db;color:white;padding:8px 15px;border-radius:20px;font-size:14px;font-weight:bold;">
+    5A00
+</div>
+
+<script>
+function toggleMenu() {
+    document.getElementById("sideMenu").classList.toggle("open");
+    document.getElementById("menuOverlay").style.display = document.getElementById("sideMenu").style.visibility === "visible" ? "none" : "block";
+}
+function closeMenu() {
+    document.getElementById("sideMenu").style.visibility = "hidden";
+    document.getElementById("sideMenu").style.right = "-280px";
+    document.getElementById("menuOverlay").style.display = "none";
+}
+// Add open class handler
+var originalToggle = toggleMenu;
+toggleMenu = function() {
+    var menu = document.getElementById("sideMenu");
+    if (menu.style.visibility === "visible") {
+        closeMenu();
+    } else {
+        menu.style.visibility = "visible";
+        menu.style.right = "0";
+        document.getElementById("menuOverlay").style.display = "block";
+    }
+}
+</script>
+
+<!-- 返回按鈕 -->
+<a href="../p1.html" style="position:fixed;top:15px;left:80px;z-index:100;background:#2c3e50;color:white;padding:8px 15px;border-radius:5px;text-decoration:none;font-size:14px;">← 返回</a>
+
+
+
+<div class="max-w-7xl mx-auto p-4 sm:p-6 lg:p-8">
+    
+    <!-- 標題與引言 -->
+    <header class="mb-6 flex justify-between items-end border-b pb-4 border-gray-300">
+        <div>
+            <h1 class="text-3xl font-bold text-gray-900 mb-2">中五數學 (卷一) - 圓幾何進階題解</h1>
+            <p class="text-gray-600">三個圓相交的證明題。點擊下方步驟觀看動態圖像解說。</p>
+        </div>
+        <div class="hidden sm:block text-right">
+            <span class="inline-block bg-red-100 text-red-600 px-3 py-1 rounded text-sm font-semibold shadow-sm">
+                老師評語：只有一位會做，大多空白！
+            </span>
+        </div>
+    </header>
+
+    <!-- 題目區域 -->
+    <div class="bg-white rounded-xl shadow-md p-6 mb-6">
+        <p class="font-bold mb-2">題目 21：</p>
+        <p class="mb-2">在圖中，三個圓相交於 <span class="math-font">P</span>、<span class="math-font">Q</span>、<span class="math-font">R</span> 和 <span class="math-font">S</span>。<span class="math-font">APQB</span> 和 <span class="math-font">DSRC</span> 都是直線。<span class="math-font">AR</span> 分別與圓 <span class="math-font">PQRS</span> 和 <span class="math-font">APSD</span> 相交於 <span class="math-font">M</span> 和 <span class="math-font">N</span>。</p>
+        <ul class="list-none space-y-1 ml-4">
+            <li>(a) 證明 <span class="math-font">AD // QR</span> 。 <span class="float-right text-gray-500">(2分)</span></li>
+            <li>(b) 證明 <span class="math-font">A</span>、<span class="math-font">B</span>、<span class="math-font">C</span> 和 <span class="math-font">D</span> 共圓。 <span class="float-right text-gray-500">(2分)</span></li>
+            <li>(c) 證明 <span class="math-font">∠APM = ∠RSN</span> 。 <span class="float-right text-gray-500">(3分)</span></li>
+        </ul>
+    </div>
+
+    <!-- 互動解說區域 -->
+    <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
+        
+        <!-- 左側：繪圖區 -->
+        <div class="lg:col-span-3 bg-white rounded-xl shadow-md p-4 flex flex-col items-center justify-center overflow-hidden">
+            <div class="relative w-full aspect-[4/3] max-w-3xl border border-gray-200 rounded-lg bg-slate-50 overflow-hidden" id="canvas-container">
+                <canvas id="geometryCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+            </div>
+            <p class="text-sm text-gray-400 mt-2 text-center w-full">圖形經數學坐標精確運算生成，比例與邏輯完全脗合。</p>
+        </div>
+
+        <!-- 右側：步驟控制區 -->
+        <div class="lg:col-span-2 flex flex-col bg-white rounded-xl shadow-md overflow-hidden">
+            
+            <!-- 分題標籤 -->
+            <div class="flex border-b border-gray-200 bg-gray-50">
+                <button onclick="setPart('a')" id="tab-a" class="flex-1 py-3 font-semibold text-center border-b-2 border-blue-600 text-blue-600 transition">Part (a)</button>
+                <button onclick="setPart('b')" id="tab-b" class="flex-1 py-3 font-semibold text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 transition">Part (b)</button>
+                <button onclick="setPart('c')" id="tab-c" class="flex-1 py-3 font-semibold text-center border-b-2 border-transparent text-gray-500 hover:text-blue-600 transition">Part (c)</button>
+            </div>
+
+            <!-- 步驟內容區 -->
+            <div class="p-6 flex-1 overflow-y-auto" id="steps-container">
+                <!-- 動態載入步驟 -->
+            </div>
+
+            <!-- 控制按鈕 -->
+            <div class="p-4 border-t border-gray-200 bg-gray-50 flex justify-between items-center">
+                <button onclick="prevStep()" id="btn-prev" class="px-4 py-2 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 disabled:opacity-50 transition">上一輪</button>
+                <span id="step-counter" class="text-sm font-medium text-gray-600">步驟 1 / 4</span>
+                <button onclick="nextStep()" id="btn-next" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition">下一步</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // --- 數學幾何引擎 ---
+    
+    // 計算三點共圓（外接圓）的圓心和半徑
+    function getCircumcircle(p1, p2, p3) {
+        let D = 2 * (p1.x * (p2.y - p3.y) + p2.x * (p3.y - p1.y) + p3.x * (p1.y - p2.y));
+        if (Math.abs(D) < 0.0001) return null; // 三點共線
+        
+        let cx = ((p1.x**2 + p1.y**2) * (p2.y - p3.y) + (p2.x**2 + p2.y**2) * (p3.y - p1.y) + (p3.x**2 + p3.y**2) * (p1.y - p2.y)) / D;
+        let cy = ((p1.x**2 + p1.y**2) * (p3.x - p2.x) + (p2.x**2 + p2.y**2) * (p1.x - p3.x) + (p3.x**2 + p3.y**2) * (p2.x - p1.x)) / D;
+        let r = Math.sqrt((p1.x - cx)**2 + (p1.y - cy)**2);
+        
+        return { x: cx, y: cy, r: r };
+    }
+
+    // 計算直線與圓的交點 (返回另一個非已知點的交點)
+    function intersectLineCircleOther(pA, pB, circle, knownPoint) {
+        let dx = pB.x - pA.x;
+        let dy = pB.y - pA.y;
+        let fx = pA.x - circle.x;
+        let fy = pA.y - circle.y;
+
+        let a = dx*dx + dy*dy;
+        let b = 2 * (fx*dx + fy*dy);
+        let c = (fx*fx + fy*fy) - circle.r*circle.r;
+
+        let discriminant = b*b - 4*a*c;
+        if(discriminant < 0) return null;
+
+        let t1 = (-b - Math.sqrt(discriminant)) / (2*a);
+        let t2 = (-b + Math.sqrt(discriminant)) / (2*a);
+
+        let pt1 = { x: pA.x + t1*dx, y: pA.y + t1*dy };
+        let pt2 = { x: pA.x + t2*dx, y: pA.y + t2*dy };
+
+        // 比較距離找出另一個交點
+        let dist1 = Math.hypot(pt1.x - knownPoint.x, pt1.y - knownPoint.y);
+        let dist2 = Math.hypot(pt2.x - knownPoint.x, pt2.y - knownPoint.y);
+
+        return dist1 > dist2 ? pt1 : pt2;
+    }
+
+    // 計算角度 (用於畫弧)
+    function getAngle(center, point) {
+        return Math.atan2(point.y - center.y, point.x - center.x);
+    }
+
+    // --- 幾何數據初始化 ---
+    let geom = {};
+
+    function initGeometry() {
+        // 設定基礎點
+        const P = {x: 320, y: 160};
+        const Q = {x: 470, y: 190};
+        const R = {x: 450, y: 270};
+        
+        // C2 圓 (通過 P, Q, R)
+        const c2 = getCircumcircle(P, Q, R);
+        
+        // 計算 S 點 (在 C2 上，且與 R 同 y 坐標，確保 DSRC 是水平)
+        const S = { x: c2.x - Math.sqrt(c2.r**2 - (270 - c2.y)**2), y: 270 };
+
+        // 直線 APQB: y = m1*x + b1
+        const m1 = (Q.y - P.y) / (Q.x - P.x);
+        const b1 = P.y - m1 * P.x;
+
+        // 我們要保證 AD // QR。QR斜率：
+        const m_QR = (R.y - Q.y) / (R.x - Q.x);
+
+        // A 點在 APQB 線上。設 A.x = 210
+        const A = { x: 210, y: m1 * 210 + b1 };
+
+        // D 點在 DSRC 線上 (y=270)。斜率 AD = m_QR
+        // y_D - A.y = m_QR * (x_D - A.x) => x_D = A.x + (270 - A.y) / m_QR
+        const D = { x: A.x + (270 - A.y) / m_QR, y: 270 };
+
+        // C1 圓 (通過 A, P, D) - 數學上 S 必定在此圓上
+        const c1 = getCircumcircle(A, P, D);
+
+        // B 點在 APQB 線上。設 B.x = 590
+        const B = { x: 590, y: m1 * 590 + b1 };
+
+        // C3 圓 (通過 Q, B, R)
+        const c3 = getCircumcircle(Q, B, R);
+        
+        // C 點在 DSRC 線上 (y=270)。也在 C3 上
+        const C = { x: c3.x + Math.sqrt(c3.r**2 - (270 - c3.y)**2), y: 270 };
+
+        // 交點 M (AR 與 C2)、N (AR 與 C1)
+        const M = intersectLineCircleOther(A, R, c2, R);
+        const N = intersectLineCircleOther(A, R, c1, A);
+        
+        // 四點共圓大圓 (ABCD)
+        const cABCD = getCircumcircle(A, B, C);
+
+        geom = { A, B, C, D, P, Q, R, S, M, N, c1, c2, c3, cABCD };
+    }
+
+    // --- 畫布與渲染引擎 ---
+    const canvas = document.getElementById('geometryCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    function resizeCanvas() {
+        const container = document.getElementById('canvas-container');
+        canvas.width = container.clientWidth * 2; // Retina display support
+        canvas.height = container.clientHeight * 2;
+        ctx.scale(2, 2);
+        
+        // 重新置中縮放圖形
+        const scale = container.clientWidth / 800; // 800是設計基底寬度
+        ctx.scale(scale, scale);
+        // 置中偏移
+        ctx.translate((800 - 800)/2, (canvas.height/2/scale - 400)/2 + 20); 
+    }
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        render();
+    });
+
+    // 輔助繪圖函數
+    function drawCircleObj(circle, color, lineWidth = 1, lineDash = []) {
+        ctx.beginPath();
+        ctx.arc(circle.x, circle.y, circle.r, 0, Math.PI * 2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.setLineDash(lineDash);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    function drawLineObj(p1, p2, color = '#111827', lineWidth = 1.5) {
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = lineWidth;
+        ctx.stroke();
+    }
+
+    function fillPolygon(points, color) {
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for(let i=1; i<points.length; i++) ctx.lineTo(points[i].x, points[i].y);
+        ctx.closePath();
+        ctx.fillStyle = color;
+        ctx.fill();
+    }
+
+    function drawPoint(p, label, offset = {x:0, y:0}) {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 3, 0, Math.PI * 2);
+        ctx.fillStyle = '#111827';
+        ctx.fill();
+        
+        ctx.font = 'italic 16px "Times New Roman"';
+        ctx.fillStyle = '#000';
+        ctx.fillText(label, p.x + offset.x, p.y + offset.y);
+    }
+
+    // 畫角度標示 (弧線)
+    function drawAngleArc(center, p1, p2, radius, color, thick = false) {
+        let a1 = getAngle(center, p1);
+        let a2 = getAngle(center, p2);
+        
+        // 確保弧度是銳角/鈍角內側
+        if(a2 < a1) a2 += Math.PI * 2;
+        if(a2 - a1 > Math.PI) {
+            let temp = a1;
+            a1 = a2;
+            a2 = temp + Math.PI*2;
+        }
+
+        ctx.beginPath();
+        ctx.arc(center.x, center.y, radius, a1, a2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = thick ? 3 : 1.5;
+        ctx.stroke();
+        
+        // 若為粗線，添加淡色扇形背景
+        if(thick) {
+            ctx.lineTo(center.x, center.y);
+            ctx.fillStyle = color + '33'; // 20% opacity
+            ctx.fill();
+        }
+    }
+
+    // 畫平行箭頭
+    function drawParallelArrow(p1, p2, color) {
+        let mx = (p1.x + p2.x) / 2;
+        let my = (p1.y + p2.y) / 2;
+        let angle = Math.atan2(p2.y - p1.y, p2.x - p1.x);
+        
+        ctx.save();
+        ctx.translate(mx, my);
+        ctx.rotate(angle);
+        ctx.beginPath();
+        ctx.moveTo(-6, -6);
+        ctx.lineTo(4, 0);
+        ctx.lineTo(-6, 6);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    // --- 應用程式狀態與邏輯 ---
+    const stepsData = {
+        'a': [
+            {
+                text: "目標：證明 <span class='math-font'>AD // QR</span>",
+                reason: "開始前，請留意左側圓 <span class='math-font'>APSD</span> 及中間圓 <span class='math-font'>PQRS</span>。",
+                render: () => {}
+            },
+            {
+                text: "<span class='math-font'>∠DAP = ∠PSR</span>",
+                reason: "(圓內接四邊形外角) <br> <span class='text-sm text-gray-500'>考慮圓 APSD，外角等於內對角。</span>",
+                render: () => {
+                    fillPolygon([geom.A, geom.P, geom.S, geom.D], 'rgba(59, 130, 246, 0.1)');
+                    drawCircleObj(geom.c1, '#3b82f6', 2);
+                    drawLineObj(geom.A, geom.P, '#ef4444', 3);
+                    drawLineObj(geom.A, geom.D, '#ef4444', 3);
+                    drawLineObj(geom.D, geom.R, '#ef4444', 3); // 延伸線
+                    drawLineObj(geom.P, geom.S, '#ef4444', 3);
+                    drawAngleArc(geom.A, geom.D, geom.P, 30, '#ef4444', true); // ∠DAP
+                    drawAngleArc(geom.S, geom.P, geom.R, 30, '#ef4444', true); // ∠PSR
+                }
+            },
+            {
+                text: "<span class='math-font'>∠RQB = ∠PSR</span>",
+                reason: "(圓內接四邊形外角) <br> <span class='text-sm text-gray-500'>考慮圓 PQRS，外角等於內對角。</span>",
+                render: () => {
+                    fillPolygon([geom.P, geom.Q, geom.R, geom.S], 'rgba(16, 185, 129, 0.1)');
+                    drawCircleObj(geom.c2, '#10b981', 2);
+                    drawLineObj(geom.R, geom.Q, '#f59e0b', 3);
+                    drawLineObj(geom.Q, geom.B, '#f59e0b', 3); // 延伸線
+                    drawLineObj(geom.R, geom.S, '#f59e0b', 3);
+                    drawLineObj(geom.P, geom.S, '#f59e0b', 3);
+                    drawAngleArc(geom.S, geom.P, geom.R, 30, '#f59e0b', true); // ∠PSR
+                    drawAngleArc(geom.Q, geom.R, geom.B, 30, '#f59e0b', true); // ∠RQB
+                }
+            },
+            {
+                text: "∴ <span class='math-font'>∠DAP = ∠RQB</span>",
+                reason: "因為兩者皆等於 <span class='math-font'>∠PSR</span>。",
+                render: () => {
+                    drawAngleArc(geom.A, geom.D, geom.P, 30, '#8b5cf6', true); // ∠DAP
+                    drawAngleArc(geom.Q, geom.R, geom.B, 30, '#8b5cf6', true); // ∠RQB
+                }
+            },
+            {
+                text: "∴ <span class='math-font'>AD // QR</span>",
+                reason: "(同位角相等) <br> <span class='text-sm text-gray-500'>截線 APQB 與直線 AD, QR 形成相等的同位角。</span>",
+                render: () => {
+                    drawLineObj(geom.A, geom.D, '#ef4444', 3);
+                    drawLineObj(geom.Q, geom.R, '#ef4444', 3);
+                    drawParallelArrow(geom.A, geom.D, '#ef4444');
+                    drawParallelArrow(geom.Q, geom.R, '#ef4444');
+                    drawAngleArc(geom.A, geom.D, geom.P, 30, '#8b5cf6', true); 
+                    drawAngleArc(geom.Q, geom.R, geom.B, 30, '#8b5cf6', true);
+                }
+            }
+        ],
+        'b': [
+            {
+                text: "目標：證明 <span class='math-font'>A, B, C, D</span> 共圓",
+                reason: "需證明四邊形 <span class='math-font'>ABCD</span> 的對角互補。",
+                render: () => {}
+            },
+            {
+                text: "<span class='math-font'>∠BCR + ∠RQB = 180°</span>",
+                reason: "(圓內接四邊形對角) <br> <span class='text-sm text-gray-500'>考慮最右側的圓 QBCR。</span>",
+                render: () => {
+                    fillPolygon([geom.Q, geom.B, geom.C, geom.R], 'rgba(236, 72, 153, 0.1)');
+                    drawCircleObj(geom.c3, '#ec4899', 2);
+                    drawAngleArc(geom.C, geom.B, geom.R, 30, '#ec4899', true); // ∠BCR
+                    drawAngleArc(geom.Q, geom.R, geom.P, 30, '#ec4899', true); // ∠RQB (內角)
+                }
+            },
+            {
+                text: "<span class='math-font'>∠DAP = ∠RQB</span>",
+                reason: "(在 (a) 已證)",
+                render: () => {
+                    drawAngleArc(geom.Q, geom.R, geom.P, 30, '#3b82f6', true); // ∠RQB
+                    drawAngleArc(geom.A, geom.D, geom.B, 30, '#3b82f6', true); // ∠DAP
+                }
+            },
+            {
+                text: "∴ <span class='math-font'>∠BCR + ∠DAP = 180°</span>",
+                reason: "代入上方兩式即可得出。",
+                render: () => {
+                    fillPolygon([geom.A, geom.B, geom.C, geom.D], 'rgba(139, 92, 246, 0.05)');
+                    drawAngleArc(geom.C, geom.B, geom.D, 30, '#ec4899', true); // ∠BCD (即∠BCR)
+                    drawAngleArc(geom.A, geom.D, geom.B, 30, '#3b82f6', true); // ∠DAB (即∠DAP)
+                }
+            },
+            {
+                text: "∴ <span class='math-font'>A, B, C, D</span> 共圓",
+                reason: "(對角互補)",
+                render: () => {
+                    drawCircleObj(geom.cABCD, '#8b5cf6', 2, [10, 5]); // 畫虛線大圓
+                    fillPolygon([geom.A, geom.B, geom.C, geom.D], 'rgba(139, 92, 246, 0.1)');
+                }
+            }
+        ],
+        'c': [
+            {
+                text: "目標：證明 <span class='math-font'>∠APM = ∠RSN</span>",
+                reason: "牽涉到割線 <span class='math-font'>AR</span> 及點 <span class='math-font'>M, N</span> 的角度推導。",
+                render: () => {
+                    drawLineObj(geom.A, geom.R, '#ef4444', 2); // 突顯 AR
+                    drawPoint(geom.M, 'M', {x: -15, y: -10});
+                    drawPoint(geom.N, 'N', {x: 5, y: -15});
+                }
+            },
+            {
+                text: "<span class='math-font'>∠APM = ∠ARQ</span>",
+                reason: "(圓內接四邊形外角) <br> <span class='text-sm text-gray-500'>考慮圓 PQRS 中的四邊形 PQRM。<br>∠APM 為外角，∠MRQ (即∠ARQ) 為內對角。</span>",
+                render: () => {
+                    drawLineObj(geom.A, geom.R, '#ef4444', 1.5);
+                    drawPoint(geom.M, 'M', {x: -15, y: -10});
+                    
+                    fillPolygon([geom.P, geom.Q, geom.R, geom.M], 'rgba(16, 185, 129, 0.1)');
+                    drawCircleObj(geom.c2, '#10b981', 2);
+                    
+                    drawLineObj(geom.P, geom.M, '#10b981', 2);
+                    drawLineObj(geom.A, geom.P, '#10b981', 3); // AP 線
+                    
+                    drawAngleArc(geom.P, geom.M, geom.A, 30, '#10b981', true); // ∠APM
+                    drawAngleArc(geom.R, geom.Q, geom.A, 30, '#10b981', true); // ∠ARQ
+                }
+            },
+            {
+                text: "<span class='math-font'>= ∠DAR</span>",
+                reason: "(錯角, <span class='math-font'>AD // QR</span>) <br> <span class='text-sm text-gray-500'>直線 AR 為截線。</span>",
+                render: () => {
+                    drawLineObj(geom.A, geom.D, '#3b82f6', 2);
+                    drawLineObj(geom.Q, geom.R, '#3b82f6', 2);
+                    drawLineObj(geom.A, geom.R, '#ef4444', 2);
+                    drawParallelArrow(geom.A, geom.D, '#3b82f6');
+                    drawParallelArrow(geom.Q, geom.R, '#3b82f6');
+                    
+                    drawAngleArc(geom.R, geom.Q, geom.A, 30, '#10b981', true); // ∠ARQ
+                    drawAngleArc(geom.A, geom.R, geom.D, 30, '#f59e0b', true); // ∠DAR
+                }
+            },
+            {
+                text: "<span class='math-font'>= ∠RSN</span>",
+                reason: "(圓內接四邊形外角) <br> <span class='text-sm text-gray-500'>考慮圓 APSD 中的四邊形 ADSN。<br>∠RSN 為外角，∠DAN (即∠DAR) 為內對角。</span>",
+                render: () => {
+                    drawLineObj(geom.A, geom.R, '#ef4444', 1.5);
+                    drawPoint(geom.N, 'N', {x: 5, y: -15});
+                    
+                    fillPolygon([geom.A, geom.D, geom.S, geom.N], 'rgba(59, 130, 246, 0.1)');
+                    drawCircleObj(geom.c1, '#3b82f6', 2);
+                    
+                    drawLineObj(geom.S, geom.N, '#3b82f6', 2);
+                    drawLineObj(geom.S, geom.R, '#3b82f6', 3);
+                    
+                    drawAngleArc(geom.A, geom.R, geom.D, 30, '#f59e0b', true); // ∠DAR
+                    drawAngleArc(geom.S, geom.R, geom.N, 30, '#ec4899', true); // ∠RSN
+                }
+            },
+            {
+                text: "∴ <span class='math-font'>∠APM = ∠RSN</span>",
+                reason: "證明完畢。 <span class='text-gray-400'>(1 f.t.)</span>",
+                render: () => {
+                    drawLineObj(geom.P, geom.M, '#10b981', 2);
+                    drawLineObj(geom.S, geom.N, '#3b82f6', 2);
+                    drawLineObj(geom.A, geom.R, '#ef4444', 1.5);
+                    drawPoint(geom.M, 'M', {x: -15, y: -10});
+                    drawPoint(geom.N, 'N', {x: 5, y: -15});
+                    
+                    drawAngleArc(geom.P, geom.M, geom.A, 30, '#8b5cf6', true); // ∠APM
+                    drawAngleArc(geom.S, geom.R, geom.N, 30, '#8b5cf6', true); // ∠RSN
+                }
+            }
+        ]
+    };
+
+    let currentPart = 'a';
+    let currentStep = 0;
+
+    function renderBaseGeometry() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        
+        // 畫三個圓 (淺色背景)
+        drawCircleObj(geom.c1, '#d1d5db');
+        drawCircleObj(geom.c2, '#d1d5db');
+        drawCircleObj(geom.c3, '#d1d5db');
+
+        // 畫主要線條
+        drawLineObj(geom.A, geom.B, '#9ca3af'); // APQB
+        drawLineObj(geom.D, geom.C, '#9ca3af'); // DSRC
+        drawLineObj(geom.A, geom.D, '#9ca3af'); // AD
+        drawLineObj(geom.B, geom.C, '#9ca3af'); // BC
+
+        // 標記點
+        drawPoint(geom.A, 'A', {x: -15, y: -10});
+        drawPoint(geom.B, 'B', {x: 10, y: -5});
+        drawPoint(geom.C, 'C', {x: 10, y: 15});
+        drawPoint(geom.D, 'D', {x: -15, y: 15});
+        drawPoint(geom.P, 'P', {x: 0, y: -15});
+        drawPoint(geom.Q, 'Q', {x: 0, y: -15});
+        drawPoint(geom.R, 'R', {x: 5, y: 20});
+        drawPoint(geom.S, 'S', {x: -10, y: 20});
+    }
+
+    function render() {
+        renderBaseGeometry();
+        
+        // 執行當前步驟的繪製邏輯
+        if(stepsData[currentPart] && stepsData[currentPart][currentStep]) {
+            stepsData[currentPart][currentStep].render();
+        }
+        
+        updateUI();
+    }
+
+    function updateUI() {
+        // 更新 Tab 狀態
+        ['a', 'b', 'c'].forEach(p => {
+            const tab = document.getElementById(`tab-${p}`);
+            if(p === currentPart) {
+                tab.classList.remove('border-transparent', 'text-gray-500');
+                tab.classList.add('border-blue-600', 'text-blue-600');
+            } else {
+                tab.classList.add('border-transparent', 'text-gray-500');
+                tab.classList.remove('border-blue-600', 'text-blue-600');
+            }
+        });
+
+        // 重新生成步驟列表 HTML
+        const container = document.getElementById('steps-container');
+        let html = '<div class="space-y-4">';
+        const steps = stepsData[currentPart];
+        
+        steps.forEach((step, index) => {
+            const isActive = index === currentStep;
+            html += `
+                <div class="p-3 rounded transition-colors ${isActive ? 'step-active' : 'opacity-60'} cursor-pointer" onclick="goToStep(${index})">
+                    <p class="text-lg mb-1">${step.text}</p>
+                    <p class="text-sm text-gray-600">${step.reason}</p>
+                </div>
+            `;
+        });
+        html += '</div>';
+        container.innerHTML = html;
+
+        // 更新控制按鈕
+        document.getElementById('btn-prev').disabled = currentStep === 0;
+        document.getElementById('btn-next').disabled = currentStep === steps.length - 1;
+        document.getElementById('step-counter').innerText = `步驟 ${currentStep + 1} / ${steps.length}`;
+        
+        // 自動捲動到 active 元素
+        const activeEl = container.querySelector('.step-active');
+        if(activeEl) {
+            activeEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+    }
+
+    function setPart(part) {
+        currentPart = part;
+        currentStep = 0;
+        render();
+    }
+
+    function nextStep() {
+        if(currentStep < stepsData[currentPart].length - 1) {
+            currentStep++;
+            render();
+        }
+    }
+
+    function prevStep() {
+        if(currentStep > 0) {
+            currentStep--;
+            render();
+        }
+    }
+    
+    function goToStep(index) {
+        currentStep = index;
+        render();
+    }
+
+    // 初始化
+    initGeometry();
+    resizeCanvas();
+    render();
+
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "assessments-school-exams",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node test/validate-catalog.mjs && node ../scripts/validate-exam-migration-manifest.mjs"
+  }
+}

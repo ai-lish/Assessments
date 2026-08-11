@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-26 中三 第二學期 數學科考試 - 卷二</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+        startup: { ready: function() { MathJax.startup.defaultReady(); } }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: #f5f5f5; color: #333; padding-top: 70px; }
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; background: #2c3e50; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; z-index: 1000; }
+        .nav-left, .nav-right { display: flex; align-items: center; gap: 15px; }
+        .back-btn { color: white; text-decoration: none; font-size: 0.95em; padding: 6px 12px; background: rgba(255,255,255,0.1); border-radius: 5px; }
+        .nav-title { font-size: 1.1em; font-weight: bold; }
+        .check-btn { background: #27ae60; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold; }
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        .section-title { background: #34495e; color: white; padding: 12px 15px; border-radius: 5px; margin: 20px 0 15px 0; cursor: pointer; font-weight: bold; }
+        .section-content { display: none; }
+        .section-content.open { display: block; }
+        .question { margin-bottom: 25px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .question-num { font-weight: bold; color: #3498db; margin-bottom: 10px; font-size: 1.1em; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; }
+        .question-text { margin-bottom: 15px; line-height: 1.6; font-size: 1.05em; }
+        .svg-container { width: 100%; max-width: 350px; margin: 0 auto 15px auto; display: block; }
+        .options-container { display: flex; flex-direction: column; gap: 8px; }
+        .option { padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; background: #fafafa; transition: 0.2s; }
+        .option:hover { background: #f0f7ff; border-color: #3498db; }
+        .option.selected { background: #e1f0fa; border-color: #3498db; border-width: 2px; padding: 11px 14px; }
+        .option.correct { background: #d4edda; border-color: #28a745; }
+        .option.wrong { background: #f8d7da; border-color: #dc3545; }
+        .answer { display: none; color: #e74c3c; font-weight: bold; margin-top: 15px; }
+        .show-answer { display: block !important; }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="nav-left">
+            <a href="./index.html" class="back-btn">← 返回考試主頁</a>
+        </div>
+        <div class="nav-title" id="scoreDisplay">卷二選擇題 | 得分: 0 / 30</div>
+        <div class="nav-right">
+            <button class="check-btn" onclick="checkAnswers()">核對答案</button>
+        </div>
+    </div>
+    <div class="container">
+        <h2>2025-26 中三 第二學期 數學科考試 - 卷二</h2>
+        <p>時限：四十分鐘 | 總分：30分</p>
+        <hr>
+        <div class="section-title" onclick="toggleSection('p2-a')">甲部 (21分) ▼</div>
+        <div id="p2-a" class="section-content open">
+<div class="question" data-correct="B">
+<div class="question-num">Q1</div>
+<div class="question-text">化簡 (5x - 7y) - (4x - y)。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. x - 6y</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. x - 8y</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. -9x - 6y</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. -9x - 8y</div>
+</div>
+<div class="answer">正確答案：B</div>
+</div>
+<div class="question" data-correct="B">
+<div class="question-num">Q2</div>
+<div class="question-text">化簡 (5$x^3$/y)^2。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 10$x^6$/$y^2$</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 25$x^6$/$y^2$</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 10$x^5$/$y^2$</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 25$x^5$/$y^3$</div>
+</div>
+<div class="answer">正確答案：B</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q3</div>
+<div class="question-text">(2x + 3y)(3x - 2y) =</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 4$x^2$ - 9$y^2$</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 9$x^2$ - 4$y^2$</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 6$x^2$ + 5xy - 6$y^2$</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 6$x^2$ + 13xy + 6$y^2$</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q4</div>
+<div class="question-text">解方程 2x - 5 = 15。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. x = 3/2</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. x = 5</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. x = 10</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. x = 20</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="D">
+<div class="question-num">Q5</div>
+<div class="question-text">若 x = 3y/(1-2y)，則 y =</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. (3+2x)/x</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 2+3/x</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. x/(3-2x)</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. x/(3+2x)</div>
+</div>
+<div class="answer">正確答案：D</div>
+</div>
+<div class="question" data-correct="A">
+<div class="question-num">Q6</div>
+<div class="question-text">一個銀包以 $459 賣出，賺了 8%。求銀包的成本。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. $425</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. $451</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. $459</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. $495.7</div>
+</div>
+<div class="answer">正確答案：A</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q7</div>
+<div class="question-text">已知扇形的半徑及圓心角是 24 cm 及 45°，求弧長。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 6π + 48 cm</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 6π + 24 cm</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 6π cm</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 72π cm</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="A">
+<div class="question-num">Q8</div>
+<div class="question-text">化簡 ((2a^-4)^-1)/($a^2$ b^-1)。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. $a^2$b/2</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. $a^2$/(2b)</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 2b/$a^2$</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 2$a^2$b</div>
+</div>
+<div class="answer">正確答案：A</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q9</div>
+<div class="question-text">因式分解 4$x^2$ - 4x - 3。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. (x-1)(4x+3)</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. (x-1)(4x-3)</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. (2x-3)(2x+1)</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. (2x+3)(2x-1)</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="B">
+<div class="question-num">Q10</div>
+<div class="question-text">某工人的日薪於 2019 年是 $1000，在 2020 年期間減少了 10%，然後他的日薪在 2021 年期間增加了 15%。求在 2021 年該工人的日薪是多少？</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. $1050</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. $1035</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. $1265</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. $935</div>
+</div>
+<div class="answer">正確答案：B</div>
+</div>
+<div class="question" data-correct="A">
+<div class="question-num">Q11</div>
+<div class="question-text">佩雯把 $60,000 存入銀行，年利率為 5%，以每年複利息計算一次。問她在三年後得到多少複利息？</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. $9457.5</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. $9000</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. $69457.5</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. $69000</div>
+</div>
+<div class="answer">正確答案：A</div>
+</div>
+<div class="question" data-correct="B">
+<div class="question-num">Q12</div>
+<div class="question-text">若一個正方形的對角線是 10 cm，其後對角線的長度減少了 10%。求正方形面積的百分變化。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 減少 10%</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 減少 19%</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 減少 23%</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 增加 23%</div>
+</div>
+<div class="answer">正確答案：B</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q13</div>
+<div class="question-text">下圖中，D 為 BC 的中點，BE 為 ∠ABC 的角平分線，FD ⊥ BC。求 ∠ADB 的度数。</div>
+<div class="diagram-container" style="margin: 15px 0; text-align: center;">
+<svg width="400" height="350" viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg">
+    <rect width="800" height="700" fill="white" />
+    <line x1="250" y1="130" x2="150" y2="450" stroke="black" stroke-width="1.5" />
+    <line x1="150" y1="450" x2="650" y2="450" stroke="black" stroke-width="1.5" />
+    <line x1="250" y1="130" x2="650" y2="450" stroke="black" stroke-width="1.5" />
+    <line x1="250" y1="130" x2="400" y2="450" stroke="black" stroke-width="1.5" />
+    <line x1="150" y1="450" x2="411" y2="259" stroke="black" stroke-width="1.5" />
+    <line x1="400" y1="250" x2="400" y2="450" stroke="black" stroke-width="1.5" />
+    <path d="M 400 425 L 425 425 L 425 450" fill="none" stroke="black" stroke-width="1" />
+    <line x1="272" y1="440" x2="277" y2="460" stroke="black" stroke-width="1.5" />
+    <line x1="278" y1="440" x2="283" y2="460" stroke="black" stroke-width="1.5" />
+    <line x1="522" y1="440" x2="527" y2="460" stroke="black" stroke-width="1.5" />
+    <line x1="528" y1="440" x2="533" y2="460" stroke="black" stroke-width="1.5" />
+    <path d="M 190 450 A 40 40 0 0 0 182.2 426.3" fill="none" stroke="black" stroke-width="1" />
+    <path d="M 195 450 A 45 45 0 0 0 186.3 423.4" fill="none" stroke="black" stroke-width="1" />
+    <path d="M 182.2 426.3 A 40 40 0 0 0 162.0 411.8" fill="none" stroke="black" stroke-width="1" />
+    <path d="M 186.3 423.4 A 45 45 0 0 0 163.5 407.1" fill="none" stroke="black" stroke-width="1" />
+    <text x="235" y="115" font-family="serif" font-size="24" font-style="italic">A</text>
+    <text x="115" y="475" font-family="serif" font-size="24" font-style="italic">B</text>
+    <text x="655" y="475" font-family="serif" font-size="24" font-style="italic">C</text>
+    <text x="390" y="485" font-family="serif" font-size="24" font-style="italic">D</text>
+    <text x="425" y="250" font-family="serif" font-size="24" font-style="italic">E</text>
+    <text x="410" y="235" font-family="serif" font-size="24" font-style="italic">F</text>
+</svg>
+</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 45°</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 60°</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 90°</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 120°</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q14</div>
+<div class="question-text">下圖中，AFEC 和 BDC 都是直線。BE 是 △ABC 的一條</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 高線</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 中線</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 垂直平分線</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 角平分線</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="B">
+<div class="question-num">Q15</div>
+<div class="question-text">某球體的表面面積是 0.25π cm²，求該球體的半徑。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 0.125 cm</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 0.25 cm</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 1 cm</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 2 cm</div>
+</div>
+<div class="answer">正確答案：B</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q16</div>
+<div class="question-text">一圓錐體的高是 12 cm，底面積是 25π cm²，該圓錐體的曲面面積是</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 25π cm²</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 60π cm²</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 65π cm²</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 150π cm²</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="D">
+<div class="question-num">Q17</div>
+<div class="question-text">圖中顯示一個直立棱錐 VABCD，其底是一個邊長 12 cm 的正方形。△VAB 的高 VM 是 18 cm。求該棱錐的總表面面積。</div>
+<div class="diagram-container" style="margin: 15px 0; text-align: center;">
+<svg width="400" height="350" viewBox="0 0 600 500" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <marker id="arrowhead17" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+        <polygon points="0 0, 10 3.5, 0 7" fill="black" />
+      </marker>
+    </defs>
+    <g fill="none" stroke="black" stroke-width="1.2">
+      <line x1="150" y1="420" x2="450" y2="420" />
+      <line x1="450" y1="420" x2="580" y2="320" />
+      <line x1="340" y1="80" x2="150" y2="420" />
+      <line x1="340" y1="80" x2="450" y2="420" />
+      <line x1="340" y1="80" x2="580" y2="320" />
+      <line x1="150" y1="420" x2="280" y2="320" stroke-dasharray="5,3" />
+      <line x1="280" y1="320" x2="580" y2="320" stroke-dasharray="5,3" />
+      <line x1="340" y1="80" x2="280" y2="320" stroke-dasharray="5,3" />
+      <line x1="340" y1="80" x2="290" y2="420" stroke-dasharray="5,3" />
+    </g>
+    <polyline points="290,395 320,395 320,420" fill="none" stroke="black" stroke-width="1.2" />
+    <g font-family="serif" font-style="italic" font-size="22" fill="black">
+      <text x="330" y="65">V</text>
+      <text x="125" y="440">A</text>
+      <text x="455" y="440">B</text>
+      <text x="590" y="325">C</text>
+      <text x="255" y="315">D</text>
+      <text x="270" y="455">M</text>
+    </g>
+    <g font-family="serif" font-size="20" fill="black">
+      <text x="170" y="290">18 cm</text>
+      <text x="495" y="380">12 cm</text>
+    </g>
+    <path d="M 220 335 Q 260 380 325 385" fill="none" stroke="black" stroke-width="1.2" marker-end="url(#arrowhead17)" />
+</svg>
+</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 288 cm²</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 576 cm²</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 648 cm²</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 864 cm²</div>
+</div>
+<div class="answer">正確答案：D</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q18</div>
+<div class="question-text">下表所示為漫畫店的 100 名顧客上星期所租借的漫畫書的數目。求這 100 名顧客上星期所租借的漫畫書的平均數目。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 1 本</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 1.2 本</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 1.3 本</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 1.4 本</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q19</div>
+<div class="question-text">以下累積頻數多邊形所示為 20 名學生的年齡。求學生年齡的中位數。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 15</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 16</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 17</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 18</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="D">
+<div class="question-num">Q20</div>
+<div class="question-text">已知一組數據 23, 43, 23, 51, 24, 43, 50，其眾數是</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 23</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 33</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 43</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 23 和 43</div>
+</div>
+<div class="answer">正確答案：D</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q21</div>
+<div class="question-text">下表所示為美儀和志堅在英文科考試不同試卷的分數。下列哪項正確？<br>I. 美儀的平均分較志堅的高。<br>II. 美儀的加權平均分較志堅的高。<br>III. 美儀的加權平均分較她的平均分高。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 只有 I 及 II</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 只有 I 及 III</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 只有 II 和 III</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. I、II 及 III</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+</div>
+<div class="section-title" onclick="toggleSection('p2-b')">乙部 (9分) ▼</div>
+<div id="p2-b" class="section-content">
+<div class="question" data-correct="B">
+<div class="question-num">Q22</div>
+<div class="question-text">化簡 4·3^n + 9^n。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 5·13^n</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 13^n</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 9·4^n</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 4+3^n</div>
+</div>
+<div class="answer">正確答案：B</div>
+</div>
+<div class="question" data-correct="B">
+<div class="question-num">Q23</div>
+<div class="question-text">因式分解 $x^2$ - 4$y^2$ - 3x - 6y。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. (x+2y)^2(x-2y-3)</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. (x+2y)(x-2y-3)</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. (x+2y)(x-2y+3)</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. (x-2y)(x+2y-3)</div>
+</div>
+<div class="answer">正確答案：B</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q24</div>
+<div class="question-text">在圖中，OGD、OEI 和 OHF 是 △ABC 的三條垂直平分線。下列何者必為正確？<br>I. O 是 △ABC 的垂心。<br>II. △OEH ~ △CFH<br>III. BE = CE</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 只有 I</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 只有 III</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 只有 I 及 III</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 只有 II 及 III</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="B">
+<div class="question-num">Q25</div>
+<div class="question-text">圖中顯示一個直徑為 10 cm 的球體和一個底直徑為 20 cm 的直立圓錐。若它們的體積相同，求圓錐的高。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 5 cm</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 10 cm</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 12 cm</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 15 cm</div>
+</div>
+<div class="answer">正確答案：B</div>
+</div>
+<div class="question" data-correct="A">
+<div class="question-num">Q26</div>
+<div class="question-text">圖中顯示一個底半徑為 r 和斜高為 l 的倒置直立圓錐形紙杯。把紙杯沿其斜高剪開並攤平成一個扇形。該扇形的扇形角是 θ。下列何者必定正確？<br>I. 若 2r < l，則 θ < 180°。<br>II. 若 3r > l，則 θ < 120°。<br>III. 若 4r > l，則 θ > 90°。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 只有 I 和 II</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 只有 II 和 III</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 只有 I 和 III</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. I、II 及 III</div>
+</div>
+<div class="answer">正確答案：A</div>
+</div>
+<div class="question" data-correct="B">
+<div class="question-num">Q27</div>
+<div class="question-text">圖中所示為正棱錐 VABCD，其底是一個正方形。若棱錐的總表面面積為 481 cm²，求 △VAB 的高。</div>
+<div class="solution-link" style="margin-top: 10px; padding: 10px; background: #e8f4fd; border-radius: 5px;">
+    <a href="p2/q27-a.html" style="display: inline-flex; align-items: center; gap: 5px; color: #3498db; text-decoration: none; font-weight: bold;">
+        <span>📺</span> 動態解說
+    </a>
+</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 6 cm</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 8 cm</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 10 cm</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 12 cm</div>
+</div>
+<div class="answer">正確答案：B</div>
+</div>
+<div class="question" data-correct="C">
+<div class="question-num">Q28</div>
+<div class="question-text">圖中所示為平截頭體 ABCDHEFG，其下底 ABCD 和上底 EFGH 都是正方形。求平截頭體 ABCDHEFG 的體積。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 2058 cm³</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 2010 cm³</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 2106 cm³</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 2200 cm³</div>
+</div>
+<div class="answer">正確答案：C</div>
+</div>
+<div class="question" data-correct="A">
+<div class="question-num">Q29</div>
+<div class="question-text">一組數據的平均數、中位數和眾數均是 50。若從數據組中剔除數據「75」，下列哪一/些項必為正確？<br>I. 平均數會增加。<br>II. 中位數會減少。<br>III. 眾數會保持不變。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. 只有 III</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. 只有 I 和 II</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. 只有 I 和 III</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 只有 II 和 III</div>
+</div>
+<div class="answer">正確答案：A</div>
+</div>
+<div class="question" data-correct="A">
+<div class="question-num">Q30</div>
+<div class="question-text">以下的背靠背幹葉圖顯示兩組學生在某數學測驗的成績。下列何者必為正確？<br>I. A 組平均數低於 B 組平均數。<br>II. A 組中位數低於 B 組中位數。<br>III. A 組眾數低於 B 組眾數。<br>IV. A 組人數多於 B 組人數。</div>
+<div class="options-container">
+<div class="option" onclick="selectOption(this, &quot;A&quot;)">A. I 及 IV</div>
+<div class="option" onclick="selectOption(this, &quot;B&quot;)">B. II 及 III</div>
+<div class="option" onclick="selectOption(this, &quot;C&quot;)">C. I, II 及 III</div>
+<div class="option" onclick="selectOption(this, &quot;D&quot;)">D. 以上皆是</div>
+</div>
+<div class="answer">正確答案：A</div>
+</div>
+</div></div>
+<script>
+function toggleSection(id) { document.getElementById(id).classList.toggle("open"); }
+function selectOption(element, answerValue) {
+    let questionDiv = element.closest(".question");
+    let options = questionDiv.querySelectorAll(".option");
+    options.forEach(opt => opt.classList.remove("selected"));
+    element.classList.add("selected");
+    questionDiv.dataset.selected = answerValue;
+}
+function checkAnswers() {
+    let questions = document.querySelectorAll(".question");
+    let currentScore = 0;
+    questions.forEach(q => {
+        let selectedAns = q.dataset.selected;
+        let correctAns = q.dataset.correct;
+        if (selectedAns) {
+            let options = q.querySelectorAll(".option");
+            options.forEach(opt => {
+                opt.classList.remove("correct", "wrong");
+                if (opt.classList.contains("selected")) {
+                    if (selectedAns === correctAns) { opt.classList.add("correct"); currentScore++; }
+                    else { opt.classList.add("wrong"); }
+                }
+            });
+            let answerDiv = q.querySelector(".answer");
+            if (answerDiv) answerDiv.classList.add("show-answer");
+        }
+    });
+    document.getElementById("scoreDisplay").innerText = "卷二選擇題 | 得分: " + currentScore + " / 30";
+}
+</script>
+</body>
+</html>

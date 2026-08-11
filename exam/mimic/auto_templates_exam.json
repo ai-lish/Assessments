@@ -1,0 +1,569 @@
+{
+  "s1-term3-p1-q01": {
+    "id": "s1-term3-p1-q01",
+    "examKey": "s1-term3",
+    "paper": "p1",
+    "source_question_id": "2025S1Q01",
+    "topic": "整數四則運算",
+    "template_text": "−{a} + {b} − {c} =",
+    "var_specs": {
+      "a": {
+        "min": 5,
+        "max": 20,
+        "step": 1
+      },
+      "b": {
+        "min": 1,
+        "max": 10,
+        "step": 1
+      },
+      "c": {
+        "min": 1,
+        "max": 8,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p1-q06": {
+    "id": "s1-term3-p1-q06",
+    "examKey": "s1-term3",
+    "paper": "p1",
+    "source_question_id": "2025S1Q06",
+    "topic": "解一元一次方程",
+    "template_text": "解方程 {a}x + {b} = {c}。",
+    "var_specs": {
+      "a": {
+        "min": 2,
+        "max": 9,
+        "step": 1
+      },
+      "b": {
+        "min": 1,
+        "max": 12,
+        "step": 1
+      },
+      "c": {
+        "min": 5,
+        "max": 20,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q01": {
+    "id": "s1-term3-p2-q01",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q01",
+    "topic": "分數與小數加減",
+    "template_text": "計算 {a}/{b} + 0.{c}{d} 的值",
+    "var_specs": {
+      "a": {
+        "min": 1,
+        "max": 7,
+        "step": 1
+      },
+      "b": {
+        "min": 2,
+        "max": 9,
+        "step": 1
+      },
+      "c": {
+        "min": 1,
+        "max": 9,
+        "step": 1
+      },
+      "d": {
+        "min": 0,
+        "max": 9,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q02": {
+    "id": "s1-term3-p2-q02",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q02",
+    "topic": "有理數四則運算",
+    "template_text": "計算 ((+{a}) + (−{b})) ÷ (−{c}) 的值",
+    "var_specs": {
+      "a": {
+        "min": 4,
+        "max": 15,
+        "step": 1
+      },
+      "b": {
+        "min": 3,
+        "max": 12,
+        "step": 1
+      },
+      "c": {
+        "min": 1,
+        "max": 5,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q04": {
+    "id": "s1-term3-p2-q04",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q04",
+    "topic": "代數式求值",
+    "template_text": "已知 b = {k} + a²，求當 a = −{v} 時 b 的值",
+    "var_specs": {
+      "k": {
+        "min": 1,
+        "max": 10,
+        "step": 1
+      },
+      "v": {
+        "min": 2,
+        "max": 8,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q07": {
+    "id": "s1-term3-p2-q07",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q07",
+    "topic": "指數律",
+    "template_text": "化簡 x^{a} · x^{b}",
+    "var_specs": {
+      "a": {
+        "min": 2,
+        "max": 12,
+        "step": 1
+      },
+      "b": {
+        "min": 2,
+        "max": 8,
+        "step": 1
+      }
+    },
+    "answer_template": "x^({a}+{b})"
+  },
+  "s1-term3-p2-q08": {
+    "id": "s1-term3-p2-q08",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q08",
+    "topic": "代數式化簡",
+    "template_text": "化簡 ({a}a + {b}b) − ({c}a − {d}b)",
+    "var_specs": {
+      "a": {
+        "min": 3,
+        "max": 9,
+        "step": 1
+      },
+      "b": {
+        "min": 1,
+        "max": 5,
+        "step": 1
+      },
+      "c": {
+        "min": 4,
+        "max": 12,
+        "step": 1
+      },
+      "d": {
+        "min": 2,
+        "max": 8,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q09": {
+    "id": "s1-term3-p2-q09",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q09",
+    "topic": "展開括號",
+    "template_text": "展開 (x + {a})(x − {b})",
+    "var_specs": {
+      "a": {
+        "min": 1,
+        "max": 9,
+        "step": 1
+      },
+      "b": {
+        "min": 1,
+        "max": 9,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q10": {
+    "id": "s1-term3-p2-q10",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q10",
+    "topic": "解一元一次方程",
+    "template_text": "解方程 {a} − {b}x = {c}",
+    "var_specs": {
+      "a": {
+        "min": 8,
+        "max": 25,
+        "step": 1
+      },
+      "b": {
+        "min": 1,
+        "max": 5,
+        "step": 1
+      },
+      "c": {
+        "min": 1,
+        "max": 10,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q11": {
+    "id": "s1-term3-p2-q11",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q11",
+    "topic": "解一元一次方程",
+    "template_text": "解方程 {a}x + {b} = {c}x − {d}",
+    "var_specs": {
+      "a": {
+        "min": 3,
+        "max": 8,
+        "step": 1
+      },
+      "b": {
+        "min": 10,
+        "max": 30,
+        "step": 1
+      },
+      "c": {
+        "min": 1,
+        "max": 4,
+        "step": 1
+      },
+      "d": {
+        "min": 2,
+        "max": 12,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q15": {
+    "id": "s1-term3-p2-q15",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q15",
+    "topic": "百分變化",
+    "template_text": "小倩上月的總支出是 ${a}，本月的總支出為 ${b}。求小倩所花支出的百分變化",
+    "var_specs": {
+      "a": {
+        "min": 800,
+        "max": 2000,
+        "step": 100
+      },
+      "b": {
+        "min": 500,
+        "max": 1800,
+        "step": 100
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q03": {
+    "id": "s1-term3-p2-q03",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q03",
+    "topic": "代數式",
+    "template_text": "以代數式表示 $x$ 的平方與 $y$ 之積",
+    "var_specs": {},
+    "answer_template": "$x^2y$"
+  },
+  "s1-term3-p2-q14": {
+    "id": "s1-term3-p2-q14",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q14",
+    "topic": "代數應用",
+    "template_text": "小強原有 \\${a} 零用錢。他繳交了活動報名費後餘下 \\${b}。求報名費",
+    "var_specs": {
+      "a": {
+        "min": 200,
+        "max": 500,
+        "step": 50
+      },
+      "b": {
+        "min": 50,
+        "max": 150,
+        "step": 10
+      }
+    },
+    "answer_template": "\\${a} - \\${b}"
+  },
+  "s1-term3-p2-q16": {
+    "id": "s1-term3-p2-q16",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q16",
+    "topic": "百分數應用",
+    "template_text": "小明以 \\${cost} 購買了一件玩具並以 \\${sell} 將該件玩具賣出。求小明的盈利百分率",
+    "var_specs": {
+      "cost": {
+        "min": 200,
+        "max": 800,
+        "step": 50
+      },
+      "sell": {
+        "min": 300,
+        "max": 1200,
+        "step": 50
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q17": {
+    "id": "s1-term3-p2-q17",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q17",
+    "topic": "折扣應用",
+    "template_text": "小芳和 3 個好朋友一同去吃火鍋。該火鍋店正推出 4 人同行可享八折優惠。若每人原價 \\${p}，他們四人共需多少錢？",
+    "var_specs": {
+      "p": {
+        "min": 80,
+        "max": 200,
+        "step": 10
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q19": {
+    "id": "s1-term3-p2-q19",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q19",
+    "topic": "坐標幾何",
+    "template_text": "求 ({x1}, {y1}) 與 ({x2}, {y2}) 兩點之間的距離",
+    "var_specs": {
+      "x1": {
+        "min": -5,
+        "max": 5,
+        "step": 1
+      },
+      "y1": {
+        "min": -5,
+        "max": 5,
+        "step": 1
+      },
+      "x2": {
+        "min": -5,
+        "max": 5,
+        "step": 1
+      },
+      "y2": {
+        "min": -5,
+        "max": 5,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q20": {
+    "id": "s1-term3-p2-q20",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q20",
+    "topic": "坐標變換",
+    "template_text": "右圖中，P({x},{y}) 向右平移 {u} 單位至 P'。P' 的坐標是",
+    "var_specs": {
+      "x": {
+        "min": -5,
+        "max": 5,
+        "step": 1
+      },
+      "y": {
+        "min": -5,
+        "max": 5,
+        "step": 1
+      },
+      "u": {
+        "min": 2,
+        "max": 5,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q29": {
+    "id": "s1-term3-p2-q29",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q29",
+    "topic": "數列",
+    "template_text": "某數列的通項公式為 $a_n = {a}n + {b}$。求第 {n} 項的值",
+    "var_specs": {
+      "a": {
+        "min": 2,
+        "max": 5,
+        "step": 1
+      },
+      "b": {
+        "min": 1,
+        "max": 9,
+        "step": 1
+      },
+      "n": {
+        "min": 5,
+        "max": 10,
+        "step": 1
+      }
+    },
+    "answer_template": "{a}*{n}+{b}"
+  },
+  "s1-term3-p2-q31": {
+    "id": "s1-term3-p2-q31",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q31",
+    "topic": "幾何量測",
+    "template_text": "以 x 表示右圖中的長方體的總表面面積",
+    "var_specs": {},
+    "answer_template": "2(xl + lw + lh)"
+  },
+  "s1-term3-p2-q32": {
+    "id": "s1-term3-p2-q32",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q32",
+    "topic": "解方程",
+    "template_text": "解方程 {a}x + {b} = {c}x - {d}",
+    "var_specs": {
+      "a": {
+        "min": 2,
+        "max": 6,
+        "step": 1
+      },
+      "b": {
+        "min": 1,
+        "max": 15,
+        "step": 1
+      },
+      "c": {
+        "min": 1,
+        "max": 4,
+        "step": 1
+      },
+      "d": {
+        "min": 5,
+        "max": 25,
+        "step": 1
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q35": {
+    "id": "s1-term3-p2-q35",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q35",
+    "topic": "百分數應用",
+    "template_text": "某學校有 {p1}% 的學生是初中生。當中 {p2}% 的初中生為男生。若該校有 {total} 名學生，求初中男生的數目",
+    "var_specs": {
+      "p1": {
+        "min": 50,
+        "max": 70,
+        "step": 5
+      },
+      "p2": {
+        "min": 40,
+        "max": 60,
+        "step": 5
+      },
+      "total": {
+        "min": 400,
+        "max": 800,
+        "step": 100
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q36": {
+    "id": "s1-term3-p2-q36",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q36",
+    "topic": "折扣應用",
+    "template_text": "某玩具原本的售價為 \\${p}，減價後該玩具的售價減少了 {d}%。該玩具以新售價出售，求新售價",
+    "var_specs": {
+      "p": {
+        "min": 100,
+        "max": 500,
+        "step": 50
+      },
+      "d": {
+        "min": 10,
+        "max": 30,
+        "step": 5
+      }
+    },
+    "answer_template": "\\${p}*(100-{d})/100"
+  },
+  "s1-term3-p2-q38": {
+    "id": "s1-term3-p2-q38",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q38",
+    "topic": "平行線與角",
+    "template_text": "右圖中，AB // CD 且 BEC 為直線。已知 \\angle CBE = {a}°，求 x",
+    "var_specs": {
+      "a": {
+        "min": 30,
+        "max": 70,
+        "step": 5
+      }
+    },
+    "answer_template": "180 - {a}"
+  },
+  "s1-term3-p2-q39": {
+    "id": "s1-term3-p2-q39",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q39",
+    "topic": "平行線與角",
+    "template_text": "右圖中，AB // CD。已知 \\angle ABC = {a}°，\\angle BCD = {b}°，求 x",
+    "var_specs": {
+      "a": {
+        "min": 30,
+        "max": 70,
+        "step": 5
+      },
+      "b": {
+        "min": 30,
+        "max": 70,
+        "step": 5
+      }
+    },
+    "answer_template": null
+  },
+  "s1-term3-p2-q40": {
+    "id": "s1-term3-p2-q40",
+    "examKey": "s1-term3",
+    "paper": "p2",
+    "source_question_id": "2025S1Q40",
+    "topic": "三角形全等",
+    "template_text": "右圖中，AD 與 BE 相交於 C 且 \\Delta ABE \\cong \\Delta EDA。求 x",
+    "var_specs": {},
+    "answer_template": null
+  }
+}

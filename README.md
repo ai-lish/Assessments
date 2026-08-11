@@ -8,6 +8,16 @@
 
 - **初中短答網頁製作工具**（見本 repo）— 題目庫 + 學生版模板 + 老師選題工具。
 - **2025-26 年度預載練習**：中一第二學期甲部（14 題）、中一第三學期甲部（16 題）、中二第三學期甲部（16 題）、中三第三學期甲部（14 題）。
+- **校內考試學生工具**（[`exam/`](exam/)）— 已核對的校內數學試卷集中由本 repo 維護；未核對資料只會列在 catalog，不會成為公開入口。
+- **HKDSE 學生工具**（[`hkdse/`](hkdse/)）— 卷一草稿／自評、卷二選擇題核對及已獨立驗證的仿題工具。
+
+## 考試資源 ownership
+
+校內考試及 HKDSE 的 canonical runtime、題目資料、仿題工具和發布範圍由 Assessments 維護。由 `ai-lish/ai-learning` 遷移的來源盤點及分類見
+[`docs/exam-migration-manifest.json`](docs/exam-migration-manifest.json)，整體 ownership／compatibility／cleanup 規則見
+[`PLANNING/20260812_EXAMS_ASSESSMENTS_OWNERSHIP_V1.md`](PLANNING/20260812_EXAMS_ASSESSMENTS_OWNERSHIP_V1.md)。
+
+學生入口免登入；教師 OCR 審核、遠端寫回、未發布試卷及原始文件不會直接放入公開學生 runtime。
 
 ## 系統組成
 
