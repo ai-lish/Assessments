@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025-26 中一 第二學期 數學科考試 - 卷一</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>
+    window.MathJax = {
+        tex: { inlineMath: [['$', '$'], ['\\(', '\\)']] },
+        startup: { ready: function() { MathJax.startup.defaultReady(); } }
+    };
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: #f5f5f5; color: #333; padding: 20px; }
+        .container { max-width: 900px; margin: 0 auto; }
+        .header { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .header h1 { color: #e74c3c; margin-bottom: 10px; }
+        .header p { color: #666; }
+        .back-btn { display: inline-block; padding: 10px 20px; background: #3498db; color: white; text-decoration: none; border-radius: 5px; margin-bottom: 20px; }
+        .back-btn:hover { background: #2980b9; }
+        .paper-section { background: white; padding: 20px; border-radius: 10px; margin-bottom: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .paper-title { color: #e74c3c; font-size: 1.3em; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 2px solid #eee; }
+        .question { margin-bottom: 20px; padding: 15px; background: #fafafa; border-radius: 8px; }
+        .question-num { font-weight: bold; color: #3498db; margin-bottom: 8px; }
+        .question-text { margin-bottom: 10px; line-height: 1.6; }
+        .section-title { background: #34495e; color: white; padding: 10px 15px; border-radius: 5px; margin: 20px 0 15px 0; cursor: pointer; }
+        .section-title:hover { background: #2c3e50; }
+        .section-content { display: none; padding: 15px 0; }
+        .section-content.open { display: block; }
+        
+        /* 漢堡包 */
+        .hamburger { position: fixed; top: 15px; left: 15px; cursor: pointer; padding: 8px; z-index: 100; background: rgba(0,0,0,0.3); border-radius: 5px; }
+        .hamburger span { display: block; width: 25px; height: 3px; background: white; margin: 5px 0; border-radius: 2px; }
+        .menu-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 99; }
+        .menu-overlay.open { display: block; }
+        .side-menu { visibility: hidden; position: fixed; top: 0; right: -280px; width: 280px; height: 100%; background: white; z-index: 100; transition: right 0.3s; }
+        .side-menu.open { visibility: visible; right: 0; }
+        .side-menu-header { padding: 20px; background: #2c3e50; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .side-menu-header h2 { font-size: 1.2rem; }
+        .close-menu { cursor: pointer; font-size: 1.5rem; }
+        .side-menu-content { padding: 10px; }
+        .menu-section { margin-bottom: 15px; }
+        .menu-btn { display: block; width: 100%; padding: 12px 15px; margin: 5px 0; border: none; border-radius: 8px; background: #f5f7fa; cursor: pointer; text-align: left; font-size: 1rem; }
+        .menu-btn:hover { background: #e0e0e0; }
+        
+        /* 答案顯示 */
+        .answer-toggle { display: inline-block; padding: 6px 15px; background: #27ae60; color: white; border: none; border-radius: 20px; cursor: pointer; font-size: 0.9rem; margin-left: 10px; }
+        .answer-toggle:hover { background: #219a52; }
+        .answer-section { display: none; margin-top: 12px; padding: 12px; background: #e8f5e9; border-radius: 8px; border-left: 4px solid #27ae60; }
+        .answer-section.show { display: block; }
+        .answer-label { font-weight: bold; color: #27ae60; margin-right: 8px; }
+        .solution { margin-top: 8px; padding: 10px; background: #fff3e0; border-radius: 5px; font-size: 0.9em; }
+        .solution-container { display: flex; gap: 15px; }
+        .solution-steps { flex: 1; }
+        .marking-table { 
+            width: 120px; 
+            background: rgba(255,255,255,0.7); 
+            border: 1px solid #ddd; 
+            border-radius: 5px; 
+            padding: 8px; 
+            font-size: 0.85em;
+        }
+        .marking-table table { width: 100%; border-collapse: collapse; }
+        .marking-table td { padding: 3px 5px; border-bottom: 1px solid #eee; }
+        .marking-table tr:last-child td { border-bottom: none; }
+        .answer-btn { padding: 4px 12px; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.8rem; }
+        .answer-btn:hover { background: #2980b9; }
+    </style>
+</head>
+<body>
+    <!-- 漢堡包 -->
+    <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <h2>選單</h2>
+            <span class="close-menu" onclick="closeMenu()">✕</span>
+        </div>
+        <div class="side-menu-content">
+            <div class="menu-section">
+                <button class="menu-btn" onclick="goToPage('index.html'); closeMenu();">首頁</button>
+                <button class="menu-btn" onclick="goToPage('exam-2025-26-s1-term2.html'); closeMenu();">考試主頁</button>
+                <button class="menu-btn" onclick="goToPage('exam-2025-26-s1-term2-p2.html'); closeMenu();">卷二</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="container">
+        <a href="./index.html" class="back-btn">← 返回考試主頁</a>
+        <button class="answer-toggle" onclick="toggleAllAnswers()">顯示/隱藏所有答案</button>
+        
+        <div class="header">
+            <h1>📝 卷一 (70分)</h1>
+            <p>2025-26 中一第二學期數學科考試 | 中華聖潔會靈風中學</p>
+        </div>
+        
+        <div class="paper-section">
+            <!-- 甲部 -->
+            <div class="section-title" onclick="toggleSection('p1-a')">甲部：在橫線上寫上答案 (14分) - 按下展開/收起</div>
+            <div id="p1-a" class="section-content open">
+                <div class="question">
+                    <div class="question-num">Q1</div>
+                    <div class="question-text">寫 18 的質因數連乘式，並以指數記數法表示答案。</div>
+                    <div class="answer-section" id="a1"><span class="answer-label">答案:</span>$2 \times 3^2$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a1')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q2</div>
+                    <div class="question-text">求 30 和 18 的 H.C.F. (最大公因數)。</div>
+                    <div class="answer-section" id="a2"><span class="answer-label">答案:</span>6</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a2')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q3</div>
+                    <div class="question-text">$-3 + (-4) =$</div>
+                    <div class="answer-section" id="a3"><span class="answer-label">答案:</span>$-7$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a3')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q4</div>
+                    <div class="question-text">$(-4)(-8) =$</div>
+                    <div class="answer-section" id="a4"><span class="answer-label">答案:</span>$32$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a4')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q5</div>
+                    <div class="question-text">以代數式表示「由 $x$ 減去 5 之差除以 2」。</div>
+                    <div class="answer-section" id="a5"><span class="answer-label">答案:</span>$\dfrac{x-5}{2}$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a5')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q6</div>
+                    <div class="question-text">解 $x - 5 = -2$。</div>
+                    <div class="answer-section" id="a6"><span class="answer-label">答案:</span>$x = 3$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a6')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q7</div>
+                    <div class="question-text">解 $3x = -24$。</div>
+                    <div class="answer-section" id="a7"><span class="answer-label">答案:</span>$x = -8$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a7')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q8</div>
+                    <div class="question-text">求圖中長方體的體積 (長=10cm, 闊=2cm, 高=5cm)。</div>
+                    <div class="answer-section" id="a8"><span class="answer-label">答案:</span>$100 \text{ cm}^3$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a8')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q9</div>
+                    <div class="question-text">按 $x$ 的降冪次序排列 $4x - 3 + x^2$。</div>
+                    <div class="answer-section" id="a9"><span class="answer-label">答案:</span>$x^2 + 4x - 3$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a9')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q10</div>
+                    <div class="question-text">寫出多項式 $x^2y + 4x - 10$ 中的常數項。</div>
+                    <div class="answer-section" id="a10"><span class="answer-label">答案:</span>$-10$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a10')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q11</div>
+                    <div class="question-text">化簡 $7a - 2a - 4$。</div>
+                    <div class="answer-section" id="a11"><span class="answer-label">答案:</span>$5a - 4$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a11')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q12</div>
+                    <div class="question-text">展開 $-2(3x - 1)$。</div>
+                    <div class="answer-section" id="a12"><span class="answer-label">答案:</span>$-6x + 2$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a12')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q13</div>
+                    <div class="question-text">寫出坐標 $(2, -3)$ 的 $y$ 坐標。</div>
+                    <div class="answer-section" id="a13"><span class="answer-label">答案:</span>$-3$</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a13')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q14</div>
+                    <div class="question-text">求坐標 $B(-3, 1)$ 的象限。</div>
+                    <div class="answer-section" id="a14"><span class="answer-label">答案:</span>第二象限</div>
+                    <button class="answer-btn" onclick="toggleAnswer('a14')">顯示答案</button>
+                </div>
+            </div>
+            
+            <!-- 乙部 -->
+            <div class="section-title" onclick="toggleSection('p1-b')">乙部：於題目下方的空白處作答 (35分) - 按下展開/收起</div>
+            <div id="p1-b" class="section-content">
+                <div class="question">
+                    <div class="question-num">Q15</div>
+                    <div class="question-text">計算以下各題：<br>(a) $\dfrac{10 + 3 \times 2}{2}$<br>(b) $\dfrac{2}{3} - \dfrac{4}{9}$</div>
+                    <div class="answer-section" id="a15">
+                        <span class="answer-label">答案:</span>(a) 8 (b) $\dfrac{2}{9}$
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    (a) $\dfrac{10+6}{2} = \dfrac{16}{2} = 8$<br>
+                                    (b) $\dfrac{6}{9} - \dfrac{4}{9} = \dfrac{2}{9}$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a15')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q16</div>
+                    <div class="question-text">考慮公式 $P = 20 - 3a$。當 $a = -4$ 時，求 $P$ 的值。</div>
+                    <div class="answer-section" id="a16">
+                        <span class="answer-label">答案:</span>$P = 32$
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    $P = 20 - 3(-4)$<br>
+                                    $= 20 + 12$<br>
+                                    $= 32$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a16')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q17</div>
+                    <div class="question-text">考慮多項式 $4x^3 - x + 5$，完成下表：<br>項數、次數、$x$ 的係數、$x^2$ 的係數</div>
+                    <div class="answer-section" id="a17">
+                        <span class="answer-label">答案:</span>項數: 3, 次數: 3, $x$ 的係數: -1, $x^2$ 的係數: 0
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    $4x^3$: 項數1, 次數3<br>
+                                    $-x$: 項數2, 次數1<br>
+                                    $5$: 項數3, 次數0
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a17')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q18</div>
+                    <div class="question-text">化簡下列各式：<br>(a) $3x - 7 + x - 1$<br>(b) $(a + 3b) - (4a - 3b)$</div>
+                    <div class="answer-section" id="a18">
+                        <span class="answer-label">答案:</span>(a) $4x - 8$ (b) $-3a + 6b$
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    (a) $3x + x - 7 - 1 = 4x - 8$<br>
+                                    (b) $a + 3b - 4a + 3b = -3a + 6b$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a18')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q19</div>
+                    <div class="question-text">展開下列各式：<br>(a) $3x(x - 4)$<br>(b) $(x - 2)(3x - 1)$</div>
+                    <div class="answer-section" id="a19">
+                        <span class="answer-label">答案:</span>(a) $3x^2 - 12x$ (b) $3x^2 - 7x + 2$
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    (a) $3x \cdot x - 3x \cdot 4 = 3x^2 - 12x$<br>
+                                    (b) $x \cdot 3x + x \cdot (-1) + (-2) \cdot 3x + (-2) \cdot (-1)$<br>
+                                    $= 3x^2 - x - 6x + 2 = 3x^2 - 7x + 2$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a19')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q20</div>
+                    <div class="question-text">解下列各方程：<br>(a) $5x - 3 = 3x + 9$<br>(b) $\dfrac{x + 18}{4} = 2 - x$</div>
+                    <div class="answer-section" id="a20">
+                        <span class="answer-label">答案:</span>(a) $x = 6$ (b) $x = -2$
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    (a) $5x - 3x = 9 + 3$<br>
+                                    $2x = 12$<br>
+                                    $x = 6$<br><br>
+                                    (b) $x + 18 = 4(2 - x)$<br>
+                                    $x + 18 = 8 - 4x$<br>
+                                    $5x = -10$<br>
+                                    $x = -2$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a20')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q21</div>
+                    <div class="question-text">求圖中多邊形 $ABCDE$ 的面積 (梯形減三角形)。<br>上底=12cm, 下底=20cm, 高=10cm, 三角形AB=4cm, BC=10cm</div>
+                    <div class="answer-section" id="a21">
+                        <span class="answer-label">答案:</span>$40 \text{ cm}^2$
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    梯形面積 = $\dfrac{(上底+下底) \times 高}{2}$<br>
+                                    $= \dfrac{(12+20) \times 10}{2} = 160$<br>
+                                    三角形面積 = $\dfrac{4 \times 10}{2} = 20$<br>
+                                    多邊形面積 = $160 - 20 = 40$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1ft</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a21')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q22</div>
+                    <div class="question-text">已知圖中的直立角柱的體積為 $480\text{ cm}^3$。求 $x$ 的值。<br>(底為平行四邊形，底=15cm, 另一邊=10cm, 高=x, 角柱高=8cm)</div>
+                    <div class="answer-section" id="a22">
+                        <span class="answer-label">答案:</span>$x = 4 \text{ cm}$
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    底面積 = $15 \times 10 = 150$<br>
+                                    體積 = 底面積 × 角柱高<br>
+                                    $480 = 150 \times x \times 8$<br>
+                                    $480 = 1200x$<br>
+                                    $x = 4$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a22')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q23</div>
+                    <div class="question-text">(a) 在以下的直角坐標平面上標示 $A(6, 5)$ 和 $B(-4, 5)$。<br>(b) (i) 求 $AB$ 的長度。<br>(b) (ii) 求 $\triangle AOB$ 的面積 ($O$為原點)。</div>
+                    <div class="answer-section" id="a23">
+                        <span class="answer-label">答案:</span>(b)(i) $AB = 10$ (b)(ii) 面積 = 25
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    (a) 正確標示A和B<br><br>
+                                    (b)(i) $AB = |6 - (-4)| = 10$<br><br>
+                                    (b)(ii) 底 = $AB = 10$, 高 = $y$坐標 = 5<br>
+                                    面積 = $\dfrac{10 \times 5}{2} = 25$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a23')">顯示答案</button>
+                </div>
+            </div>
+            
+            <!-- 丙部 -->
+            <div class="section-title" onclick="toggleSection('p1-c')">丙部：須詳列步驟 (21分) - 按下展開/收起</div>
+            <div id="p1-c" class="section-content">
+                <div class="question">
+                    <div class="question-num">Q24</div>
+                    <div class="question-text">計算 $\frac{(-21)+(7)(-2)}{-(-9)(5)}$。</div>
+                    <div class="answer-section" id="a24">
+                        <span class="answer-label">答案:</span>$-1$
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    $= \dfrac{-21 + (7)(-2)}{-(-9)(5)}$<br>
+                                    $= \dfrac{-21 - 14}{-( -45)}$<br>
+                                    $= \dfrac{-35}{45}$<br>
+                                    $= -\dfrac{7}{9}$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a24')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q25</div>
+                    <div class="question-text">化簡：<br>(a) $(2x - 3)^2$<br>(b) $(2x - 3)^2 - 4x - 7$</div>
+                    <div class="answer-section" id="a25">
+                        <span class="answer-label">答案:</span>(a) $4x^2 - 12x + 9$ (b) $4x^2 - 16x + 2$
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    (a) $(2x - 3)^2 = (2x)^2 - 2(2x)(3) + 3^2$<br>
+                                    $= 4x^2 - 12x + 9$<br><br>
+                                    (b) $4x^2 - 12x + 9 - 4x - 7$<br>
+                                    $= 4x^2 - 16x + 2$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a25')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q26</div>
+                    <div class="question-text">現時悟空的年齡是悟飯的 2 倍少 3 歲。17 年後，悟飯與悟空的年齡之和為 100 歲。求 17 年後悟空的年齡。</div>
+                    <div class="answer-section" id="a26">
+                        <span class="answer-label">答案:</span>47 歲
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    設悟飯今年 $x$ 歲，悟空今年 $2x - 3$ 歲<br>
+                                    17年後: 悟飯 $x + 17$，悟空 $2x + 14$<br>
+                                    $(x + 17) + (2x + 14) = 100$<br>
+                                    $3x + 31 = 100$<br>
+                                    $3x = 69$<br>
+                                    $x = 23$<br>
+                                    悟空今年 $2(23) - 3 = 43$ 歲<br>
+                                    17年後 = $43 + 17 = 60$ 歲
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1M</td></tr>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1ft</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a26')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q27</div>
+                    <div class="question-text">下圖顯示一個盛有水的密封玻璃長方體形容器。現把該容器垂直放置使其高為 15cm。<br>(a) 求水的體積。<br>(b) 求 $h$ 的值。<br>(c) 比達宣稱容器改變放置方向後，容器浸濕部份的總表面面積沒有改變。你是否同意？試解釋你的答案。</div>
+                    <div class="answer-section" id="a27">
+                        <span class="answer-label">答案:</span>(a) $64 \text{ cm}^3$ (b) $h = 4$ (c) 同意
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    (a) 水的體積 = $8 \times 8 \times 1 = 64$<br><br>
+                                    (b) 垂直後底面積 = $8 \times 4 = 32$<br>
+                                    $64 = 32 \times h$<br>
+                                    $h = 4$<br><br>
+                                    (c) 同意。浸濕面積為接觸水面既四個面，總面積相同。
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1M</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a27')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q28</div>
+                    <div class="question-text">給予三個點：$A(-2, 5)$、$B(2, -3)$ 和 $C(6, -1)$。<br>點 $A$ 沿 $y$ 軸反射至 $D$。<br>點 $A$ 繞原點 $O$ 逆時針方向旋轉 $180^\circ$ 至 $E$。<br>點 $B$ 向右平移 4 個單位至 $F$。<br>(a) 寫出 $D$、$E$ 及 $F$ 的坐標。<br>(b) 求四邊形 $CDEF$ 的面積。</div>
+                    <div class="answer-section" id="a28">
+                        <span class="answer-label">答案:</span>(a) $D(2,5)$, $E(2,-5)$, $F(6,-3)$ (b) 20
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    (a) $A(-2,5)$ 反射: $D(2,5)$<br>
+                                    $A$ 旋轉180°: $E(2,-5)$<br>
+                                    $B(2,-3)$ 平移4: $F(6,-3)$<br><br>
+                                    (b) CDEF為梯形<br>
+                                    $C(6,-1), D(2,5), E(2,-5), F(6,-3)$<br>
+                                    面積 = $\dfrac{(4+4) \times 10}{2} = 20$
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1A</td><td>1A</td><td>1A</td></tr>
+                                        <tr><td>1M</td><td>1M</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a28')">顯示答案</button>
+                </div>
+                <div class="question">
+                    <div class="question-num">Q29</div>
+                    <div class="question-text">Match the appropriate English name to the prism.<br>圖一：三棱柱<br>圖二：正方體</div>
+                    <div class="answer-section" id="a29">
+                        <span class="answer-label">答案:</span>圖一: Triangular Prism, 圖二: Cube
+                        <div class="solution">
+                            <div class="solution-container">
+                                <div class="solution-steps">
+                                    <span class="answer-label">評分步驟:</span><br>
+                                    圖一 (三邊形底): Triangular Prism<br>
+                                    圖二 (正方): Cube
+                                </div>
+                                <div class="marking-table">
+                                    <table>
+                                        <tr><td>1A</td><td>1A</td></tr>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="answer-btn" onclick="toggleAnswer('a29')">顯示答案</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+    function toggleMenu() { document.getElementById('sideMenu').classList.toggle('open'); document.getElementById('menuOverlay').classList.toggle('open'); }
+    function closeMenu() { document.getElementById('sideMenu').classList.remove('open'); document.getElementById('menuOverlay').classList.remove('open'); }
+    function goToPage(page) { window.location.href = page; }
+    function toggleSection(id) { const el = document.getElementById(id); el.classList.toggle('open'); }
+    function toggleAnswer(id) { 
+        const el = document.getElementById(id); 
+        el.classList.toggle('show');
+        const btn = el.nextElementSibling;
+        btn.textContent = el.classList.contains('show') ? '隱藏答案' : '顯示答案';
+    }
+    function toggleAllAnswers() {
+        const answers = document.querySelectorAll('.answer-section');
+        const allHidden = Array.from(answers).every(a => !a.classList.contains('show'));
+        answers.forEach((a, i) => {
+            a.classList.toggle('show', allHidden);
+            const btn = a.nextElementSibling;
+            btn.textContent = allHidden ? '隱藏答案' : '顯示答案';
+        });
+    }
+    </script>
+</body>
+</html>

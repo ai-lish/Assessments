@@ -1,0 +1,336 @@
+{
+  "info": {
+    "year": "2024-25",
+    "grade": "s1",
+    "term": "term3",
+    "paper": "p2",
+    "total": 40,
+    "subject": "Math",
+    "note": "OCR 需要人工審核修正"
+  },
+  "2025S1Q01": {
+    "question": "計算 \\frac{5}{8} + 0.65 的值",
+    "options": {
+      "A": "40/100",
+      "B": "51/40",
+      "C": "173/113",
+      "D": "160"
+    },
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q02": {
+    "question": "計算 \\frac{(+6) + (−8)}{(−2)} 的值",
+    "options": {
+      "A": "−8",
+      "B": "−4",
+      "C": "1",
+      "D": "4"
+    },
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q03": {
+    "question": "以代數式表示 x 的平方與 y 之積",
+    "options": {
+      "A": "x²y",
+      "B": "x²+y",
+      "C": "x³−y",
+      "D": "x³y"
+    },
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q04": {
+    "question": "已知 b = 3 + a^2，求當 a = −6 時 b 的值",
+    "options": {
+      "A": "−39",
+      "B": "−33",
+      "C": "33",
+      "D": "39"
+    },
+    "answer": "D",
+    "topic": ""
+  },
+  "2025S1Q05": {
+    "question": "求右圖的面積",
+    "options": null,
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q06": {
+    "question": "求右圖中柱體的體積",
+    "options": null,
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q07": {
+    "question": "化簡 x^{10} \\cdot x^3",
+    "options": {
+      "A": "x¹³",
+      "B": "x³⁰",
+      "C": "2x¹³",
+      "D": "2x³⁰"
+    },
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q08": {
+    "question": "化簡 (6a + 2b) − (8a − 5b)",
+    "options": {
+      "A": "2a+7b",
+      "B": "2a−3b",
+      "C": "−2a+7b",
+      "D": "−2a−3b"
+    },
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q09": {
+    "question": "展開 (x + 3)(x − 5)",
+    "options": {
+      "A": "x²−2x−15",
+      "B": "x²+7x−15",
+      "C": "x²−15",
+      "D": "2x−2"
+    },
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q10": {
+    "question": "解方程 15 − 2x = 7",
+    "options": {
+      "A": "x=−11",
+      "B": "x=−4",
+      "C": "x=4",
+      "D": "x=11"
+    },
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q11": {
+    "question": "解方程 5x + 22 = 2x − 8",
+    "options": {
+      "A": "x=−10",
+      "B": "x=−2",
+      "C": "x=2",
+      "D": "x=10"
+    },
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q12": {
+    "question": "分辨以下各項數據是離散數據還是連續數據",
+    "options": null,
+    "answer": "D",
+    "topic": ""
+  },
+  "2025S1Q13": {
+    "question": "以下的幹葉圖顯示某班同學上學所需的時間（以分鐘為單位）的分佈",
+    "options": null,
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q14": {
+    "question": "小盛原有 $250 零用錢。他繳交了歌唱比賽的報名費後餘下 $160。求報名費",
+    "options": {
+      "A": "$90",
+      "B": "$80",
+      "C": "$70",
+      "D": "$60"
+    },
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q15": {
+    "question": "小倩上月的總支出是 $1200，本月的總支出為 $960。求小倩所花支出的百分變化",
+    "options": {
+      "A": "增加20%",
+      "B": "減少20%",
+      "C": "增加25%",
+      "D": "減少25%"
+    },
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q16": {
+    "question": "小晞以 $576 購買了一套玩偶並以 $900 將該套玩偶賣出。求小晞的盈利百分率",
+    "options": {
+      "A": "56.25%",
+      "B": "64%",
+      "C": "虧蝕36%",
+      "D": "虧蝕43.75%"
+    },
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q17": {
+    "question": "小祺和 3 個好朋友一同去吃燒肉。該燒肉店正推出四人同行可享八折優惠。他們四人共需多少錢？",
+    "options": {
+      "A": "$59",
+      "B": "$94.4",
+      "C": "$283.2",
+      "D": "$377.6"
+    },
+    "answer": "D",
+    "topic": ""
+  },
+  "2025S1Q18": {
+    "question": "右圖中，(4, −3) 表示哪一點？",
+    "options": null,
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q19": {
+    "question": "求 (3, −4) 與 (3, 5) 兩點之間的距離",
+    "options": {
+      "A": "0單位",
+      "B": "1單位",
+      "C": "6單位",
+      "D": "9單位"
+    },
+    "answer": "D",
+    "topic": ""
+  },
+  "2025S1Q20": {
+    "question": "右圖中，A(−2, 3) 向右平移 3 單位至 A'。A' 的坐標是",
+    "options": {
+      "A": "(−2,6)",
+      "B": "(−2,0)",
+      "C": "(1,3)",
+      "D": "(−5,3)"
+    },
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q21": {
+    "question": "對於直角坐標平面，以下哪個描述是正確？",
+    "options": null,
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q22": {
+    "question": "右圖中，求 x",
+    "options": null,
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q23": {
+    "question": "右圖中，AB // CD。以下哪（幾）對角之和是 180°？",
+    "options": null,
+    "answer": "D",
+    "topic": ""
+  },
+  "2025S1Q24": {
+    "question": "右圖中，AB // CD。求 x",
+    "options": null,
+    "answer": "D",
+    "topic": ""
+  },
+  "2025S1Q25": {
+    "question": "右圖中，求 x",
+    "options": null,
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q26": {
+    "question": "右圖中，ΔABC ≅ ΔDEF。求 x",
+    "options": null,
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q27": {
+    "question": "右圖中顯示一對三角形。以下哪項必為正確？",
+    "options": null,
+    "answer": "D",
+    "topic": ""
+  },
+  "2025S1Q28": {
+    "question": "以下哪一個三角形與右圖所示的 ΔABC 全等？",
+    "options": null,
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q29": {
+    "question": "某數列的通項 a_n = ...",
+    "options": null,
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q30": {
+    "question": "右圖中，ABCE 為一平行四邊形。求陰影部分的面積",
+    "options": null,
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q31": {
+    "question": "以 x 表示右圖中的長方體的總表面面積",
+    "options": null,
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q32": {
+    "question": "解方程 ...",
+    "options": null,
+    "answer": "C",
+    "topic": ""
+  },
+  "2025S1Q33": {
+    "question": "以下的圓形圖顯示在某選舉中不同候選人所得的票數的分佈",
+    "options": null,
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q34": {
+    "question": "以下的幹葉圖顯示某班同學的身高（以 cm 為單位）的分佈",
+    "options": null,
+    "answer": "D",
+    "topic": ""
+  },
+  "2025S1Q35": {
+    "question": "某學校有 60% 的學生是初中生。當中 45% 的初中生及 65% 的高中生為男生",
+    "options": {
+      "A": "$162",
+      "B": "$180",
+      "C": "$198",
+      "D": "$216"
+    },
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q36": {
+    "question": "某玩具原本的售價為 325 元，減價後該玩具的售價減少了 20%。該玩具以新售價出售",
+    "options": {
+      "A": "$200",
+      "B": "$250",
+      "C": "$260",
+      "D": "$338"
+    },
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q37": {
+    "question": "求右圖中陰影部分的面積",
+    "options": null,
+    "answer": "A",
+    "topic": ""
+  },
+  "2025S1Q38": {
+    "question": "右圖中，AB // CD 且 BEC 為直線。求 x",
+    "options": null,
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q39": {
+    "question": "右圖中，求 x",
+    "options": null,
+    "answer": "B",
+    "topic": ""
+  },
+  "2025S1Q40": {
+    "question": "右圖中，AD 與 BE 相交於 C 且 ΔABE ≅ ΔEDA。求 x",
+    "options": null,
+    "answer": "A",
+    "topic": ""
+  }
+}

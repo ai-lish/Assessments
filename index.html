@@ -198,6 +198,29 @@
     }
     .hkdse-card-btn:hover { background: #1f6b39; text-decoration: none; }
 
+    .exam-card {
+      background: #eef6fc;
+      border: 1px solid #1769aa;
+      border-radius: 12px;
+      padding: 22px 24px;
+      display: flex; align-items: center; gap: 18px;
+      flex-wrap: wrap;
+    }
+    .exam-card-text { flex: 1 1 280px; min-width: 0; }
+    .exam-card-text h3 { margin: 0 0 6px; color: #155a8a; font-size: 1.15rem; }
+    .exam-card-text p { margin: 0; color: var(--ink); font-size: 0.95rem; }
+    .exam-card-btn {
+      flex: 0 0 auto;
+      background: #1769aa; color: #fff;
+      padding: 14px 26px;
+      border-radius: 8px;
+      font-size: 1.05rem; font-weight: 700;
+      display: inline-flex; align-items: center; gap: 8px;
+      min-height: 48px;
+      border: 2px solid #1769aa;
+    }
+    .exam-card-btn:hover { background: #0e4e83; text-decoration: none; }
+
     footer {
       border-top: 1px solid var(--line);
       background: #eef2fa;
@@ -224,7 +247,7 @@
         flex-direction: column; align-items: stretch;
         padding: 16px;
       }
-      .tool-cta-btn, .hkdse-card-btn {
+      .tool-cta-btn, .hkdse-card-btn, .exam-card-btn {
         text-align: center;
         justify-content: center;
       }
@@ -332,6 +355,21 @@
           <p>卷一 198 題（2012–2023）長答草稿 + 自評；卷二 495 題（2012–2022）選擇核對。免登入，作答只保存喺本機。</p>
         </div>
         <a class="hkdse-card-btn" href="hkdse/" aria-label="前往 HKDSE 工具">前往 HKDSE →</a>
+      </div>
+    </section>
+
+    <!-- §3 校內考試學生工具 -->
+    <section class="section" id="sec-exams" aria-labelledby="sec-exams-h">
+      <div class="section-head">
+        <h2 id="sec-exams-h">校內考試</h2>
+        <span class="section-note">學生試卷 · 分批核對 · 免登入</span>
+      </div>
+      <div class="exam-card">
+        <div class="exam-card-text">
+          <h3>📝 校內數學考試學生工具</h3>
+          <p>集中開啟已核對的校內考試卷一／卷二；教師審核及未核實資料不會放在學生入口。</p>
+        </div>
+        <a class="exam-card-btn" href="exam/" aria-label="前往校內考試學生工具">前往校內考試 →</a>
       </div>
     </section>
 

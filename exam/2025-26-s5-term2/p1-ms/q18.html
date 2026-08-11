@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DSE 數學動態解題：標準分與數據變化</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- 引入 MathJax 用於渲染 LaTeX 數學公式 -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+    <!-- 引入 FontAwesome 圖示 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* 自訂滾動條樣式 */
+        ::-webkit-scrollbar { width: 8px; height: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+        
+        /* 隱藏/顯示動畫過渡 */
+        .step-content { transition: max-height 0.5s ease-in-out, opacity 0.3s ease-in-out; overflow: hidden; }
+        .step-content.collapsed { max-height: 0; opacity: 0; }
+        .step-content.expanded { max-height: 1200px; opacity: 1; }
+
+        /* 標籤樣式 */
+        .mark-badge { 
+            display: inline-block; padding: 2px 6px; border-radius: 4px; font-weight: bold; font-size: 0.85rem; margin-left: 8px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        .mark-m { background-color: #fef08a; color: #854d0e; border: 1px solid #eab308; } /* 1M */
+        .mark-a { background-color: #bbf7d0; color: #166534; border: 1px solid #22c55e; } /* 1A */
+
+        /* Resizer 樣式 (加入 touch-action: none 確保 iPad 拖拉順暢) */
+        #resizer { cursor: col-resize; transition: background-color 0.2s; touch-action: none; }
+        #resizer:hover, #resizer.active { background-color: #3b82f6; }
+    </style>
+</head>
+<body class="bg-gray-50 h-screen overflow-hidden flex flex-col font-sans">
+
+    <!-- 頂部導航列 -->
+    <header class="bg-blue-900 text-white p-4 shadow-md z-10 flex justify-between items-center shrink-0">
+        <h1 class="text-xl font-bold flex items-center gap-2">
+            <i class="fa-solid fa-chart-line"></i> DSE 數學互動解題：統計學 (標準分)
+        </h1>
+        <div class="text-sm bg-blue-800 px-3 py-1 rounded-full hidden sm:block">乙部 18 題 (35分題型)</div>
+    </header>
+
+    <!-- 主體內容區 (強制的 Split-pane 左右分割) -->
+    <main class="flex-1 flex flex-row overflow-hidden w-full h-full">
+        
+        <!-- 左側：解題步驟區 -->
+        <section id="left-pane" class="w-1/2 h-full overflow-y-auto bg-white flex flex-col shrink-0 relative" style="min-width: 25%;">
+            <div class="p-4 md:p-6 pb-20">
+                
+                <!-- 題目展示區 -->
+                <div class="bg-blue-50 border-l-4 border-blue-600 p-4 rounded shadow-sm mb-6 text-gray-800">
+                    <h2 class="font-bold text-blue-800 mb-2"><i class="fa-solid fa-file-circle-question"></i> 題目</h2>
+                    <p class="leading-relaxed">
+                        某次全級數學測驗的標準差是 $4$。小平及小英的分數分別是 $58$ 分及 $50$ 分。已知小平的標準分是 $2$。
+                    </p>
+                    <ol class="list-[lower-alpha] pl-5 mt-2 space-y-1 font-semibold">
+                        <li>求全級測驗的方差及平均分。 <span class="text-gray-500 font-normal">(3 分)</span></li>
+                        <li>求小英的標準分。 <span class="text-gray-500 font-normal">(2 分)</span></li>
+                        <li>若老師將小英的分數剔去，小平宣稱自己的標準分會減少，你同意嗎？試解釋你的答案。 <span class="text-gray-500 font-normal">(2 分)</span></li>
+                    </ol>
+                </div>
+
+                <div class="mb-4 text-sm text-gray-500"><i class="fa-solid fa-hand-pointer"></i> 點擊下方卡片展開詳細解題步驟，右側圖表將同步更新。</div>
+
+                <!-- 步驟卡片容器 -->
+                <div class="space-y-4" id="steps-container">
+
+                    <!-- Step 1 -->
+                    <div class="step-card border rounded-lg shadow-sm bg-white overflow-hidden">
+                        <button onclick="toggleStep(1)" class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-gray-100 font-bold text-gray-700 flex justify-between items-center border-b">
+                            <span>步驟一：(a) 求方差及平均分</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-300" id="icon-step-1"></i>
+                        </button>
+                        <div id="content-step-1" class="step-content expanded px-5 py-4 text-gray-700">
+                            <p class="mb-2">首先處理<strong>方差 (Variance)</strong>。我們知道方差是標準差 (Standard Deviation, $\sigma$) 的平方。</p>
+                            <div class="bg-gray-50 p-3 rounded mb-2 font-mono text-sm border">
+                                已知標準差 $\sigma = 4$
+                                <br>方差 $= \sigma^2$
+                                <br>方差 $= 4^2$
+                                <br>方差 $\mathbf{= 16}$ <span class="mark-badge mark-a">1A</span>
+                            </div>
+                            <!-- 針對方差單位的警告 -->
+                            <div class="text-sm text-red-700 bg-red-50 p-2 rounded mb-4 border-l-4 border-red-500">
+                                <i class="fa-solid fa-triangle-exclamation"></i> <strong>常犯錯誤：</strong> 根據評分準則，方差只接受「沒有單位」或「平方分」。若誤寫為「$16$ 分」，將會被扣分！
+                            </div>
+                            
+                            <p class="mb-2">接著求<strong>平均分 (Mean, $\bar{x}$)</strong>。利用小平的數據和標準分公式：</p>
+                            <div class="bg-blue-50 p-2 rounded mb-2 text-center text-sm font-semibold text-blue-800">
+                                💡 標準分公式： $z = \frac{x - \bar{x}}{\sigma}$
+                            </div>
+                            
+                            <div class="bg-gray-50 p-3 rounded font-mono text-sm border space-y-1 mb-2">
+                                $\frac{58 - \bar{x}}{4} = 2$ <span class="mark-badge mark-m">1M</span> <span class="text-xs text-gray-500 ml-2">// 列出方程</span>
+                                <br><br><span class="text-xs text-green-600">/* 兩邊同乘 4 去分母 */</span>
+                                <br>$58 - \bar{x} = 8$
+                                <br><br><span class="text-xs text-green-600">/* 移項化簡 */</span>
+                                <br>$58 - 8 = \bar{x}$
+                                <br>$\bar{x} = 50$
+                                <br><br>因此，平均分 $= \mathbf{50\text{ 分}}$ <span class="mark-badge mark-a">1A</span>
+                            </div>
+                            <!-- 針對平均分單位的警告 -->
+                            <div class="text-sm text-red-700 bg-red-50 p-2 rounded border-l-4 border-red-500">
+                                <i class="fa-solid fa-triangle-exclamation"></i> <strong>考評局要求：</strong> 平均分必須清楚寫明單位「<strong>分</strong>」，若只寫數值 $50$ 沒有單位，會失去這 $1$ 分答案分！
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="step-card border rounded-lg shadow-sm bg-white overflow-hidden">
+                        <button onclick="toggleStep(2)" class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-gray-100 font-bold text-gray-700 flex justify-between items-center border-b">
+                            <span>步驟二：(b) 求小英的標準分</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-300 transform -rotate-90" id="icon-step-2"></i>
+                        </button>
+                        <div id="content-step-2" class="step-content collapsed px-5 py-4 text-gray-700">
+                            <p class="mb-2">已知全級的平均分 $\bar{x} = 50$ 分，標準差 $\sigma = 4$。</p>
+                            <p class="mb-2 text-sm text-gray-600">代入小英的分數 $x = 50$：</p>
+                            
+                            <div class="bg-gray-50 p-3 rounded font-mono text-sm border space-y-1">
+                                小英的標準分 $z = \frac{50 - 50}{4}$ <span class="mark-badge mark-m">1M</span>
+                                <br><br>$z = \frac{0}{4}$
+                                <br><br>小英的標準分 $\mathbf{= 0}$ <span class="mark-badge mark-a">1A</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="step-card border rounded-lg shadow-sm bg-white overflow-hidden">
+                        <button onclick="toggleStep(3)" class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-gray-100 font-bold text-gray-700 flex justify-between items-center border-b">
+                            <span>步驟三：(c) 數據變化分析 (一) - 平均分不變</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-300 transform -rotate-90" id="icon-step-3"></i>
+                        </button>
+                        <div id="content-step-3" class="step-content collapsed px-5 py-4 text-gray-700">
+                            <p class="mb-2 text-red-600 font-bold">⚠️ 這是很多同學失分的關鍵題型！必須逐步推論。</p>
+                            <p class="mb-2">首先評估「剔除小英分數」對平均分的影響：</p>
+                            
+                            <ul class="list-disc pl-5 mb-4 space-y-2 text-sm">
+                                <li>小英的分數是 $50$ 分，而全級的平均分剛好也是 $50$ 分。</li>
+                                <li><strong>結論：</strong> 剔除一個「等於平均分」的數據，並不會改變剩餘數據的平均分。</li>
+                            </ul>
+
+                            <div class="bg-gray-50 p-3 rounded font-mono text-sm border space-y-1 text-gray-800">
+                                剔除小英的分數後，
+                                <br>全級測驗的<strong>平均分不變</strong> (維持 $50$ 分)。 <span class="mark-badge mark-m">1M</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="step-card border rounded-lg shadow-sm bg-white overflow-hidden">
+                        <button onclick="toggleStep(4)" class="w-full text-left px-5 py-4 bg-gray-50 hover:bg-gray-100 font-bold text-gray-700 flex justify-between items-center border-b">
+                            <span>步驟四：(c) 數據變化分析 (二) - 標準差與標準分</span>
+                            <i class="fa-solid fa-chevron-down transition-transform duration-300 transform -rotate-90" id="icon-step-4"></i>
+                        </button>
+                        <div id="content-step-4" class="step-content collapsed px-5 py-4 text-gray-700">
+                            <p class="mb-2">接著評估對<strong>標準差</strong>的影響：</p>
+                            
+                            <div class="bg-orange-50 p-3 rounded mb-3 text-sm border border-orange-200">
+                                因為少了一個剛好等於平均分的數據（即離差為 $0$、最不分散的數據），剩下來的數據整體而言顯得<strong>相對更分散了</strong>。<br>
+                                因此，新的標準差 ($\sigma_{new}$) 會<strong>變大</strong> (大於原本的 $4$)。
+                            </div>
+
+                            <p class="mb-2">最後，重新計算小平的新標準分 ($z_{new}$)：</p>
+                            <div class="bg-gray-50 p-3 rounded font-mono text-sm border space-y-1 mb-3">
+                                小平的新標準分 $z_{new} = \frac{58 - \text{新平均分}}{\text{新標準差}}$
+                                <br><br><span class="text-xs text-green-600">/* 代入：新平均分仍是 50 */</span>
+                                <br>$z_{new} = \frac{58 - 50}{\sigma_{new}} = \frac{8}{\sigma_{new}}$
+                                <br><br><span class="text-xs text-green-600">/* 因為分子 $8$ 為正數，而分母 $\sigma_{new}$ 變大 */</span>
+                                <br>正數除以一個更大的正數，其值必定變小。
+                                <br>所以， $z_{new} < 2$ (舊標準分)
+                            </div>
+
+                            <!-- 正負標準分概念釐清 -->
+                            <div class="mt-3 text-sm text-indigo-800 bg-indigo-50 p-3 rounded border-l-4 border-indigo-500 mb-3 leading-relaxed">
+                                💡 <strong>進階邏輯陷阱：</strong> 標準分減少的前提是<strong>「該標準分為正數」</strong>。<br>
+                                標準差變大，代表所有數據的標準分<strong>絕對值都會變小</strong>（更靠近 $0$）。因為小平原本的標準分是 $+2$ (正數)，靠近 $0$ 代表數值<strong>減少</strong>。<br>
+                                <em>（反之，若某同學原標準分為 $-2$，當絕對值變小變成 $-1.5$ 時，數值反而是<strong>增加</strong>的！）</em>
+                            </div>
+
+                            <div class="bg-green-50 p-3 rounded font-bold text-green-800 border border-green-200">
+                                $\because$ 標準分確實減少了
+                                <br>$\therefore$ <strong>同意</strong>小平的宣稱。 <span class="mark-badge mark-a">1A f.t.</span> <span class="text-xs font-normal text-gray-600 ml-2">(基於合理推論)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 補充原理 (預設摺疊) -->
+                    <details class="group border border-indigo-200 rounded-lg bg-white mt-6 shadow-sm">
+                        <summary class="flex justify-between items-center font-medium cursor-pointer list-none p-4 text-indigo-800 bg-indigo-50 hover:bg-indigo-100 rounded-lg transition-colors">
+                            <span class="flex items-center gap-2"><i class="fa-solid fa-lightbulb text-yellow-500"></i> 💡 數學短證：為何剔除平均值，標準差必定變大？</span>
+                            <span class="transition group-open:rotate-180">
+                                <i class="fa-solid fa-chevron-down"></i>
+                            </span>
+                        </summary>
+                        <div class="text-gray-700 p-4 pt-0 text-sm border-t border-indigo-100 mt-2">
+                            <p class="mb-2">設原有一組數據共 $n$ 個，平均值為 $\mu$。方差公式為：</p>
+                            <p class="text-center font-mono my-2">$\sigma_{old}^2 = \frac{\sum (x_i - \mu)^2}{n}$</p>
+                            <p class="mb-2">剔除的數據 $x_k = \mu$，它對分子離差平方和的貢獻為 $(x_k - \mu)^2 = 0$。</p>
+                            <p class="mb-2">剔除後，數據個數變為 $n-1$。新的分子因為減去的是 $0$，所以<strong>保持不變</strong>。新方差為：</p>
+                            <p class="text-center font-mono my-2">$\sigma_{new}^2 = \frac{\sum_{i \neq k} (x_i - \mu)^2}{n - 1} = \frac{\text{原來的分子}}{n - 1}$</p>
+                            <p class="bg-gray-50 p-2 rounded border mt-3 text-center">
+                                分子不變，分母變小 $\Rightarrow$ 分數值<strong>變大</strong>。<br>
+                                $\therefore \sigma_{new}^2 > \sigma_{old}^2$ (方差變大，標準差也變大)
+                            </p>
+                        </div>
+                    </details>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- 分隔線 (Resizer) - 強制顯示並支援觸控與滑鼠 -->
+        <div id="resizer" class="w-2 bg-gray-200 hover:bg-blue-400 flex flex-col justify-center items-center z-20 shadow-[inset_0_0_4px_rgba(0,0,0,0.1)] shrink-0 touch-none">
+            <div class="w-1 h-12 bg-gray-400 rounded-full pointer-events-none"></div>
+        </div>
+
+        <!-- 右側：動態圖形區 -->
+        <section id="right-pane" class="flex-1 h-full bg-white relative flex flex-col min-w-[25%] shrink-0 overflow-hidden">
+            <div class="p-4 bg-gray-100 border-b flex justify-between items-center z-10 shadow-sm shrink-0">
+                <h3 class="font-bold text-gray-700 truncate"><i class="fa-solid fa-chart-area"></i> 動態視覺化圖表</h3>
+                <div class="text-xs text-gray-500 bg-white px-2 py-1 rounded border whitespace-nowrap ml-2 hidden sm:block">隨左側步驟自動更新</div>
+            </div>
+            
+            <!-- Canvas 容器 -->
+            <div class="flex-1 relative w-full h-full overflow-hidden bg-white" id="canvas-container">
+                <canvas id="mathCanvas" class="absolute top-0 left-0 w-full h-full touch-none"></canvas>
+                
+                <!-- 浮動圖例 (Legend) -->
+                <div class="absolute top-2 right-2 md:top-4 md:right-4 bg-white/95 backdrop-blur border p-2 md:p-3 rounded shadow-md text-xs md:text-sm origin-top-right">
+                    <div class="font-bold mb-1 md:mb-2 border-b pb-1 text-gray-700">圖例</div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <div class="w-4 h-0.5 bg-blue-600"></div> <span class="whitespace-nowrap">全級分數 (原本)</span>
+                    </div>
+                    <div class="flex items-center gap-2 mb-1" id="legend-new-dist" style="display: none;">
+                        <div class="w-4 h-0.5 bg-orange-500 border-t border-dashed border-orange-500"></div> <span class="whitespace-nowrap">剔除數據後 (更分散)</span>
+                    </div>
+                    <div class="flex items-center gap-2 mb-1">
+                        <div class="w-2 h-2 rounded-full bg-red-500"></div> <span class="whitespace-nowrap">小平 (58分, z>0)</span>
+                    </div>
+                    <div class="flex items-center gap-2" id="legend-xiaoying" style="display: none;">
+                        <div class="w-2 h-2 rounded-full bg-green-500"></div> <span class="whitespace-nowrap">小英 (50分, z=0)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        // --- 介面互動邏輯 (Split-pane) ---
+        
+        const resizer = document.getElementById('resizer');
+        const leftPane = document.getElementById('left-pane');
+        let isResizing = false;
+
+        // 電腦版滑鼠事件
+        resizer.addEventListener('mousedown', (e) => {
+            isResizing = true;
+            resizer.classList.add('active');
+            document.body.style.cursor = 'col-resize';
+            e.preventDefault(); 
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isResizing) return;
+            handleResize(e.clientX);
+        });
+
+        document.addEventListener('mouseup', () => {
+            if (isResizing) {
+                isResizing = false;
+                resizer.classList.remove('active');
+                document.body.style.cursor = 'default';
+            }
+        });
+
+        // iPad/手機版觸控事件 (Touch Events)
+        resizer.addEventListener('touchstart', (e) => {
+            isResizing = true;
+            resizer.classList.add('active');
+            e.preventDefault(); // 防止畫面滾動
+        }, { passive: false });
+
+        document.addEventListener('touchmove', (e) => {
+            if (!isResizing) return;
+            handleResize(e.touches[0].clientX);
+        }, { passive: false });
+
+        document.addEventListener('touchend', () => {
+            if (isResizing) {
+                isResizing = false;
+                resizer.classList.remove('active');
+            }
+        });
+
+        // 共用調整大小邏輯
+        function handleResize(clientX) {
+            let newWidthPercent = (clientX / window.innerWidth) * 100;
+            // 限制拖拉範圍，避免兩邊被推擠到不見 (限制在 20% 到 80% 之間)
+            if (newWidthPercent < 20) newWidthPercent = 20;
+            if (newWidthPercent > 80) newWidthPercent = 80;
+            
+            leftPane.style.width = `${newWidthPercent}%`;
+            // 強制觸發 resize 以重繪 Canvas
+            window.dispatchEvent(new Event('resize')); 
+        }
+
+        // 步驟卡片切換邏輯
+        let currentActiveStep = 1;
+
+        function toggleStep(stepNum) {
+            if (currentActiveStep === stepNum) return;
+
+            const oldContent = document.getElementById(`content-step-${currentActiveStep}`);
+            const oldIcon = document.getElementById(`icon-step-${currentActiveStep}`);
+            oldContent.classList.replace('expanded', 'collapsed');
+            oldIcon.classList.add('-rotate-90');
+
+            const newContent = document.getElementById(`content-step-${stepNum}`);
+            const newIcon = document.getElementById(`icon-step-${stepNum}`);
+            newContent.classList.replace('collapsed', 'expanded');
+            newIcon.classList.remove('-rotate-90');
+
+            currentActiveStep = stepNum;
+            
+            document.getElementById('legend-xiaoying').style.display = (stepNum >= 2) ? 'flex' : 'none';
+            document.getElementById('legend-new-dist').style.display = (stepNum >= 4) ? 'flex' : 'none';
+
+            drawVisualization(stepNum);
+        }
+
+        // --- Canvas 動態繪圖邏輯 ---
+
+        const canvas = document.getElementById('mathCanvas');
+        const ctx = canvas.getContext('2d');
+        const container = document.getElementById('canvas-container');
+
+        const mathMinX = 35;
+        const mathMaxX = 65;
+        const mathMinY = -0.05; 
+        const mathMaxY = 0.15;
+
+        function resizeCanvas() {
+            const rect = container.getBoundingClientRect();
+
+            canvas.width = rect.width * window.devicePixelRatio;
+            canvas.height = rect.height * window.devicePixelRatio;
+            ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+            canvas.style.width = `${rect.width}px`;
+            canvas.style.height = `${rect.height}px`;
+            
+            drawVisualization(currentActiveStep);
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        setTimeout(resizeCanvas, 100); // 初始化繪製
+
+        function mapX(x) {
+            const width = canvas.width / window.devicePixelRatio;
+            const padding = width * 0.1;
+            const usableWidth = width - 2 * padding;
+            return padding + ((x - mathMinX) / (mathMaxX - mathMinX)) * usableWidth;
+        }
+
+        function mapY(y) {
+            const height = canvas.height / window.devicePixelRatio;
+            const padding = height * 0.1;
+            const usableHeight = height - 2 * padding;
+            return height - padding - ((y - mathMinY) / (mathMaxY - mathMinY)) * usableHeight;
+        }
+
+        function normalPDF(x, mean, sd) {
+            const variance = sd * sd;
+            return (1 / Math.sqrt(2 * Math.PI * variance)) * Math.exp(-Math.pow(x - mean, 2) / (2 * variance));
+        }
+
+        function drawVisualization(step) {
+            const width = canvas.width / window.devicePixelRatio;
+            const height = canvas.height / window.devicePixelRatio;
+            
+            ctx.clearRect(0, 0, width, height);
+            ctx.lineJoin = 'round';
+            ctx.textBaseline = 'middle';
+
+            const yAxisRaw = mapY(0);
+            const yAxisZ = mapY(-0.03); 
+
+            // X軸
+            ctx.beginPath();
+            ctx.moveTo(mapX(mathMinX), yAxisRaw);
+            ctx.lineTo(mapX(mathMaxX), yAxisRaw);
+            ctx.strokeStyle = '#9ca3af'; 
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.textAlign = 'center';
+            ctx.fillStyle = '#4b5563'; 
+            ctx.font = '12px sans-serif';
+            for (let i = 38; i <= 62; i += 4) {
+                const cx = mapX(i);
+                ctx.beginPath(); ctx.moveTo(cx, yAxisRaw); ctx.lineTo(cx, yAxisRaw + 5); ctx.stroke();
+                ctx.fillText(i, cx, yAxisRaw + 15);
+            }
+            ctx.fillText('原始分數(x)', mapX(mathMaxX) - 20, yAxisRaw - 15);
+
+            // Z-score 軸
+            ctx.beginPath();
+            ctx.moveTo(mapX(mathMinX), yAxisZ);
+            ctx.lineTo(mapX(mathMaxX), yAxisZ);
+            ctx.setLineDash([2, 2]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+            ctx.fillText('標準分(z)', mapX(mathMaxX) - 20, yAxisZ - 15);
+
+
+            const mean = 50;
+            const originalSD = 4;
+            const xiaopingScore = 58;
+            const xiaoyingScore = 50;
+
+            // 1. 原始分佈曲線
+            ctx.beginPath();
+            for (let x = mathMinX; x <= mathMaxX; x += 0.2) {
+                const y = normalPDF(x, mean, originalSD);
+                if (x === mathMinX) ctx.moveTo(mapX(x), mapY(y));
+                else ctx.lineTo(mapX(x), mapY(y));
+            }
+            ctx.strokeStyle = '#2563eb'; 
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            drawVerticalLine(mean, 0, normalPDF(mean, mean, originalSD), '#2563eb', true);
+            
+            if (step >= 1) {
+                drawPoint(xiaopingScore, 0, '小平(58)', '#ef4444');
+                if (step === 1 || step === 2) {
+                    drawDimensionLine(mean, xiaopingScore, mapY(0.02), '距離 = 8 = 2 × 標準差', '#2563eb');
+                    drawZScoreMapping(xiaopingScore, mean, originalSD, '#ef4444');
+                }
+            }
+
+            if (step >= 2) {
+                drawPoint(xiaoyingScore, 0, '小英(50)', '#22c55e', -30); 
+                if (step === 2) {
+                    drawZScoreMapping(xiaoyingScore, mean, originalSD, '#22c55e');
+                }
+            }
+
+            if (step >= 3) {
+                if(step === 3) {
+                     ctx.fillStyle = 'rgba(254, 240, 138, 0.4)'; 
+                     ctx.fillRect(mapX(mean-1), mapY(normalPDF(mean, mean, originalSD)), mapX(mean+1)-mapX(mean-1), mapY(0)-mapY(normalPDF(mean, mean, originalSD)));
+                     ctx.fillStyle = '#854d0e';
+                     ctx.font = 'bold 14px sans-serif';
+                     ctx.fillText('剔除此點，平均中心不變', mapX(mean), mapY(0.08));
+                }
+            }
+
+            if (step >= 4) {
+                const newSD = 5.5; // 誇大視覺效果讓曲線明顯變平
+                ctx.beginPath();
+                for (let x = mathMinX; x <= mathMaxX; x += 0.2) {
+                    const y = normalPDF(x, mean, newSD);
+                    if (x === mathMinX) ctx.moveTo(mapX(x), mapY(y));
+                    else ctx.lineTo(mapX(x), mapY(y));
+                }
+                ctx.strokeStyle = '#f97316'; 
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                drawPoint(xiaopingScore, 0, '小平(58)', '#ef4444');
+                
+                ctx.globalAlpha = 0.3;
+                drawZScoreMapping(xiaopingScore, mean, originalSD, '#2563eb');
+                ctx.globalAlpha = 1.0;
+
+                drawZScoreMapping(xiaopingScore, mean, newSD, '#f97316', true);
+
+                ctx.fillStyle = '#f97316';
+                ctx.font = 'bold 13px sans-serif';
+                ctx.textAlign = 'left';
+                ctx.fillText('← 曲線變平緩 (標準差變大)', mapX(mean + 2), mapY(0.09));
+                
+                ctx.fillStyle = '#ef4444';
+                ctx.textAlign = 'center';
+                ctx.fillText('正數 z 值往 0 縮小！', mapX(xiaopingScore), mapY(-0.05));
+            }
+        }
+
+        // --- Canvas 輔助繪圖函數 ---
+
+        function drawPoint(x, y, label, color, labelOffsetY = 20) {
+            const cx = mapX(x);
+            const cy = mapY(y);
+            
+            ctx.beginPath();
+            ctx.arc(cx, cy, 5, 0, 2 * Math.PI);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.strokeStyle = 'white';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            ctx.fillStyle = color;
+            ctx.font = 'bold 12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.shadowColor = 'white';
+            ctx.shadowBlur = 4;
+            ctx.fillText(label, cx, cy + labelOffsetY);
+            ctx.shadowBlur = 0; 
+        }
+
+        function drawVerticalLine(x, yStart, yEnd, color, isDashed = false) {
+            ctx.beginPath();
+            ctx.moveTo(mapX(x), mapY(yStart));
+            ctx.lineTo(mapX(x), mapY(yEnd));
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
+            if (isDashed) ctx.setLineDash([4, 4]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawDimensionLine(x1, x2, yPx, text, color) {
+            const cx1 = mapX(x1);
+            const cx2 = mapX(x2);
+            
+            ctx.beginPath();
+            ctx.moveTo(cx1, yPx);
+            ctx.lineTo(cx2, yPx);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            const arrowSize = 6;
+            ctx.beginPath(); ctx.moveTo(cx1+arrowSize, yPx-arrowSize/2); ctx.lineTo(cx1, yPx); ctx.lineTo(cx1+arrowSize, yPx+arrowSize/2); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(cx2-arrowSize, yPx-arrowSize/2); ctx.lineTo(cx2, yPx); ctx.lineTo(cx2-arrowSize, yPx+arrowSize/2); ctx.stroke();
+
+            ctx.fillStyle = color;
+            ctx.font = '12px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(text, (cx1 + cx2) / 2, yPx - 10);
+        }
+
+        function drawZScoreMapping(rawX, mean, sd, color, isNew = false) {
+            const zScore = (rawX - mean) / sd;
+            const cx = mapX(rawX);
+            const cyRaw = mapY(0);
+            const cyZ = mapY(-0.03);
+
+            ctx.beginPath();
+            ctx.moveTo(cx, cyRaw);
+            ctx.lineTo(cx, cyZ);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
+            ctx.setLineDash([2, 2]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            ctx.beginPath();
+            ctx.arc(cx, cyZ, 4, 0, 2 * Math.PI);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            ctx.textAlign = 'center';
+            ctx.font = isNew ? 'bold 14px sans-serif' : '12px sans-serif';
+            let zText = `z = ${zScore.toFixed(2)}`;
+            if (zScore === 2 || zScore === 0) zText = `z = ${zScore}`;
+            
+            ctx.fillText(zText, cx, cyZ + (isNew ? 18 : 15));
+        }
+
+    </script>
+</body>
+</html>

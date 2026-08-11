@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2024-25 中一 第三學期 數學科考試 - 卷二</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},startup:{typeset:true}};</script>
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Noto Sans TC', sans-serif; background: #f5f5f5; color: #333; padding-top: 70px; }
+        
+        .top-nav { position: fixed; top: 0; left: 0; width: 100%; background: #3498db; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; }
+        .nav-left, .nav-right { display: flex; align-items: center; gap: 15px; }
+        .hamburger { cursor: pointer; padding: 5px; }
+        .hamburger span { display: block; width: 25px; height: 3px; background: white; margin: 5px 0; border-radius: 2px; }
+        .back-btn { color: white; text-decoration: none; font-size: 0.95em; padding: 6px 12px; background: rgba(255,255,255,0.15); border-radius: 5px; }
+        .back-btn:hover { background: rgba(255,255,255,0.25); }
+        .nav-title { font-size: 1.1em; font-weight: bold; }
+        .check-btn { background: #27ae60; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.95em; }
+        .check-btn:hover { background: #219a52; }
+        
+        .container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+        h1 { text-align: center; margin: 20px 0; font-size: 1.5em; }
+        
+        .question { margin-bottom: 25px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .question-num { font-weight: bold; color: #3498db; margin-bottom: 10px; font-size: 1.1em; }
+        .question-text { margin-bottom: 15px; line-height: 1.6; font-size: 1.05em; }
+        .figure-container { margin: 10px 0; cursor: zoom-in; }
+        .figure-container img { max-width: 100%; border: 1px solid #ddd; border-radius: 8px; transition: box-shadow 0.2s; }
+        .figure-container img:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.15); }
+        .figure-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; }
+        .figure-modal.open { display: flex; }
+        .figure-modal-content { max-width: 95vw; max-height: 95vh; overflow: auto; }
+        .figure-modal-content svg, .figure-modal-content img { max-width: 100%; max-height: 95vh; display: block; }
+        .figure-modal-close { position: absolute; top: 15px; right: 20px; color: white; font-size: 30px; cursor: pointer; background: none; border: none; }
+        .figure-modal-label { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); color: rgba(255,255,255,0.7); font-size: 13px; }
+        
+        .options-container { display: flex; flex-direction: column; gap: 8px; }
+        .option { padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; background: #fafafa; transition: 0.2s; line-height: 1.4; }
+        .option:hover { background: #f0f7ff; border-color: #3498db; }
+        .option.selected { background: #e1f0fa; border-color: #3498db; border-width: 2px; padding: 11px 14px; }
+        .option.correct { background: #d4edda; border-color: #28a745; color: #155724; border-width: 2px; padding: 11px 14px; }
+        .option.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; border-width: 2px; padding: 11px 14px; }
+        
+        .answer-section { display: none; margin-top: 15px; padding: 10px; border-radius: 5px; }
+        .answer-section.show { display: block; }
+        .answer-correct { background: #d4edda; color: #155724; }
+        .answer-wrong { background: #f8d7da; color: #721c24; }
+        
+        .retry-section { display: none; margin-top: 15px; padding: 15px; background: #f8f9fa; border: 2px dashed #9b59b6; border-radius: 10px; }
+        .retry-section.show { display: block; }
+        .btn-retry { background: #9b59b6; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; }
+        .btn-retry:hover { background: #8e44ad; }
+        
+        .loading { text-align: center; padding: 40px; color: #666; }
+        .error { text-align: center; padding: 40px; color: #e74c3c; }
+        
+        .menu-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; }
+        .menu-overlay.open { display: block; }
+        .side-menu { visibility: hidden; position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 1002; transition: left 0.3s; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+        .side-menu.open { visibility: visible; left: 0; }
+        .side-menu-header { padding: 20px; background: #3498db; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .close-btn { cursor: pointer; font-size: 1.5em; }
+        .side-menu-content { padding: 10px; }
+        .menu-btn { display: block; width: 100%; padding: 15px; margin: 5px 0; border: none; border-radius: 8px; background: #f5f7fa; cursor: pointer; text-align: left; font-size: 1em; }
+        .menu-btn:hover { background: #e1e8ed; }
+        
+        .status-bar { background: #2c3e50; color: white; padding: 10px 15px; border-radius: 5px; margin-bottom: 20px; display: flex; justify-content: space-between; }
+        .status-correct { color: #2ecc71; }
+        .status-wrong { color: #e74c3c; }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <div class="nav-left">
+            <div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+            <a href="./index.html" class="back-btn">← 返回主頁</a>
+        </div>
+        <div class="nav-title" id="scoreDisplay">卷二選擇題 | 已答: 0</div>
+        <div class="nav-right">
+            <button class="check-btn" onclick="checkAnswers()">核對答案</button>
+        </div>
+    </div>
+    
+    <div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div>
+    <div class="side-menu" id="sideMenu">
+        <div class="side-menu-header">
+            <h2>選單</h2>
+            <span class="close-btn" onclick="closeMenu()">✕</span>
+        </div>
+        <div class="side-menu-content">
+            <button class="menu-btn" onclick="goToPage('index.html')">考試主頁</button>
+            <button class="menu-btn" onclick="goToPage('p1.html')">卷一（長答題）</button>
+        </div>
+    </div>
+    
+    <div class="container">
+        <h1>📝 2024-25 中一 第三學期 數學科考試 - 卷二（選擇題）</h1>
+        
+        <div id="loading" class="loading">載入題目中...</div>
+        <div id="error" class="error" style="display:none;"></div>
+        <div id="questions"></div>
+    </div>
+    
+    <script>
+        let questions = {};
+        let selectedAnswers = {};
+        let checkedQuestions = {};
+        
+        const EXAM_KEY = 's1-term3';
+        
+        function toggleMenu() {
+            document.getElementById('sideMenu').classList.toggle('open');
+            document.getElementById('menuOverlay').classList.toggle('open');
+        }
+        function closeMenu() {
+            document.getElementById('sideMenu').classList.remove('open');
+            document.getElementById('menuOverlay').classList.remove('open');
+        }
+        function goToPage(page) {
+            window.location.href = page;
+        }
+        
+        async function loadQuestions() {
+            try {
+                const response = await fetch(`../data/${EXAM_KEY}-p2.json`);
+                if (!response.ok) throw new Error('無法載入題目');
+                const data = await response.json();
+                
+                // Parse questions (skip 'info' key)
+                questions = {};
+                for (const [key, val] of Object.entries(data)) {
+                    if (key === 'info') continue;
+                    // Extract question number from key like "2025S1Q01" → 1
+                    const qMatch = key.match(/Q(\d+)$/i);
+                    const num = qMatch ? parseInt(qMatch[1], 10) : parseInt(key.replace(/\D/g, ''), 10);
+                    questions[num] = { ...val, _originalKey: key };
+                }
+                
+                renderQuestions();
+                document.getElementById('loading').style.display = 'none';
+            } catch (err) {
+                document.getElementById('loading').style.display = 'none';
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').textContent = err.message;
+            }
+        }
+        
+        function renderQuestions() {
+            const container = document.getElementById('questions');
+            let html = '';
+            
+            for (const [num, q] of Object.entries(questions)) {
+                const qId = `q${num}`;
+                const hasOptions = q.options && Object.keys(q.options).length > 0;
+                
+                html += `<div class="question" id="${qId}">`;
+                html += `<div class="question-num">第 ${num} 題</div>`;
+                html += `<div class="question-text">${q.question || '（題目載入中...）'}</div>`;
+
+                // Show SVG figure for image questions (no options)
+                if (!hasOptions) {
+                    const svgUrl = `questions/svg_overlays/Q${String(num).padStart(2,'0')}.svg`;
+                    html += `<div class="figure-container" onclick="openFigureModal('${svgUrl}','${num}')" title="點擊放大查看">`;
+                    html += `<img src="${svgUrl}" alt="第${num}題圖示" style="max-width:100%;border:1px solid #ddd;border-radius:8px;cursor:zoom-in;">`;
+                    html += `</div>`;
+                }
+
+                if (hasOptions) {
+                    html += `<div class="options-container">`;
+                    for (const [opt, text] of Object.entries(q.options)) {
+                        const selected = selectedAnswers[qId] === opt ? 'selected' : '';
+                        html += `<div class="option ${selected}" onclick="selectOption('${qId}', '${opt}')">`;
+                        html += `<strong>${opt}.</strong> ${text}`;
+                        html += `</div>`;
+                    }
+                    html += `</div>`;
+                }
+                
+                // Answer section
+                html += `<div class="answer-section" id="answer-${qId}"></div>`;
+                
+                // Retry section (if answer is wrong)
+                html += `<div class="retry-section" id="retry-${qId}">`;
+                html += `<button class="btn-retry" onclick="showRetry('${qId}')">🔄 重做類似題</button>`;
+                html += `<div id="retry-content-${qId}" style="margin-top:10px;"></div>`;
+                html += `</div>`;
+                
+                html += `</div>`;
+            }
+            
+            container.innerHTML = html;
+            updateStatus();
+            
+            // Typeset MathJax
+            if (window.MathJax && window.MathJax.typesetPromise) {
+                MathJax.typesetPromise([container]).catch(console.log);
+            }
+        }
+        
+        function selectOption(qId, opt) {
+            if (checkedQuestions[qId]) return;
+            selectedAnswers[qId] = opt;
+            renderQuestions();
+            updateStatus();
+        }
+        
+        function checkAnswers() {
+            Object.keys(questions).forEach(num => {
+                const qId = `q${num}`;
+                if (selectedAnswers[qId]) {
+                    checkedQuestions[qId] = true;
+                }
+            });
+            renderQuestions();
+            updateStatus();
+            
+            // Show all answer sections
+            Object.keys(questions).forEach(num => {
+                const qId = `q${num}`;
+                const ansDiv = document.getElementById(`answer-${qId}`);
+                if (ansDiv) {
+                    ansDiv.classList.add('show');
+                    const q = questions[num];
+                    if (selectedAnswers[qId] === q.answer) {
+                        ansDiv.className = 'answer-section show answer-correct';
+                        ansDiv.innerHTML = '✓ 正確！';
+                    } else if (selectedAnswers[qId]) {
+                        ansDiv.className = 'answer-section show answer-wrong';
+                        ansDiv.innerHTML = `✗ 錯誤（正確答案：${q.answer || '待補'}${selectedAnswers[qId] ? '，你的答案：' + selectedAnswers[qId] : ''}）`;
+                        // Show retry button
+                        const retryDiv = document.getElementById(`retry-${qId}`);
+                        if (retryDiv) retryDiv.classList.add('show');
+                    }
+                }
+            });
+        }
+        
+        async function showRetry(qId) {
+            const retryContent = document.getElementById(`retry-content-${qId}`);
+            const qNum = qId.replace('q', '');
+            const q = questions[qNum];
+
+            retryContent.innerHTML = '<p style="color:#888;">生成類似題目中…</p>';
+
+            // Use the original OCR key stored during load (e.g. "2025S1Q05")
+            const sourceQId = q._originalKey || qId;
+
+            try {
+                const result = await examMimic.generateMimicQuestion({
+                    examKey: EXAM_KEY,
+                    paper: 'p2',
+                    qId: sourceQId,
+                    templateMode: 'auto'
+                });
+
+                if (result) {
+                    // Generate SVG figure for geometry questions
+                    let figureHtml = '';
+                    if (window.examMimic && window.examMimic.generateFigureSVG) {
+                        const svg = examMimic.generateFigureSVG(sourceQId);
+                        if (svg) figureHtml = '<div style="margin:10px 0;text-align:center;">' + svg + '</div>';
+                    }
+
+                    retryContent.innerHTML = `
+                        <p><strong>📚 課題：</strong>${q.topic || '代數'}</p>
+                        ${figureHtml}
+                        <div style="margin-top:10px;padding:12px;background:#f0fff4;border-radius:8px;line-height:1.8;">
+                            ${result.question_text}
+                        </div>
+                        ${result.answer
+                            ? `<div style="margin-top:8px;padding:8px 12px;background:#fff3cd;border-radius:6px;font-size:14px;"><strong>答案：</strong>${result.answer}</div>`
+                            : ''}
+                        <button class="btn-retry" style="margin-top:10px;" onclick="showRetry('${qId}')">🔄 再試一題</button>
+                    `;
+                    if (window.MathJax && window.MathJax.typesetPromise) {
+                        MathJax.typesetPromise([retryContent]).catch(console.log);
+                    }
+                } else {
+                    retryContent.innerHTML = `
+                        <p><strong>📚 課題：</strong>${q.topic || '代數'}</p>
+                        <p style="margin-top:8px;color:#666;font-size:13px;">
+                            💡 此題暫無仿題模板。請參考課本或聯絡老師獲取更多練習。
+                        </p>
+                    `;
+                }
+            } catch (e) {
+                retryContent.innerHTML = `<p style="color:#c0392b;font-size:13px;">載入失敗：${e.message}</p>`;
+            }
+        }
+        
+        function updateStatus() {
+            const answered = Object.keys(selectedAnswers).length;
+            const total = Object.keys(questions).length;
+            document.getElementById('scoreDisplay').textContent = 
+                `卷二選擇題 | 已答: ${answered}/${total}`;
+        }
+        
+        loadQuestions();
+    </script>
+    <script src="../mimic/generate.js"></script>
+
+    <div class="figure-modal" id="figureModal" onclick="closeFigureModal(event)">
+        <button class="figure-modal-close" onclick="closeFigureModal(event)">✕</button>
+        <div class="figure-modal-content" id="figureModalContent"></div>
+        <div class="figure-modal-label">第 <span id="figureModalNum"></span> 題 · 點擊外部關閉</div>
+    </div>
+    <script>
+    function openFigureModal(svgUrl, qNum) {
+        const modal = document.getElementById('figureModal');
+        const content = document.getElementById('figureModalContent');
+        const label = document.getElementById('figureModalNum');
+        label.textContent = qNum;
+        content.innerHTML = '<img src="' + svgUrl + '" alt="第'+qNum+'題圖示">';
+        modal.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeFigureModal(e) {
+        if (!e || e.target === document.getElementById('figureModal') || e.target.classList.contains('figure-modal-close')) {
+            document.getElementById('figureModal').classList.remove('open');
+            document.body.style.overflow = '';
+        }
+    }
+    </script>
+</body>
+</html>

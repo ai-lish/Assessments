@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <!-- 引入 MathJax 用於渲染 LaTeX 數學公式 -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+
+<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>卷一 - 2025-26 S5 Term2</title>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: "Noto Sans TC", sans-serif; background: #f5f6fa; }
+        .top-nav { position: fixed; top: 0; left: 0; right: 0; background: #2c3e50; color: white; padding: 12px 16px; display: flex; justify-content: space-between; align-items: center; z-index: 1000; }
+        .menu-btn { cursor: pointer; font-size: 20px; }
+        .back-btn { color: white; text-decoration: none; }
+        .sidebar { position: fixed; left: -250px; top: 0; bottom: 0; width: 250px; background: #34495e; color: white; transition: left 0.3s; z-index: 1001; padding: 20px; }
+        .sidebar.open { left: 0; }
+        .container { margin-top: 60px; padding: 20px; max-width: 800px; margin: 60px auto; }
+        h1 { text-align: center; margin-bottom: 30px; color: #2c3e50; }
+        .section { margin-bottom: 20px; background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+        .section-header { background: #3498db; color: white; padding: 15px 20px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; font-size: 18px; font-weight: bold; }
+        .section-header:hover { background: #2980b9; }
+        .section-content { display: none; padding: 15px; }
+        .section-content.open { display: block; }
+        .question-item { border-bottom: 1px solid #eee; padding: 15px; }
+        .question-text { margin-bottom: 10px; color: #333; }
+        .answer-header { cursor: pointer; color: #3498db; font-size: 14px; display: flex; justify-content: space-between; align-items: center; padding: 8px; background: #f8f9fa; border-radius: 5px; }
+        .answer-header:hover { background: #e9ecef; }
+        .answer-content { max-height: 0; overflow: hidden; transition: max-height 0.3s; background: #d5f5e3; }
+        .answer-content.open { max-height: 500px; }
+        .answer { padding: 15px; }
+        .toggle-icon { transition: transform 0.3s; }
+        .toggle-icon.open { transform: rotate(180deg); }
+    </style>
+</head>
+<body>
+    <div class="top-nav">
+        <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+        <a href="index.html" class="back-btn">← 主頁</a>
+        <span>卷一</span>
+    </div>
+    <div class="sidebar" id="sidebar"><span onclick="toggleSidebar()">×</span></div>
+    <div class="container">
+        <h1>2025-26 S5 Term2 卷一</h1>
+        
+        <!-- 甲部 -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('sec-a')">
+                <span>甲部 (Q1-Q17)</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content" id="sec-a">
+                <div class="question-item">
+                    <div class="question-text"><strong>Q1</strong> 化簡 $\frac{(a^4b^{-1})^3}{4a^{-2}b^4}$，並以正指數表示。（3分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(1)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a1">
+                        <div class="answer">$\frac{a^{14}}{4b^7}$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q2</strong> 因式分解<br>(a) $4x^2 - 25$<br>(b) $4x^2 - 25 - 2x - 10$（3分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(2)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a2">
+                        <div class="answer">(a) $(2x+5)(2x-5)$<br>(b) $(2x+5)(2x-7)$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q3</strong> 令 $k$ 成為公式 $\frac{k}{h} + \frac{1}{3h} = k$ 的主項。（3分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(3)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a3">
+                        <div class="answer">$k = \frac{1}{2}$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q4</strong> 在某課室，男生人數為女生人數的 2 倍。若 10 名男生和 2 名女生離開該課室，則男生人數與女生人數相等。求在該課室原本的女生人數。（4分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(4)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a4">
+                        <div class="answer">8 人</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q5</strong> (a) 解不等式 $\frac{x-6}{3} < x+8$。<br>(b) 求所有能同時滿足不等式 $\frac{x-6}{3} < x+8$ 及不等式 $9-4x \ge 25$ 的最大整數。（4分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(5)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a5">
+                        <div class="answer">(a) $x > -15$<br>(b) $-4$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q6</strong> 某音樂光碟的標價為 $180。該音樂光碟以其標價四折售出。<br>(a) 求售價。<br>(b) 若虧蝕百分率為 20%，求成本。（4分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(6)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a6">
+                        <div class="answer">(a) $72<br>(b) $90</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q7</strong> 右圖中，扇形 $POQ$ 的半徑為 $15$ cm。求扇形 $OPQ$ 的周界，答案以 $\pi$ 表示。（3分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(7)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a7">
+                        <div class="answer">$30 + 15\pi$ cm</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q8</strong> 圖中，$PQ = RS$，$\angle QPR = \angle PRS = 70^\circ$ 和 $\angle PSR = 62^\circ$。<br>(a) 證明 $\Delta PQR \cong \Delta RSP$，並說明理由。（3分）<br>(b) 求 $\angle PQR$ 和 $\angle PRQ$。（2分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(8)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a8">
+                        <div class="answer">(a) SAS<br>(b) $\angle PQR = 48^\circ$, $\angle PRQ = 62^\circ$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q9</strong> 已知二次方程 $x^2 - 5x + 1 = 4$。<br>(a) 求二次方程的判別式。（2分）<br>(b) 由此，判斷二次方程根的性質。（1分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(9)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a9">
+                        <div class="answer">(a) $21$<br>(b) 兩個不相等實根</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q10</strong> 對於數據組 $8、8、9、12、15、17、17、17、21$ 及 $25$，求：<br>(a) 分佈域（全距）<br>(b) 四分位數間距<br>(c) 標準差（準確至 3 位有效數字）（4分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(10)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a10">
+                        <div class="answer">(a) $17$<br>(b) $9$<br>(c) $5.12$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q11</strong> 已知租用自行車的租金 $M$ 為兩部分之和，一部分為基本收費，而另一部分隨租用時間 $T$ 而正變。當 $T=1.5$ 時，$M=40$；當 $T=6$ 時，$M=130$。<br>(a) 試以 $T$ 表示 $M$。（4分）<br>(b) 阿信只有 $200$，他能租用自行車 10 小時嗎？試解釋你的答案。（2分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(11)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a11">
+                        <div class="answer">(a) $M = 10 + 20T$<br>(b) 不能，$10$ 小時需要 $210$，超過 $200$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q12</strong> 下面的幹葉圖顯示 A 組的 20 名學生的體重。<br>(a) 求學生的體重的平均數、分佈域、四分位數間距、標準差。（4分）<br>(b) 下面是 B 組 20 名學生的體重的框線圖。哪組學生的體重的離差較大？（2分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(12)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a12">
+                        <div class="answer">(a) 平均數：$57.85$kg，分佈域：$36$，四分位數間距：$17.5$，標準差：$10.4$<br>(b) B組</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q13</strong> 直線 $L_1$ 通過 $A$ 及點 $B$，點 $A$ 及點 $B$ 的坐標分別為 $(12, 5)$ 及 $(24, 0)$。<br>(a) (i) 求 $L_1$ 的直線方程，以一般式表示。（2分）<br>(ii) 設 $E$ 為 $L_1$ 與 $y$ 軸的相交點，求 $E$ 的坐標。（1分）<br>(b) 直線 $L_2$ 與 $L_1$ 互相垂直且相交於 $E$。求 $L_2$ 的直線方程。以一般式表示。（3分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(13)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a13">
+                        <div class="answer">(a)(i) $5x + 12y - 120 = 0$<br>(ii) $E(0, 10)$<br>(b) $12x - 5y + 50 = 0$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q14</strong> 已知圓 $C$ 通過 $P(6, 0)$，圓心坐標為 $(1, -1)$。<br>(a) 求圓 $C$ 的半徑（如需要，答案以根式表示）。（2分）<br>(b) 求圓 $C$ 的方程，答案以一般式表示。（3分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(14)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a14">
+                        <div class="answer">(a) $\sqrt{50} = 5\sqrt{2}$<br>(b) $x^2 + y^2 - 2x + 2y - 37 = 0$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q15</strong> $P$ 點在直角坐標平面上移動時，它與固定點 $A(0, 4)$ 保持 5 單位的固定距離。<br>(a) 試用文字描述 $P$ 的軌跡。（1分）<br>(b) 求 $P$ 的軌跡方程，答案以一般式表示。（3分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(15)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a15">
+                        <div class="answer">(a) 以 $A$ 為圓心、半徑 $5$ 的圓<br>(b) $x^2 + y^2 - 8y - 9 = 0$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q16</strong> 圖中，AC 是圓的直徑。AD 的延線與 BC 的延線相交於 F。BD = DF 和 $\angle AFB = 27^\circ$。<br>(a) 求 $\angle BDA$。（2分）<br>(b) 求 $\angle BAC$。（2分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(16)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a16">
+                        <div class="answer">(a) $27^\circ$<br>(b) $27^\circ$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q17</strong> 在圖中，AC = BD，AC // OD 及 $\angle COD = 40^\circ$。<br>(a) 求 $\angle AOC$。（2分）<br>(b) 求 $\angle BOC$。（2分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(17)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a17">
+                        <div class="answer">(a) $40^\circ$<br>(b) $140^\circ$</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 乙部 -->
+        <div class="section">
+            <div class="section-header" onclick="toggleSection('sec-b')">
+                <span>乙部 (Q18-Q22)</span>
+                <span class="toggle-icon">▼</span>
+            </div>
+            <div class="section-content" id="sec-b">
+                <div class="question-item">
+                    <div class="question-text"><strong>Q18</strong> 某次全級數學測驗的標準差是 4。小平及小英的分數分別是 58 分及 50 分。已知小平的標準分是 2。<br>(a) 求全級測驗的方差及平均分。（3分）<br>(b) 求小英的標準分。（2分）<br>(c) 若老師將小英的分數剔除，小平宣稱自己的標準分會減少，你同意嗎？試解釋你的答案。（2分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(18)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a18">
+                        <div class="answer">(a) 方差：$16$，平均分：$50$<br>(b) $0$<br>(c) 同意，因為剔除低於平均的分數會使標準差減少</div>
+                    </div>
+                </div>
+                <div class="solution-link" style="margin-top: 10px; padding: 10px; background: #e8f4fd; border-radius: 5px;">
+                    <a href="p1-ms/q18.html" style="display: inline-flex; align-items: center; gap: 5px; color: #3498db; text-decoration: none; font-weight: bold;">
+                        <span>📺</span> 動態解說
+                    </a>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q19</strong> 若二次函數 $y = mx^2 - 2(m + 10)x + 2m + 5$ 的圖像沒有 $x$ 軸截距，求 $m$ 值的範圍。（4分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(19)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a19">
+                        <div class="answer">$m < -20$ 或 $m > 5$</div>
+                    </div>
+                </div>
+                <div class="solution-link" style="margin-top: 10px; padding: 10px; background: #e8f4fd; border-radius: 5px;">
+                    <a href="p1-ms/q19.html" style="display: inline-flex; align-items: center; gap: 5px; color: #3498db; text-decoration: none; font-weight: bold;">
+                        <span>📺</span> 動態解說
+                    </a>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q20</strong> 圓的方程是 $(x + 4)^2 + y^2 = 9$。<br>(a) 證明原點在圓外。（2分）<br>(b) 直線 $L$ 的方程是 $x + y + 7 = 0$。求 $L$ 和 $C$ 的交點。（4分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(20)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a20">
+                        <div class="answer">(a) 原點距離圓心 $4$ > 半徑 $3$<br>(b) $(-3, -4)$ 和 $(-5, -2)$</div>
+                    </div>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q21</strong> 在圖中，三個圓相交於 $P、Q、R$ 和 $S$。$APQB$ 和 $DSRC$ 都是直線。$AR$ 分別與圓 $PQRS$ 和 $APSD$ 相交於 $M$ 和 $N$。<br>(a) 證明 $AD \parallel QR$。（2分）<br>(b) 證明 $A、B、C$ 和 $D$ 共圓。（2分）<br>(c) 證明 $\angle APM = \angle RSN$。（3分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(21)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a21">
+                        <div class="answer">(a) 略<br>(b) 略<br>(c) 略</div>
+                    </div>
+                </div>
+                <div class="solution-link" style="margin-top: 10px; padding: 10px; background: #e8f4fd; border-radius: 5px;">
+                    <a href="p1-ms/q21.html" style="display: inline-flex; align-items: center; gap: 5px; color: #3498db; text-decoration: none; font-weight: bold;">
+                        <span>📺</span> 動態解說
+                    </a>
+                </div>
+                <div class="question-item">
+                    <div class="question-text"><strong>Q22</strong> 圓 $C$ 的方程為 $x^2 + y^2 - 24x - 32y - 276 = 0$。設 $G$ 為 $C$ 的圓心。將原點記為 $O$。<br>(a) 求 $G$ 的坐標。（1分）<br>(b) 求 $OG$。（2分）<br>(c) 設 $P$ 為直角坐標平面上的一動點使得 $OP = GP$。將 $P$ 的軌跡記為 $\Gamma$。假定 $\Gamma$ 與 $C$ 相交於點 $M$ 及點 $N$。求四邊形 $OMGN$ 的面積。（4分）<br>(d) 若通過 $A(0, -10)$ 的直線 $L$ 是圓 $C$ 的切線，求 $L$ 的所有可能之方程。（4分）</div>
+                    <div class="answer-header" onclick="toggleAnswer(22)">
+                        <span>標準答案</span>
+                        <span class="toggle-icon">▼</span>
+                    </div>
+                    <div class="answer-content" id="a22">
+                        <div class="answer">(a) $G(12, 16)$<br>(b) $20$<br>(c) $480$<br>(d) $y = -10$ 或 $12x + 5y + 50 = 0$</div>
+                    </div>
+                </div>
+                <div class="solution-link" style="margin-top: 10px; padding: 10px; background: #e8f4fd; border-radius: 5px;">
+                    <a href="p1-ms/q22.html" style="display: inline-flex; align-items: center; gap: 5px; color: #3498db; text-decoration: none; font-weight: bold;">
+                        <span>📺</span> 動態解說
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleSidebar() { document.getElementById("sidebar").classList.toggle("open"); }
+        function toggleSection(id) { 
+            var el = document.getElementById(id);
+            el.classList.toggle("open");
+            el.previousElementSibling.querySelector('.toggle-icon').classList.toggle('open');
+            // Trigger MathJax typeset for new content
+            if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+                MathJax.typesetPromise([el]).catch(err => console.log('MathJax error:', err));
+            }
+        }
+        function toggleAnswer(n) { 
+            var el = document.getElementById("a" + n);
+            el.classList.toggle("open");
+            el.previousElementSibling.querySelector('.toggle-icon').classList.toggle('open');
+        }
+    </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(function() {
+        if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+            MathJax.typesetPromise();
+            console.log('MathJax typeset triggered');
+        }
+    }, 1000);
+});
+</script>
+</body>
+</html>

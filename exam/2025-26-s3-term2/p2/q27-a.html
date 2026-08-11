@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DSE 數學動態解題：正棱錐表面面積</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- MathJax for LaTeX formulas -->
+    <script>
+        MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: {
+                fontCache: 'global'
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        /* 強制左右佈局，即使在小螢幕也不折疊 */
+        body {
+            overscroll-behavior-y: none; /* 防止手機下拉更新 */
+        }
+        .split-container {
+            display: flex;
+            flex-direction: row;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+        #left-pane {
+            min-width: 300px; /* 確保左側有最小可讀寬度 */
+            overflow-y: auto;
+            background-color: #f8fafc;
+        }
+        #right-pane {
+            min-width: 300px; /* 確保右側 Canvas 有空間 */
+            position: relative;
+            background-color: #ffffff;
+        }
+        /* 拖拉分隔線 */
+        #resizer {
+            width: 8px;
+            background-color: #cbd5e1;
+            cursor: col-resize;
+            flex-shrink: 0;
+            touch-action: none; /* 極度重要：防止觸控拖拉時畫面捲動 */
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #resizer:hover, #resizer:active {
+            background-color: #94a3b8;
+        }
+        #resizer::after {
+            content: "⋮";
+            color: #475569;
+            font-size: 20px;
+        }
+
+        /* 步驟卡片動畫與樣式 */
+        .step-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .step-card.active {
+            border-left-color: #3b82f6; /* 藍色高亮 */
+            background-color: #eff6ff;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .step-content {
+            display: none;
+        }
+        .step-card.active .step-content {
+            display: block;
+            animation: fadeIn 0.4s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* 標籤樣式 */
+        .dse-mark {
+            display: inline-block;
+            background-color: #f59e0b;
+            color: white;
+            font-size: 0.75rem;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 9999px;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        /* 自訂滾動條 */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #c0c0c0; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #a0a0a0; }
+    </style>
+</head>
+<body class="text-slate-800 font-sans">
+
+<div class="split-container">
+    
+    <!-- 左側：解題步驟區 -->
+    <div id="left-pane" class="w-1/2 p-4 md:p-6 pb-20">
+        <div class="mb-6">
+            <div class="flex justify-between items-center mb-2">
+                <h1 class="text-2xl font-bold text-slate-900">3D 幾何求高：正棱錐表面面積</h1>
+                <button onclick="generateRandomProblem()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-1 px-3 rounded shadow text-sm transition-colors flex items-center">
+                    <span class="mr-1">🎲</span> 隨機題目
+                </button>
+            </div>
+            <div class="mb-4 bg-white p-2 rounded border border-slate-200 shadow-sm text-center">
+                <p class="text-xs text-slate-400 mb-1">題目參考圖示 (正棱錐 VABCD)</p>
+                <!-- 使用 SVG 取代圖片，確保永不破圖，且能動態更新數字 -->
+                <svg viewBox="0 0 200 200" class="h-40 w-full mx-auto" preserveAspectRatio="xMidYMid meet">
+                    <!-- 底面陰影 -->
+                    <polygon points="30,130 100,170 170,130 100,90" fill="#f1f5f9" fill-opacity="0.7" />
+                    
+                    <!-- 虛線 (背面邊界) -->
+                    <line x1="100" y1="90" x2="100" y2="20" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,4" /> <!-- VD -->
+                    <line x1="30" y1="130" x2="100" y2="90" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,4" /> <!-- AD -->
+                    <line x1="170" y1="130" x2="100" y2="90" stroke="#94a3b8" stroke-width="2" stroke-dasharray="4,4" /> <!-- CD -->
+                    
+                    <!-- 實線 (前面邊界) -->
+                    <line x1="30" y1="130" x2="100" y2="20" stroke="#334155" stroke-width="2" /> <!-- VA -->
+                    <line x1="100" y1="170" x2="100" y2="20" stroke="#334155" stroke-width="2" /> <!-- VB -->
+                    <line x1="170" y1="130" x2="100" y2="20" stroke="#334155" stroke-width="2" /> <!-- VC -->
+                    <line x1="30" y1="130" x2="100" y2="170" stroke="#334155" stroke-width="2" /> <!-- AB -->
+                    <line x1="100" y1="170" x2="170" y2="130" stroke="#334155" stroke-width="2" /> <!-- BC -->
+                    
+                    <!-- 頂點標籤 -->
+                    <text x="100" y="12" fill="#1e293b" font-weight="bold" font-size="14" text-anchor="middle">V</text>
+                    <text x="20" y="135" fill="#1e293b" font-weight="bold" font-size="14" text-anchor="end">A</text>
+                    <text x="100" y="188" fill="#1e293b" font-weight="bold" font-size="14" text-anchor="middle">B</text>
+                    <text x="180" y="135" fill="#1e293b" font-weight="bold" font-size="14" text-anchor="start">C</text>
+                    <text x="95" y="85" fill="#94a3b8" font-weight="bold" font-size="14" text-anchor="middle">D</text>
+                    
+                    <!-- 邊長標籤 -->
+                    <text id="svg-s" x="60" y="165" fill="#3b82f6" font-weight="bold" font-size="14" text-anchor="middle">13 cm</text>
+                </svg>
+            </div>
+            <p id="question-text" class="text-sm text-slate-600 bg-slate-200 p-3 rounded leading-relaxed">
+                <strong>題目：</strong> 圖中所示為正棱錐 $VABCD$，其底是一個正方形。已知底面邊長為 <span id="q-s" class="font-bold text-indigo-700">13</span> $\text{ cm}$，若棱錐的總表面面積為 <span id="q-sa" class="font-bold text-indigo-700">481</span> $\text{ cm}^2$，求 $\triangle VAB$ 的高。
+            </p>
+        </div>
+
+        <!-- 摺疊原理補充 -->
+        <details class="mb-6 bg-indigo-50 border border-indigo-200 rounded-lg p-3 cursor-pointer">
+            <summary class="font-bold text-indigo-700 select-none">
+                💡 核心原理：什麼是「正棱錐的總表面面積」？(點擊展開)
+            </summary>
+            <div class="mt-3 text-sm text-indigo-900 space-y-2 leading-relaxed">
+                <p>這是一個<strong>正方形底</strong>的棱錐 (Square-based Right Pyramid)。</p>
+                <p>它的外表由 <strong>1 個正方形底面</strong> 和 <strong>4 個完全相同的等腰三角形側面</strong> 組成。</p>
+                <p class="font-mono bg-white p-2 rounded text-center font-bold">
+                    總表面面積 = (底面積) + 4 $\times$ (側面三角形面積)
+                </p>
+            </div>
+        </details>
+
+        <!-- 動態步驟容器 -->
+        <div id="dynamic-steps-container"></div>
+
+    </div>
+
+    <!-- 拖拉分隔線 -->
+    <div id="resizer"></div>
+
+    <!-- 右側：動態圖形與視覺化 Canvas -->
+    <div id="right-pane" class="w-1/2 flex flex-col">
+        <div class="absolute top-0 w-full p-2 bg-slate-800 text-white text-center text-sm z-10 font-bold shadow-md">
+            動態視覺化教學區 <span id="canvas-status" class="text-yellow-300 font-normal ml-2"></span>
+        </div>
+        <div class="flex-1 w-full h-full relative mt-10">
+            <canvas id="mathCanvas" class="absolute top-0 left-0 w-full h-full"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    /** * 1. 處理左右版面拖拉 (Resizer Logic) 
+     * 必須同時支援 Mouse 與 Touch 事件，確保 iPad/手機可用
+     */
+    const resizer = document.getElementById('resizer');
+    const leftPane = document.getElementById('left-pane');
+    const rightPane = document.getElementById('right-pane');
+    const container = document.querySelector('.split-container');
+    
+    let isResizing = false;
+
+    // 滑鼠事件
+    resizer.addEventListener('mousedown', (e) => {
+        isResizing = true;
+        document.body.style.cursor = 'col-resize';
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isResizing) return;
+        updatePaneWidths(e.clientX);
+    });
+
+    window.addEventListener('mouseup', () => {
+        isResizing = false;
+        document.body.style.cursor = 'default';
+    });
+
+    // 觸控事件 (Mobile/Tablet)
+    resizer.addEventListener('touchstart', (e) => {
+        isResizing = true;
+    }, { passive: false });
+
+    window.addEventListener('touchmove', (e) => {
+        if (!isResizing) return;
+        // 阻止預設行為(如頁面捲動)，確保拖拉順暢
+        e.preventDefault(); 
+        updatePaneWidths(e.touches[0].clientX);
+    }, { passive: false });
+
+    window.addEventListener('touchend', () => {
+        isResizing = false;
+    });
+
+    function updatePaneWidths(clientX) {
+        const containerWidth = container.getBoundingClientRect().width;
+        // 設定邊界，防止某一邊完全消失 (最少 20% 寬度)
+        let newLeftWidth = (clientX / containerWidth) * 100;
+        if (newLeftWidth < 20) newLeftWidth = 20;
+        if (newLeftWidth > 80) newLeftWidth = 80;
+        
+        leftPane.style.width = `${newLeftWidth}%`;
+        rightPane.style.width = `${100 - newLeftWidth}%`;
+        
+        // 拖拉時重繪 Canvas 以自適應大小
+        resizeCanvas();
+    }
+
+    /**
+     * 2. 動態題目與步驟渲染邏輯
+     */
+    let currentS = 13;
+    let currentSA = 481;
+    let currentH = 12;
+    let currentStep = 1;
+    const canvasStatus = document.getElementById('canvas-status');
+
+    function generateRandomProblem() {
+        // 隨機產生偶數邊長 (4 到 20) 和高 (5 到 20)，確保計算過程無小數點
+        currentS = Math.floor(Math.random() * 9 + 2) * 2; 
+        currentH = Math.floor(Math.random() * 16 + 5);
+        currentSA = (currentS * currentS) + (2 * currentS * currentH);
+        
+        // 更新題目文字與 SVG 圖形上的數值
+        document.getElementById('q-s').innerText = currentS;
+        document.getElementById('q-sa').innerText = currentSA;
+        const svgS = document.getElementById('svg-s');
+        if (svgS) svgS.textContent = currentS + " cm";
+        
+        currentStep = 1;
+        renderSteps();
+    }
+
+    function renderSteps() {
+        const container = document.getElementById('dynamic-steps-container');
+        const s = currentS;
+        const sa = currentSA;
+        const h = currentH;
+        const s2 = s * s;
+        const sa_minus_s2 = sa - s2;
+        const s2_times_h = 2 * s;
+
+        container.innerHTML = `
+            <!-- 步驟 1 -->
+            <div class="step-card ${currentStep === 1 ? 'active' : ''} bg-white rounded-xl shadow-sm border border-slate-200 mb-4 p-4 cursor-pointer" onclick="changeStep(1)">
+                <h2 class="text-lg font-bold text-blue-700 flex justify-between items-center">
+                    <span>步驟 1：設未知數與拆解圖形</span>
+                    <span class="text-xs font-normal bg-blue-100 text-blue-700 px-2 py-1 rounded">點擊查看動畫</span>
+                </h2>
+                <div class="step-content mt-3 text-slate-700 space-y-2">
+                    <p>首先，我們要找的是 $\\triangle VAB$ 的高。我們把它設為一個未知數。</p>
+                    <div class="bg-gray-50 p-3 rounded border border-gray-200 text-center font-bold">
+                        設 $\\triangle VAB$ 的高為 $h$ cm。
+                    </div>
+                    <p>根據題目，底面 $ABCD$ 是正方形，邊長為 $${s} \\text{ cm}$。</p>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li>正方形底面積 = $${s} \\times ${s}$</li>
+                        <li>一個側面 $\\triangle VAB$ 的面積 = $\\frac{\\text{底} \\times \\text{高}}{2} = \\frac{${s} \\times h}{2}$</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- 步驟 2 -->
+            <div class="step-card ${currentStep === 2 ? 'active' : ''} bg-white rounded-xl shadow-sm border border-slate-200 mb-4 p-4 cursor-pointer" onclick="changeStep(2)">
+                <h2 class="text-lg font-bold text-blue-700 flex justify-between items-center">
+                    <span>步驟 2：建立方程</span>
+                </h2>
+                <div class="step-content mt-3 text-slate-700 space-y-2">
+                    <p>利用「總表面面積 = $${sa}$」這個條件，將剛才拆解的部分加起來。</p>
+                    <div class="text-center text-lg my-4 overflow-x-auto">
+                        $${s}^2 + 4 \\times \\left( \\frac{${s} \\times h}{2} \\right) = ${sa}$ <span class="dse-mark" title="Method Mark">1M</span>
+                    </div>
+                    <p class="text-sm text-gray-500">（註：乘以 4 是因為棱錐有 4 個相同的側面三角形）</p>
+
+                    <!-- 🚨 警告陷阱 -->
+                    <div class="mt-4 border-l-4 border-red-500 bg-red-50 p-3 rounded-r">
+                        <h3 class="font-bold text-red-700 text-sm mb-1">⚠️ 致命陷阱警告！</h3>
+                        <p class="text-sm text-red-900">
+                            很多同學會忘記 <strong>乘以 4</strong>！只把一個三角形加進去是絕對拿不到分數的。要想像把金字塔剪開攤平，周圍有 4 塊三角形！
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 步驟 3 -->
+            <div class="step-card ${currentStep === 3 ? 'active' : ''} bg-white rounded-xl shadow-sm border border-slate-200 mb-4 p-4 cursor-pointer" onclick="changeStep(3)">
+                <h2 class="text-lg font-bold text-blue-700 flex justify-between items-center">
+                    <span>步驟 3：化簡與解方程 (零跳步)</span>
+                </h2>
+                <div class="step-content mt-3 text-slate-700 space-y-3">
+                    <p>現在我們要找出 $h$。請看右方動畫的<strong>「代數方塊對齊法」</strong>，學習如何一步步把數字搬走。</p>
+                    
+                    <div class="bg-slate-50 p-4 rounded-lg font-mono text-sm space-y-3 overflow-x-auto">
+                        <p>1. 先計算括號外的部分與次方：</p>
+                        <p class="pl-4">$${s2} + \\mathbf{4 \\times} \\frac{${s}h}{\\mathbf{2}} = ${sa}$</p>
+                        <p class="text-xs text-gray-500 pl-4">（約簡：4 和 2 約去，變成 2）</p>
+                        
+                        <hr class="border-slate-200">
+                        <p>2. 展開乘法：</p>
+                        <p class="pl-4">$${s2} + \\mathbf{2} \\times ${s}h = ${sa}$</p>
+                        <p class="pl-4">$${s2} + ${s2_times_h}h = ${sa}$</p>
+
+                        <hr class="border-slate-200">
+                        <p>3. 將數字移到右邊（加變減）：</p>
+                        <p class="pl-4">$${s2_times_h}h = ${sa} \\mathbf{- ${s2}}$</p>
+                        <p class="pl-4">$${s2_times_h}h = ${sa_minus_s2}$</p>
+
+                        <hr class="border-slate-200">
+                        <p>4. 最後把 ${s2_times_h} 除過去（乘變除）：</p>
+                        <p class="pl-4">$h = \\frac{${sa_minus_s2}}{${s2_times_h}}$</p>
+                        <p class="pl-4 text-lg font-bold text-green-600">$h = ${h}$ <span class="dse-mark" title="Answer Mark">1A</span></p>
+                    </div>
+                    
+                    <p class="font-bold text-slate-800 mt-2">答案是 $\\triangle VAB$ 的高為 $${h} \\text{ cm}$。</p>
+                </div>
+            </div>
+        `;
+
+        if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+            MathJax.typesetPromise([container]).catch((err) => console.log(err.message));
+        }
+        drawCanvasState(currentStep);
+    }
+
+    function changeStep(step) {
+        currentStep = step;
+        renderSteps();
+    }
+
+    /**
+     * 3. Canvas 動態視覺化渲染邏輯
+     */
+    const canvas = document.getElementById('mathCanvas');
+    const ctx = canvas.getContext('2d');
+    
+    // 解決高解析度螢幕模糊問題
+    function resizeCanvas() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.scale(dpr, dpr);
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+        
+        drawCanvasState(currentStep);
+    }
+
+    window.addEventListener('resize', resizeCanvas);
+
+    // 繪圖輔助函數
+    function drawText(text, x, y, font, color, align = 'center', baseline = 'middle') {
+        ctx.font = font;
+        ctx.fillStyle = color;
+        ctx.textAlign = align;
+        ctx.textBaseline = baseline;
+        ctx.fillText(text, x, y);
+    }
+
+    function drawLine(x1, y1, x2, y2, color, width = 2, dash = []) {
+        ctx.beginPath();
+        ctx.setLineDash(dash);
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = width;
+        ctx.stroke();
+        ctx.setLineDash([]); // 恢復實線
+    }
+
+    function drawPolygon(points, fillColor, strokeColor, lineWidth = 2) {
+        if (points.length < 3) return;
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length; i++) {
+            ctx.lineTo(points[i].x, points[i].y);
+        }
+        ctx.closePath();
+        if (fillColor) {
+            ctx.fillStyle = fillColor;
+            ctx.fill();
+        }
+        if (strokeColor) {
+            ctx.strokeStyle = strokeColor;
+            ctx.lineWidth = lineWidth;
+            ctx.stroke();
+        }
+    }
+
+    function drawBox(text, x, y, width, height, bgColor, borderColor, textColor) {
+        ctx.fillStyle = bgColor;
+        ctx.beginPath();
+        ctx.roundRect(x - width/2, y - height/2, width, height, 8);
+        ctx.fill();
+        ctx.strokeStyle = borderColor;
+        ctx.lineWidth = 2;
+        ctx.stroke();
+        drawText(text, x, y, 'bold 18px Arial', textColor);
+    }
+
+    // 核心繪圖邏輯：根據步驟改變畫面
+    function drawCanvasState(step) {
+        const w = canvas.parentElement.clientWidth;
+        const h = canvas.parentElement.clientHeight;
+        ctx.clearRect(0, 0, w, h);
+
+        const cx = w / 2;
+        const cy = h / 2;
+
+        // 讀取動態數值
+        const sVal = currentS;
+        const saVal = currentSA;
+        const hVal = currentH;
+        const s2Val = sVal * sVal;
+        const hTerm = 2 * sVal;
+        const saMinusS2 = saVal - s2Val;
+
+        if (step === 1) {
+            canvasStatus.innerText = "(平面展開圖與代數設定)";
+            // 繪製展開圖 (Net of pyramid)
+            const s = Math.min(w, h) * 0.15; // 基準大小
+            
+            // 中心正方形 (底面)
+            const squarePoints = [
+                {x: cx - s, y: cy - s}, {x: cx + s, y: cy - s},
+                {x: cx + s, y: cy + s}, {x: cx - s, y: cy + s}
+            ];
+            drawPolygon(squarePoints, '#f0f9ff', '#0284c7', 3);
+            drawText("底面積", cx, cy, 'bold 16px sans-serif', '#0369a1');
+            drawText(`${sVal} × ${sVal}`, cx, cy + 20, '14px sans-serif', '#0369a1');
+
+            // 標示邊長
+            drawText(`${sVal}`, cx, cy + s + 15, 'bold 16px Arial', '#334155');
+
+            // 畫 4 個三角形
+            // 下方三角形 (代表 VAB)
+            const triBottom = [{x: cx - s, y: cy + s}, {x: cx + s, y: cy + s}, {x: cx, y: cy + s * 2.5}];
+            drawPolygon(triBottom, '#fff7ed', '#ea580c', 2);
+            
+            // 畫三角形的高 h (虛線)
+            drawLine(cx, cy + s, cx, cy + s * 2.5, '#ea580c', 2, [5, 5]);
+            drawText("h", cx + 15, cy + s * 1.7, 'italic bold 18px Times New Roman', '#ea580c');
+            
+            // 右方、上方、左方三角形
+            drawPolygon([{x: cx + s, y: cy - s}, {x: cx + s, y: cy + s}, {x: cx + s * 2.5, y: cy}], '#fff7ed', '#ea580c', 2);
+            drawPolygon([{x: cx - s, y: cy - s}, {x: cx + s, y: cy - s}, {x: cx, y: cy - s * 2.5}], '#fff7ed', '#ea580c', 2);
+            drawPolygon([{x: cx - s, y: cy - s}, {x: cx - s, y: cy + s}, {x: cx - s * 2.5, y: cy}], '#fff7ed', '#ea580c', 2);
+
+            // 浮動提示
+            drawText("設高為 h", cx, cy + s * 2.5 + 20, 'bold 16px sans-serif', '#ea580c');
+            
+        } else if (step === 2) {
+            canvasStatus.innerText = "(幾何與方程的對應)";
+            
+            // 視覺化公式連結
+            drawText(`總表面面積 = ${saVal}`, cx, 40, 'bold 24px sans-serif', '#1e293b');
+
+            // 正方形區塊
+            drawBox(`${sVal} × ${sVal}`, cx - 120, cy - 40, 100, 50, '#e0f2fe', '#0ea5e9', '#0369a1');
+            drawText("底面", cx - 120, cy - 80, '14px sans-serif', '#64748b');
+            
+            // 加號
+            drawText("+", cx - 40, cy - 40, 'bold 30px Arial', '#334155');
+            
+            // 乘號與三角形區塊
+            drawText("4 ×", cx, cy - 40, 'bold 24px Arial', '#ea580c');
+            drawBox(`(${sVal}h / 2)`, cx + 80, cy - 40, 100, 50, '#ffedd5', '#f97316', '#c2410c');
+            drawText("4 個側面", cx + 80, cy - 80, '14px sans-serif', '#64748b');
+
+            // 等於
+            drawText("=", cx + 160, cy - 40, 'bold 30px Arial', '#334155');
+            drawBox(`${saVal}`, cx + 230, cy - 40, 80, 50, '#f1f5f9', '#475569', '#0f172a');
+
+            // 化簡箭頭與結果
+            drawLine(cx - 120, cy - 10, cx - 120, cy + 50, '#94a3b8', 2, [4, 4]);
+            drawBox(`${s2Val}`, cx - 120, cy + 80, 80, 40, '#f8fafc', '#cbd5e1', '#334155');
+
+            drawLine(cx + 80, cy - 10, cx + 80, cy + 50, '#94a3b8', 2, [4, 4]);
+            drawBox(`${hTerm}h`, cx + 80, cy + 80, 80, 40, '#f8fafc', '#cbd5e1', '#ea580c');
+
+            drawText("+", cx - 20, cy + 80, 'bold 24px Arial', '#334155');
+            drawText("=", cx + 160, cy + 80, 'bold 24px Arial', '#334155');
+            drawBox(`${saVal}`, cx + 230, cy + 80, 80, 40, '#f8fafc', '#cbd5e1', '#0f172a');
+
+        } else if (step === 3) {
+            canvasStatus.innerText = "(代數方塊對齊法 - 適合弱底學生)";
+            // 極致的上下對齊法，顯示解方程邏輯
+            const startY = 60;
+            const rowH = 60;
+            const leftCol = cx - 100; // 常數項
+            const midCol = cx;        // h 項
+            const rightCol = cx + 120; // 右邊數字
+
+            drawText("⚠️ 視覺對齊法：同類項放在同一垂直線", cx, 20, 'bold 16px sans-serif', '#dc2626');
+
+            // 顏色定義：常數(綠), h項(橘)
+            const cColor = '#16a34a'; // 綠色
+            const cBg = '#dcfce7';
+            const hColor = '#ea580c'; // 橘色
+            const hBg = '#ffedd5';
+
+            // Row 1
+            drawBox(`${s2Val}`, leftCol, startY, 70, 40, cBg, cColor, cColor);
+            drawText("+", (leftCol+midCol)/2, startY, 'bold 20px Arial', '#000');
+            drawBox(`${hTerm}h`, midCol, startY, 70, 40, hBg, hColor, hColor);
+            drawText("=", (midCol+rightCol)/2, startY, 'bold 20px Arial', '#000');
+            drawBox(`${saVal}`, rightCol, startY, 70, 40, cBg, cColor, cColor);
+
+            // 動畫感箭頭：將常數移過去
+            drawLine(leftCol, startY+25, rightCol, startY+rowH-25, cColor, 2, [5,5]);
+            // 畫個小箭頭
+            ctx.beginPath(); ctx.moveTo(rightCol-10, startY+rowH-35); ctx.lineTo(rightCol, startY+rowH-25); ctx.lineTo(rightCol-15, startY+rowH-20); ctx.strokeStyle = cColor; ctx.stroke();
+
+            // Row 2
+            // 中間 h項 垂直落下
+            drawLine(midCol, startY+25, midCol, startY+rowH-25, '#cbd5e1', 2);
+            drawBox(`${hTerm}h`, midCol, startY+rowH, 70, 40, hBg, hColor, hColor);
+            drawText("=", (midCol+rightCol)/2, startY+rowH, 'bold 20px Arial', '#000');
+            // 右邊變成 sa - s2
+            drawBox(`${saVal} - ${s2Val}`, rightCol + 10, startY+rowH, 110, 40, cBg, cColor, cColor);
+            drawText("移項轉號", rightCol + 90, startY+rowH, '12px sans-serif', cColor);
+
+            // Row 3 (計算結果)
+            drawLine(midCol, startY+rowH+25, midCol, startY+rowH*2-25, '#cbd5e1', 2);
+            drawLine(rightCol, startY+rowH+25, rightCol, startY+rowH*2-25, '#cbd5e1', 2);
+            drawBox(`${hTerm}h`, midCol, startY+rowH*2, 70, 40, hBg, hColor, hColor);
+            drawText("=", (midCol+rightCol)/2, startY+rowH*2, 'bold 20px Arial', '#000');
+            drawBox(`${saMinusS2}`, rightCol, startY+rowH*2, 70, 40, cBg, cColor, cColor);
+
+            // Row 4 (除法)
+            drawLine(midCol, startY+rowH*2+25, midCol, startY+rowH*3-25, '#cbd5e1', 2);
+            drawLine(rightCol, startY+rowH*2+25, rightCol, startY+rowH*3-25, '#cbd5e1', 2);
+            
+            drawBox("h", midCol, startY+rowH*3, 50, 40, hBg, hColor, hColor);
+            drawText("=", (midCol+rightCol)/2, startY+rowH*3, 'bold 20px Arial', '#000');
+            drawBox(`${saMinusS2} ÷ ${hTerm}`, rightCol, startY+rowH*3, 100, 40, '#f1f5f9', '#94a3b8', '#334155');
+            drawText("乘變除", midCol + 40, startY+rowH*2+35, '12px sans-serif', hColor);
+
+            // Row 5 (Final Answer)
+            drawLine(midCol, startY+rowH*3+25, midCol, startY+rowH*4-25, '#cbd5e1', 2);
+            drawLine(rightCol, startY+rowH*3+25, rightCol, startY+rowH*4-25, '#cbd5e1', 2);
+            drawText("h", midCol, startY+rowH*4, 'bold 24px Arial', '#2563eb');
+            drawText("=", (midCol+rightCol)/2, startY+rowH*4, 'bold 24px Arial', '#000');
+            drawBox(`${hVal}`, rightCol, startY+rowH*4, 70, 50, '#dbeafe', '#2563eb', '#1d4ed8'); // 終極答案藍色框
+            drawText("cm", rightCol + 50, startY+rowH*4, 'bold 16px sans-serif', '#1d4ed8');
+        }
+    }
+
+    // 初始化 Canvas 大小並繪製第一步
+    window.onload = () => {
+        renderSteps();
+        resizeCanvas();
+    };
+
+</script>
+</body>
+</html>

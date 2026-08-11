@@ -1,0 +1,163 @@
+<!DOCTYPE html><html lang="zh-HK"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>中五級 第三學期 數學科考試 - 卷二</title><link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet"><script>window.MathJax={tex:{inlineMath:[["$","$"],["\\(","\\)"]],displayMath:[["$$","$$"],["\\[","\\]"]]},startup:{typeset:true}};</script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js" async></script><style>* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: 'Noto Sans TC', sans-serif; background: #f5f5f5; color: #333; padding-top: 70px; }
+.top-nav { position: fixed; top: 0; left: 0; width: 100%; background: #3498db; color: white; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 2px 10px rgba(0,0,0,0.2); z-index: 1000; }
+.nav-left, .nav-right { display: flex; align-items: center; gap: 15px; }
+.hamburger { cursor: pointer; padding: 5px; }
+.hamburger span { display: block; width: 25px; height: 3px; background: white; margin: 5px 0; border-radius: 2px; }
+.back-btn { color: white; text-decoration: none; font-size: 0.95em; padding: 6px 12px; background: rgba(255,255,255,0.15); border-radius: 5px; }
+.nav-title { font-size: 1.1em; font-weight: bold; }
+.check-btn { background: #27ae60; color: white; border: none; padding: 8px 16px; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.95em; }
+.container { max-width: 900px; margin: 20px auto; padding: 0 15px; }
+.section-title { background: #2c3e50; color: white; padding: 12px 15px; border-radius: 5px; margin: 20px 0 15px 0; cursor: pointer; font-weight: bold; display: flex; justify-content: space-between; }
+.section-title::after { content: '▼'; font-size: 0.8em; }
+.section-title.open::after { content: '▲'; }
+.section-content { display: none; }
+.section-content.open { display: block; }
+h1 { text-align: center; margin: 20px 0; font-size: 1.5em; }
+.question { margin-bottom: 25px; padding: 20px; background: white; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.question-num { font-weight: bold; color: #3498db; margin-bottom: 10px; font-size: 1.1em; border-bottom: 2px solid #ecf0f1; padding-bottom: 5px; display: flex; justify-content: space-between; align-items: center; }
+.page-tag { font-size: 0.85em; color: #999; font-weight: normal; }
+.question-text { margin-bottom: 15px; line-height: 1.6; font-size: 1.05em; }
+.options-container { display: flex; flex-direction: column; gap: 8px; }
+.option { padding: 12px 15px; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; background: #fafafa; transition: 0.2s; line-height: 1.4; }
+.option:hover { background: #f0f7ff; border-color: #3498db; }
+.option.selected { background: #e1f0fa; border-color: #3498db; border-width: 2px; padding: 11px 14px; }
+.option.correct { background: #d4edda; border-color: #28a745; color: #155724; border-width: 2px; padding: 11px 14px; }
+.option.wrong { background: #f8d7da; border-color: #dc3545; color: #721c24; border-width: 2px; padding: 11px 14px; }
+.answer { display: none; color: #e74c3c; font-weight: bold; margin-top: 15px; padding: 10px; background: #fdf2f2; border-radius: 5px; }
+.answer.show-answer { display: block; }
+.show-answer { display: block !important; }
+.menu-overlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1001; }
+.menu-overlay.open { display: block; }
+.side-menu { visibility: hidden; position: fixed; top: 0; left: -280px; width: 280px; height: 100%; background: white; z-index: 1002; transition: left 0.3s; box-shadow: 2px 0 5px rgba(0,0,0,0.1); }
+.side-menu.open { visibility: visible; left: 0; }
+.side-menu-header { padding: 20px; background: #3498db; color: white; display: flex; justify-content: space-between; align-items: center; }
+.close-btn { cursor: pointer; font-size: 1.5em; }
+.side-menu-content { padding: 10px; }
+.menu-btn { display: block; width: 100%; padding: 15px; margin: 5px 0; border: none; border-radius: 8px; background: #f5f7fa; cursor: pointer; text-align: left; font-size: 1em; }
+.menu-btn:hover { background: #e1e8ed; }</style></head><body><div class="top-nav"><div class="nav-left"><div class="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></div><a href="./index.html" class="back-btn">← 返回主頁</a></div><div class="nav-title" id="scoreDisplay">卷二選擇題 | 得分: 0 / 29</div><div class="nav-right"><button class="check-btn" onclick="checkAnswers()">核對答案</button></div></div><div class="menu-overlay" id="menuOverlay" onclick="closeMenu()"></div><div class="side-menu" id="sideMenu"><div class="side-menu-header"><h2>選單</h2><span class="close-btn" onclick="closeMenu()">✕</span></div><div class="side-menu-content"><button class="menu-btn" onclick="goToPage('./index.html')">考試主頁</button><button class="menu-btn" onclick="goToPage('p1.html')">卷一</button></div></div><div class="container"><h1>中五級 第三學期 數學科考試 - 卷二</h1><div class="section-title open" onclick="toggleSection('p2-a')">甲部 (25分)</div><div id="p2-a" class="section-content open"><div class="question" data-correct="B"><div class="question-num">1<span class="page-tag">頁2</span></div><div class="question-text">$\frac{4x^{-3}y^2}{(-2xy^{-1})^3} = ?$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $\frac{-2y^5}{x^3}$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $\frac{y^5}{-2x^6}$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $\frac{y^5}{-2x^4}$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $\frac{1}{-2x^6y}$</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="D"><div class="question-num">2<span class="page-tag">頁2</span></div><div class="question-text">因式分解 $y^2-(2x-1)^2$。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $(y-2x-1)(y+2x-1)$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $(y-2x+1)(y+2x-1)$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $(y-2x+1)(y+2x+1)$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $(y-2x+1)(y-2x-1)$</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="D"><div class="question-num">3<span class="page-tag">頁2</span></div><div class="question-text">已知 $(3x+a)(x-2)-7 \equiv 3x^2-5x-b$，求 $b$ 的值。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $b=-9$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $b=1$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $b=5$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $b=9$</div></div><div class="answer">正確答案：D</div></div><div class="question" data-correct="C"><div class="question-num">4<span class="page-tag">頁3</span></div><div class="question-text">$\sqrt{261} = ?$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $17$（準確至最接近的整數）</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $16.15$（準確至二位小數）</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $16.2$（準確至三位有效數字）</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $16.1555$（準確至四位有效數字）</div></div><div class="answer">正確答案：C</div></div><div class="question" data-correct="C"><div class="question-num">5<span class="page-tag">頁3</span></div><div class="question-text">若 $\frac{mk+2n}{2n}=4$，則 $k = ?$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $\frac{10n}{m}$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $\frac{m}{6n}$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $\frac{6n}{m}$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $\frac{3}{m}$</div></div><div class="answer">正確答案：C</div></div><div class="question" data-correct="D"><div class="question-num">6<span class="page-tag">頁3</span></div><div class="question-text">設 $a$ 為一常數。若二次方程 $x^2+ax+a+1=1$ 有二重根，則 $a = ?$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $-1$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $2$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $0$ 或 $4$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $0$ 或 $-4$</div></div><div class="answer">正確答案：C</div></div><div class="question" data-correct="B"><div class="question-num">7<span class="page-tag">頁3</span></div><div class="question-text">若 $x+2y+6=x-y=7$，則 $x = ?$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $5$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $1$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $-2$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $-6$</div></div><div class="answer">正確答案：A</div></div><div class="question" data-correct="A"><div class="question-num">8<span class="page-tag">頁3</span></div><div class="question-text">嘉駿將 \$20,000 存入銀行，年利率 5%，年期 2 年，以每半年複利息計算，求利息準確至最接近的元。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. \$4,310</div>
+            <div class="option" onclick="selectOption(this,'B')">B. \$2,076</div>
+            <div class="option" onclick="selectOption(this,'C')">C. \$2,050</div>
+            <div class="option" onclick="selectOption(this,'D')">D. \$1,012.50</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="A"><div class="question-num">9<span class="page-tag">頁4</span></div><div class="question-text">$15-4x<3$ 或 $9-2x\\leq 1$ 的解為</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $x>3$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $x\geq 4$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $x<3$ 或 $x\geq 4$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $x\leq 4$</div></div><div class="answer">正確答案：A</div></div><div class="question" data-correct="C"><div class="question-num">10<span class="page-tag">頁4</span></div><div class="question-text">在某公司，40% 的僱員為女性。若男僱員有 1200 人，求該公司中僱員的總數。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $480$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $720$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $2\,000$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $3\,000$</div></div><div class="answer">正確答案：C</div></div><div class="question" data-correct="A"><div class="question-num">11<span class="page-tag">頁4</span></div><div class="question-text">求圖中扇形 AOB 的周界。(答案須準確至三位有效數字。)</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $23.0$ m</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $18.2$ m</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $6.98$ m</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $2.22$ m</div></div><div class="answer">正確答案：A</div></div><div class="question" data-correct="C"><div class="question-num">12<span class="page-tag">頁4</span></div><div class="question-text">設 $f(x)=(x-3)(x+3)-ax+6$，其中 $a$ 為一常數。若 $f(-2)=f(1)+9$，則 $a = ?$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $5$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $2$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $-4$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $-9$</div></div><div class="answer">正確答案：C</div></div><div class="question" data-correct="D"><div class="question-num">13<span class="page-tag">頁4</span></div><div class="question-text">設 $g(x)=4(x-a)(x-2)$，其中 $a$ 為一常數。若 $g(x)$ 除以 $x+1$ 時，餘數為 24，則 $a = ?$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $-16$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $-1$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $1$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $12$</div></div><div class="answer">正確答案：A</div></div><div class="question" data-correct="B"><div class="question-num">14<span class="page-tag">頁5</span></div><div class="question-text">$z$ 隨 $x$ 而正變，且隨 $y$ 的立方而反變，其中 $y>0$。下列何者必為常數？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $\frac{xz}{y^3}$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $xy^3z$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $\frac{z}{xy^3}$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $\frac{y^3z}{x}$</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="A"><div class="question-num">15<span class="page-tag">頁5</span></div><div class="question-text">圖中所示為直線 $x+ay+b=0$ 的圖像。下列何者正確？\nI. $a<0$　II. $b<0$　III. $a>b$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 只有 I 及 II</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 只有 I 及 III</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 只有 II 及 III</div>
+            <div class="option" onclick="selectOption(this,'D')">D. I、II 及 III</div></div><div class="answer">正確答案：A</div></div><div class="question" data-correct="A"><div class="question-num">16<span class="page-tag">頁5</span></div><div class="question-text">二次函數 $y=a(x-h)^2+k$ 的圖像的頂點是 $(4,-5)$。若該圖像通過 $(8,3)$，求 $a$ 的值。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $\frac{1}{8}$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $\frac{1}{2}$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $3$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $13$</div></div><div class="answer">正確答案：D</div></div><div class="question" data-correct="D"><div class="question-num">17<span class="page-tag">頁6</span></div><div class="question-text">圖中所示為 $y=3x^2+bx+27$ 的二次圖像。問以下哪一個 / 一些句子必為正確？\nI. 該函數的極小值是 0。\nII. $(4,3)$ 是圖像上的一點。\nIII. $b$ 為負數。\nIV. 對稱軸的方程是 $y=3$。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 只有 I</div>
+            <div class="option" onclick="selectOption(this,'B')">B. III 和 IV</div>
+            <div class="option" onclick="selectOption(this,'C')">C. II 和 IV</div>
+            <div class="option" onclick="selectOption(this,'D')">D. I、II 和 III</div></div><div class="answer">正確答案：D</div></div><div class="question" data-correct="B"><div class="question-num">18<span class="page-tag">頁6</span></div><div class="question-text">圖中，AB 是一枝直立的柱子。AC 和 AD 是兩條直的鋼纜。CBD 是水平地面上的一條直線。由 C 和 D 測得 A 的仰角分別是 $60^\\circ$ 和 $40^\\circ$。C 與 D 相距 56 m。求柱 AB 的高度。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $0.730$ m</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $31.7$ m</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $37.7$ m</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $49.2$ m</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="A"><div class="question-num">19<span class="page-tag">頁7</span></div><div class="question-text">圖中，AOB 是圓的一條直徑及 $\\angle AOC=50^\\circ$。求 $x$。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $25^\circ$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $30^\circ$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $40^\circ$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $65^\circ$</div></div><div class="answer">正確答案：A</div></div><div class="question" data-correct="B"><div class="question-num">20<span class="page-tag">頁7</span></div><div class="question-text">圖中，$\\angle BCD=108^\\circ$。求 $\\angle BAD$。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $62^\circ$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $72^\circ$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $82^\circ$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $108^\circ$</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="D"><div class="question-num">21<span class="page-tag">頁7</span></div><div class="question-text">若 P 為直角坐標平面上的一動點使得 P 與點 $(2,-1)$ 間之距離等於 7，則 P 的軌跡為一</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 三角形</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 正方形</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 直線</div>
+            <div class="option" onclick="selectOption(this,'D')">D. 圓</div></div><div class="answer">正確答案：D</div></div><div class="question" data-correct="A"><div class="question-num">22<span class="page-tag">頁8</span></div><div class="question-text">點 A 及點 B 的坐標分別為 $(2,5)$ 及 $(4,-1)$。設 P 為直角坐標平面上的一動點使得 $AP=BP$。求 P 的軌跡的方程。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $x-3y+3=0$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $x-3y-7=0$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $x-3y+13=0$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $3x+y-11=0$</div></div><div class="answer">正確答案：A</div></div><div class="question" data-correct="C"><div class="question-num">23<span class="page-tag">頁8</span></div><div class="question-text">直線 $L_1$：$5x+3y-15=0$ 和直線 $L_2$：$ax-3y-6=0$ 的 $x$ 截距相同。求 $a$ 的值。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $\frac{6}{5}$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $1$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $2$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $3$</div></div><div class="answer">正確答案：C</div></div><div class="question" data-correct="D"><div class="question-num">24<span class="page-tag">頁8</span></div><div class="question-text">如果直線 $L_1: 5x+3y-4=0$ 和 $L_2: 6x-ty+9=0$ 互相垂直，求 $t$ 的值。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $-10$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $-\frac{18}{5}$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $\frac{18}{5}$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $10$</div></div><div class="answer">正確答案：D</div></div><div class="question" data-correct="D"><div class="question-num">25<span class="page-tag">頁9</span></div><div class="question-text">已知一個圓的方程是 $x^2+y^2-6x-ky-17=0$。若 $(5,2)$ 在圓外，求 $k$ 的範圍。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $k<9$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $k>9$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $k>-9$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $k<-9$</div></div><div class="answer">正確答案：B</div></div></div><div class="section-title open" onclick="toggleSection('p2-b')">乙部 (15分)</div><div id="p2-b" class="section-content open"><div class="question" data-correct="B"><div class="question-num">31<span class="page-tag">頁10</span></div><div class="question-text">$(2n)(8^{3n}) \\div 64^n = ?$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $4^n$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $42^n$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $\frac{1}{4^{3n}}$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $\frac{1}{4^{4n}}$</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="B"><div class="question-num">32<span class="page-tag">頁11</span></div><div class="question-text">下列何者為最大?</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $12^{42^{41}}$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $24^{12^{14}}$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $41^{21^{24}}$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $42^{11^{24}}$</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="D"><div class="question-num">33<span class="page-tag">頁11</span></div><div class="question-text">若 $\\frac{1}{2}\\log_5 y = \\log_5 x + 2$。下列何者必為正確？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $xy^2=625$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $x^2y=625$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $\frac{y}{x^2}=625$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $\frac{y^2}{x}=625$</div></div><div class="answer">正確答案：A</div></div><div class="question" data-correct="A"><div class="question-num">34<span class="page-tag">頁11</span></div><div class="question-text">問共有多少個整數 $x$ 滿足不等式 $(x+2)(3x-1)<40$?</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $4$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $5$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $6$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $7$</div></div><div class="answer">正確答案：D</div></div><div class="question" data-correct="A"><div class="question-num">35<span class="page-tag">頁12</span></div><div class="question-text">若圓 $x^2+y^2-8x+ky-214=0$ 的一直徑通過點 $(6,-5)$ 且該直徑的斜率為 $-4$，則 $k = ?$</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $-6$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $-4$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $13$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $70$</div></div><div class="answer">正確答案：D</div></div><div class="question" data-correct="A"><div class="question-num">36<span class="page-tag">頁13</span></div><div class="question-text">圖中，TA 和 TB 分別與圓相切於 A 和 B。$\\angle ATB=48^\\circ$ 及 $\\angle CBE=42^\\circ$。求 $\\angle ADC$。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $108^\circ$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $132^\circ$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $138^\circ$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $152^\circ$</div></div><div class="answer">正確答案：D</div></div><div class="question" data-correct="A"><div class="question-num">37<span class="page-tag">頁13</span></div><div class="question-text">圖中，O 是圓心而 CD 是圓於 C 的切線，ABD 是一條直線。若 $\\angle AOB=106^\\circ$ 和 $\\angle ADC=36^\\circ$，求 $\\angle CAO$。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $8.5^\circ$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $10^\circ$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $12.5^\circ$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $17^\circ$</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="C"><div class="question-num">38<span class="page-tag">頁14</span></div><div class="question-text">求圖中的 $\\theta$。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $70.5^\circ$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $41.5^\circ$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $26.5^\circ$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $26.4^\circ$</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="C"><div class="question-num">39<span class="page-tag">頁14</span></div><div class="question-text">圖中 $\\triangle ABC$ 是一個鈍角三角形。$AC=15$ cm，$AB=6$ cm 及 $\\angle ACB=22^\\circ$。求 $BC$。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $9.70$ cm</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $11.8$ cm</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $13.3$ cm</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $16.0$ cm</div></div><div class="answer">正確答案：B</div></div><div class="question" data-correct="D"><div class="question-num">40<span class="page-tag">頁14</span></div><div class="question-text">圖中所示為一個直立四棱錐，它的底 ABCD 是一個邊長 8 cm 的正方形。已知 $VA=15$ cm。求平面 VAB 與平面 VBC 的交角。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $7.71^\circ$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $77.1^\circ$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $93.8^\circ$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $94.4^\circ$</div></div><div class="answer">正確答案：A</div></div><div class="question" data-correct="C"><div class="question-num">41<span class="page-tag">頁13</span></div><div class="question-text">志誠有 5 盒不同的紙包飲品和 6 罐不同的罐裝飲品。他選出 3 盒紙包飲品和 4 罐罐裝飲品，共有多少種方法？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $25$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $100$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $150$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $150$</div></div><div class="answer">正確答案：C</div></div><div class="question" data-correct="D"><div class="question-num">42<span class="page-tag">頁14</span></div><div class="question-text">書架上有 12 本書，其中 3 本是英文書，餘下是中文書。若英文書要放在相鄰的位置，書架上的書共有多少個排列方法？</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $8\,640$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $725\,760$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $4\,354\,560$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $21\,772\,800$</div></div><div class="answer">正確答案：D</div></div><div class="question" data-correct="C"><div class="question-num">43<span class="page-tag">頁14</span></div><div class="question-text">A、B 和 C 三人同時射擊某目標。A、B 和 C 射中目標的概率分別是 $\\frac{1}{3}$、$\\frac{1}{2}$ 和 $\\frac{1}{4}$。求最少有一人射中該目標的概率。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $\frac{1}{4}$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $\frac{11}{24}$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $\frac{3}{4}$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $\frac{3}{4}$</div></div><div class="answer">正確答案：C</div></div><div class="question" data-correct="C"><div class="question-num">44<span class="page-tag">頁14</span></div><div class="question-text">一個盒子內有 15 粒彈珠，其中 6 粒是黑色彈珠和 9 粒是白色彈珠。從該盒子內先後隨機抽出 2 粒彈珠，每次抽出的彈珠都不會放回。求抽出 2 粒相同顏色的彈珠的概率。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. $\frac{1}{7}$</div>
+            <div class="option" onclick="selectOption(this,'B')">B. $\frac{12}{35}$</div>
+            <div class="option" onclick="selectOption(this,'C')">C. $\frac{17}{35}$</div>
+            <div class="option" onclick="selectOption(this,'D')">D. $\frac{18}{35}$</div></div><div class="answer">正確答案：C</div></div><div class="question" data-correct="A"><div class="question-num">45<span class="page-tag">頁14</span></div><div class="question-text">設 A 為一組數 $\{a,b,c,d\}$ 而 B 為另一組數 $\{2a-6,2b-6,2c-6,2d-6\}$，其中 $0<a<b<c<d$。下列何者必為正確？\nI. A 的四分位數間距小於 B 的四分位數間距。\nII. A 的中位數大於 B 的中位數。\nIII. A 的方差與 B 的方差相同。</div><div class="options-container"><div class="option" onclick="selectOption(this,'A')">A. 只有 I</div>
+            <div class="option" onclick="selectOption(this,'B')">B. 只有 I 及 II</div>
+            <div class="option" onclick="selectOption(this,'C')">C. 只有 II 及 III</div>
+            <div class="option" onclick="selectOption(this,'D')">D. I、II 及 III</div></div><div class="answer">正確答案：A</div></div></div></div><script>var scoreTitle="卷二選擇題 | 得分: 0 / 29";function toggleMenu(){document.getElementById('menuOverlay').classList.add('open');document.getElementById('sideMenu').classList.add('open');}
+function closeMenu(){document.getElementById('menuOverlay').classList.remove('open');document.getElementById('sideMenu').classList.remove('open');}
+function goToPage(url){window.location.href=url;}
+function toggleSection(id){var el=document.getElementById(id);el.classList.toggle('open');el.previousElementSibling.classList.toggle('open');}
+function selectOption(element,answerValue){var q=element.closest('.question');var opts=q.querySelectorAll('.option');opts.forEach(function(o){o.classList.remove('selected');});element.classList.add('selected');q.dataset.selected=answerValue;}
+function checkAnswers(){var qs=document.querySelectorAll('.question');var score=0,total=0;qs.forEach(function(q){var c=q.dataset.correct;if(!c||c==='')return;total++;if(q.dataset.selected===c){score++;q.querySelectorAll('.option').forEach(function(o){if(o.classList.contains('selected'))o.classList.add('correct');});}else{q.querySelectorAll('.option').forEach(function(o){if(o.classList.contains('selected'))o.classList.add('wrong');});}var a=q.querySelector('.answer');if(a)a.classList.add('show-answer');});document.getElementById('scoreDisplay').innerText='卷二選擇題 | 得分: '+score+' / '+total;}</script></body></html>

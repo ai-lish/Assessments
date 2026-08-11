@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="zh-HK">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>DSE 數學互動解題：指數定律 (化簡)</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for LaTeX Rendering -->
+    <script>
+        MathJax = {
+            tex: { inlineMath: [['$', '$'], ['\\(', '\\)']], displayMath: [['$$', '$$'], ['\\[', '\\]']] },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden; 
+            background-color: #f3f4f6;
+        }
+
+        .split-container {
+            display: flex;
+            flex-direction: row; 
+            height: 100vh;
+            width: 100vw;
+        }
+
+        #left-pane {
+            min-width: 320px; 
+            flex: 1 1 40%;
+            overflow-y: auto;
+            background-color: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.05);
+            z-index: 10;
+        }
+
+        #right-pane {
+            min-width: 320px; 
+            flex: 1 1 60%;
+            position: relative;
+            background-color: #f8fafc;
+            overflow: hidden;
+        }
+
+        .resizer {
+            width: 8px;
+            background-color: #cbd5e1;
+            cursor: col-resize;
+            flex-shrink: 0;
+            z-index: 20;
+            transition: background-color 0.2s;
+            touch-action: none; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .resizer:hover, .resizer:active {
+            background-color: #3b82f6;
+        }
+
+        .resizer-handle {
+            width: 4px;
+            height: 30px;
+            background-color: white;
+            border-radius: 2px;
+            pointer-events: none;
+        }
+
+        .step-card {
+            border: 2px solid transparent;
+            transition: all 0.3s ease;
+        }
+        .step-card.active {
+            border-color: #3b82f6;
+            background-color: #eff6ff;
+            box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.1);
+        }
+        .step-content {
+            display: none;
+        }
+        .step-card.active .step-content {
+            display: block;
+        }
+
+        #left-pane::-webkit-scrollbar { width: 8px; }
+        #left-pane::-webkit-scrollbar-track { background: #f1f1f1; }
+        #left-pane::-webkit-scrollbar-thumb { background: #c1c1c1; border-radius: 4px; }
+        #left-pane::-webkit-scrollbar-thumb:hover { background: #a8a8a8; }
+        
+        details > summary { list-style: none; cursor: pointer; }
+        details > summary::-webkit-details-marker { display: none; }
+    </style>
+</head>
+<body class="text-slate-800 antialiased font-sans">
+
+<div class="split-container">
+    
+    <!-- LEFT PANE -->
+    <div id="left-pane" class="p-6 md:p-8 flex flex-col gap-6">
+        
+        <div class="flex justify-between items-start border-b border-slate-200 pb-4">
+            <div>
+                <div class="inline-block bg-blue-100 text-blue-800 text-xs font-bold px-2 py-1 rounded mb-2">DSE 卷一 必答題 (基礎)</div>
+                <h1 class="text-2xl font-extrabold text-slate-900">指數定律化簡</h1>
+            </div>
+            <button onclick="generateNewQuestion()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded-lg shadow transition-colors flex items-center gap-2 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                隨機新題
+            </button>
+        </div>
+
+        <div class="bg-slate-50 border border-slate-200 rounded-xl p-5 text-center shadow-sm">
+            <h2 class="text-sm font-semibold text-slate-500 mb-2">化簡以下算式，並以正指數表示答案：</h2>
+            <div id="math-question" class="text-3xl font-bold my-4 min-h-[60px] flex items-center justify-center">
+                <!-- MathJax -->
+            </div>
+        </div>
+
+        <div class="bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg">
+            <div class="flex items-center gap-2 mb-2">
+                <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path></svg>
+                <h3 class="font-bold text-red-800 text-md">考評局報告：常見致命錯誤！</h3>
+            </div>
+            <p class="text-sm text-red-700">在算草過程中，經常出現把係數的平方算錯的陷阱。例如：將 <span class="font-bold bg-red-200 px-1 rounded">$5^2$</span> 錯誤計算為 <span class="font-bold bg-red-200 px-1 rounded">$5 \times 2 = 10$</span>。請記住，指數代表<b>連乘</b>，$5^2 = 5 \times 5 = 25$。</p>
+        </div>
+
+        <!-- 考試標準步驟 -->
+        <div class="flex flex-col gap-3" id="steps-container">
+            
+            <!-- Step 1 -->
+            <div class="step-card bg-white border border-slate-200 rounded-xl cursor-pointer" onclick="selectStep(1)" id="card-step-1">
+                <div class="p-4 flex justify-between items-center bg-slate-50 rounded-t-xl">
+                    <h3 class="font-bold text-slate-700">算草行 1：展開外層括號</h3>
+                    <span class="text-xs font-mono bg-slate-200 text-slate-600 px-2 py-1 rounded">Line 1</span>
+                </div>
+                <div class="step-content p-4 text-sm text-slate-600 border-t border-slate-100">
+                    <p class="mb-2">根據指數定律 $\left(\frac{A}{B}\right)^n = \frac{A^n}{B^n}$ 及 $(AB)^n = A^n B^n$</p>
+                    <p>將括號外的指數 <span class="font-bold text-blue-600" id="text-pout-1"></span> 分配給分子和分母的<b>每一項</b>（常數、$x$ 及 $y$）。注意算式需保持完整。</p>
+                    <div class="mt-3 p-3 bg-blue-50 rounded-lg text-center font-bold text-lg" id="math-step-1"></div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-card bg-white border border-slate-200 rounded-xl cursor-pointer" onclick="selectStep(2)" id="card-step-2">
+                <div class="p-4 flex justify-between items-center bg-red-50 rounded-t-xl border-b border-red-100">
+                    <h3 class="font-bold text-red-700">算草行 2：計算常數 (高危陷阱)</h3>
+                    <span class="text-xs font-mono bg-red-200 text-red-800 px-2 py-1 rounded">Watch out!</span>
+                </div>
+                <div class="step-content p-4 text-sm text-slate-600">
+                    <p class="mb-2">先處理數字部分：$<span id="text-coeff-base"></span>^{<span id="text-coeff-pow"></span>}$</p>
+                    <div class="flex flex-col gap-2 mt-2">
+                        <div class="bg-red-100 text-red-800 p-2 rounded flex items-center gap-2">
+                            <span class="font-bold text-lg">❌ 錯誤思考：</span> <span id="math-wrong-calc"></span> (底數直接乘指數)
+                        </div>
+                        <div class="bg-green-100 text-green-800 p-2 rounded flex items-center gap-2">
+                            <span class="font-bold text-lg">✅ 正確邏輯：</span> <span id="math-right-calc"></span> (連乘)
+                        </div>
+                    </div>
+                    <div class="mt-3 p-3 bg-blue-50 rounded-lg text-center font-bold text-lg" id="math-step-2"></div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-card bg-white border border-slate-200 rounded-xl cursor-pointer" onclick="selectStep(3)" id="card-step-3">
+                <div class="p-4 flex justify-between items-center bg-slate-50 rounded-t-xl">
+                    <h3 class="font-bold text-slate-700">算草行 3：字母次方 (次方相乘)</h3>
+                    <span class="text-xs font-mono bg-slate-200 text-slate-600 px-2 py-1 rounded">Line 3</span>
+                </div>
+                <div class="step-content p-4 text-sm text-slate-600 border-t border-slate-100">
+                    <p class="mb-2">處理變數部分：$(x^{<span id="text-x-pow-in"></span>})^{<span id="text-pout-3"></span>}$</p>
+                    <p>根據指數定律 $(a^m)^n = a^{m \times n}$。內外次方相遇時，應該<b>相乘</b>。</p>
+                    <div class="mt-3 p-3 bg-blue-50 rounded-lg text-center font-bold text-lg" id="math-step-3"></div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-card bg-white border border-slate-200 rounded-xl cursor-pointer" onclick="selectStep(4)" id="card-step-4">
+                <div class="p-4 flex justify-between items-center bg-green-50 rounded-t-xl border-b border-green-100">
+                    <h3 class="font-bold text-green-700">最終答案</h3>
+                    <span class="text-xs font-bold bg-green-500 text-white px-2 py-1 rounded">1A (答案分)</span>
+                </div>
+                <div class="step-content p-4 text-sm text-slate-600">
+                    <p>檢查所有項是否已經化簡，括號已消除，且指數均為正數。</p>
+                    <div class="mt-3 p-4 bg-green-100 border-2 border-green-400 rounded-lg text-center font-bold text-2xl" id="math-step-4"></div>
+                </div>
+            </div>
+        </div>
+
+        <details class="bg-slate-100 rounded-xl border border-slate-300 mt-4 group">
+            <summary class="p-4 font-bold text-slate-700 flex justify-between items-center">
+                <span>📚 核心指數定律總覽 (點擊展開)</span>
+                <svg class="w-5 h-5 text-slate-500 transform group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </summary>
+            <div class="p-4 border-t border-slate-300 text-sm bg-white rounded-b-xl leading-relaxed">
+                <ul class="space-y-3">
+                    <li class="flex items-center gap-4">
+                        <span class="bg-slate-800 text-white px-2 py-1 rounded w-16 text-center font-mono text-xs">法則 1</span>
+                        <span>$a^m \times a^n = a^{m+n}$ (同底相乘，指數相加)</span>
+                    </li>
+                    <li class="flex items-center gap-4">
+                        <span class="bg-slate-800 text-white px-2 py-1 rounded w-16 text-center font-mono text-xs">法則 2</span>
+                        <span>$\frac{a^m}{a^n} = a^{m-n}$ (同底相除，指數相減)</span>
+                    </li>
+                    <li class="flex items-center gap-4 bg-yellow-50 p-2 rounded outline outline-1 outline-yellow-400">
+                        <span class="bg-yellow-500 text-white px-2 py-1 rounded w-16 text-center font-mono text-xs shadow-sm">核心！</span>
+                        <span class="font-bold text-yellow-900">$(a^m)^n = a^{mn}$ (次方再次方，指數相乘)</span>
+                    </li>
+                    <li class="flex items-center gap-4 bg-yellow-50 p-2 rounded outline outline-1 outline-yellow-400 mt-1">
+                        <span class="bg-yellow-500 text-white px-2 py-1 rounded w-16 text-center font-mono text-xs shadow-sm">核心！</span>
+                        <span class="font-bold text-yellow-900">$(ab)^n = a^n b^n$ 及 $\left(\frac{a}{b}\right)^n = \frac{a^n}{b^n}$ (指數分配率)</span>
+                    </li>
+                </ul>
+            </div>
+        </details>
+        
+        <div class="pb-10"></div>
+    </div>
+
+    <!-- RESIZER -->
+    <div id="resizer" class="resizer">
+        <div class="resizer-handle"></div>
+    </div>
+
+    <!-- RIGHT PANE -->
+    <div id="right-pane">
+        <div class="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-2 rounded-lg shadow-sm border border-slate-200 z-10 pointer-events-none">
+            <h3 class="font-bold text-sm text-slate-800" id="canvas-title">📝 標準考試書寫格式</h3>
+            <p class="text-xs text-slate-500" id="canvas-subtitle">觀察算式整體的變化</p>
+        </div>
+        <canvas id="visual-canvas" class="w-full h-full block"></canvas>
+    </div>
+
+</div>
+
+<script>
+    // --- Layout & Resizing ---
+    const resizer = document.getElementById('resizer');
+    const leftPane = document.getElementById('left-pane');
+    const rightPane = document.getElementById('right-pane');
+    let isResizing = false;
+
+    const startResize = (e) => {
+        isResizing = true;
+        document.body.style.cursor = 'col-resize';
+        if(e.type === 'touchstart') e.preventDefault(); 
+    };
+
+    const doResize = (e) => {
+        if (!isResizing) return;
+        let clientX = e.clientX;
+        if (e.type === 'touchmove') {
+            clientX = e.touches[0].clientX;
+            e.preventDefault(); 
+        }
+        const containerWidth = document.body.clientWidth;
+        const minWidth = 320;
+        let newLeftWidth = clientX;
+        if (newLeftWidth < minWidth) newLeftWidth = minWidth;
+        if (containerWidth - newLeftWidth < minWidth) newLeftWidth = containerWidth - minWidth;
+        const leftPercentage = (newLeftWidth / containerWidth) * 100;
+        leftPane.style.flex = `1 1 ${leftPercentage}%`;
+        rightPane.style.flex = `1 1 ${100 - leftPercentage}%`;
+        requestAnimationFrame(drawCanvas);
+    };
+
+    const stopResize = () => {
+        isResizing = false;
+        document.body.style.cursor = 'default';
+        requestAnimationFrame(drawCanvas);
+    };
+
+    resizer.addEventListener('mousedown', startResize);
+    document.addEventListener('mousemove', doResize);
+    document.addEventListener('mouseup', stopResize);
+    resizer.addEventListener('touchstart', startResize, { passive: false });
+    document.addEventListener('touchmove', doResize, { passive: false });
+    document.addEventListener('touchend', stopResize);
+
+
+    // --- Math Logic ---
+    let currentQ = { c: 5, px: 3, py: 1, pout: 2 };
+    let currentStep = 0; // 0-4
+
+    function generateNewQuestion() {
+        currentQ.c = Math.floor(Math.random() * 5) + 2;
+        currentQ.px = Math.floor(Math.random() * 4) + 2;
+        currentQ.py = Math.floor(Math.random() * 4) + 1;
+        currentQ.pout = Math.floor(Math.random() * 2) + 2;
+        if (Math.random() > 0.5) currentQ.py = 1;
+
+        updateUI();
+        selectStep(0);
+    }
+
+    function formatPow(base, power) {
+        if (power === 1) return base;
+        return `${base}^{${power}}`;
+    }
+
+    function updateUI() {
+        const { c, px, py, pout } = currentQ;
+        
+        const numStr = `${c}x^{${px}}`;
+        const denStr = formatPow('y', py);
+        
+        // Q
+        const qStr = `\\left( \\frac{${numStr}}{${denStr}} \\right)^{${pout}}`;
+        document.getElementById('math-question').innerHTML = `$$${qStr}$$`;
+
+        // Texts
+        document.getElementById('text-pout-1').innerText = pout;
+        document.getElementById('text-coeff-base').innerText = c;
+        document.getElementById('text-coeff-pow').innerText = pout;
+        document.getElementById('text-x-pow-in').innerText = px;
+        document.getElementById('text-pout-3').innerText = pout;
+        
+        // Trap
+        const wrongAns = c * pout;
+        const rightAns = Math.pow(c, pout);
+        let rightCalcStr = Array(pout).fill(c).join(' \\times ') + ` = ${rightAns}`;
+        document.getElementById('math-wrong-calc').innerHTML = `$${c} \\times ${pout} = ${wrongAns}$`;
+        document.getElementById('math-right-calc').innerHTML = `$${rightCalcStr}$`;
+
+        // Exam Steps (Simulating line by line with "=")
+        const denStrExpanded = py === 1 ? `y^{${pout}}` : `(y^{${py}})^{${pout}}`;
+        const step1Str = `\\frac{${c}^{${pout}}(x^{${px}})^{${pout}}}{${denStrExpanded}}`;
+        document.getElementById('math-step-1').innerHTML = `$$= ${step1Str}$$`;
+
+        const step2Str = `\\frac{\\mathbf{${rightAns}}(x^{${px}})^{${pout}}}{${denStrExpanded}}`;
+        document.getElementById('math-step-2').innerHTML = `$$= ${step2Str}$$`;
+
+        const finalDenStr = formatPow('y', py * pout);
+        const step3Str = `\\frac{${rightAns}\\mathbf{x^{${px * pout}}}}{\\mathbf{${finalDenStr}}}`;
+        document.getElementById('math-step-3').innerHTML = `$$= ${step3Str}$$`;
+
+        const step4Str = `\\frac{${rightAns}x^{${px * pout}}}{${finalDenStr}}`;
+        document.getElementById('math-step-4').innerHTML = `$$= ${step4Str}$$`;
+
+        if (window.MathJax && typeof MathJax.typesetPromise === 'function') {
+            MathJax.typesetPromise();
+        }
+    }
+
+    function selectStep(stepNum) {
+        currentStep = stepNum;
+        
+        document.querySelectorAll('.step-card').forEach((card, index) => {
+            if (index + 1 === stepNum) {
+                card.classList.add('active');
+                setTimeout(() => card.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+            } else {
+                card.classList.remove('active');
+            }
+        });
+
+        const subtitles = [
+            "題目全貌",
+            "第一行算草：指數分配給各項",
+            "第二行算草：拆解常數計算",
+            "第三行算草：變數次方相乘",
+            "標準最終答案格式"
+        ];
+        document.getElementById('canvas-subtitle').innerText = subtitles[stepNum] || "";
+
+        drawCanvas();
+    }
+
+
+    // --- Canvas Drawing (Standard Exam Writing Mode) ---
+    const canvas = document.getElementById('visual-canvas');
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width * window.devicePixelRatio;
+        canvas.height = rect.height * window.devicePixelRatio;
+        ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+        canvas.style.width = `${rect.width}px`;
+        canvas.style.height = `${rect.height}px`;
+    }
+
+    window.addEventListener('resize', () => {
+        resizeCanvas();
+        drawCanvas();
+    });
+
+    function drawLineConnect(x1, y1, x2, y2, color) {
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.lineTo(x2, y2);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2;
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+    }
+
+    function drawCanvas() {
+        if (!canvas.width) resizeCanvas(); 
+        const w = canvas.width / window.devicePixelRatio;
+        const h = canvas.height / window.devicePixelRatio;
+        
+        ctx.clearRect(0, 0, w, h);
+        
+        const cx = w / 2;
+        const cy = h / 2;
+        const { c, px, py, pout } = currentQ;
+        const finalPx = px * pout;
+        const finalPy = py * pout;
+        const rightAns = Math.pow(c, pout);
+
+        // Utility to draw text accurately
+        function drawText(txt, x, y, size=44, color='#1e293b') {
+            ctx.font = `italic bold ${size}px "Times New Roman", serif`;
+            if(!isNaN(txt) || txt === '(' || txt === ')' || txt === '=') {
+                ctx.font = `bold ${size}px "Times New Roman", serif`;
+            }
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(txt, x, y);
+        }
+
+        const topY = cy - 35;
+        const botY = cy + 35;
+        const lineW = 160;
+
+        // Equal sign for steps > 0 to simulate writing the next line
+        if (currentStep > 0 && currentStep < 4) {
+            drawText('=', cx - 130, cy, 44, '#1e293b');
+        }
+
+        if (currentStep === 0) {
+            // Base Question
+            drawText('(', cx - 85, cy, 80);
+            drawText(')', cx + 85, cy, 80);
+            drawText(pout, cx + 110, cy - 40, 28, '#ef4444');
+
+            ctx.fillStyle = '#1e293b'; ctx.fillRect(cx - lineW/2, cy, lineW, 4);
+
+            drawText(c, cx - 30, topY);
+            drawText('x', cx + 10, topY);
+            drawText(px, cx + 30, topY - 15, 24);
+
+            drawText('y', cx, botY);
+            if (py !== 1) drawText(py, cx + 20, botY - 15, 24);
+        }
+        else if (currentStep === 1) {
+            ctx.fillStyle = '#1e293b'; ctx.fillRect(cx - lineW/2 - 10, cy, lineW + 20, 4);
+
+            // Numerator
+            drawText(c, cx - 60, topY);
+            drawText(pout, cx - 40, topY - 15, 24, '#ef4444'); // Highlight newly assigned
+            
+            drawText('(', cx - 15, topY, 44);
+            drawText('x', cx + 5, topY);
+            drawText(px, cx + 25, topY - 15, 24);
+            drawText(')', cx + 45, topY, 44);
+            drawText(pout, cx + 65, topY - 15, 24, '#ef4444'); // Highlight
+
+            // Denominator
+            if (py !== 1) {
+                drawText('(', cx - 30, botY, 44);
+                drawText('y', cx - 10, botY);
+                drawText(py, cx + 10, botY - 15, 24);
+                drawText(')', cx + 30, botY, 44);
+                drawText(pout, cx + 50, botY - 15, 24, '#ef4444');
+            } else {
+                drawText('y', cx - 10, botY);
+                drawText(pout, cx + 10, botY - 15, 24, '#ef4444');
+            }
+
+            // Sub-annotation
+            ctx.fillStyle = '#ea580c'; ctx.font = 'bold 20px sans-serif'; ctx.textAlign='center';
+            ctx.fillText('💡 分數結構保持完整，外層指數分配給各項', cx, cy + 120);
+        }
+        else if (currentStep === 2) {
+            ctx.fillStyle = '#1e293b'; ctx.fillRect(cx - lineW/2 - 10, cy, lineW + 20, 4);
+
+            // Highlight constant calculation
+            ctx.beginPath();
+            ctx.roundRect(cx - 95, topY - 35, 75, 70, 10);
+            ctx.fillStyle = '#fee2e2'; ctx.fill();
+            ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 3; ctx.stroke();
+
+            drawText(rightAns, cx - 55, topY, 44, '#b91c1c');
+            
+            drawText('(', cx - 15, topY, 44);
+            drawText('x', cx + 5, topY);
+            drawText(px, cx + 25, topY - 15, 24);
+            drawText(')', cx + 45, topY, 44);
+            drawText(pout, cx + 65, topY - 15, 24);
+
+            if (py !== 1) {
+                drawText('(', cx - 30, botY, 44);
+                drawText('y', cx - 10, botY);
+                drawText(py, cx + 10, botY - 15, 24);
+                drawText(')', cx + 30, botY, 44);
+                drawText(pout, cx + 50, botY - 15, 24);
+            } else {
+                drawText('y', cx - 10, botY);
+                drawText(pout, cx + 10, botY - 15, 24);
+            }
+
+            // Callout
+            drawLineConnect(cx - 55, topY - 35, cx - 55, topY - 70, '#ef4444');
+            ctx.fillStyle = '#ef4444'; ctx.font = 'bold 24px monospace'; ctx.textAlign='center';
+            const calcStr = Array(pout).fill(c).join('×') + ` = ${rightAns}`;
+            ctx.fillText(`常數連乘: ${calcStr}`, cx, topY - 90);
+        }
+        else if (currentStep === 3) {
+            ctx.fillStyle = '#1e293b'; ctx.fillRect(cx - lineW/2 - 10, cy, lineW + 20, 4);
+
+            drawText(rightAns, cx - 55, topY, 44);
+            
+            // Highlight x var
+            ctx.beginPath();
+            ctx.roundRect(cx - 20, topY - 40, 80, 80, 10);
+            ctx.fillStyle = '#e0f2fe'; ctx.fill();
+            ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3; ctx.stroke();
+
+            drawText('x', cx + 5, topY, 44, '#1d4ed8');
+            drawText(finalPx, cx + 30, topY - 15, 24, '#1d4ed8');
+
+            // Highlight y var
+            ctx.beginPath();
+            ctx.roundRect(cx - 30, botY - 40, 80, 80, 10);
+            ctx.fillStyle = '#e0f2fe'; ctx.fill();
+            ctx.strokeStyle = '#3b82f6'; ctx.lineWidth = 3; ctx.stroke();
+
+            drawText('y', cx - 10, botY, 44, '#1d4ed8');
+            if (finalPy !== 1) drawText(finalPy, cx + 15, botY - 15, 24, '#1d4ed8');
+            else if (pout !== 1) drawText(pout, cx + 15, botY - 15, 24, '#1d4ed8');
+
+            // Callout
+            ctx.fillStyle = '#3b82f6'; ctx.font = 'bold 22px monospace'; ctx.textAlign='left';
+            drawLineConnect(cx + 60, topY, cx + 110, topY, '#3b82f6');
+            ctx.fillText(`指數相乘: ${px}×${pout}=${finalPx}`, cx + 120, topY);
+            
+            if (py !== 1) {
+                drawLineConnect(cx + 50, botY, cx + 110, botY, '#3b82f6');
+                ctx.fillText(`指數相乘: ${py}×${pout}=${finalPy}`, cx + 120, botY);
+            }
+        }
+        else if (currentStep === 4) {
+            ctx.fillStyle = '#f0fdf4'; ctx.fillRect(0, 0, w, h); // Green bg
+            
+            ctx.fillStyle = '#166534'; ctx.font = 'bold 36px sans-serif'; ctx.textAlign='center';
+            ctx.fillText('✨ 標準最終答案 ✨', cx, cy - 120);
+
+            ctx.fillStyle = '#166534'; ctx.fillRect(cx - lineW/2, cy, lineW, 6);
+
+            drawText(rightAns, cx - 40, topY, 56, '#166534');
+            drawText('x', cx + 20, topY, 56, '#166534');
+            drawText(finalPx, cx + 55, topY - 20, 28, '#166534');
+
+            drawText('y', cx - 10, botY, 56, '#166534');
+            const finalBotPow = (py === 1) ? pout : finalPy;
+            if (finalBotPow !== 1) drawText(finalBotPow, cx + 25, botY - 20, 28, '#166534');
+        }
+    }
+
+    // Init
+    window.onload = () => {
+        currentQ = { c: 5, px: 3, py: 1, pout: 2 }; 
+        updateUI();
+        selectStep(0);
+    };
+
+</script>
+</body>
+</html>
