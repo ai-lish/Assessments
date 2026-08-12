@@ -103,6 +103,9 @@ check('answer controls remain visible and become locked after checking',
   /classList\.add\("answer-control-locked"\)/.test(template) &&
   /setAttribute\("aria-disabled", "true"\)/.test(template) &&
   !/function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,500}style\.visibility = "hidden"/.test(template));
+check('portrait pre-check collapses the empty detail slot and grows the question viewport',
+  /@media \(orientation: portrait\)\s*\{[\s\S]*#quiz-view:not\(\.reviewed\) \.question-scroll\s*\{[^}]*flex:\s*1 1 auto/.test(template) &&
+  /@media \(orientation: portrait\)\s*\{[\s\S]*#quiz-view:not\(\.reviewed\) \.answer-detail-slot\s*\{[^}]*display:\s*none/.test(template));
 check('portrait reviewed mode gives released keypad space to one work scroller',
   /#quiz-view\.reviewed \.work-scroll\s*\{[^}]*overflow-y:\s*auto/.test(template) &&
   /#quiz-view\.reviewed \.solution-box\s*\{[^}]*max-height:\s*none[^}]*overflow:\s*visible/.test(template) &&
@@ -159,6 +162,9 @@ for (const rel of exercisePaths) {
   check(`${rel} includes collapse controls helper`, /function collapseAnswerControlsAfterCheck\(\)/.test(html));
   check(`${rel} includes reviewed work-scroll release`,
     /id="work-scroll"/.test(html) && /#quiz-view\.reviewed \.keypad-area\s*\{[^}]*display:\s*none !important/.test(html));
+  check(`${rel} includes portrait pre-check question-space release`,
+    /@media \(orientation: portrait\)\s*\{[\s\S]*#quiz-view:not\(\.reviewed\) \.question-scroll\s*\{[^}]*flex:\s*1 1 auto/.test(html) &&
+    /@media \(orientation: portrait\)\s*\{[\s\S]*#quiz-view:not\(\.reviewed\) \.answer-detail-slot\s*\{[^}]*display:\s*none/.test(html));
 }
 
 console.log(`\n=== Summary: ${passed} passed, ${failures.length} failed ===`);

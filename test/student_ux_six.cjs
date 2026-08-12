@@ -67,7 +67,10 @@ check('answer controls stay visible but locked after checking',
   /setAttribute\("aria-disabled", "true"\)/.test(template) &&
   !/function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,500}style\.visibility = "hidden"/.test(template) &&
   !/function collapseAnswerControlsAfterCheck\(\)[\s\S]{0,500}style\.display = "none"/.test(template));
-check('portrait review releases the fixed solution and keypad slots',
+check('portrait pre-check gives the empty detail slot to the question viewport',
+  /@media \(orientation: portrait\)\s*\{[\s\S]*#quiz-view:not\(\.reviewed\) \.question-scroll\s*\{[^}]*flex:\s*1 1 auto/.test(template) &&
+  /@media \(orientation: portrait\)\s*\{[\s\S]*#quiz-view:not\(\.reviewed\) \.answer-detail-slot\s*\{[^}]*display:\s*none/.test(template));
+check('portrait review restores the detail content and releases the keypad slot',
   /\.answer-detail-slot\s*\{[^}]*height:\s*148px[^}]*display:\s*grid[^}]*grid-template-rows:[^}]*40px/.test(template) &&
   /#quiz-view\.reviewed \.answer-detail-slot\s*\{[^}]*height:\s*auto[^}]*overflow:\s*visible/.test(template) &&
   /#quiz-view\.reviewed \.solution-box\s*\{[^}]*max-height:\s*none[^}]*overflow:\s*visible/.test(template) &&
