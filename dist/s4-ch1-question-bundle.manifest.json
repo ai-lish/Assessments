@@ -1,0 +1,8 @@
+{
+  "schemaVersion": 1,
+  "course": "s4",
+  "chapter": "ch1",
+  "source": "templates/quadratic-equations + questions/s4/ch1",
+  "entry": "adapters/ai-learning-s4ch1.js",
+  "publicFile": "s4-ch1-question-bundle.js"
+}
