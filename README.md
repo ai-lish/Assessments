@@ -30,6 +30,24 @@
 | `exercises/2526/` | 由正式管道產生的四份 2025-26 年度學生練習 |
 | `test/` | 測試腳本 |
 
+## S4 Ch1 題目 ownership
+
+一元二次方程練習的可重用題型模板及 S4 Ch1 題目內容由本 repo 維護：
+
+| 路徑 | 責任 |
+|---|---|
+| `schemas/question-schema.js` | 驗證可序列化的統一題目物件結構 |
+| `templates/quadratic-equations/` | 參數生成、合法性、答案、checker、步驟及 LaTeX 輸出 |
+| `questions/s4/ch1/` | 課程章節、題型文字、難度、參數範圍及發布 metadata |
+| `adapters/ai-learning-s4ch1.js` | 給 ai-learning 使用的公開 build-time API |
+| `dist/s4-ch1-question-bundle.js` | 只包含 S4 Ch1 所需模板及題目 catalog 的瀏覽器 bundle |
+
+執行 `npm run test:s4-ch1` 可測試五種方法、基礎／進階難度及綜合模式；執行
+`npm run build:s4-ch1` 會由 assessment source 產生 `dist/` bundle。ai-learning
+只在 build time 取得這個靜態 bundle；學生瀏覽器只載入公開頁面旁的本地 JavaScript，
+不會 runtime fetch 本 repo 或其他 private source。S4 Ch1 舊頁面在 parity review
+完成前保留，不能以刪除舊生成器代替驗收。
+
 學生收到的是由工具產生嘅 `student-practice-{presetKey}-YYYYMMDD.html`（或自訂模式：`student-practice-YYYYMMDD.html`），已內嵌全部題目。
 
 ## 老師選題流程
@@ -157,6 +175,6 @@ python3 test/assemble.py
 
 ### 部署
 
-- 全部檔案為靜態 HTML / JSON，無 build step。
+- 現有題庫／學生練習為靜態 HTML / JSON；S4 Ch1 題目另有上述 build step 產生公開 bundle。
 - GitHub Pages：`https://ai-lish.github.io/Assessments/`（root: `main` branch）。
 - 改動後 push 到 `main` 即 deploy。

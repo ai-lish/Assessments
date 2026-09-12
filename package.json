@@ -1,0 +1,13 @@
+{
+  "name": "assessments",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Assessment question sources and build-time public bundles.",
+  "scripts": {
+    "build:s4-ch1": "node scripts/build-question-bundle.mjs",
+    "test:s4-ch1": "node test/s4_quadratic_equations.cjs"
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.9"
+  }
+}

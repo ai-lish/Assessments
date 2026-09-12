@@ -9,6 +9,7 @@ test/artifacts/
 __pycache__/
 *.pyc
 .DS_Store
+node_modules/
 docs/manual/output/
 docs/manual/node_modules/
 tmp/pdfs/
