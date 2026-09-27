@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>DSE 數學卷二 — Phase 1A 自主指數題原型</title>
+  <link rel="stylesheet" href="css/dse-paper2.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="header-inner">
+      <h1>DSE 數學卷二 — Phase 1A 自主指數題原型</h1>
+      <p class="subtitle">獨立測試入口。授權學校帳戶登入後即可開始一次仿真作答。</p>
+      <nav class="top-links" aria-label="主要連結">
+        <a href="../hkdse/">返回主目錄</a>
+        <a href="docs/phase-1a-setup.md">設定指南</a>
+        <a href="docs/known-limitations.md">已知限制</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="auth-section" class="auth-section" aria-label="登入">
+      <div id="auth-status" class="notice notice-info">
+        載入中… 偵測 Firebase 認證狀態。
+      </div>
+      <div id="auth-actions" class="auth-actions" hidden>
+        <button id="btn-google-signin" type="button" class="primary">以 Google 帳戶登入</button>
+        <p class="hint">測試環境只接受學校 domain allowlist 內嘅 email。<br>
+          開發者請見 <a href="docs/phase-1a-emulator.md">emulator 設定</a>。</p>
+      </div>
+      <div id="auth-emulator" class="notice notice-warn" hidden>
+        <strong>偵測到 Firebase Auth Emulator。</strong>
+        可用測試帳號：<code>student@phase1a.example.test</code>（已驗證）、
+        <code>unverified@phase1a.example.test</code>（未驗證）。
+      </div>
+      <div id="auth-config-missing" class="notice notice-error" hidden>
+        <strong>Firebase 公開 config 尚未填寫。</strong>
+        請複製 <code>dse-paper2/js/config.js</code> 並填入 <code>apiKey</code> / <code>authDomain</code> / <code>projectId</code> / <code>appId</code>。
+        設定指南：<a href="docs/phase-1a-setup.md">phase-1a-setup.md</a>。
+      </div>
+    </section>
+
+    <section id="attempt-section" class="attempt-section" aria-label="作答" hidden>
+      <div class="card">
+        <h2>題目 <span id="q-counter" class="muted"></span></h2>
+        <div id="prompt" class="prompt"></div>
+        <div id="params" class="params muted"></div>
+        <form id="answer-form" autocomplete="off">
+          <fieldset id="options" class="options"></fieldset>
+          <div class="actions">
+            <button type="submit" id="btn-submit" class="primary" disabled>提交</button>
+            <span id="submit-status" class="muted"></span>
+          </div>
+        </form>
+      </div>
+      <div id="feedback" class="card" hidden>
+        <h2>結果</h2>
+        <div id="feedback-content"></div>
+        <pre id="evaluation-detail" class="muted"></pre>
+      </div>
+    </section>
+
+    <section id="error-banner" class="notice notice-error" role="alert" hidden>
+      <strong id="error-title">操作失敗</strong>
+      <span id="error-message"></span>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Phase 1A 工程切片 · 不含任何 HKEAA／DSE／校內卷題目內容 ·
+       <a href="docs/security-notes.md">私隱與安全</a></p>
+  </footer>
+
+  <!-- Firebase modular SDK (no build step). -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
