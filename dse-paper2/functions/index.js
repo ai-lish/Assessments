@@ -6,8 +6,8 @@
 //   - submitAttempt        (callable)
 //
 // Env vars (set via `firebase functions:secrets:set` or .env in dev):
-//   ALLOWED_SCHOOL_DOMAINS=phase1a.example.test
-//   SCHOOL_DOMAIN_TO_ID=phase1a.example.test:phase1a-school
+//   ALLOWED_SCHOOL_DOMAINS=school.example.com
+//   SCHOOL_DOMAIN_TO_ID=school.example.com:phase1a-school
 //   GCP_PROJECT=...
 
 const { onCall, HttpsError } = require('firebase-functions/v2/https');

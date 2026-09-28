@@ -80,8 +80,8 @@ test('attempt-session: verified user in allowlist can create session', async () 
   });
   await seedEmulatorData(env);
   // process.env handled by firebase.json emulators
-  process.env.ALLOWED_SCHOOL_DOMAINS = 'phase1a.example.test';
-  process.env.SCHOOL_DOMAIN_TO_ID = 'phase1a.example.test:phase1a-school';
+  process.env.ALLOWED_SCHOOL_DOMAINS = 'school.example.com';
+  process.env.SCHOOL_DOMAIN_TO_ID = 'school.example.com:phase1a-school';
 
   const admin = require('firebase-admin');
   const app = admin.initializeApp({ projectId: PROJECT_ID }, 'test-' + Date.now());
@@ -110,8 +110,8 @@ test('attempt-session: unverified email rejected', async () => {
   const env = await rt.initializeTestEnvironment({ projectId: PROJECT_ID });
   await rt.loadFirestoreRules({ projectId: PROJECT_ID, rules: '' });
   await seedEmulatorData(env);
-  process.env.ALLOWED_SCHOOL_DOMAINS = 'phase1a.example.test';
-  process.env.SCHOOL_DOMAIN_TO_ID = 'phase1a.example.test:phase1a-school';
+  process.env.ALLOWED_SCHOOL_DOMAINS = 'school.example.com';
+  process.env.SCHOOL_DOMAIN_TO_ID = 'school.example.com:phase1a-school';
   const admin = require('firebase-admin');
   const app = admin.initializeApp({ projectId: PROJECT_ID }, 'test-' + Date.now());
   const { createAttemptSessionHandler } = require('../src/create-attempt-session');
@@ -132,8 +132,8 @@ test('attempt-session: wrong-domain email rejected', async () => {
   const env = await rt.initializeTestEnvironment({ projectId: PROJECT_ID });
   await rt.loadFirestoreRules({ projectId: PROJECT_ID, rules: '' });
   await seedEmulatorData(env);
-  process.env.ALLOWED_SCHOOL_DOMAINS = 'phase1a.example.test';
-  process.env.SCHOOL_DOMAIN_TO_ID = 'phase1a.example.test:phase1a-school';
+  process.env.ALLOWED_SCHOOL_DOMAINS = 'school.example.com';
+  process.env.SCHOOL_DOMAIN_TO_ID = 'school.example.com:phase1a-school';
   const admin = require('firebase-admin');
   const app = admin.initializeApp({ projectId: PROJECT_ID }, 'test-' + Date.now());
   const { createAttemptSessionHandler } = require('../src/create-attempt-session');

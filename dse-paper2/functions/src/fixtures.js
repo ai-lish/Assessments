@@ -95,7 +95,7 @@ const SYNTHETIC_METADATA = {
 const SYNTHETIC_SCHOOL = {
   schoolId: 'phase1a-school',
   name: '測試學校A',
-  domain: 'example.com',
+  domain: 'school.example.com',
   status: 'active',
   createdAt: new Date('2026-06-01T00:00:00Z'),
 };
@@ -125,12 +125,12 @@ function syntheticEntitlement(entitlementId, contentSetId = PHASE1A_CONTENT_SET_
 const SYNTHETIC_USERS = {
   verified: {
     uid: 'uid-verified-student',
-    email: 'student@example.com',
+    email: 'student@school.example.com',
     email_verified: true,
   },
   unverified: {
     uid: 'uid-unverified-student',
-    email: 'unverified@example.com',
+    email: 'unverified@school.example.com',
     email_verified: false,
   },
   wrongDomain: {
@@ -140,12 +140,12 @@ const SYNTHETIC_USERS = {
   },
   inactive: {
     uid: 'uid-inactive',
-    email: 'inactive@example.com',
+    email: 'inactive@school.example.com',
     email_verified: true,
   },
   expired: {
     uid: 'uid-expired',
-    email: 'expired@example.com',
+    email: 'expired@school.example.com',
     email_verified: true,
   },
 };

@@ -50,8 +50,8 @@ npm install
 於 `dse-paper2/functions/.env.example`（或 emulator runtime config）設定：
 
 ```
-ALLOWED_SCHOOL_DOMAINS=phase1a.example.test,school.edu.hk
-SCHOOL_DOMAIN_TO_ID=phase1a.example.test:phase1a-school,school.edu.hk:school-1
+ALLOWED_SCHOOL_DOMAINS=school.example.com,other-school.example.com
+SCHOOL_DOMAIN_TO_ID=school.example.com:phase1a-school,other-school.example.com:school-1
 ```
 
 `*.example.test` 係 RFC 6761 保留 domain，**只可作測試**。Production 必須用真實學校 domain。
