@@ -9,7 +9,7 @@
 const { ERROR_CODES, AppError } = require('./errors');
 
 async function findMembershipForUid(admin, uid, email) {
-  // School id is derived from the email domain (e.g. student@school.edu.hk → "school").
+  // School id is derived from the email domain (e.g. student@school.example.com → "school").
   // The actual mapping is loaded from a server-side allowlist. For Phase 1A we
   // accept a single "schoolId" mapping per domain via env SCHOOL_DOMAIN_TO_ID.
   const domainMap = (process.env.SCHOOL_DOMAIN_TO_ID || '').split(',')

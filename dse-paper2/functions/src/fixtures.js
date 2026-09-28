@@ -1,6 +1,6 @@
 // dse-paper2/functions/src/fixtures.js
 // Synthetic Phase 1A fixtures for emulator seeding. NO real student data, NO
-// real school domains. The allowlist uses *.example.test (RFC 6761 reserved
+// real school domains. The allowlist uses the reserved example.com namespace
 // for testing). These fixtures are loaded by integration tests only.
 
 const { canonicalRational } = require('./rational');
@@ -35,7 +35,7 @@ const SYNTHETIC_RELEASE = {
   revocationReasonCode: null,
   createdAt: new Date('2026-06-01T00:00:00Z'),
   approvedAt: new Date('2026-06-01T00:00:00Z'),
-  approvedBy: 'fixture@phase1a.example.test',
+  approvedBy: 'fixture@example.com',
   revokedAt: null,
 };
 
@@ -54,7 +54,7 @@ const SYNTHETIC_ANSWER_KEY = {
 const SYNTHETIC_FEEDBACK = {
   feedbackSchemaVersion: '1.0.0',
   approved: true,
-  approver: 'fixture@phase1a.example.test',
+  approver: 'fixture@example.com',
   contentHtml: '<div>Phase 1A 自主指數題解：(a^m)^n / a^k = a^(m·n - k)</div>',
   commonMistakes: [
     { trapId: 'trap_power_of_power_add', explanation: '(a^m)^n ≠ a^(m+n)；應為 a^(m·n)。' },
@@ -94,8 +94,8 @@ const SYNTHETIC_METADATA = {
 
 const SYNTHETIC_SCHOOL = {
   schoolId: 'phase1a-school',
-  name: 'Phase 1A Synthetic School',
-  domain: 'phase1a.example.test',
+  name: '測試學校A',
+  domain: 'example.com',
   status: 'active',
   createdAt: new Date('2026-06-01T00:00:00Z'),
 };
@@ -125,27 +125,27 @@ function syntheticEntitlement(entitlementId, contentSetId = PHASE1A_CONTENT_SET_
 const SYNTHETIC_USERS = {
   verified: {
     uid: 'uid-verified-student',
-    email: 'student@phase1a.example.test',
+    email: 'student@example.com',
     email_verified: true,
   },
   unverified: {
     uid: 'uid-unverified-student',
-    email: 'student@phase1a.example.test',
+    email: 'student@example.com',
     email_verified: false,
   },
   wrongDomain: {
     uid: 'uid-wrong-domain',
-    email: 'student@external.example.org',
+    email: 'student@other.example.com',
     email_verified: true,
   },
   inactive: {
     uid: 'uid-inactive',
-    email: 'inactive@phase1a.example.test',
+    email: 'inactive@example.com',
     email_verified: true,
   },
   expired: {
     uid: 'uid-expired',
-    email: 'expired@phase1a.example.test',
+    email: 'expired@example.com',
     email_verified: true,
   },
 };

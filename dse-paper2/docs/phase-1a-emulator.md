@@ -58,11 +58,11 @@ Auth Emulator 啟動後建立：
 
 | Email | UID | 用途 |
 |---|---|---|
-| `student@phase1a.example.test` | `uid-verified-student` | 完整 happy path |
-| `unverified@phase1a.example.test` | `uid-unverified-student` | 測試 email-not-verified 拒絕 |
-| `student@external.example.org` | `uid-wrong-domain` | 測試 domain-not-allowed 拒絕 |
-| `inactive@phase1a.example.test` | `uid-inactive` | 測試 membership-inactive 拒絕 |
-| `expired@phase1a.example.test` | `uid-expired` | 測試 entitlement-expired 拒絕 |
+| `student@example.com` | `uid-verified-student` | 完整 happy path |
+| `unverified@example.com` | `uid-unverified-student` | 測試 email-not-verified 拒絕 |
+| `student@other.example.com` | `uid-wrong-domain` | 測試 domain-not-allowed 拒絕 |
+| `inactive@example.com` | `uid-inactive` | 測試 membership-inactive 拒絕 |
+| `expired@example.com` | `uid-expired` | 測試 entitlement-expired 拒絕 |
 
 ---
 

@@ -48,7 +48,7 @@ test('requireEmailVerified: requires email_verified=true', () => {
 });
 
 test('requireEmailVerified: accepts verified', () => {
-  const a = { uid: 'u', token: { email_verified: true, email: 's@school.edu.hk' } };
+  const a = { uid: 'u', token: { email_verified: true, email: 's@example.com' } };
   const out = requireEmailVerified({ auth: a });
   assert.equal(out, a);
 });

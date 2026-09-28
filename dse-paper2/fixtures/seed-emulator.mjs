@@ -27,6 +27,7 @@ async function patchFirestore(path, data) {
   const res = await fetch(url, {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
+    // This fixed password is only for local emulator accounts.
     body: JSON.stringify({ fields: toFirestoreFields(data) }),
   });
   if (!res.ok) {
