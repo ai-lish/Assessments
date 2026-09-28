@@ -130,7 +130,7 @@ const SYNTHETIC_USERS = {
   },
   unverified: {
     uid: 'uid-unverified-student',
-    email: 'student@example.com',
+    email: 'unverified@example.com',
     email_verified: false,
   },
   wrongDomain: {
