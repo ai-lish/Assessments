@@ -1,0 +1,13 @@
+node_modules/
+.env
+.env.*
+!.env.example
+.runtimeconfig.json
+firebase-debug.log
+*.log
+coverage/
+dist/
+.cache/
+service-account*.json
+emulator-data/
+exported-data/

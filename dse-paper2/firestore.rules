@@ -1,0 +1,113 @@
+rules_version = '2';
+
+// Phase 1A security rules.
+// Client (Firebase Auth) can ONLY:
+//   - read its own attemptSessions, attempts, idempotency records
+//   - read releases it has an active entitlement for (limited; see matrix)
+// Client can NEVER:
+//   - read /protectedAnswerKeys/*
+//   - read /users/*/attemptSessions/*/serverOnly/*
+//   - write isCorrect, trapId, attempt record fields, snapshots, metrics
+//   - write to /questionReleases, /protectedQuestions, /schools/*
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helpers
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    function isSelf(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+    function isVerifiedEmail() {
+      return isSignedIn() && request.auth.token.email_verified == true;
+    }
+    function isReleaseActive() {
+      return resource.data.publicationStatus in ['released', 'staged']
+        && resource.data.effectiveFrom <= request.time
+        && resource.data.effectiveUntil >= request.time
+        && resource.data.revokedAt == null;
+    }
+
+    // ===== /questionReleases/{releaseId} =====
+    // Client may read a release only if they are signed in AND the release is
+    // active. The function `createAttemptSession` does the actual gating via
+    // membership/entitlement server-side. This rule is defense in depth.
+    match /questionReleases/{releaseId} {
+      allow read: if isSignedIn() && resource.data.publicationStatus in ['released', 'staged']
+                  && resource.data.effectiveFrom <= request.time
+                  && resource.data.effectiveUntil >= request.time;
+      allow write: if false; // Admin SDK only
+    }
+
+    // ===== /protectedQuestions/{qid}/packages/* =====
+    // Client may NEVER read or write. Admin SDK only.
+    match /protectedQuestions/{qid} {
+      match /packages/{pkg} {
+        allow read, write: if false;
+      }
+    }
+
+    // ===== /protectedAnswerKeys/{releaseId} =====
+    // Client may NEVER read or write. Admin SDK only.
+    match /protectedAnswerKeys/{releaseId} {
+      allow read, write: if false;
+    }
+
+    // ===== /schools/{schoolId} =====
+    // Client may read own membership doc, not the school root, not entitlement.
+    match /schools/{schoolId} {
+      allow read, write: if false;
+
+      // Membership: client may read OWN membership only.
+      match /members/{uid} {
+        allow read: if isSelf(uid);
+        allow write: if false;
+      }
+
+      // Entitlement: NEVER readable by client. Server-side only.
+      match /entitlements/{entId} {
+        allow read, write: if false;
+      }
+
+      // Phase 1A does not implement classes; we lock them off explicitly.
+      match /classes/{classId} {
+        allow read, write: if false;
+      }
+    }
+
+    // ===== /users/{uid} =====
+    match /users/{uid} {
+      allow read, write: if false; // root user doc is Admin-only
+
+      // attemptSessions: client can read its own; never write.
+      match /attemptSessions/{sessionId} {
+        allow read: if isSelf(uid);
+        allow write: if false; // only Cloud Functions via Admin SDK
+
+        // serverOnly evaluationSnapshot: NEVER readable.
+        match /serverOnly/{doc=**} {
+          allow read, write: if false;
+        }
+
+        // idempotency docs: client can read (to detect duplicate on retry) but never write.
+        match /idempotency/{idempotencyKey} {
+          allow read: if isSelf(uid);
+          allow write: if false;
+        }
+      }
+
+      // attempts: client can read its own; never write.
+      match /attempts/{attemptId} {
+        allow read: if isSelf(uid);
+        allow write: if false;
+      }
+    }
+
+    // Catch-all
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
